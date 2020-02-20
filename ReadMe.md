@@ -1,9 +1,9 @@
-## Experimental Data Analysis Course
+# Experimental Data Analysis Course
 ### ROOT 
  - [RootTutorial](http://www.pp.rhul.ac.uk/~cowan/RootTutorial/)
 ### Juypter
  - [juypter short instruction](jupyter-short-instruction.pdf)
-### chapter 1. ROOT TTree 初阶
+## chapter 1. ROOT TTree 初阶
  - 课前预习
    - ROOT文档中tree，tree->Branch(), tree->SetBranchAddress()方法的说明，学习数组，结构体变量如何用tree结构保存。
  - 1.1 [用TTree 结构存储事件数据](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt1/1.1%20create%20tree.ipynb)
