@@ -2,7 +2,7 @@
 ### ROOT 
  - [RootTutorial](http://www.pp.rhul.ac.uk/~cowan/RootTutorial/)
 ### Juypter
- - [juypter short instruction] (jupyter-short-instruction.pdf)
+ - [juypter short instruction](jupyter-short-instruction.pdf)
 ### chapter 1. ROOT TTree 初阶
  - 课前预习
    - ROOT文档中tree，tree->Branch(), tree->SetBranchAddress()方法的说明，学习数组，结构体变量如何用tree结构保存。
