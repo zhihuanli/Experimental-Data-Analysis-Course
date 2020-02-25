@@ -15,3 +15,8 @@
  
  - 1.3 [ADC,TDC信号处理](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt1/1.3%20adc%20overflow.ipynb)
  
+  - [作业 1.2](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt1/coursework1.2.ipynb)
+ 
+ - [ROOT tips][https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt1/ROOT%20tips.ipynb]
+ 
+ 
