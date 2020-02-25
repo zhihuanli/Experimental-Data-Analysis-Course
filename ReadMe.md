@@ -17,6 +17,6 @@
  
   - [作业 1.2](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt1/coursework1.2.ipynb)
  
- - [ROOT tips][https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt1/ROOT%20tips.ipynb]
+ - [ROOT tips](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt1/ROOT%20tips.ipynb)
  
  
