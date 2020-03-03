@@ -16,7 +16,7 @@ TO 0.75-14.75 MEV NEUTRONS]
  - [作业 1.1](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt1/coursework1.1.ipynb)
  
  - 1.3 [ADC,TDC信号处理](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt1/1.3%20adc%20overflow.ipynb)
- - 1.4 [TTree的MakeClass方法](https://nbviewer.jupyter.org/github/pkuNucExp/Data-Analysis-Course/blob/master/chapt1/1.4%20root-tree-makeclass.ipynb)
+ - 1.4 [TTree的MakeClass方法](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt1/1.4%20root-tree-makeclass.ipynb)
   - [作业 1.2](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt1/coursework1.2.ipynb)
  
  - [ROOT tips](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt1/ROOT%20tips.ipynb)
