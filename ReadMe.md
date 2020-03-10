@@ -9,9 +9,9 @@
  - 1.1 [用TTree 结构存储事件数据](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt1/1.1%20create%20tree.ipynb)
  - 1.2 [读取TTree数据，进行逐事件分析](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt1/1.2%20read%20tree.ipynb)
     - 参考文献
-      - [1.A large-area, position-sensitive neutron detector](./chapt1/nima-neutron.pdf)
+      - [1.A large-area, position-sensitive neutron detector](./chapt1/neutron_detector.pdf)
       - [2.calibraton of neutron detector](./chapt1/neutron_cali.pdf)
-      - [3.The energy response of plastic scintillator to neutrons](./chapt1/neutron_response.pdf)
+
 TO 0.75-14.75 MEV NEUTRONS]
  - [作业 1.1](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt1/coursework1.1.ipynb)
  
