@@ -22,5 +22,6 @@ TO 0.75-14.75 MEV NEUTRONS]
  - [ROOT tips](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt1/ROOT%20tips.ipynb)
  
   - 2.1 [PPAC 信号处理](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt2/2.1%20PPAC%20analysis.ipynb)
+  - 2.2 [PPAC Tracking](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt2/2.2%20PPAC%20tracking.ipynb) 
  
  
