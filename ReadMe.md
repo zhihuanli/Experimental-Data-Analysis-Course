@@ -25,7 +25,8 @@
   - 2.1 [PPAC 信号处理](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt2/2.1%20PPAC%20analysis.ipynb)
   - 2.2 [PPAC Tracking](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt2/2.2%20PPAC%20tracking.ipynb) 
      - [作业 2.1](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt2/coursework%202.1.ipynb) 
-  - 2.3 [编写可编译执行的分析程序(1)](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt2/2.4%20compiling-1.ipynb)
+  - 2.3 [编写可编译执行的分析程序(1)](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt2/2.3%20compiling-1.ipynb)
   - 2.4 [编写可编译执行的分析程序(2)](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt2/2.4%20compiling-2.ipynb)
+
   
  
