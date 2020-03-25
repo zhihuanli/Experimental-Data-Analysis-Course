@@ -7,7 +7,7 @@
  - 课前预习
    - ROOT文档中tree，tree->Branch(), tree->SetBranchAddress()方法的说明，学习数组，结构体变量如何用tree结构保存。
  - 1.1 [用TTree 结构存储事件数据](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/ROOT_tips.html)
- - 1.2 [读取TTree数据，进行逐事件分析](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt1/1.2%20read%20tree.ipynb)
+ - 1.2 [读取TTree数据，进行逐事件分析](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.2_read_tree.html)
     - 参考文献
       - [1.A large-area, position-sensitive neutron detector](./chapt1/neutron_detector.pdf)
       - [2.calibraton of neutron detector](./chapt1/neutron_cali.pdf)
