@@ -12,21 +12,21 @@
       - [1.A large-area, position-sensitive neutron detector](./chapt1/neutron_detector.pdf)
       - [2.calibraton of neutron detector](./chapt1/neutron_cali.pdf)
       
-    - [作业 1.1](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt1/coursework1.1.ipynb) 
- - 1.3 [ADC,TDC信号处理](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt1/1.3%20adc%20overflow.ipynb)
- - 1.4 [TTree的MakeClass方法](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt1/1.4%20root-tree-makeclass.ipynb)
-     - [作业 1.2](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt1/coursework1.2.ipynb)
+    - [作业 1.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/coursework1.1.html) 
+ - 1.3 [ADC,TDC信号处理](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.3_adc_analysis.html)
+ - 1.4 [TTree的MakeClass方法](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.4_root_tree_makeclass.html)
+     - [作业 1.2](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/coursework1.2.html)
  
- - [ROOT tips](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt1/ROOT%20tips.ipynb)
+ - [ROOT tips](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/ROOT_tips.html)
  
 
 ## chapter 2. 位置探测器(PPAC)数据处理
 
-  - 2.1 [PPAC 信号处理](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt2/2.1%20PPAC%20analysis.ipynb)
-  - 2.2 [PPAC Tracking](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt2/2.2%20PPAC%20tracking.ipynb) 
-     - [作业 2.1](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt2/coursework%202.1.ipynb) 
-  - 2.3 [编译执行分析程序(1)](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt2/2.3%20compiling-1.ipynb)
-  - 2.4 [编译执行分析程序(2)](https://nbviewer.jupyter.org/github/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt2/2.4%20compiling-2.ipynb)
+  - 2.1 [PPAC 信号处理](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/)
+  - 2.2 [PPAC Tracking](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/) 
+     - [作业 2.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/) 
+  - 2.3 [编译执行分析程序(1)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/)
+  - 2.4 [编译执行分析程序(2)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/)
 
   
  
