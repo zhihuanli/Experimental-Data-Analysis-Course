@@ -25,8 +25,8 @@
   - 2.1 [PPAC 信号处理](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/2.1_PPAC_analysis.html)
   - 2.2 [PPAC Tracking](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/2.2_PPAC_tracking.html) 
      - [作业 2.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/coursework2.1.html) 
-  - 2.3 [编译执行分析程序(1)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/)
-  - 2.4 [编译执行分析程序(2)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/)
+  - 2.3 [编译执行分析程序(1)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/2.3_compiling_1.html)
+  - 2.4 [编译执行分析程序(2)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/2.4_compiling_2.html)
 
   
  
