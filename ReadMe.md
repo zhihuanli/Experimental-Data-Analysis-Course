@@ -27,6 +27,6 @@
      - [作业 2.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/coursework2.1.html) 
   - 2.3 [编译执行分析程序(1)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/2.3_comiling_1.html)
   - 2.4 [编译执行分析程序(2)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/2.4_compiling_2.html)
-
+  - 2.5 [实验数据处理过程](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/2.5_data_analysis_process.html)
   
  
