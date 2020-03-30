@@ -13314,8 +13314,10 @@ div#notebook {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>推荐在每一步的过程中，除了将事件存成TTree格式之外，也将常用信息以histogram的格式存储在其他root文件中。这样可以快速查看感兴趣的参数，而不必每次在TTree中遍历所有的事件。</p>
 <ul>
-<li>在原始root的文件中保存所有ADC，TDC的原始能谱和时间谱。包括每一路的单谱，以及用hit格式存储的同类型探测器的信号分布(见3.2节)。</li>
-<li>在其他阶段，保存探测器之间的关联如$\Delta E$-E,  TOF-$\Delta E$等信号。</li>
+<li>常用信息包括：ADC，TDC的每路的原始能谱和时间谱，以及用hit格式存储的同类型探测器的信号分布(见3.2节)。</li>
+<li>探测器之间的关联如$\Delta E$-E,  TOF-$\Delta E$等信号。</li>
+</ul>
+<ul>
 <li>文件中的histograms可以很方便用TBrowser查看
 <img src="fig/root-dir.png" alt=""></li>
 </ul>
@@ -13601,7 +13603,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="o">!</span><span class="n">jupyter</span> <span class="n">nbconvert</span> <span class="mf">2.5</span><span class="n">_data_analysis_process</span><span class="p">.</span><span class="n">ipynb</span> <span class="o">--</span><span class="n">to</span> <span class="n">html</span>
@@ -13623,7 +13625,9 @@ div#notebook {
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[NbConvertApp] Converting notebook 2.5_data_analysis_process.ipynb to html
 
-[NbConvertApp] Writing 340802 bytes to 2.5_data_analysis_process.html
+
+[NbConvertApp] Writing 354215 bytes to 2.5_data_analysis_process.html
+
 
 </pre>
 </div>
