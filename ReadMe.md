@@ -35,3 +35,5 @@
  - 3.2 [利用可变长数组存储数据结构- Hit结构](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.2_TTree_Branch_with_Dynamic_Array.html) 
      - [作业 3.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/coursework3.1.html) 
  - 3.3 [DSSD Inter-strip correlation](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.3_DSSD_interstrip_correlation.html)
+ - 3.4 [3.4 DSSD front-back correlation (I)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.4_DSSD_front_back_correlation_1.html)
+ - 3.5 [3.5 DSSD front-back correlation (II)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.5_DSSD_front_back_correlation_2.html)
