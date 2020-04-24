@@ -5,8 +5,6 @@
 ### Juypter
  - [juypter short instruction](jupyter-short-instruction.pdf)
 ## chapter 1. ROOT TTree 初阶
- - 课前预习
-   - ROOT文档中tree，tree->Branch(), tree->SetBranchAddress()方法的说明，学习数组，结构体变量如何用tree结构保存。
  - 1.1 [用TTree 结构存储事件数据](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.1_create_tree.html)
  - 1.2 [读取TTree数据，进行逐事件分析](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.2_read_tree.html)
     - 参考文献
