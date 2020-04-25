@@ -41,3 +41,5 @@
  - 3.6 [DSSD 数据分析](https://github.com/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt3/3.6_DSSD_data_analysis.html)
  
  ## chapter 5. γ-γ 符合分析
+ 
+ ## chapt6. 基于timestamp的事件重构 + 衰变数据处理
