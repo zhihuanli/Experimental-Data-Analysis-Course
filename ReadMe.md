@@ -42,4 +42,4 @@
  
  ## chapter 5. γ-γ 符合分析
  
- ## chapt6. 基于timestamp的事件重构 + 衰变数据处理
+ ## chapter 6. 基于timestamp的事件重构 + 衰变数据处理
