@@ -13185,8 +13185,14 @@ $$<p>$$ E=E_i=E_j =&gt; A_i=k_{ij}A_j+b_{ij} $$</p>
 </li>
 </ul>
 <ul>
-<li>Trigger: 要求三个DSSD的每个x面，同时有两根条以上有信号：<ul>
-<li>D1XM2 $\bigotimes$ D2XM2 $\bigotimes$ D3XM2 </li>
+<li><p>Trigger: 要求D1和D2的x面，同时有两根条以上有信号( M2=Multiplicity$\ge$ 2)：</p>
+<ul>
+<li>D1xM2 &amp;&amp; D2xM2</li>
+</ul>
+</li>
+<li><p>事件预处理：</p>
+<ul>
+<li>事件满足时间cut：去除x方向信号的偶然符合事件(y方向没有记录时间）</li>
 </ul>
 </li>
 </ul>
@@ -13558,8 +13564,11 @@ $$<p>$$ E=E_i=E_j =&gt; A_i=k_{ij}A_j+b_{ij} $$</p>
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="&#25913;&#36827;&#30340;&#20851;&#32852;&#26465;&#20214;">&#25913;&#36827;&#30340;&#20851;&#32852;&#26465;&#20214;<a class="anchor-link" href="#&#25913;&#36827;&#30340;&#20851;&#32852;&#26465;&#20214;">&#182;</a></h3><ul>
-<li>由于pedal信号的存在，事件的多重性无法再hit结构中准确反映出来。</li>
-<li>改进的条件：要求所选条两侧信号等于pedal，比上一条件更有效选出一重事件：统计增加</li>
+<li>获取的条件为某一面的hit=2，因此事件中hit=1的事件很少。<ul>
+<li>在前期的数据处理过程中，去掉了一些不满足时间条件的信号，导致有些x面事件的多重性由2降为1。</li>
+</ul>
+</li>
+<li>改进的条件：不对多重性作限制，而只要求相邻条没有共享信号。</li>
 </ul>
 
 </div>
@@ -14123,7 +14132,7 @@ p2                        = -6.54499e-07   +/-   4.43217e-08
 <pre>[NbConvertApp] Converting notebook 3.4_DSSD_front_back_correlation_1.ipynb to html
 
 
-[NbConvertApp] Writing 735842 bytes to 3.4_DSSD_front_back_correlation_1.html
+[NbConvertApp] Writing 735846 bytes to 3.4_DSSD_front_back_correlation_1.html
 
 
 </pre>
