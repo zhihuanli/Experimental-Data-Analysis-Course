@@ -44,7 +44,7 @@
       - [3.Automatic intrinsic calibration of double-sided silicon strip detectors](./chapt3/DSSD_cali.pdf)
  - 3.5 [DSSD front-back correlation (II)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.5_DSSD_front_back_correlation_2.html)
  - 3.6 [DSSD 数据分析](https://github.com/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt3/3.6_DSSD_data_analysis.html) 如果不能正常显示，下载到本地后用浏览器打开
-   - 3.6[pdf](https://github.com/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt3/3.6_DSSD_data_analysis.pdf) 
+     - [pdf](https://github.com/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt3/3.6_DSSD_data_analysis.pdf) 
  - [作业 3.2](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/coursework3.2.html) 
 
 
@@ -62,7 +62,7 @@
 
  - 5.1 [基于timestamp的事件重构](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/5.1_decay_analysis_I.html)
  - 5.2 [重离子和衰变事件的关联](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/5.2_decay_analysis_II.html)
-  - 5.2[pdf](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/5.2_decay_analysis_II.pdf)
+    - [pdf](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/5.2_decay_analysis_II.pdf)
  - [Least Square 和 Likelihood fitting](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/fitting_LS_LH.html)
  - [作业 5.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/coursework5.1.html)
  - 参考文献
