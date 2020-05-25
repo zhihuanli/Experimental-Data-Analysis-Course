@@ -50,13 +50,15 @@
 
  - 4.1 [γ-γ coincidence](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt4/4.1_gamma-gamma_coincidence_I.html)
  - 4.2 [二维 𝛾−𝛾 对称矩阵方法](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt4/4.2_gamma-gamma_coincidence_II.html) 
-    - [作业 4.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt4/coursework4.1.html)
+   - [作业 4.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt4/coursework4.1.html)
+   - 参考文献
+     - [4.Background subtraction from in-beam HPGe coincidence data sets](./chapt4/Radford.pdf)
 
 ## chapter 5. 衰变实验的数据分析
 
  - 5.1 [基于timestamp的事件重构](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/5.1_decay_analysis_I.html)
  - 5.2 [重离子和衰变事件的关联](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/5.2_decay_analysis_II.html)
  - [Least Square 和 Likelihood fitting](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/fitting_LS_LH.html)
- - 参考文献
-      - [4.A gas-filled recoil separator, SHANS](./chapt5/SHANS.pdf)
- - [作业 5.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/coursework5.1.html)
+   - [作业 5.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/coursework5.1.html)
+   - 参考文献
+     - [5.A gas-filled recoil separator, SHANS](./chapt5/SHANS.pdf)
