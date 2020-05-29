@@ -62,8 +62,7 @@
 
  - 5.1 [基于timestamp的事件重构](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/5.1_decay_analysis_I.html)
  - 5.2 [重离子和衰变事件的关联](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/5.2_decay_analysis_II.html)
-    - [pdf](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/5.2_decay_analysis_II.pdf)
- - [Least Square 和 Likelihood fitting](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/fitting_LS_LH.html)
+    - [Least Square 和 Likelihood fitting](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/fitting_LS_LH.html)
  - [作业 5.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/coursework5.1.html)
  - 参考文献
      - [5.A gas-filled recoil separator, SHANS](./chapt5/SHANS.pdf)
