@@ -13123,10 +13123,7 @@ div#notebook {
 </ul>
 <h3 id="&#25968;&#25454;&#65306;">&#25968;&#25454;&#65306;<a class="anchor-link" href="#&#25968;&#25454;&#65306;">&#182;</a></h3><ul>
 <li>d1-d3探测器的幅度已归一化。</li>
-<li>hit结构中能量按照由大到小排序。<ul>
-<li>探测器位置按照靶的范围对齐。</li>
-</ul>
-</li>
+<li>hit结构中能量按照由大到小排序。</li>
 </ul>
 
 </div>
@@ -13643,7 +13640,7 @@ div#notebook {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">&quot;sx1e:sx1e-sy1e&gt;&gt;(200,-200,200,1000,0,10000)&quot;</span><span class="p">,</span><span class="s">&quot;x1hit&gt;y1hit&quot;</span><span class="p">,</span><span class="s">&quot;colz&quot;</span><span class="p">);</span>
- <span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span> <span class="c1">//-10~+60 x1hit=y1hit=2;</span>
+ <span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span> <span class="c1">//0~+60 x1hit&gt;y1hit;</span>
 </pre></div>
 
     </div>
@@ -13679,7 +13676,7 @@ div#notebook {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">&quot;sx1e:sx1e-sy1e&gt;&gt;(200,-200,200,1000,0,10000)&quot;</span><span class="p">,</span><span class="s">&quot;x1hit&lt;y1hit&quot;</span><span class="p">,</span><span class="s">&quot;colz&quot;</span><span class="p">);</span>
- <span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span> <span class="c1">//-10~+60 x1hit=y1hit=2;</span>
+ <span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span> <span class="c1">//-60~+10;</span>
 </pre></div>
 
     </div>
@@ -13787,7 +13784,7 @@ div#notebook {
 <h3 id="&#24635;&#32467;">&#24635;&#32467;<a class="anchor-link" href="#&#24635;&#32467;">&#182;</a></h3><ul>
 <li>当两侧多重性不一致时：sx1e-sy1e 中心值不为零，向正(x1hit&gt;y1hit),负(x1hit&lt;y1hit)的一侧偏移 <ul>
 <li>意味着在能量沉积大时，有些条的感应信号因为阈值(硬件pedal的阈值)没有被记录</li>
-<li>但这个问题实际并不严重：在能量接近8000的时候最大偏移在50左右，对能量的相对影响为$\Delta E/E=50/8000 \approx 0.06$, 小于1%。</li>
+<li>但这个问题实际并不严重：在能量接近8000的时候最大偏移在50左右，对能量的相对影响为$\Delta E/E=50/8000 \approx 0.006$, 小于1%。</li>
 </ul>
 </li>
 <li>对于多粒子入射引起的x,y多重性事件：abs(sx1e-sy1e)&lt;10<ul>
@@ -13832,17 +13829,17 @@ div#notebook {
                 <span class="n">y1ea</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">y1e</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="n">y1sa</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">y1s</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
             <span class="p">}</span>
         <span class="n">flag1</span><span class="o">=</span><span class="mi">222</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">sx1e</span><span class="o">-</span><span class="n">sy1e</span><span class="o">&gt;-</span><span class="mi">10</span> <span class="o">&amp;&amp;</span> <span class="n">sx1e</span><span class="o">-</span><span class="n">sy1e</span><span class="o">&lt;</span><span class="mi">60</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">abs</span><span class="p">(</span><span class="n">x1s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">x1s</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">==</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">abs</span><span class="p">(</span><span class="n">y1s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">y1s</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-            <span class="n">x1h</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">y1h</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
-            <span class="n">x1ea</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">x1e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">x1e</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
-            <span class="n">x1sa</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">x1s</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
-            <span class="n">y1ea</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">y1e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">y1e</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
-            <span class="n">y1sa</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">y1s</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
-            <span class="n">flag1</span><span class="o">=</span><span class="mi">221</span><span class="p">;</span>
-          <span class="p">}</span>
-        <span class="p">}</span>      
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">sx1e</span><span class="o">-</span><span class="n">sy1e</span><span class="o">&gt;-</span><span class="mi">10</span> <span class="o">&amp;&amp;</span> <span class="n">sx1e</span><span class="o">-</span><span class="n">sy1e</span><span class="o">&lt;</span><span class="mi">60</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">abs</span><span class="p">(</span><span class="n">x1s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">x1s</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">==</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">abs</span><span class="p">(</span><span class="n">y1s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">y1s</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">x1h</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">y1h</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+                <span class="n">x1ea</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">x1e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">x1e</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+                <span class="n">x1sa</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">x1s</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+                <span class="n">y1ea</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">y1e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">y1e</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+                <span class="n">y1sa</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">y1s</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+                <span class="n">flag1</span><span class="o">=</span><span class="mi">221</span><span class="p">;</span>
+              <span class="p">}</span>
+            <span class="p">}</span>      
     <span class="p">}</span>
 <span class="c1">//////////////////////////////////////</span>
 <span class="c1">//three-two DSSD1</span>
@@ -14335,7 +14332,7 @@ div#notebook {
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[NbConvertApp] Converting notebook 3.6_DSSD_data_analysis.ipynb to html
 
-[NbConvertApp] Writing 929381 bytes to 3.6_DSSD_data_analysis.html
+[NbConvertApp] Writing 953124 bytes to 3.6_DSSD_data_analysis.html
 
 </pre>
 </div>
