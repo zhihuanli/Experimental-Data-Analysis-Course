@@ -13144,13 +13144,13 @@ div#notebook {
 </li>
 <li><p>假设${y_i}$服从Poisson 分布，即平均值为$f(x_i|\alpha)$时观测值取$y_i$的概率为Poisson分布：
 $$
-Possion(y_i,f(x_i|\alpha))=\frac{e^{f(x_i|\alpha)} f(x_i|\alpha)^{y_i}}{y_i!}
+Poisson(y_i,f(x_i|\alpha))=\frac{e^{f(x_i|\alpha)} f(x_i|\alpha)^{y_i}}{y_i!}
 $$</p>
 </li>
 <li>Likelihood：</li>
 </ul>
 $$
-L(\alpha)=\prod_i{Possion(y_i,f(x_i|\alpha))}
+L(\alpha)=\prod_i{Poisson(y_i,f(x_i|\alpha))}
 $$<ul>
 <li>Negative log-likelihood
 $$
@@ -13163,7 +13163,7 @@ $$
 \chi^2=\sum_i{(\frac{y_i-f(x_i|\alpha)}{\sqrt{ y_i}})^2}
 $$</p>
 </li>
-<li><p>当数据有空bin，即在$y_i=0$处，$\sqrt(y_i) \to \infty$。 ROOT的Fit算法直接忽略该点！！</p>
+<li><p>当数据有空bin，即在$y_i=0$处，$\sqrt{y_i} \to \infty$。 ROOT的Fit算法直接忽略该点！！</p>
 </li>
 </ul>
 <h3 id="ROOT--Fit&#20989;&#25968;&#30340;&#21442;&#25968;">ROOT- Fit&#20989;&#25968;&#30340;&#21442;&#25968;<a class="anchor-link" href="#ROOT--Fit&#20989;&#25968;&#30340;&#21442;&#25968;">&#182;</a></h3><ul>
@@ -13368,7 +13368,7 @@ p0                        =            2   +/-   0.816497
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[NbConvertApp] Converting notebook fitting_LS_LH.ipynb to html
 
-[NbConvertApp] Writing 302862 bytes to fitting_LS_LH.html
+[NbConvertApp] Writing 303803 bytes to fitting_LS_LH.html
 
 </pre>
 </div>
