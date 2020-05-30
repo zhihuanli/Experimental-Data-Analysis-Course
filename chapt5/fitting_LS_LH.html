@@ -13137,7 +13137,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>观测值：${y_i}$， i=0,1,... N</p>
+<p>观测值：$({x_i,y_i})$, $i$=0,1,... N</p>
 <p>拟合值: 在参数$\alpha$下，$f(x_i|\alpha)$,</p>
 <h3 id="&#26368;&#22823;&#20284;&#28982;&#27861;&#25311;&#21512;">&#26368;&#22823;&#20284;&#28982;&#27861;&#25311;&#21512;<a class="anchor-link" href="#&#26368;&#22823;&#20284;&#28982;&#27861;&#25311;&#21512;">&#182;</a></h3><p><img src="fig/NLL.png" alt=""></p>
 <ul>
@@ -13164,7 +13164,7 @@ $$
 \chi^2=\sum_i{(\frac{y_i-f(x_i|\alpha)}{\sqrt{ y_i}})^2}
 $$</p>
 </li>
-<li><p>当数据有空bin，即在$y_i=0$处，$\sqrt{y_i} \to \infty$。 ROOT的Fit算法直接忽略该点！！</p>
+<li><p>当数据有空bin，即在$y_i=0$处，$1/ \sqrt{y_i} \to \infty$。 ROOT的Fit算法直接忽略该点！！</p>
 </li>
 </ul>
 <h3 id="ROOT--Fit&#20989;&#25968;&#30340;&#21442;&#25968;">ROOT- Fit&#20989;&#25968;&#30340;&#21442;&#25968;<a class="anchor-link" href="#ROOT--Fit&#20989;&#25968;&#30340;&#21442;&#25968;">&#182;</a></h3><ul>
@@ -13347,7 +13347,7 @@ p0                        =            2   +/-   0.816497
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="o">!</span><span class="n">jupyter</span> <span class="n">nbconvert</span> <span class="n">fitting_LS_LH</span><span class="p">.</span><span class="n">ipynb</span> <span class="o">--</span><span class="n">to</span> <span class="n">html</span>
@@ -13369,7 +13369,9 @@ p0                        =            2   +/-   0.816497
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[NbConvertApp] Converting notebook fitting_LS_LH.ipynb to html
 
-[NbConvertApp] Writing 304127 bytes to fitting_LS_LH.html
+
+[NbConvertApp] Writing 304125 bytes to fitting_LS_LH.html
+
 
 </pre>
 </div>
