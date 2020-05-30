@@ -13330,10 +13330,9 @@ div#notebook {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
-<li>显示的非相邻两重事件，的x-y都有很好的关联,可以明确指定位置组合。
-####  3. 相邻两重事件</li>
+<li>显示的非相邻两重事件，的x-y都有很好的关联,可以明确指定位置组合。</li>
 </ul>
-
+<h4 id="3.-&#30456;&#37051;&#20004;&#37325;&#20107;&#20214;">3. &#30456;&#37051;&#20004;&#37325;&#20107;&#20214;<a class="anchor-link" href="#3.-&#30456;&#37051;&#20004;&#37325;&#20107;&#20214;">&#182;</a></h4>
 </div>
 </div>
 </div>
@@ -13396,10 +13395,9 @@ div#notebook {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
-<li>很多相邻两重事件都是由两个入射粒子引起的。
-#### 4. 三重事件</li>
+<li>很多相邻两重事件都是由两个入射粒子引起的。</li>
 </ul>
-
+<h4 id="4.-&#19977;&#37325;&#20107;&#20214;">4. &#19977;&#37325;&#20107;&#20214;<a class="anchor-link" href="#4.-&#19977;&#37325;&#20107;&#20214;">&#182;</a></h4>
 </div>
 </div>
 </div>
@@ -13502,13 +13500,16 @@ div#notebook {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h4 id="&#24635;&#32467;">&#24635;&#32467;<a class="anchor-link" href="#&#24635;&#32467;">&#182;</a></h4><ol>
-<li>正背面关联关系可以对事件类型(是否为多重，相邻条crosstalk)做很好的区分。</li>
-<li>当两侧总能量不一致时，可以认为事件为而非正常事件。<ul>
+<li><p>正背面关联关系可以对事件类型(是否为多重，相邻条crosstalk)做很好的区分。</p>
+</li>
+<li><p>当两侧总能量不一致时，可以认为事件为而非正常事件。</p>
+<ul>
 <li>部分能量没有被记录，或有偶然符合</li>
 <li>非正常事件，做标记后待后续处理确认。</li>
 </ul>
 </li>
-<li>新参数：<ul>
+<li><p>新参数：</p>
+<ul>
 <li>每个探测器x方向总能量：sx1e,sx2e,sx3e;</li>
 <li>y方向总能量：sy1e,sy2e,sy3e;</li>
 </ul>
@@ -13782,12 +13783,14 @@ div#notebook {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="&#24635;&#32467;">&#24635;&#32467;<a class="anchor-link" href="#&#24635;&#32467;">&#182;</a></h3><ul>
-<li>当两侧多重性不一致时：sx1e-sy1e 中心值不为零，向正(x1hit&gt;y1hit),负(x1hit&lt;y1hit)的一侧偏移 <ul>
+<li><p>当两侧多重性不一致时：sx1e-sy1e 中心值不为零，向正(x1hit&gt;y1hit),负(x1hit&lt;y1hit)的一侧偏移</p>
+<ul>
 <li>意味着在能量沉积大时，有些条的感应信号因为阈值(硬件pedal的阈值)没有被记录</li>
 <li>但这个问题实际并不严重：在能量接近8000的时候最大偏移在50左右，对能量的相对影响为$\Delta E/E=50/8000 \approx 0.006$, 小于1%。</li>
 </ul>
 </li>
-<li>对于多粒子入射引起的x,y多重性事件：abs(sx1e-sy1e)&lt;10<ul>
+<li><p>对于多粒子入射引起的x,y多重性事件：abs(sx1e-sy1e)&lt;10</p>
+<ul>
 <li>当相邻条满足上述条件，也认为是两个粒子入射导致的。</li>
 </ul>
 </li>
@@ -14222,8 +14225,12 @@ div#notebook {
 <ul>
 <li>事件 60，958<ul>
 <li>60： x1s-x2s错位</li>
-<li>958： x1s-x2s错位
-正确匹配顺序应该为<div class="highlight"><pre><span></span><span class="c1">//***********************************************************************************************</span>
+<li>958： x1s-x2s错位</li>
+</ul>
+</li>
+</ul>
+<p>正确匹配顺序应该为</p>
+<div class="highlight"><pre><span></span><span class="c1">//***********************************************************************************************</span>
 <span class="c1">//*    Row   * Instance *       x1s *       x2s *       x3s *       y1s *       y2s *       y3s *</span>
 <span class="c1">//***********************************************************************************************</span>
 <span class="c1">//*       60 *        0 *        14 *        14 *        14 *        13 *        13 *        13 *</span>
@@ -14231,15 +14238,15 @@ div#notebook {
 <span class="c1">//*      958 *        0 *        24 *        24 *        25 *        13 *        22 *        22 *</span>
 <span class="c1">//*      958 *        1 *        16 *        16 *        16 *        21 *        12 *        12 *</span>
 </pre></div>
-</li>
-</ul>
-</li>
+<ul>
 <li>探测器间事件匹配错位，导致de-e图上的正确关联关系外的散点。</li>
 </ul>
 <h3 id="&#38656;&#35201;&#36827;&#34892;trak-matching&#65306;">&#38656;&#35201;&#36827;&#34892;trak matching&#65306;<a class="anchor-link" href="#&#38656;&#35201;&#36827;&#34892;trak-matching&#65306;">&#182;</a></h3><p>按照如下条件重新进行多探测器之间事件匹配</p>
 <ul>
-<li>探测器之间的位置不能相差太多，否则为粒子探测器上的散射或反应。</li>
-<li>多个探测器位置构建的位置要指向靶的有效区域。</li>
+<li><p>探测器之间的位置不能相差太多，否则为粒子探测器上的散射或反应。</p>
+</li>
+<li><p>多个探测器位置构建的位置要指向靶的有效区域。</p>
+</li>
 </ul>
 
 </div>
@@ -14310,7 +14317,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="o">!</span><span class="n">jupyter</span> <span class="n">nbconvert</span> <span class="mf">3.6</span><span class="n">_DSSD_data_analysis</span><span class="p">.</span><span class="n">ipynb</span> <span class="o">--</span><span class="n">to</span> <span class="n">html</span>
@@ -14332,7 +14339,7 @@ div#notebook {
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[NbConvertApp] Converting notebook 3.6_DSSD_data_analysis.ipynb to html
 
-[NbConvertApp] Writing 953124 bytes to 3.6_DSSD_data_analysis.html
+[NbConvertApp] Writing 953119 bytes to 3.6_DSSD_data_analysis.html
 
 </pre>
 </div>
