@@ -13117,11 +13117,11 @@ div#notebook {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="1.1-&#29992;TTree-&#32467;&#26500;&#23384;&#20648;&#20107;&#20214;&#25968;&#25454;">1.1 &#29992;TTree &#32467;&#26500;&#23384;&#20648;&#20107;&#20214;&#25968;&#25454;<a class="anchor-link" href="#1.1-&#29992;TTree-&#32467;&#26500;&#23384;&#20648;&#20107;&#20214;&#25968;&#25454;">&#182;</a></h1><h3 id="&#30446;&#30340;&#65306;&#23398;&#20064;&#22914;&#20309;&#23558;&#20107;&#20214;&#20197;TTree&#30340;&#26684;&#24335;&#23384;&#20648;&#21040;ROOT&#25991;&#20214;">&#30446;&#30340;&#65306;&#23398;&#20064;&#22914;&#20309;&#23558;&#20107;&#20214;&#20197;TTree&#30340;&#26684;&#24335;&#23384;&#20648;&#21040;ROOT&#25991;&#20214;<a class="anchor-link" href="#&#30446;&#30340;&#65306;&#23398;&#20064;&#22914;&#20309;&#23558;&#20107;&#20214;&#20197;TTree&#30340;&#26684;&#24335;&#23384;&#20648;&#21040;ROOT&#25991;&#20214;">&#182;</a></h3><h3 id="&#20869;&#23481;&#65306;">&#20869;&#23481;&#65306;<a class="anchor-link" href="#&#20869;&#23481;&#65306;">&#182;</a></h3><ol>
-<li>靶上生成中子，$\gamma$,入射到长条型塑料闪烁体探测器的不同位置和深度。</li>
-<li>入射粒子形成的光信号向探测器两端传输，形成时间信号tu和td。</li>
-<li>将入射粒子的原始信息，以及探测器信息逐事件存入TTree中.<ul>
+<li>束流入射到靶上产生核反应，靶上生成的中子和$\gamma$入射到长条型塑料闪烁体探测器的不同位置，并在不同深度与探测介质产生相互作用。</li>
+<li>入射粒子形成的光信号向探测器两端传输，形成时间信号$t_u$和$t_d$。</li>
+<li>将入射粒子的原始信息，以及探测器信息逐事件存入root文件的TTree结构中.<ul>
 <li>入射粒子原始信息：粒子种类、能量，粒子在探测器上的入射位置、入射深度等</li>
-<li>探测器信息: 两端时间信息tu、td，能量沉积信息qu,qd</li>
+<li>探测器信息: 两端时间信息$t_u$、$t_d$，能量沉积信息$q_u$,$q_d$</li>
 </ul>
 </li>
 <li>打开root文件，进行基本的分析。</li>
@@ -13135,33 +13135,38 @@ div#notebook {
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="&#20013;&#23376;&#39134;&#34892;&#26102;&#38388;&#35889;&#27979;&#37327;&#21407;&#29702;">&#20013;&#23376;&#39134;&#34892;&#26102;&#38388;&#35889;&#27979;&#37327;&#21407;&#29702;<a class="anchor-link" href="#&#20013;&#23376;&#39134;&#34892;&#26102;&#38388;&#35889;&#27979;&#37327;&#21407;&#29702;">&#182;</a></h2><h3 id="&#25506;&#27979;&#22120;&#21442;&#25968;">&#25506;&#27979;&#22120;&#21442;&#25968;<a class="anchor-link" href="#&#25506;&#27979;&#22120;&#21442;&#25968;">&#182;</a></h3><p>探测器的几何设置见下图：</p>
 <ul>
-<li>探测器长度：2L, 忽略探测器宽度。</li>
+<li>探测器长度：2$L$, 忽略探测器宽度。</li>
 <li>探测器厚度：$\Delta D$</li>
 <li>光在闪烁体的传播速度: $v_{sc}$</li>
 <li>光在闪烁体的衰减常数：$\lambda$</li>
-<li>粒子从起始位置到探测器中心的最小距离：D</li>
-<li>粒子入射位置：x</li>
-<li>飞行距离：$d=\sqrt{D^2+x^2}$</li>
+<li>粒子从起始位置到探测器中心的距离：$D$</li>
+<li>粒子入射位置：$x$</li>
 </ul>
 <p><img src="fig\tof.png" width="50%" height="50%"></p>
-<p>飞行时间：以靶为起点</p>
-<p>中子飞行时间：$TOF_n(ns)=\frac{72 \cdot d(m)}{\sqrt{E_n(MeV)}}$</p>
-<p>$\gamma$ 飞行时间：$TOF_{\gamma}(ns)=3.333\cdot d(m)$</p>
-<p>探测器两端时间信号(不考虑其他offset)：</p>
-<ul>
-<li>$t_u=TOF+(L-x)/v_{sc}$</li>
-<li>$t_d=TOF+(L+x)/v_{sc}$</li>
-<li>$x=(t_d-t_u)*v_{sc}/2$</li>
-<li>$TOF=(t_u+t_d)/2 -L/v_{sc}$</li>
-</ul>
-<p>探测器两端能量(x 处能量沉积$Q_0$):</p>
-<ul>
-<li>$Q_u=Q_0 exp[-(L-x)/\lambda]$</li>
-<li>$Q_d=Q_0 exp[-(L+x)/\lambda]$</li>
-<li>$x=\frac{\lambda}{2}ln\frac{q_u}{q_d}$</li>
-<li>$Q_0=e^{2L/\lambda}*Q_u*Q_d$</li>
-</ul>
-
+<h3 id="&#20844;&#24335;">&#20844;&#24335;<a class="anchor-link" href="#&#20844;&#24335;">&#182;</a></h3><p>飞行距离：</p>
+$$
+d=\sqrt{D^2+x^2}
+$$<p>飞行时间, 以靶为起点:</p>
+$$
+\begin{equation}
+  中子：TOF_n(ns)=\frac{72 \cdot d(m)}{\sqrt{E_n(MeV)}}\\
+  \gamma：TOF_{\gamma}(ns)=3.333\cdot d(m)
+\end{equation}
+$$<p>探测器两端时间信号(不考虑由电缆长度或PMT度越时间引起的offset)：</p>
+$$
+\begin{equation}
+t_u=TOF+(L-x)/v_{sc}\\
+t_d=TOF+(L+x)/v_{sc}\\
+x=(t_d-t_u)*v_{sc}/2\\
+TOF=(t_u+t_d)/2 -L/v_{sc}\\
+\end{equation}
+$$<p>探测器两端能量，设x 处能量沉积$Q_0$:</p>
+$$
+Q_u=Q_0 exp[-(L-x)/\lambda]\\
+Q_d=Q_0 exp[-(L+x)/\lambda]\\
+x=\frac{\lambda}{2}ln\frac{q_u}{q_d}\\
+Q_0=e^{2L/\lambda}*Q_u*Q_d\\
+$$
 </div>
 </div>
 </div>
@@ -13171,9 +13176,11 @@ div#notebook {
 <h3 id="&#20195;&#30721;">&#20195;&#30721;<a class="anchor-link" href="#&#20195;&#30721;">&#182;</a></h3><div class="highlight"><pre><span></span><span class="c1">// 运行方法：</span>
 <span class="c1">// 将下列代码保存到tree.cc</span>
 <span class="c1">// 在ROOT环境中运行：</span>
-<span class="c1">// .x tree.cc</span>
-<span class="c1">// 生成 tree.root 文件</span>
-<span class="kt">void</span> <span class="nf">tree</span><span class="p">(){</span>
+<span class="c1">// root -l //进入ROOT环境</span>
+<span class="c1">// .x tree.cc //运行脚本</span>
+<span class="c1">// .q //退出root环境</span>
+<span class="c1">// root -l tree.root //打开ROOT文件</span>
+<span class="kt">void</span> <span class="nf">tree</span><span class="p">(){</span> 
 <span class="c1">//常量声明</span>
   <span class="k">const</span> <span class="n">Double_t</span> <span class="n">D</span><span class="o">=</span><span class="mf">500.</span><span class="p">;</span><span class="c1">//cm, distance between target and the scin.(Center)</span>
   <span class="k">const</span> <span class="n">Double_t</span> <span class="n">L</span><span class="o">=</span><span class="mf">100.</span><span class="p">;</span><span class="c1">//cm, half length of the scin.</span>
@@ -13186,10 +13193,8 @@ div#notebook {
   <span class="k">const</span> <span class="n">Double_t</span> <span class="n">EnRes</span><span class="o">=</span><span class="mf">50.</span><span class="p">;</span><span class="c1">//MeV, energy spread of neutron(FWHM)</span>
   <span class="k">const</span> <span class="n">Double_t</span> <span class="n">Eg0</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="c1">//MeV, gamma energy  </span>
   <span class="k">const</span> <span class="n">Double_t</span> <span class="n">Rg</span><span class="o">=</span><span class="mf">0.3</span><span class="p">;</span><span class="c1">//ratio of gamma,ratio of neutron 1-Rg </span>
- <span class="c1">//1. 定义新ROOT文件，声明新的Tree </span>
-  <span class="n">TFile</span> <span class="o">*</span><span class="n">opf</span><span class="o">=</span><span class="k">new</span> <span class="n">TFile</span><span class="p">(</span><span class="s">&quot;tree.root&quot;</span><span class="p">,</span><span class="s">&quot;recreate&quot;</span><span class="p">);</span><span class="c1">//新文件tree.root，指针 *opf</span>
-  <span class="n">TTree</span> <span class="o">*</span><span class="n">opt</span><span class="o">=</span><span class="k">new</span> <span class="n">TTree</span><span class="p">(</span><span class="s">&quot;tree&quot;</span><span class="p">,</span><span class="s">&quot;tree structure&quot;</span><span class="p">);</span><span class="c1">//新tree，指针 *opt</span>
- <span class="c1">//2. 声明在tree结构中定义需要的变量分支</span>
+
+  <span class="c1">//1. 声明在tree结构中定义需要的变量分支</span>
   <span class="n">Double_t</span> <span class="n">x</span><span class="p">;</span><span class="c1">//入射位置</span>
   <span class="n">Double_t</span> <span class="n">e</span><span class="p">;</span><span class="c1">//能量</span>
   <span class="kt">int</span> <span class="n">pid</span><span class="p">;</span>    <span class="c1">//粒子种类，n:pid=1,g:pid=0</span>
@@ -13198,10 +13203,14 @@ div#notebook {
   <span class="n">Double_t</span> <span class="n">qu</span><span class="p">,</span> <span class="n">qd</span><span class="p">;</span>
 
   <span class="n">Double_t</span> <span class="n">tu_off</span><span class="o">=</span><span class="mf">5.5</span><span class="p">;</span><span class="c1">//time offset，//PMT的度越时间+电缆上的传输时间</span>
-  <span class="n">Double_t</span> <span class="n">td_off</span><span class="o">=</span><span class="mf">20.4</span><span class="p">;</span><span class="c1">//time offset</span>
+  <span class="n">Double_t</span> <span class="n">td_off</span><span class="o">=</span><span class="mf">20.4</span><span class="p">;</span><span class="c1">//time offset </span>
+
+ <span class="c1">//2. 定义新ROOT文件，声明新的Tree </span>
+  <span class="n">TFile</span> <span class="o">*</span><span class="n">opf</span><span class="o">=</span><span class="k">new</span> <span class="n">TFile</span><span class="p">(</span><span class="s">&quot;tree.root&quot;</span><span class="p">,</span><span class="s">&quot;recreate&quot;</span><span class="p">);</span><span class="c1">//新文件tree.root，指针 *opf</span>
+  <span class="n">TTree</span> <span class="o">*</span><span class="n">opt</span><span class="o">=</span><span class="k">new</span> <span class="n">TTree</span><span class="p">(</span><span class="s">&quot;tree&quot;</span><span class="p">,</span><span class="s">&quot;tree structure&quot;</span><span class="p">);</span><span class="c1">//新tree，指针 *opt</span>
 
   <span class="c1">//3. 将变量地址添加到tree结构中</span>
-    <span class="c1">//第一个参数为变量名称，第二个为上面定义的变量地址，第三个为变量的类型说明，D表示Double_t。</span>
+    <span class="c1">//第一个参数为变量名称，第二个为上面定义的变量地址，第三个为变量的类型说明，D表示Double_t，I表示 Int_t。</span>
   <span class="n">opt</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">&quot;x&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">,</span> <span class="s">&quot;x/D&quot;</span><span class="p">);</span>
   <span class="n">opt</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">&quot;e&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">,</span> <span class="s">&quot;e/D&quot;</span><span class="p">);</span>
   <span class="n">opt</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">&quot;tof&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tof</span><span class="p">,</span> <span class="s">&quot;tof/D&quot;</span><span class="p">);</span>
@@ -13218,9 +13227,9 @@ div#notebook {
 
   <span class="c1">//4. 循环，计算变量的值，逐事件往tree结构添加变量值。</span>
   <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">100000</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
-    <span class="n">x</span><span class="o">=</span><span class="n">gr</span><span class="o">-&gt;</span><span class="n">Uniform</span><span class="p">(</span><span class="o">-</span><span class="n">L</span><span class="p">,</span> <span class="n">L</span><span class="p">);</span><span class="c1">//均匀入射在中子探测器表面.</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">gr</span><span class="o">-&gt;</span><span class="n">Uniform</span><span class="p">(</span><span class="o">-</span><span class="n">L</span><span class="p">,</span> <span class="n">L</span><span class="p">);</span><span class="c1">//粒子入射位置，在-L,L范围内均匀抽样.</span>
     <span class="n">Double_t</span> <span class="n">Dr</span><span class="o">=</span><span class="n">D</span><span class="o">+</span><span class="n">gr</span><span class="o">-&gt;</span><span class="n">Uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">)</span><span class="o">*</span><span class="n">dD</span><span class="p">;</span><span class="c1">//粒子在探测器厚度范围内均匀产生光信号</span>
-    <span class="n">Double_t</span> <span class="n">d</span><span class="o">=</span><span class="n">TMath</span><span class="o">::</span><span class="n">Sqrt</span><span class="p">(</span><span class="n">Dr</span><span class="o">*</span><span class="n">Dr</span><span class="o">+</span><span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="p">);</span><span class="c1">//m, flight path</span>
+    <span class="n">Double_t</span> <span class="n">d</span><span class="o">=</span><span class="n">TMath</span><span class="o">::</span><span class="n">Sqrt</span><span class="p">(</span><span class="n">Dr</span><span class="o">*</span><span class="n">Dr</span><span class="o">+</span><span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="p">);</span><span class="c1">//粒子实际飞行距离，flight path</span>
     <span class="k">if</span><span class="p">(</span><span class="n">gr</span><span class="o">-&gt;</span><span class="n">Uniform</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">Rg</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//判断为gamma入射</span>
        <span class="n">pid</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
        <span class="n">e</span><span class="o">=</span><span class="n">Eg0</span><span class="p">;</span>
@@ -13228,24 +13237,28 @@ div#notebook {
     <span class="p">}</span>
     <span class="k">else</span> <span class="p">{</span>  <span class="c1">//neutron</span>
         <span class="n">pid</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
-        <span class="n">e</span><span class="o">=</span><span class="n">gr</span><span class="o">-&gt;</span><span class="n">Gaus</span><span class="p">(</span><span class="n">En0</span><span class="p">,</span> <span class="n">EnRes</span><span class="o">/</span><span class="mf">2.35</span><span class="p">);</span> <span class="c1">// neutron</span>
+        <span class="n">e</span><span class="o">=</span><span class="n">gr</span><span class="o">-&gt;</span><span class="n">Gaus</span><span class="p">(</span><span class="n">En0</span><span class="p">,</span> <span class="n">EnRes</span><span class="o">/</span><span class="mf">2.35</span><span class="p">);</span> <span class="c1">// energy of neutrons</span>
         <span class="n">tof</span><span class="o">=</span><span class="mf">72.</span><span class="o">/</span><span class="n">TMath</span><span class="o">::</span><span class="n">Sqrt</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">d</span><span class="o">*</span><span class="mf">0.01</span><span class="p">);</span><span class="c1">//ns</span>
     <span class="p">}</span>
     <span class="n">tu</span><span class="o">=</span><span class="n">tof</span><span class="o">+</span><span class="p">(</span><span class="n">L</span><span class="o">-</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">Vsc</span><span class="o">+</span><span class="n">gr</span><span class="o">-&gt;</span><span class="n">Gaus</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">TRes</span><span class="o">/</span><span class="mf">2.35</span><span class="p">)</span><span class="o">+</span><span class="n">tu_off</span><span class="p">;</span>
     <span class="n">td</span><span class="o">=</span><span class="n">tof</span><span class="o">+</span><span class="p">(</span><span class="n">L</span><span class="o">+</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">Vsc</span><span class="o">+</span><span class="n">gr</span><span class="o">-&gt;</span><span class="n">Gaus</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">TRes</span><span class="o">/</span><span class="mf">2.35</span><span class="p">)</span><span class="o">+</span><span class="n">td_off</span><span class="p">;</span>
     <span class="n">ctof</span><span class="o">=</span><span class="p">(</span><span class="n">tu</span><span class="o">+</span><span class="n">td</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span><span class="p">;</span><span class="c1">//simplified calculation.</span>
     <span class="n">hctof</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="n">ctof</span><span class="p">);</span>
-    <span class="n">Double_t</span> <span class="n">q0</span><span class="o">=</span><span class="n">e</span><span class="o">*</span><span class="n">gr</span><span class="o">-&gt;</span><span class="n">Uniform</span><span class="p">();</span><span class="c1">//energy of recoil proton in plas. 0-En</span>
+<span class="c1">//neutron：energy of recoil proton in plas. q0=0-En； gamma：q0=0-Egamma，compton plateau</span>
+    <span class="n">Double_t</span> <span class="n">q0</span><span class="o">=</span><span class="n">e</span><span class="o">*</span><span class="n">gr</span><span class="o">-&gt;</span><span class="n">Uniform</span><span class="p">();</span>
     <span class="n">qu</span><span class="o">=</span><span class="n">q0</span><span class="o">*</span><span class="n">TMath</span><span class="o">::</span><span class="n">Exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">L</span><span class="o">-</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">Lambda</span><span class="p">);</span>
-    <span class="n">qu</span><span class="o">=</span><span class="n">gr</span><span class="o">-&gt;</span><span class="n">Gaus</span><span class="p">(</span><span class="n">qu</span><span class="p">,</span><span class="n">qu</span><span class="o">*</span><span class="n">QRes</span><span class="o">/</span><span class="mf">2.35</span><span class="p">);</span>
+    <span class="n">qu</span><span class="o">=</span><span class="n">gr</span><span class="o">-&gt;</span><span class="n">Gaus</span><span class="p">(</span><span class="n">qu</span><span class="p">,</span><span class="n">qu</span><span class="o">*</span><span class="n">QRes</span><span class="o">/</span><span class="mf">2.35</span><span class="p">);</span><span class="c1">//QRes, relative energy resolution</span>
     <span class="n">qd</span><span class="o">=</span><span class="n">q0</span><span class="o">*</span><span class="n">TMath</span><span class="o">::</span><span class="n">Exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">L</span><span class="o">+</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">Lambda</span><span class="p">);</span>
     <span class="n">qd</span><span class="o">=</span><span class="n">gr</span><span class="o">-&gt;</span><span class="n">Gaus</span><span class="p">(</span><span class="n">qd</span><span class="p">,</span><span class="n">qd</span><span class="o">*</span><span class="n">QRes</span><span class="o">/</span><span class="mf">2.35</span><span class="p">);</span>
     <span class="n">opt</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">();</span><span class="c1">//5.将计算好的变量值填到Tree中</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">%</span><span class="mi">1000</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;.&quot;</span><span class="p">;</span>
   <span class="p">}</span>
+  <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
   <span class="c1">// 6.将数据写入root文件中</span>
-  <span class="n">hctof</span><span class="o">-&gt;</span><span class="n">Write</span><span class="p">();</span>
-  <span class="n">opt</span><span class="o">-&gt;</span><span class="n">Write</span><span class="p">();</span>
-  <span class="n">opf</span><span class="o">-&gt;</span><span class="n">Close</span><span class="p">();</span>
+  <span class="n">hctof</span><span class="o">-&gt;</span><span class="n">Write</span><span class="p">();</span><span class="c1">//写入预定义的histogram到文件</span>
+  <span class="n">opt</span><span class="o">-&gt;</span><span class="n">Write</span><span class="p">();</span><span class="c1">//写入TTree到文件</span>
+  <span class="n">opf</span><span class="o">-&gt;</span><span class="n">Close</span><span class="p">();</span><span class="c1">//关闭文件</span>
 <span class="p">}</span>
 </pre></div>
 
