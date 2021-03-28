@@ -13117,7 +13117,7 @@ div#notebook {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="1.3-ADC,TDC&#20449;&#21495;&#22788;&#29702;">1.3 ADC,TDC&#20449;&#21495;&#22788;&#29702;<a class="anchor-link" href="#1.3-ADC,TDC&#20449;&#21495;&#22788;&#29702;">&#182;</a></h2><h3 id="&#30446;&#30340;&#65306;&#23398;&#20064;&#22788;&#29702;ADC&#12289;TDC&#35760;&#24405;&#30340;&#20449;&#21495;&#30340;&#22788;&#29702;&#26041;&#27861;">&#30446;&#30340;&#65306;&#23398;&#20064;&#22788;&#29702;ADC&#12289;TDC&#35760;&#24405;&#30340;&#20449;&#21495;&#30340;&#22788;&#29702;&#26041;&#27861;<a class="anchor-link" href="#&#30446;&#30340;&#65306;&#23398;&#20064;&#22788;&#29702;ADC&#12289;TDC&#35760;&#24405;&#30340;&#20449;&#21495;&#30340;&#22788;&#29702;&#26041;&#27861;">&#182;</a></h3><h4 id="&#23454;&#39564;&#35774;&#32622;&#65306;&#20013;&#23376;&#39134;&#34892;&#26102;&#38388;&#35889;&#27979;&#37327;&#65288;&#21442;&#29031;1.1&#25551;&#36848;&#65289;">&#23454;&#39564;&#35774;&#32622;&#65306;&#20013;&#23376;&#39134;&#34892;&#26102;&#38388;&#35889;&#27979;&#37327;&#65288;&#21442;&#29031;1.1&#25551;&#36848;&#65289;<a class="anchor-link" href="#&#23454;&#39564;&#35774;&#32622;&#65306;&#20013;&#23376;&#39134;&#34892;&#26102;&#38388;&#35889;&#27979;&#37327;&#65288;&#21442;&#29031;1.1&#25551;&#36848;&#65289;">&#182;</a></h4><h3 id="&#29289;&#29702;&#36807;&#31243;">&#29289;&#29702;&#36807;&#31243;<a class="anchor-link" href="#&#29289;&#29702;&#36807;&#31243;">&#182;</a></h3><ul>
-<li>束流轰击靶, 以一定几率产生轻重带电粒子、n、$\gamma$等粒子,重带电粒子碎片被靶后 Dipole magnet偏走，而部分轻带电粒子粒子没有被完全偏走，仍然进入中子探测器。</li>
+<li>束流轰击靶, 以一定几率产生轻重带电粒子、n、$\gamma$等粒子,重带电粒子碎片被靶后 Dipole magnet偏走，而部分轻带电粒子没有被完全偏走，仍然进入中子探测器。</li>
 </ul>
 <h3 id="&#33719;&#21462;&#31995;&#32479;&#35302;&#21457;">&#33719;&#21462;&#31995;&#32479;&#35302;&#21457;<a class="anchor-link" href="#&#33719;&#21462;&#31995;&#32479;&#35302;&#21457;">&#182;</a></h3><ul>
 <li>DAQ的触发(Trigger)由两部分构成。主触发($Trig_{M}$)由靶前塑料闪烁体探测器和靶后中子探测器符合信号产生;  另外为了监测束流，通常将靶前塑料闪烁体信号按一定比例分除作为束流触发($Trig_{beam}$)加入到触发中(参见实验方法的获取部分)。获取系统触发Trigger为两个触发的或信号，即$Trigger=Trig_{M}+Trig_{beam}$, Trigger信号经过适当的处理(延迟+展宽)，作为ADC的Gate和TDC的start信号。</li>
@@ -13267,15 +13267,15 @@ div#notebook {
     <span class="c1">// energy &amp; tof    </span>
     <span class="k">if</span><span class="p">(</span><span class="n">pid</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span><span class="c1">//gamma</span>
        <span class="n">e</span><span class="o">=</span><span class="n">Eg0</span><span class="p">;</span>
-       <span class="n">tof</span><span class="o">=</span><span class="mi">3</span><span class="o">*</span><span class="p">(</span><span class="n">d</span><span class="o">*</span><span class="mf">0.01</span><span class="p">);</span>
+       <span class="n">tof</span><span class="o">=</span><span class="mf">3.333</span><span class="o">*</span><span class="p">(</span><span class="n">d</span><span class="o">*</span><span class="mf">0.01</span><span class="p">);</span>
       <span class="p">}</span>
     <span class="k">if</span><span class="p">(</span><span class="n">pid</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//neutron</span>
        <span class="n">e</span><span class="o">=</span><span class="n">gr</span><span class="o">-&gt;</span><span class="n">Gaus</span><span class="p">(</span><span class="n">En0</span><span class="p">,</span> <span class="n">EnRes</span><span class="o">/</span><span class="mf">2.35</span><span class="p">);</span> <span class="c1">// neutron</span>
-       <span class="n">tof</span><span class="o">=</span><span class="mf">72.</span><span class="o">/</span><span class="n">TMath</span><span class="o">::</span><span class="n">Sqrt</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">d</span><span class="o">*</span><span class="mf">0.01</span><span class="p">);</span><span class="c1">//ns</span>
+       <span class="n">tof</span><span class="o">=</span><span class="mf">72.29824</span><span class="o">/</span><span class="n">TMath</span><span class="o">::</span><span class="n">Sqrt</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">d</span><span class="o">*</span><span class="mf">0.01</span><span class="p">);</span><span class="c1">//ns</span>
     <span class="p">}</span>
     <span class="k">if</span><span class="p">(</span><span class="n">pid</span><span class="o">==</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span><span class="c1">//proton</span>
       <span class="n">e</span><span class="o">=</span><span class="n">gr</span><span class="o">-&gt;</span><span class="n">Gaus</span><span class="p">(</span><span class="n">Ec0</span><span class="p">,</span> <span class="n">EcRes</span><span class="o">/</span><span class="mf">2.35</span><span class="p">);</span> <span class="c1">// proton</span>
-      <span class="n">tof</span><span class="o">=</span><span class="mf">72.</span><span class="o">/</span><span class="n">TMath</span><span class="o">::</span><span class="n">Sqrt</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">d</span><span class="o">*</span><span class="mf">0.01</span><span class="p">);</span>
+      <span class="n">tof</span><span class="o">=</span><span class="mf">72.29824</span><span class="o">/</span><span class="n">TMath</span><span class="o">::</span><span class="n">Sqrt</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">d</span><span class="o">*</span><span class="mf">0.01</span><span class="p">);</span>
     <span class="p">}</span>
     <span class="k">if</span><span class="p">(</span><span class="n">pid</span><span class="o">==</span><span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
       <span class="n">e</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span>
@@ -13360,7 +13360,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="o">!</span><span class="n">ls</span> <span class="o">-</span><span class="n">lh</span> <span class="n">treeADC</span><span class="p">.</span><span class="o">*</span>
+<div class=" highlight hl-c++"><pre><span></span><span class="o">!</span><span class="n">ls</span> <span class="o">-</span><span class="n">lh</span> <span class="n">treeADC</span><span class="p">.</span><span class="o">*</span> <span class="c1">//在root终端运行外部命令 ! command</span>
 </pre></div>
 
     </div>
@@ -13380,200 +13380,6 @@ div#notebook {
 <pre>-rw-r--r--  1 zhli  staff   4.8K Mar 11 15:58 treeADC.C
 -rw-r--r--@ 1 zhli  staff   5.0K Feb 21  2020 treeADC.C~
 -rw-r--r--  1 zhli  staff    61M Mar 11 15:55 treeADC.root
-
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="o">!</span><span class="n">cat</span> <span class="n">treeADC</span><span class="p">.</span><span class="n">C</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>void treeADC()
-{
-  const Double_t D=500.;//cm, distance between target and the scin.(Center)
-  const Double_t L=100.;//cm, half length of the scin.
-  const Double_t dD=5.;//cm, thickness of the scin.
-  const Double_t TRes=1.;//ns, time resolution(FWHM) of the scintillator.
-  const Double_t Lambda=380.;//cm, attenuation lenght of the scin.
-  const Double_t QRes=0.1;//relative energy resolution(FWHM) of the scin. 
-  const Double_t Vsc=7.5;//ns/cm, speed of light in the scin.
- //neutron &amp; gamma
-  const Double_t En0=50;//MeV, average neutron energy
-  const Double_t EnRes=50.;//MeV, energy spread of neutron(FWHM)
-  const Double_t Eg0=10;//MeV, gamma energy  
-
-  const Double_t Rn=0.75;//ratio of neutron 
- const Double_t Rg=0.05;//ratio of gamma; 
-
- //charged particle hited in Neutron Detector, 
- const Double_t Rc=0.1;//ratio of proton
- const Double_t Ec0=50;//MeV
- const Double_t EcRes=50;//MeV energy spread of proton(FWHM)
-
- //ADC
- const Double_t ADCgain=60;//1MeV=60ch.
- const Double_t ADCuPed=140;//baseline of ADC for upper side
- const Double_t ADCdPed=130;//                for bottom side
- const Double_t ADCnoise=50;//sigma of noise
- const Int_t    ADCoverflow=4095;
-
- //TDC
- const Double_t TriggerDelay=15;//ns, trigger延迟20ns,将感兴趣的时间信号放在TDC量程以内。
- const Double_t TDCch2ns=40.;//1ns=40ch.
- const Int_t TDCoverflow=4095;
-  
-  TFile *opf=new TFile(&#34;treeADC.root&#34;,&#34;recreate&#34;);//新文件tree.root的指针 *opf
-  TTree *opt=new TTree(&#34;tree&#34;,&#34;tree structure&#34;);//新tree的指针 *opt
-    
-  // 定义tree的branch变量
-  Double_t x;
-  Double_t e;
-  int pid;    //0/1/2/3: gamma/neutron/proton/No_particle
-  Double_t tof, ctof;
-  Double_t tu, td;
-  Double_t qu, qd;
-  Int_t itu,itd;//TDC
-  Int_t iqu,iqd;//ADC
-
-  Double_t diff;
-
-    
-  Double_t tu_off=5.5;//time offset
-  Double_t td_off=20.4;//time offset
- 
-  // 将变量分支添加到tree结构中,第一个参数为变量名称，第二个为上面定义的变量地址，第三个为变量的类型说明，D表示Double_t。
-  opt-&gt;Branch(&#34;x&#34;, &amp;x, &#34;x/D&#34;);//position
-  opt-&gt;Branch(&#34;e&#34;, &amp;e, &#34;e/D&#34;);//energy
-  opt-&gt;Branch(&#34;tof&#34;, &amp;tof, &#34;tof/D&#34;);//time of flight
-  opt-&gt;Branch(&#34;ctof&#34;,&amp;ctof,&#34;ctof/D&#34;);//TOF from exp. data
-  opt-&gt;Branch(&#34;pid&#34;, &amp;pid, &#34;pid/I&#34;);
-  // raw time and energy
-  opt-&gt;Branch(&#34;tu&#34;, &amp;tu, &#34;tu/D&#34;);
-  opt-&gt;Branch(&#34;td&#34;, &amp;td, &#34;td/D&#34;);
-  opt-&gt;Branch(&#34;qu&#34;, &amp;qu, &#34;qu/D&#34;);
-  opt-&gt;Branch(&#34;qd&#34;, &amp;qd, &#34;qd/D&#34;);
-  
-  // energy in ADC, time in TDC 注意，以下Branch变量声明的类型为 Integer，
-  opt-&gt;Branch(&#34;itu&#34;, &amp;itu, &#34;itu/I&#34;);
-  opt-&gt;Branch(&#34;itd&#34;, &amp;itd, &#34;itd/i&#34;);
-  opt-&gt;Branch(&#34;iqu&#34;, &amp;iqu, &#34;iqu/i&#34;);
-  opt-&gt;Branch(&#34;iqd&#34;, &amp;iqd, &#34;iqd/i&#34;);
-
-  opt-&gt;Branch(&#34;diff&#34;,&amp;diff,&#34;diff/D&#34;);
-
-  
-  TRandom3 *gr=new TRandom3(0);
-  // 循环，逐事件往tree结构里添加对应分支信息。
-  for(int i=0;i&lt;1000000;i++){
-    x=gr-&gt;Uniform(-L, L);
-    Double_t Dr=D+gr-&gt;Uniform(-0.5,0.5)*dD;
-    Double_t d=TMath::Sqrt(Dr*Dr+x*x);//cm, flight path
-    //pid
-    Double_t ratio=gr-&gt;Uniform();
-    if(ratio&lt;Rg) pid=0;
-    if(ratio&gt;=Rg &amp;&amp; ratio&lt;Rg+Rn) pid=1;
-    if(ratio&gt;=Rg+Rn &amp;&amp; ratio&lt;Rg+Rn+Rc) pid=2;
-    if(ratio&gt;=Rg+Rn+Rc) pid=3;
-    
-    // energy &amp; tof    
-    if(pid==0) {//gamma
-       e=Eg0;
-       tof=3*(d*0.01);
-      }
-    if(pid==1) { //neutron
-       e=gr-&gt;Gaus(En0, EnRes/2.35); // neutron
-       tof=72./TMath::Sqrt(e)*(d*0.01);//ns
-    }
-    if(pid==2) {//proton
-      e=gr-&gt;Gaus(Ec0, EcRes/2.35); // proton
-      tof=72./TMath::Sqrt(e)*(d*0.01);
-    }
-    if(pid==3) {
-      e=-1;
-      tof=-1;
-    }
-    
-    //tu,td,qu,qd
-    if(pid==3) {//
-      tu=TDCoverflow;
-      td=TDCoverflow;
-      qu=ADCuPed+gr-&gt;Gaus(0,ADCnoise);
-      qd=ADCdPed+gr-&gt;Gaus(0,ADCnoise);
-    }
-    else {
-      //time
-      tu=tof+(L-x)/Vsc+gr-&gt;Gaus(0,TRes/2.35)+tu_off-TriggerDelay;
-      td=tof+(L+x)/Vsc+gr-&gt;Gaus(0,TRes/2.35)+td_off-TriggerDelay;
-      tu *=TDCch2ns;
-      td *=TDCch2ns;
-      
-      //energy depositon in the plastic
-      Double_t q0;
-      if(pid==0 || pid==1) q0=e*ADCgain*gr-&gt;Uniform();//neutron &amp;gamma,
-      else q0=e*ADCgain; //charged particle
-      
-      //resolution
-      q0=gr-&gt;Gaus(q0,q0*QRes/2.35);
-      
-      //light transmission within the plastic
-      qu=q0*TMath::Exp(-(L-x)/Lambda);
-      qd=q0*TMath::Exp(-(L+x)/Lambda);
-      if(qu&lt;0) qu=0;//no negative values
-      if(qd&lt;0) qd=0;
-      
-      //ADC
-      qu += gr-&gt;Gaus(ADCuPed,ADCnoise);
-      qd += gr-&gt;Gaus(ADCdPed,ADCnoise);
-      if(qu&lt;0) qu=0;//no negative values
-      if(qd&lt;0) qd=0;
-    }
-
-      //overflow check
-    if(tu&gt;TDCoverflow) tu=TDCoverflow;
-    if(td&gt;TDCoverflow) td=TDCoverflow;
-    if(qu&gt;ADCoverflow) qu=ADCoverflow;
-    if(qd&gt;ADCoverflow) qd=ADCoverflow;
-    
-  //digitization
-    itu=Int_t(tu);
-    itd=Int_t(td);
-    iqu=Int_t(qu);
-    iqd=Int_t(qd);
-    //difference in amplitude before and after digitization.
-    diff=tu-itu;
- 
-    
-    opt-&gt;Fill();
-   
-  }
-  // 将数据写入root文件中
-  opt-&gt;Write();
-  opf-&gt;Close();
-  
-}
 
 </pre>
 </div>
