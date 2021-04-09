@@ -13116,10 +13116,10 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="2.2-PPAC-&#20449;&#21495;&#22788;&#29702;-II">2.2 PPAC &#20449;&#21495;&#22788;&#29702;-II<a class="anchor-link" href="#2.2-PPAC-&#20449;&#21495;&#22788;&#29702;-II">&#182;</a></h2><h3 id="1.-Tracking">1. Tracking<a class="anchor-link" href="#1.-Tracking">&#182;</a></h3><p>利用多个PPAC的x，y信息进行traking的原理如图所示,图中红点代表探测器测量的位置。由于PPAC的探测效率，对于每个入射粒子只有部分PPAC的x或y方向可给出位置信息。假设对于某一个入射粒子，有两个以上(含两个)探测器给出x位置信息 (如图:1Ax,1Bx,3x) 时，入射粒子的x-z径迹可由上述x-z点进行线性拟合得到。y-z径迹的处理方法与x-z径迹的处理方法一致。利用上述线性方程，可内插或外推某一z位置的x和y信息。图中空心黑点代表由线性方程计算得到的位置。</p>
+<h2 id="2.2-PPAC-&#20449;&#21495;&#22788;&#29702;-II">2.2 PPAC &#20449;&#21495;&#22788;&#29702;-II<a class="anchor-link" href="#2.2-PPAC-&#20449;&#21495;&#22788;&#29702;-II">&#182;</a></h2><h3 id="1.-Tracking">1. Tracking<a class="anchor-link" href="#1.-Tracking">&#182;</a></h3><p>利用多个PPAC的x，y信息进行traking的原理如图所示,图中红点代表探测器测量的位置。由于PPAC的探测效率小于100%，对于每个入射粒子只有部分PPAC的x或y方向可给出位置信息。假设对于某一个入射粒子，有两个以上(含两个)探测器给出x位置信息 (如图:1Ax,1Bx,3x) 时，入射粒子的x-z径迹可由上述x-z点进行线性拟合得到。y-z径迹的处理方法与x-z径迹的处理方法一致。利用上述线性方程，可内插或外推某一z位置的x和y信息。图中空心黑点代表由线性方程计算得到的位置。</p>
 <p><img src="fig/tracking.png" alt="setup"></p>
-<h3 id="&#26412;&#23454;&#39564;&#20013;&#37319;&#29992;&#30340;&#37325;&#24314;&#31574;&#30053;&#20026;&#65306;">&#26412;&#23454;&#39564;&#20013;&#37319;&#29992;&#30340;&#37325;&#24314;&#31574;&#30053;&#20026;&#65306;<a class="anchor-link" href="#&#26412;&#23454;&#39564;&#20013;&#37319;&#29992;&#30340;&#37325;&#24314;&#31574;&#30053;&#20026;&#65306;">&#182;</a></h3><p>1) 若F8PPAC3中有有效的位置而且F8PPAC1和F8PPAC2中至少有一层PPAC有有效的位置。</p>
-<p>2) 若F8PPAC3没有有效的位置，则</p>
+<h3 id="&#26412;&#23454;&#39564;&#20013;&#37319;&#29992;&#30340;&#37325;&#24314;&#31574;&#30053;&#20026;&#65306;">&#26412;&#23454;&#39564;&#20013;&#37319;&#29992;&#30340;&#37325;&#24314;&#31574;&#30053;&#20026;&#65306;<a class="anchor-link" href="#&#26412;&#23454;&#39564;&#20013;&#37319;&#29992;&#30340;&#37325;&#24314;&#31574;&#30053;&#20026;&#65306;">&#182;</a></h3><p>1) F8PPAC3中有有效的位置而且F8PPAC1和F8PPAC2中至少有一层PPAC有有效的位置。</p>
+<p>2) F8PPAC3没有有效的位置，则</p>
 <ul>
 <li>a) 这个事件若被 F8PPAC1和F8PPAC2中的3层或3层以上的PPAC探测。</li>
 <li>b) 若一个事件只有2层PPAC探测到，要求这两层PPAC分别来自两套PPAC1和PPAC2。</li>
@@ -13137,7 +13137,7 @@ $$
 </li>
 </ul>
 <ul>
-<li>束流条件下，如果在探测器前放置准直孔，则由于束流在准直孔上产生散射(图b)，导致$\sigma_{geo}$，不仅与孔的几何条件有关，也与束流的条件相关。</li>
+<li>束流条件下，如果在探测器前放置准直孔，则由于束流在准直孔上产生散射(图b)，使得$\sigma_{geo}$ 不仅与孔的几何条件有关，也与束流的条件相关，因此无法从测到的$\sigma^2$推知$\sigma^2_0$。</li>
 </ul>
 <h4 id="&#22810;&#25506;&#27979;&#22120;&#24452;&#36857;&#27979;&#37327;&#26041;&#27861;(&#26463;&#27969;)&#65306;">&#22810;&#25506;&#27979;&#22120;&#24452;&#36857;&#27979;&#37327;&#26041;&#27861;(&#26463;&#27969;)&#65306;<a class="anchor-link" href="#&#22810;&#25506;&#27979;&#22120;&#24452;&#36857;&#27979;&#37327;&#26041;&#27861;(&#26463;&#27969;)&#65306;">&#182;</a></h4><p><img src="fig/pos_res0.png" alt=""></p>
 <ul>
@@ -13148,6 +13148,7 @@ $$
 </ul>
 <ul>
 <li>探测器的本征分辨率可通过Monte Carlo模拟得到。具体做法如下：对于一组给定分辨率$(\sigma^0_0,\sigma^1_0...,\sigma^4_0)$，每个探测器的位置$x'^{i}$ 由高斯抽样 $Gauss(x^i_{track},\sigma^i_0)$给出。拟合径迹得到每个探测器的拟合位置$x'^i_{track}$,以及残差$\Delta x'^i=x'^i-x'^i_{track}$分布，径迹外推到靶点的坐标为$t_{x'}$。调节不同的分辨率,使得模拟和实验的残差分布符合。这样就能间接算出每一层PPAC的位置分辨率。此时靶点位置残差$\Delta t_{x'}=t_{x'}-t_{x'track}$分布的宽度即为束流在靶上的位置分辨率。
+ -为简化模拟的不确定性，对于相同参数的气体探测器一般假设位置分辨率相同
 <img src="fig/pos_res1.png" alt=""></li>
 </ul>
 <h3 id="3.-PPAC-&#25506;&#27979;&#25928;&#29575;">3. PPAC &#25506;&#27979;&#25928;&#29575;<a class="anchor-link" href="#3.-PPAC-&#25506;&#27979;&#25928;&#29575;">&#182;</a></h3><p><img src="fig/pos_eff.png" alt=""></p>
@@ -13770,15 +13771,7 @@ $$</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="&#27531;&#24046;&#65292;chi2/NDF">&#27531;&#24046;&#65292;chi2/NDF<a class="anchor-link" href="#&#27531;&#24046;&#65292;chi2/NDF">&#182;</a></h3><p>残差分布并不是单一的gaus分布，有一个窄的gauss重叠在宽的gauss之上。
-其可能的原因为：</p>
-<ul>
-<li>Nucl.Instr.Meth.A 593,376 (2008)<ul>
-<li>The position dependent resolution is responsible for the multiple-Gaussian shape of the residual distributions presented in the preceding section. Consequently,the detector performance is expressed in terms of an optimal resolution corresponding to the narrow Gaussian residual width and an effective resolution associated with the area-weighted average of the two Gaussian widths. </li>
-</ul>
-</li>
-</ul>
-
+<h3 id="&#27531;&#24046;&#65292;chi2/NDF">&#27531;&#24046;&#65292;chi2/NDF<a class="anchor-link" href="#&#27531;&#24046;&#65292;chi2/NDF">&#182;</a></h3>
 </div>
 </div>
 </div>
@@ -13881,6 +13874,15 @@ $$</p>
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>上图中呈现的残差分布并不是单一的gaus分布，有一个窄的gauss重叠在宽的gauss之上。
+其可能的原因为，探测器位置分辨率并非是常数，实际位置分辨率与粒子的入射位置相关。[Nucl.Instr.Meth.A 593,376 (2008)]</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -14309,7 +14311,7 @@ $$</p>
 <pre>[NbConvertApp] Converting notebook 2.2_PPAC_tracking.ipynb to html
 
 
-[NbConvertApp] Writing 13329168 bytes to 2.2_PPAC_tracking.html
+[NbConvertApp] Writing 564409 bytes to 2.2_PPAC_tracking.html
 
 
 </pre>
