@@ -13119,10 +13119,10 @@ div#notebook {
 <h2 id="2.2-PPAC-&#20449;&#21495;&#22788;&#29702;-II">2.2 PPAC &#20449;&#21495;&#22788;&#29702;-II<a class="anchor-link" href="#2.2-PPAC-&#20449;&#21495;&#22788;&#29702;-II">&#182;</a></h2><h3 id="1.-Tracking">1. Tracking<a class="anchor-link" href="#1.-Tracking">&#182;</a></h3><p>利用多个PPAC的x，y信息进行traking的原理如图所示,图中红点代表探测器测量的位置。由于PPAC的探测效率小于100%，对于每个入射粒子只有部分PPAC的x或y方向可给出位置信息。假设对于某一个入射粒子，有两个以上(含两个)探测器给出x位置信息 (如图:1Ax,1Bx,3x) 时，入射粒子的x-z径迹可由上述x-z点进行线性拟合得到。y-z径迹的处理方法与x-z径迹的处理方法一致。利用上述线性方程，可内插或外推某一z位置的x和y信息。图中空心黑点代表由线性方程计算得到的位置。</p>
 <p><img src="fig/tracking.png" alt="setup"></p>
 <h3 id="&#26412;&#23454;&#39564;&#20013;&#37319;&#29992;&#30340;&#37325;&#24314;&#31574;&#30053;&#20026;&#65306;">&#26412;&#23454;&#39564;&#20013;&#37319;&#29992;&#30340;&#37325;&#24314;&#31574;&#30053;&#20026;&#65306;<a class="anchor-link" href="#&#26412;&#23454;&#39564;&#20013;&#37319;&#29992;&#30340;&#37325;&#24314;&#31574;&#30053;&#20026;&#65306;">&#182;</a></h3><p>1) F8PPAC3有效，F8PPAC1和F8PPAC2中至少有一层PPAC有效。</p>
-<p>2) F8PPAC3没有有效的位置，则</p>
+<p>2) F8PPAC3无效，则</p>
 <ul>
 <li>a) 这个事件若被 F8PPAC1和F8PPAC2中的3层或3层以上的PPAC探测。</li>
-<li>b) 若一个事件只有2层PPAC探测到，要求这两层PPAC分别来自两套PPAC1和PPAC2。</li>
+<li>b) 若一个事件只有2层PPAC探测到，要求这两层PPAC分别来自两套F8PPAC1和F8PPAC2。</li>
 </ul>
 <h4 id="&#26463;&#27969;&#24452;&#36857;-&#21033;&#29992;&#25152;&#26377;PPAC&#30340;&#20449;&#24687;">&#26463;&#27969;&#24452;&#36857;-&#21033;&#29992;&#25152;&#26377;PPAC&#30340;&#20449;&#24687;<a class="anchor-link" href="#&#26463;&#27969;&#24452;&#36857;-&#21033;&#29992;&#25152;&#26377;PPAC&#30340;&#20449;&#24687;">&#182;</a></h4><p><img src="fig/pos_track.png" alt="setup"></p>
 <h3 id="2.-PPAC-&#30340;&#20301;&#32622;&#20998;&#36776;&#29575;">2. PPAC &#30340;&#20301;&#32622;&#20998;&#36776;&#29575;<a class="anchor-link" href="#2.-PPAC-&#30340;&#20301;&#32622;&#20998;&#36776;&#29575;">&#182;</a></h3><h4 id="&#20934;&#30452;&#26463;&#21051;&#24230;&#26041;&#27861;">&#20934;&#30452;&#26463;&#21051;&#24230;&#26041;&#27861;<a class="anchor-link" href="#&#20934;&#30452;&#26463;&#21051;&#24230;&#26041;&#27861;">&#182;</a></h4><p><img src="fig/pos_res.png" alt=""></p>
@@ -13175,11 +13175,11 @@ $$</p>
 <li><p>用上述做法可分别计算探测器的x，y，x-y的效率</p>
 </li>
 </ul>
-<h2 id="&#31034;&#20363;&#20195;&#30721;">&#31034;&#20363;&#20195;&#30721;<a class="anchor-link" href="#&#31034;&#20363;&#20195;&#30721;">&#182;</a></h2><p>下面示例代码假设同时有1A，2A，3探测器给出x，y的位置信息。</p>
 <h2 id="Branch">Branch<a class="anchor-link" href="#Branch">&#182;</a></h2><p>$PPACF8[i][j]$ -Calibrated Data(位置已刻度好)</p>
 <ul>
 <li>x,y的信号有效时，同时要求anode信号有效。</li>
-<li>不正确的位置信息用-999表示。 </li>
+<li>z的位置为探测器平面的z方向坐标，通过位置测量给定。</li>
+<li>不正确的位置信息，如超界，pileup等用 值-999表示,。 </li>
 </ul>
 <table>
 <thead><tr>
@@ -13255,6 +13255,28 @@ $$</p>
 </tr>
 </tbody>
 </table>
+<h2 id="&#31034;&#20363;&#20195;&#30721;">&#31034;&#20363;&#20195;&#30721;<a class="anchor-link" href="#&#31034;&#20363;&#20195;&#30721;">&#182;</a></h2><p>下面示例代码假设同时有1A，2A，3探测器给出x，y的位置信息。2B探测器的信息用来求2Bx、2By、2Bx-y的探测效率。</p>
+<ul>
+<li>$(xx[0],xz[0]), (xx[1],xz[1]), (xx[2],xz[2])$ 三点拟合确定x-z平面内的束流径迹 $x=f_x(z)$。</li>
+</ul>
+<ul>
+<li>$(yy[0],yz[0]), (yy[1],yz[1]), (yy[2],yz[2])$ 三点拟合确定y-z平面内的束流径迹 $y=f_y(z)$。</li>
+</ul>
+<ul>
+<li>残差：$dx[i]=xx[i]-f_x(xz[i])$, $dy[i]=yy[i]-f_y(yz[i])$, $i=0,1,2$</li>
+</ul>
+<ul>
+<li>$(xx2b[0],xz2b),(yy2b[0],yz2b)$：实验测得的 F8PPAC2_B的 x-z,y-z坐标</li>
+</ul>
+<ul>
+<li>$(xx2b[1],xz2b),(yy2b[1],yz2b)$：由拟合曲线得到的 F8PPAC2_B的 x-z,y-z坐标</li>
+</ul>
+<ul>
+<li>anode2b: F8PPAC2_B的阳极信号</li>
+</ul>
+<ul>
+<li>tx,ty分别为由拟合曲线外推的靶上的x,y坐标</li>
+</ul>
 
 </div>
 </div>
@@ -13444,8 +13466,8 @@ $$</p>
 <span class="cp">#include</span> <span class="cpf">&lt;TH2.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;TStyle.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;TCanvas.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;TF1.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;TFitResult.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;TF1.h&gt; //user</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;TFitResult.h&gt; //user</span><span class="cp"></span>
 
 <span class="kt">void</span> <span class="n">tracking</span><span class="o">::</span><span class="n">SetBranch</span><span class="p">(</span><span class="n">TTree</span> <span class="o">*</span><span class="n">tree</span><span class="p">)</span>
 <span class="p">{</span>
@@ -13839,6 +13861,23 @@ $$</p>
     <div class="prompt"></div>
 
 
+<div class="output_subarea output_stream output_stdout output_text">
+<pre> FCN=1890.97 FROM MIGRAD    STATUS=CONVERGED      69 CALLS          70 TOTAL
+                     EDM=1.14987e-06    STRATEGY= 1      ERROR MATRIX ACCURATE 
+  EXT PARAMETER                                   STEP         FIRST   
+  NO.   NAME      VALUE            ERROR          SIZE      DERIVATIVE 
+   1  Constant     1.64292e+04   5.32958e+01   8.23904e-01  -2.78910e-05
+   2  Mean        -6.44376e-02   5.86192e-04   1.23601e-05   1.70567e+00
+   3  Sigma        2.25004e-01   6.03074e-04   1.43684e-05  -7.82901e-01
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
 
 
 <div class="output_png output_subarea ">
@@ -13855,14 +13894,7 @@ $$</p>
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre> FCN=1890.97 FROM MIGRAD    STATUS=CONVERGED      69 CALLS          70 TOTAL
-                     EDM=1.14987e-06    STRATEGY= 1      ERROR MATRIX ACCURATE 
-  EXT PARAMETER                                   STEP         FIRST   
-  NO.   NAME      VALUE            ERROR          SIZE      DERIVATIVE 
-   1  Constant     1.64292e+04   5.32958e+01   8.23904e-01  -2.78910e-05
-   2  Mean        -6.44376e-02   5.86192e-04   1.23601e-05   1.70567e+00
-   3  Sigma        2.25004e-01   6.03074e-04   1.43684e-05  -7.82901e-01
- FCN=4054.38 FROM MIGRAD    STATUS=CONVERGED     594 CALLS         595 TOTAL
+<pre> FCN=4054.38 FROM MIGRAD    STATUS=CONVERGED     594 CALLS         595 TOTAL
                      EDM=1.55795e-08    STRATEGY= 1  ERROR MATRIX UNCERTAINTY   1.8 per cent
   EXT PARAMETER                                   STEP         FIRST   
   NO.   NAME      VALUE            ERROR          SIZE      DERIVATIVE 
@@ -13883,8 +13915,9 @@ $$</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>上图中呈现的残差分布并不是单一的gaus分布，有一个窄的gauss重叠在宽的gauss之上。
-其可能的原因为，探测器位置分辨率并非是常数，实际位置分辨率与粒子的入射位置相关。[Nucl.Instr.Meth.A 593,376 (2008)]</p>
+<ul>
+<li>上图中呈现的残差分布并不是单一的gaus分布，有一个窄的gauss重叠在宽的gauss之上。其可能的原因为:探测器位置分辨率并非是常数，实际位置分辨率与粒子的入射位置相关。[Nucl.Instr.Meth.A 593,376 (2008)]</li>
+</ul>
 
 </div>
 </div>
@@ -14085,7 +14118,7 @@ $$</p>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">Long64_t</span> <span class="n">N_track</span><span class="p">;</span>
-<span class="n">TCut</span> <span class="n">c2btrack</span><span class="o">=</span><span class="s">&quot;abs(xx2b[1])&lt;100 &amp;&amp; abs(yy2b[1])&lt;100&quot;</span><span class="p">;</span><span class="c1">//径迹穿过探测器的灵敏面积</span>
+<span class="n">TCut</span> <span class="n">c2btrack</span><span class="o">=</span><span class="s">&quot;abs(xx2b[1])&lt;100 &amp;&amp; abs(yy2b[1])&lt;100&quot;</span><span class="p">;</span><span class="c1">//拟合径迹穿过探测器的灵敏面积</span>
 
 <span class="n">Long64_t</span> <span class="n">Na_det</span><span class="p">,</span><span class="n">Nxa_det</span><span class="p">,</span> <span class="n">Nya_det</span><span class="p">,</span><span class="n">Nxya_det</span><span class="p">;</span>
 <span class="n">TCut</span> <span class="n">c2banode</span><span class="o">=</span><span class="s">&quot;anode2b&gt;-1000&quot;</span><span class="p">;</span><span class="c1">//阳极有信号</span>
@@ -14157,7 +14190,10 @@ $$</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="2.-&#35745;&#31639;&#22312;&#19978;&#36848;&#26465;&#20214;&#19979;&#65292;&#25506;&#27979;&#22120;&#30340;&#26377;&#25928;&#20449;&#21495;&#25968;&#30446;">2. &#35745;&#31639;&#22312;&#19978;&#36848;&#26465;&#20214;&#19979;&#65292;&#25506;&#27979;&#22120;&#30340;&#26377;&#25928;&#20449;&#21495;&#25968;&#30446;<a class="anchor-link" href="#2.-&#35745;&#31639;&#22312;&#19978;&#36848;&#26465;&#20214;&#19979;&#65292;&#25506;&#27979;&#22120;&#30340;&#26377;&#25928;&#20449;&#21495;&#25968;&#30446;">&#182;</a></h3>
+<h3 id="2.-&#35745;&#31639;&#22312;&#19978;&#36848;&#26465;&#20214;&#19979;&#65292;&#25506;&#27979;&#22120;&#30340;&#26377;&#25928;&#20449;&#21495;&#25968;&#30446;">2. &#35745;&#31639;&#22312;&#19978;&#36848;&#26465;&#20214;&#19979;&#65292;&#25506;&#27979;&#22120;&#30340;&#26377;&#25928;&#20449;&#21495;&#25968;&#30446;<a class="anchor-link" href="#2.-&#35745;&#31639;&#22312;&#19978;&#36848;&#26465;&#20214;&#19979;&#65292;&#25506;&#27979;&#22120;&#30340;&#26377;&#25928;&#20449;&#21495;&#25968;&#30446;">&#182;</a></h3><ul>
+<li>实际气体探测器的效率与束流的种类(A,Z)以及能量有关</li>
+</ul>
+
 </div>
 </div>
 </div>
@@ -14167,10 +14203,10 @@ $$</p>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">&quot;yy2b[0]:xx2b[0]&gt;&gt;(200,-100,100,200,-100,100)&quot;</span><span class="p">,</span><span class="n">c2bxa</span><span class="o">&amp;&amp;</span><span class="n">c2bya</span><span class="o">&amp;&amp;</span><span class="n">c2btrack</span><span class="p">,</span><span class="s">&quot;colz&quot;</span><span class="p">);</span>
-<span class="n">Na_det</span><span class="o">=</span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">GetEntries</span><span class="p">(</span><span class="n">c2banode</span> <span class="o">&amp;&amp;</span> <span class="n">c2btrack</span><span class="p">);</span>
-<span class="n">Nxa_det</span><span class="o">=</span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">GetEntries</span><span class="p">(</span><span class="n">c2bxa</span> <span class="o">&amp;&amp;</span> <span class="n">c2btrack</span><span class="p">);</span>
-<span class="n">Nya_det</span><span class="o">=</span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">GetEntries</span><span class="p">(</span><span class="n">c2bya</span> <span class="o">&amp;&amp;</span> <span class="n">c2btrack</span><span class="p">);</span>
-<span class="n">Nxya2_det</span><span class="o">=</span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">GetEntries</span><span class="p">(</span><span class="n">c2bxa</span> <span class="o">&amp;&amp;</span> <span class="n">c2bya</span> <span class="o">&amp;&amp;</span> <span class="n">c2btrack</span><span class="p">);</span>
+<span class="n">Na_det</span><span class="o">=</span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">GetEntries</span><span class="p">(</span><span class="n">c2banode</span> <span class="o">&amp;&amp;</span> <span class="n">c2btrack</span><span class="p">);</span><span class="c1">//Anode 数目</span>
+<span class="n">Nxa_det</span><span class="o">=</span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">GetEntries</span><span class="p">(</span><span class="n">c2bxa</span> <span class="o">&amp;&amp;</span> <span class="n">c2btrack</span><span class="p">);</span><span class="c1">// cathod-x 数目</span>
+<span class="n">Nya_det</span><span class="o">=</span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">GetEntries</span><span class="p">(</span><span class="n">c2bya</span> <span class="o">&amp;&amp;</span> <span class="n">c2btrack</span><span class="p">);</span><span class="c1">// cathod-y 数目</span>
+<span class="n">Nxya2_det</span><span class="o">=</span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">GetEntries</span><span class="p">(</span><span class="n">c2bxa</span> <span class="o">&amp;&amp;</span> <span class="n">c2bya</span> <span class="o">&amp;&amp;</span> <span class="n">c2btrack</span><span class="p">);</span><span class="c1">//cathod-x &amp;&amp; cathod-y 数目</span>
 <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">Na_det</span><span class="o">&lt;&lt;</span><span class="s">&quot; &quot;</span><span class="o">&lt;&lt;</span><span class="n">Nxa_det</span><span class="o">&lt;&lt;</span><span class="s">&quot; &quot;</span><span class="o">&lt;&lt;</span><span class="n">Nya_det</span><span class="o">&lt;&lt;</span><span class="s">&quot; &quot;</span><span class="o">&lt;&lt;</span><span class="n">Nxya2_det</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
 <span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 </pre></div>
@@ -14315,9 +14351,7 @@ $$</p>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[NbConvertApp] Converting notebook 2.2_PPAC_tracking.ipynb to html
 
-
-[NbConvertApp] Writing 605802 bytes to 2.2_PPAC_tracking.html
-
+[NbConvertApp] Writing 606636 bytes to 2.2_PPAC_tracking.html
 
 </pre>
 </div>
