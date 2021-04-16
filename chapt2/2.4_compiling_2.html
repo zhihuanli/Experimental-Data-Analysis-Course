@@ -13376,38 +13376,6 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="-Makefile-"><font color="Red"> Makefile </font><a class="anchor-link" href="#-Makefile-">&#182;</a></h3><p><font color="Red">  OBJ = 程序编译后的名称 </font></p>
-
-<pre><code>#############################################################################
-OBJ = tracking
-MainFile = main.cpp
-
-###############################################################################
-
-SourceFile := $(wildcard $(shell pwd)/src/*.c $(shell pwd)/src/*.cc $(shell pwd)/src/*.C $(shell pwd)/src/*.cpp $(shell pwd)/src/*.cxx)
-IncludeFile := $(wildcard $(shell pwd)/include/*.h $(shell pwd)/include/*.hh $(shell pwd)/include/*.hpp)
-
-###############################################################################
-
-ROOTCFLAGS  = $(shell root-config --cflags)
-ROOTLIBS    = $(shell root-config --libs)
-ROOTGLIBS = $(shell root-config --glibs)
-
-GXX = g++ 
-# -Wl ,--no-as-needed
-DIR_INC = -I$(ROOTSYS)/include  -I$(shell pwd)/include
-CFLAGS = -Wall -O2 $(DIR_INC) -I$(ROOTSYS)/include  $(ROOTLIBS) -lSpectrum -lXMLParser  -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64
-
-###############################################################################
-
-all:$(OBJ)
-$(OBJ): $(MainFile) $(SourceFile)
-    $(GXX) $(CFLAGS) $(ROOTCFLAGS) $(ROOTLIBS) $(ROOTGLIBS) -o $@ $(MainFile) $(SourceFile)
-    @echo "=============================================================="
-    @echo "$@ done !"
-    @echo "=============================================================="
-clean:
-    rm -f *.o *.d $(OBJ)</code></pre>
 <h3 id="&#20351;&#29992;&#26041;&#27861;&#65306;">&#20351;&#29992;&#26041;&#27861;&#65306;<a class="anchor-link" href="#&#20351;&#29992;&#26041;&#27861;&#65306;">&#182;</a></h3><h4 id="make-clean">make clean<a class="anchor-link" href="#make-clean">&#182;</a></h4><h4 id="make">make<a class="anchor-link" href="#make">&#182;</a></h4><h4 id="./tracking-1">./tracking 1<a class="anchor-link" href="#./tracking-1">&#182;</a></h4>
 </div>
 </div>
@@ -13436,7 +13404,7 @@ clean:
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[NbConvertApp] Converting notebook 2.4_compiling_2.ipynb to html
 
-[NbConvertApp] Writing 313940 bytes to 2.4_compiling_2.html
+[NbConvertApp] Writing 314850 bytes to 2.4_compiling_2.html
 
 </pre>
 </div>
