@@ -13142,7 +13142,7 @@ div#notebook {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>(TFile *) 0x7f91be15fa30
+<pre>(TFile *) 0x7fc0518c4770
 </pre>
 </div>
 </div>
@@ -13598,11 +13598,12 @@ div#notebook {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">TRandom3</span> <span class="o">*</span><span class="n">g</span><span class="o">=</span><span class="k">new</span> <span class="n">TRandom3</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">20</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
-    <span class="kt">int</span> <span class="n">key</span><span class="o">=</span><span class="n">g</span><span class="o">-&gt;</span><span class="n">Uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
-    <span class="kt">double</span> <span class="n">value</span><span class="o">=</span><span class="n">g</span><span class="o">-&gt;</span><span class="n">Uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">nfound</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+    <span class="kt">int</span> <span class="n">key</span><span class="o">=</span><span class="n">xpeaks</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="kt">double</span> <span class="n">value</span><span class="o">=</span><span class="n">ypeaks</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
     <span class="n">m1</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">make_pair</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="n">value</span><span class="p">));</span><span class="c1">//插入key，value值</span>
     <span class="n">mul1</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">make_pair</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="n">value</span><span class="p">));</span>
+    <span class="n">mul1</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">make_pair</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="n">value</span><span class="p">));</span><span class="c1">//重复插入key，value值    </span>
 <span class="p">}</span>
 </pre></div>
 
@@ -13640,7 +13641,7 @@ div#notebook {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>9,20</pre>
+<pre>65,130</pre>
 </div>
 </div>
 
@@ -13665,10 +13666,10 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">5</span><span class="p">;</span>
+<div class=" highlight hl-c++"><pre><span></span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">762</span><span class="p">;</span>
 <span class="k">auto</span> <span class="n">im1</span><span class="o">=</span><span class="n">m1</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
 <span class="k">if</span><span class="p">(</span><span class="n">im1</span><span class="o">!=</span><span class="n">m1</span><span class="p">.</span><span class="n">end</span><span class="p">())</span> 
     <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">im1</span><span class="o">-&gt;</span><span class="n">first</span><span class="o">&lt;&lt;</span><span class="s">&quot;, &quot;</span><span class="o">&lt;&lt;</span><span class="n">im1</span><span class="o">-&gt;</span><span class="n">second</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
@@ -13696,7 +13697,7 @@ div#notebook {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>5, 0.297741
+<pre>762, 46709.3
 key=100 is not found.
 </pre>
 </div>
@@ -13719,15 +13720,23 @@ key=100 is not found.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;map elements:&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-<span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="n">im</span><span class="o">=</span><span class="n">m1</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span><span class="n">im</span><span class="o">!=</span><span class="n">m1</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="n">im</span><span class="o">++</span><span class="p">)</span>
+<div class=" highlight hl-c++"><pre><span></span><span class="kt">int</span> <span class="n">num</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;map elements:&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+<span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="n">im</span><span class="o">=</span><span class="n">m1</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span><span class="n">im</span><span class="o">!=</span><span class="n">m1</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="n">im</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">num</span><span class="o">&gt;</span><span class="mi">20</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
     <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;  &quot;</span><span class="o">&lt;&lt;</span><span class="n">im</span><span class="o">-&gt;</span><span class="n">first</span><span class="o">&lt;&lt;</span><span class="s">&quot;, &quot;</span><span class="o">&lt;&lt;</span><span class="n">im</span><span class="o">-&gt;</span><span class="n">second</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">num</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">num</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
 <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;multimap elements:&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-<span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="n">imul</span><span class="o">=</span><span class="n">mul1</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span><span class="n">imul</span><span class="o">!=</span><span class="n">mul1</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="n">imul</span><span class="o">++</span><span class="p">)</span>
+<span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="n">imul</span><span class="o">=</span><span class="n">mul1</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span><span class="n">imul</span><span class="o">!=</span><span class="n">mul1</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="n">imul</span><span class="o">++</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">num</span><span class="o">&gt;</span><span class="mi">20</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
     <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;  &quot;</span><span class="o">&lt;&lt;</span><span class="n">imul</span><span class="o">-&gt;</span><span class="n">first</span><span class="o">&lt;&lt;</span><span class="s">&quot;, &quot;</span><span class="o">&lt;&lt;</span><span class="n">imul</span><span class="o">-&gt;</span><span class="n">second</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">num</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
 </pre></div>
 
     </div>
@@ -13745,36 +13754,49 @@ key=100 is not found.
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>map elements:
-  0, 0.126454
-  1, 0.665581
-  2, 0.609786
-  3, 0.785936
-  4, 0.310334
-  5, 0.297741
-  7, 0.57292
-  8, 0.3689
-  9, 0.32301
+  59, 57259.4
+  63, 71649.2
+  67, 355974
+  71, 117777
+  78, 18438.1
+  86, 28650.3
+  94, 43538.8
+  96, 57888.3
+  101, 664539
+  135, 786091
+  160, 17473.4
+  161, 12014.4
+  168, 23274.4
+  221, 8994.44
+  239, 171454
+  265, 136479
+  282, 11530.9
+  288, 331300
+  310, 4367.75
+  322, 538447
+  332, 984052
 multimap elements:
-  0, 0.126454
-  0, 0.985197
-  0, 0.678047
-  0, 0.463898
-  0, 0.100471
-  1, 0.665581
-  2, 0.609786
-  2, 0.334328
-  3, 0.785936
-  3, 0.481724
-  3, 0.324828
-  4, 0.310334
-  5, 0.297741
-  5, 0.3181
-  5, 0.664663
-  7, 0.57292
-  7, 0.106807
-  8, 0.3689
-  9, 0.32301
-  9, 0.718717
+  59, 57259.4
+  59, 57259.4
+  63, 71649.2
+  63, 71649.2
+  67, 355974
+  67, 355974
+  71, 117777
+  71, 117777
+  78, 18438.1
+  78, 18438.1
+  86, 28650.3
+  86, 28650.3
+  94, 43538.8
+  94, 43538.8
+  96, 57888.3
+  96, 57888.3
+  101, 664539
+  101, 664539
+  135, 786091
+  135, 786091
+  160, 17473.4
 </pre>
 </div>
 </div>
@@ -13796,15 +13818,23 @@ multimap elements:
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;map elements:&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-<span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="n">im</span><span class="o">=</span><span class="n">m1</span><span class="p">.</span><span class="n">rbegin</span><span class="p">();</span><span class="n">im</span><span class="o">!=</span><span class="n">m1</span><span class="p">.</span><span class="n">rend</span><span class="p">();</span><span class="n">im</span><span class="o">++</span><span class="p">)</span>
+<div class=" highlight hl-c++"><pre><span></span><span class="n">num</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;map elements:&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+<span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="n">im</span><span class="o">=</span><span class="n">m1</span><span class="p">.</span><span class="n">rbegin</span><span class="p">();</span><span class="n">im</span><span class="o">!=</span><span class="n">m1</span><span class="p">.</span><span class="n">rend</span><span class="p">();</span><span class="n">im</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">num</span><span class="o">&gt;</span><span class="mi">20</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
     <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;  &quot;</span><span class="o">&lt;&lt;</span><span class="n">im</span><span class="o">-&gt;</span><span class="n">first</span><span class="o">&lt;&lt;</span><span class="s">&quot;, &quot;</span><span class="o">&lt;&lt;</span><span class="n">im</span><span class="o">-&gt;</span><span class="n">second</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">num</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">num</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
 <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;multimap elements:&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-<span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="n">imul</span><span class="o">=</span><span class="n">mul1</span><span class="p">.</span><span class="n">rbegin</span><span class="p">();</span><span class="n">imul</span><span class="o">!=</span><span class="n">mul1</span><span class="p">.</span><span class="n">rend</span><span class="p">();</span><span class="n">imul</span><span class="o">++</span><span class="p">)</span>
+<span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="n">imul</span><span class="o">=</span><span class="n">mul1</span><span class="p">.</span><span class="n">rbegin</span><span class="p">();</span><span class="n">imul</span><span class="o">!=</span><span class="n">mul1</span><span class="p">.</span><span class="n">rend</span><span class="p">();</span><span class="n">imul</span><span class="o">++</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">num</span><span class="o">&gt;</span><span class="mi">20</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
     <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;  &quot;</span><span class="o">&lt;&lt;</span><span class="n">imul</span><span class="o">-&gt;</span><span class="n">first</span><span class="o">&lt;&lt;</span><span class="s">&quot;, &quot;</span><span class="o">&lt;&lt;</span><span class="n">imul</span><span class="o">-&gt;</span><span class="n">second</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">num</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
 </pre></div>
 
     </div>
@@ -13822,36 +13852,49 @@ multimap elements:
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>map elements:
-  9, 0.32301
-  8, 0.3689
-  7, 0.57292
-  5, 0.297741
-  4, 0.310334
-  3, 0.785936
-  2, 0.609786
-  1, 0.665581
-  0, 0.126454
+  2231, 1541.63
+  1516, 1940.93
+  1318, 2344.95
+  1261, 9518.89
+  1258, 4217.79
+  1217, 167250
+  1125, 13541.8
+  1104, 2206.72
+  1084, 1579.06
+  1053, 12435.7
+  975, 1833.7
+  968, 127081
+  949, 16688.9
+  946, 100460
+  878, 8001.61
+  843, 152510
+  812, 2726.87
+  806, 4732.63
+  799, 1774.11
+  762, 46709.3
+  740, 1866.6
 multimap elements:
-  9, 0.718717
-  9, 0.32301
-  8, 0.3689
-  7, 0.106807
-  7, 0.57292
-  5, 0.664663
-  5, 0.3181
-  5, 0.297741
-  4, 0.310334
-  3, 0.324828
-  3, 0.481724
-  3, 0.785936
-  2, 0.334328
-  2, 0.609786
-  1, 0.665581
-  0, 0.100471
-  0, 0.463898
-  0, 0.678047
-  0, 0.985197
-  0, 0.126454
+  2231, 1541.63
+  2231, 1541.63
+  1516, 1940.93
+  1516, 1940.93
+  1318, 2344.95
+  1318, 2344.95
+  1261, 9518.89
+  1261, 9518.89
+  1258, 4217.79
+  1258, 4217.79
+  1217, 167250
+  1217, 167250
+  1125, 13541.8
+  1125, 13541.8
+  1104, 2206.72
+  1104, 2206.72
+  1084, 1579.06
+  1084, 1579.06
+  1053, 12435.7
+  1053, 12435.7
+  975, 1833.7
 </pre>
 </div>
 </div>
@@ -13866,8 +13909,8 @@ multimap elements:
 <h4 id="&#20854;&#20182;&#25104;&#21592;&#20989;&#25968;">&#20854;&#20182;&#25104;&#21592;&#20989;&#25968;<a class="anchor-link" href="#&#20854;&#20182;&#25104;&#21592;&#20989;&#25968;">&#182;</a></h4><ul>
 <li>maps.clear()清空</li>
 <li>maps.erase()删除一个元素</li>
-<li>maps.lower_bound() 会返回一个迭代器，它指向键值和参数相等或大于参数的第一个元素，或者指向结束迭代器。</li>
-<li>maps.upper_bound() 也返回一个迭代器，它指向键值大于函数参数的第一个元素，如果这样的元素不出现的话，它就是一个结束迭代器。</li>
+<li>maps.lower_bound() 会返回一个迭代器，它指向键值和参数相等或大于参数的第一个元素。</li>
+<li>maps.upper_bound() 也返回一个迭代器，它指向键值大于函数参数的第一个元素。</li>
 </ul>
 
 </div>
@@ -13875,7 +13918,7 @@ multimap elements:
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="o">!</span><span class="n">jupyter</span> <span class="n">nbconvert</span> <span class="mf">3.0</span><span class="n">_TSpectrum_map</span><span class="p">.</span><span class="n">ipynb</span> <span class="o">--</span><span class="n">to</span> <span class="n">html</span>
@@ -13897,7 +13940,9 @@ multimap elements:
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[NbConvertApp] Converting notebook 3.0_TSpectrum_map.ipynb to html
 
-[NbConvertApp] Writing 373624 bytes to 3.0_TSpectrum_map.html
+
+[NbConvertApp] Writing 388402 bytes to 3.0_TSpectrum_map.html
+
 
 </pre>
 </div>
