@@ -13324,7 +13324,7 @@ div#notebook {
 <span class="kt">void</span> <span class="nf">peaks</span><span class="p">(</span><span class="n">TString</span> <span class="n">hname</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Double_t</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">pe</span><span class="p">,</span> <span class="n">Double_t</span> <span class="n">thres</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span><span class="kt">int</span> <span class="n">backsub</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="n">pe</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span><span class="c1">//清空pe</span>
-  <span class="n">map</span><span class="o">&lt;</span><span class="n">Int_t</span><span class="p">,</span><span class="n">Double_t</span><span class="o">&gt;</span> <span class="n">me</span><span class="p">;</span><span class="c1">//用于排序</span>
+  <span class="n">multimap</span><span class="o">&lt;</span><span class="n">Int_t</span><span class="p">,</span><span class="n">Double_t</span><span class="o">&gt;</span> <span class="n">me</span><span class="p">;</span><span class="c1">//用于排序</span>
   <span class="n">h</span><span class="o">=</span><span class="p">(</span><span class="n">TH1F</span><span class="o">*</span><span class="p">)</span><span class="n">gROOT</span><span class="o">-&gt;</span><span class="n">FindObject</span><span class="p">(</span><span class="n">hname</span><span class="p">);</span>
   <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">s</span><span class="p">)</span> <span class="n">s</span><span class="o">=</span><span class="k">new</span> <span class="n">TSpectrum</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
   <span class="k">if</span><span class="p">(</span><span class="n">backsub</span><span class="p">)</span> <span class="p">{</span>
@@ -13440,7 +13440,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="&#23558;&#20505;&#36873;&#23792;&#19982;&#24050;&#30693;alpha&#23792;&#20301;&#36827;&#34892;&#21305;&#37197;">&#23558;&#20505;&#36873;&#23792;&#19982;&#24050;&#30693;alpha&#23792;&#20301;&#36827;&#34892;&#21305;&#37197;<a class="anchor-link" href="#&#23558;&#20505;&#36873;&#23792;&#19982;&#24050;&#30693;alpha&#23792;&#20301;&#36827;&#34892;&#21305;&#37197;">&#182;</a></h3><ul>
+<h3 id="&#23558;&#20505;&#36873;&#23792;&#19982;&#24050;&#30693;alpha&#23792;&#20301;&#36827;&#34892;&#21305;&#37197;">&#23558;&#20505;&#36873;&#23792;&#19982;&#24050;&#30693;alpha&#23792;&#20301;&#36827;&#34892;&#21305;&#37197;<a class="anchor-link" href="#&#23558;&#20505;&#36873;&#23792;&#19982;&#24050;&#30693;alpha&#23792;&#20301;&#36827;&#34892;&#21305;&#37197;">&#182;</a></h3><h4 id="&#19979;&#21015;&#20195;&#30721;&#37319;&#29992;&#30340;&#31574;&#30053;&#65306;">&#19979;&#21015;&#20195;&#30721;&#37319;&#29992;&#30340;&#31574;&#30053;&#65306;<a class="anchor-link" href="#&#19979;&#21015;&#20195;&#30721;&#37319;&#29992;&#30340;&#31574;&#30053;&#65306;">&#182;</a></h4><ul>
 <li>观察能谱可知：<ul>
 <li>993，1079，1147,1429为与已知alpha能量匹配的峰位。</li>
 <li>上面四个峰的高度相差不多，因此不能根据高度完全确定它们之间的前后顺序(TSpectrum寻出的峰位有时候不一定落在最高处)。</li>
@@ -13449,9 +13449,11 @@ div#notebook {
 </li>
 <li>根据上述特征，确定峰位-alpha能量匹配策略为：<ul>
 <li>选择前6个峰，按照能量由大到小排序，然后取前4个峰进行匹配。</li>
+<li>匹配后用拟合的chi2/ndf进行检验。</li>
 </ul>
 </li>
-<li>根据实际情况可以有不同的策略。</li>
+<li>根据实际情况可以有不同的策略。
+-更一般的策略为，将TSpectrum寻到的峰位与刻度能量进行随机组合,对比拟合后的chi2/ndf值。</li>
 </ul>
 
 </div>
@@ -13547,7 +13549,7 @@ div#notebook {
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
 ****************************************
-Minimizer is Linear
+Minimizer is Linear / Migrad
 Chi2                      =  4.40562e-05
 NDf                       =            2
 p0                        =     -1.56557   +/-   0.0168397   
@@ -13559,6 +13561,35 @@ p1                        =   0.00717874   +/-   1.43506e-05
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="How-can-I-tell-if-a-model-fits-my-data?">How can I tell if a model fits my data?<a class="anchor-link" href="#How-can-I-tell-if-a-model-fits-my-data?">&#182;</a></h3><ul>
+<li>a small $\chi^2$ value does not guarantee that the model fits the data well. Use of a model that does not fit the data well cannot provide good answers to the underlying engineering or scientific questions under investigation.</li>
+</ul>
+<ul>
+<li><strong>Residual</strong>:  $e_i=y_i-f(x_i|\alpha)$</li>
+</ul>
+<ul>
+<li><strong>Residual Plot</strong>:  When conducting a residual analysis, a "residuals versus fits plot" is the most frequently created plot. It is a scatter plot of residuals on the y axis and fitted values (estimated responses) on the x axis. The plot is used to detect non-linearity, unequal error variances, and outliers.</li>
+</ul>
+<ul>
+<li>If the model fit to the data were correct, the residuals would approximate the random errors that make the relationship between the explanatory variables and the response variable a statistical relationship. Therefore, if the residuals appear to behave randomly, it suggests that the model fits the data well. On the other hand, if non-random structure is evident in the residuals, it is a clear sign that the model fits the data poorly. </li>
+</ul>
+<p><img src="fig/residual_plot.png" alt=""></p>
+<ul>
+<li>Fig a. This plot looks good in that the variance is roughly the same all the way across and there are no worrisome patterns. There seems to be no difficulties with the model or data.</li>
+</ul>
+<ul>
+<li>Fig b. This plot shows two difficulties. First, the pattern is curved which indicates that the wrong type of model was used. Second, the variance (vertical spread) increases as the fitted values (predicted values) increase.</li>
+</ul>
+<ul>
+<li>Fig c.This plot shows that the residual variance (vertical spread) increases as the fitted values increase. This violates the assumption of constant error variance.</li>
+</ul>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -13757,7 +13788,7 @@ peaks=1429, sigma=4.83, chi2/ndf=1.27
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
 ****************************************
-Minimizer is Linear
+Minimizer is Linear / Migrad
 Chi2                      =  5.94348e-06
 NDf                       =            2
 p0                        =     -1.55862   +/-   0.00618008  
@@ -13872,7 +13903,7 @@ p1                        =   0.00717354   +/-   5.26708e-06
 <pre>[NbConvertApp] Converting notebook 3.1_DSSD_energy_calibration_1.ipynb to html
 
 
-[NbConvertApp] Writing 312010 bytes to 3.1_DSSD_energy_calibration_1.html
+[NbConvertApp] Writing 461454 bytes to 3.1_DSSD_energy_calibration_1.html
 
 
 </pre>
