@@ -13576,21 +13576,21 @@ div#notebook {
 <li>energy: <div class="highlight"><pre><span></span><span class="n">Int_t</span> <span class="n">xe</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">128</span><span class="p">],</span> <span class="n">ye</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">128</span><span class="p">];</span><span class="c1">//raw</span>
 <span class="n">Double_t</span> <span class="n">xec</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">128</span><span class="p">],</span> <span class="n">yec</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">128</span><span class="p">];</span> <span class="c1">//calibrated</span>
 </pre></div>
-<ul>
-<li>hit structure：
-```cpp
-Int_t xhit;
-Int_t xmod[xhit]; //dssd:1-3
-Int_t xid[xhit];//1-128
-Double_t xe[xhit],xec[xhit];</li>
-</ul>
 </li>
 </ul>
-<p>Int_t yhit;
-Int_t ymod[yhit]; //dssd:1-3
-Int_t yid[yhit];//1-128
-Double_t ye[yhit],yec[yhit];
-```</p>
+<ul>
+<li>hit structure：</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">Int_t</span> <span class="n">xhit</span><span class="p">;</span>
+<span class="n">Int_t</span> <span class="n">xmod</span><span class="p">[</span><span class="n">xhit</span><span class="p">];</span> <span class="c1">//dssd:1-3</span>
+<span class="n">Int_t</span> <span class="n">xid</span><span class="p">[</span><span class="n">xhit</span><span class="p">];</span><span class="c1">//1-128</span>
+<span class="n">Double_t</span> <span class="n">xe</span><span class="p">[</span><span class="n">xhit</span><span class="p">],</span><span class="n">xec</span><span class="p">[</span><span class="n">xhit</span><span class="p">];</span>
+
+<span class="n">Int_t</span> <span class="n">yhit</span><span class="p">;</span>
+<span class="n">Int_t</span> <span class="n">ymod</span><span class="p">[</span><span class="n">yhit</span><span class="p">];</span> <span class="c1">//dssd:1-3</span>
+<span class="n">Int_t</span> <span class="n">yid</span><span class="p">[</span><span class="n">yhit</span><span class="p">];</span><span class="c1">//1-128</span>
+<span class="n">Double_t</span> <span class="n">ye</span><span class="p">[</span><span class="n">yhit</span><span class="p">],</span><span class="n">yec</span><span class="p">[</span><span class="n">yhit</span><span class="p">];</span>
+</pre></div>
 
 </div>
 </div>
@@ -14385,7 +14385,9 @@ Double_t ye[yhit],yec[yhit];
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[NbConvertApp] Converting notebook 3.2_TTree_Branch_with_Dynamic_Array.ipynb to html
 
-[NbConvertApp] Writing 776471 bytes to 3.2_TTree_Branch_with_Dynamic_Array.html
+
+[NbConvertApp] Writing 828400 bytes to 3.2_TTree_Branch_with_Dynamic_Array.html
+
 
 </pre>
 </div>
