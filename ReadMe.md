@@ -52,7 +52,7 @@
 
 
 ## chapter 4. γ-γ 符合分析 
- - 4.1 [time walk, addback](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt4/4.0_gamma-gamma_coincidence_0.html)
+ - 4.0 [time walk, addback](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt4/4.0_gamma-gamma_coincidence_0.html)
  - 4.1 [γ-γ coincidence](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt4/4.1_gamma-gamma_coincidence_I.html)
  - 4.2 [二维 𝛾−𝛾 对称矩阵方法](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt4/4.2_gamma-gamma_coincidence_II.html) 
  - [作业 4.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt4/coursework4.1.html)
