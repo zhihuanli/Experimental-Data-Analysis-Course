@@ -13122,29 +13122,42 @@ div#notebook {
 </ol>
 <h3 id="Experiment:">Experiment:<a class="anchor-link" href="#Experiment:">&#182;</a></h3><ul>
 <li>188.2MeV $^{40}Ar+^{175}Lu$ fusion-evaporation @ SHANS, IMP</li>
+<li>测量剩余核的$\alpha$衰变：能量，半衰期，级联关系</li>
 </ul>
+<h3 id="&#23454;&#39564;&#35013;&#32622;&#65306;">&#23454;&#39564;&#35013;&#32622;&#65306;<a class="anchor-link" href="#&#23454;&#39564;&#35013;&#32622;&#65306;">&#182;</a></h3><p><img src="fig/detector.png" alt=""></p>
 <h3 id="Detectors&#65306;">Detectors&#65306;<a class="anchor-link" href="#Detectors&#65306;">&#182;</a></h3><ul>
-<li>MWPC+ DSSD(128x48) + SSD(1x3)</li>
-<li><p>SSD 数据没有包含在本课件的数据内.</p>
+<li>MWPC+ DSSD(128x48) + SSD(1x3)<ul>
+<li>靶上产生的熔合蒸发反应余核经过SHANS分离，穿过MWPC, 注入到DSSD(stop detector)表面。</li>
+<li>DSSD后面的SSD探测器(veto detector)测量穿过DSSD的束流中的轻粒子，这部分粒子无法被MWPC探测。</li>
+<li>注入到DSSD上的剩余核产生衰变，DSSD测量带电粒子衰变产物，Si-BOX测量从DSSD逃逸的带电粒子能量。</li>
+</ul>
 </li>
-<li><p>靶上产生的熔合蒸发反应余核经过SHANS分离，穿过MWPC, 注入到DSSD表面。SSD作为轻粒子的veto。</p>
-</li>
+<li>SSD和Si-Box探测器数据没有包含在本课件的数据内.</li>
 </ul>
 <h3 id="&#21442;&#32771;&#25991;&#29486;&#65306;">&#21442;&#32771;&#25991;&#29486;&#65306;<a class="anchor-link" href="#&#21442;&#32771;&#25991;&#29486;&#65306;">&#182;</a></h3><ul>
 <li>Nuclear Instruments and Methods in Physics Research B 317 (2013) 315–318</li>
 </ul>
-<h3 id="&#23454;&#39564;&#35013;&#32622;&#65306;">&#23454;&#39564;&#35013;&#32622;&#65306;<a class="anchor-link" href="#&#23454;&#39564;&#35013;&#32622;&#65306;">&#182;</a></h3><p><img src="fig/detector.png" alt=""></p>
-<h3 id="Digital-DAQ:">Digital DAQ:<a class="anchor-link" href="#Digital-DAQ:">&#182;</a></h3><ul>
+<h3 id="DAQ:">DAQ:<a class="anchor-link" href="#DAQ:">&#182;</a></h3><ul>
+<li>数字化方法记录实验数据</li>
 <li>CAEN V1724 100MHz, 14bit digitizer</li>
 <li>Trigger : 自触发模式，即当某一通道的信号幅度超过设定阈值时，直接记录该通道的能量和时间(timestamp)等信息。</li>
 </ul>
 <p><img src="fig/trigger.png" alt=""></p>
-<h3 id="Data:">Data:<a class="anchor-link" href="#Data:">&#182;</a></h3><ul>
+<h3 id="Data:">Data:<a class="anchor-link" href="#Data:">&#182;</a></h3><p>alpha.root</p>
+<ul>
 <li>Branch：<ul>
 <li>energy /keV</li>
 <li>timestamp /ns</li>
 <li>side: 0-front, 1-back</li>
 <li>strip</li>
+</ul>
+</li>
+</ul>
+<p>mwpc.root</p>
+<ul>
+<li>Branch<ul>
+<li>energy /ch</li>
+<li>timestamp /ns</li>
 </ul>
 </li>
 </ul>
@@ -13219,6 +13232,7 @@ div#notebook {
 <h3 id="&#20107;&#20214;&#30340;&#26102;&#38388;&#39034;&#24207;:">&#20107;&#20214;&#30340;&#26102;&#38388;&#39034;&#24207;:<a class="anchor-link" href="#&#20107;&#20214;&#30340;&#26102;&#38388;&#39034;&#24207;:">&#182;</a></h3><ul>
 <li>从下面的语句执行结果可以看出，timestamp不按事件编号的增加而增加，即获取事件的顺序并非是按照事件的发生顺序进行记录的。<ul>
 <li>每个插件内若干个通道共用一个buffer，当某一buffer被填满时，直接将该buffer内数据传输到后端，并清空该buffer。</li>
+<li>高计数率探测器的数据先传输到后端。</li>
 </ul>
 </li>
 </ul>
@@ -13296,7 +13310,7 @@ div#notebook {
     <span class="n">tree</span><span class="o">-&gt;</span><span class="n">GetEntry</span><span class="p">(</span><span class="n">jentry</span><span class="p">);</span>
     <span class="n">ds</span><span class="p">.</span><span class="n">energy</span> <span class="o">=</span> <span class="n">energy</span><span class="p">;</span>
     <span class="n">ds</span><span class="p">.</span><span class="n">strip</span> <span class="o">=</span> <span class="n">strip</span><span class="p">;</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">side</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="n">mapf1</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">ULong64_t</span><span class="p">,</span><span class="n">dssd</span><span class="o">&gt;</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span><span class="n">ds</span><span class="p">));</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">side</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="n">mapf1</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">ULong64_t</span><span class="p">,</span><span class="n">dssd</span><span class="o">&gt;</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span><span class="n">ds</span><span class="p">));</span><span class="c1">//make_pair(timestamp,ds);</span>
     <span class="k">if</span><span class="p">(</span><span class="n">side</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span> <span class="n">mapb</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">ULong64_t</span><span class="p">,</span><span class="n">dssd</span><span class="o">&gt;</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span><span class="n">ds</span><span class="p">));</span>
     <span class="k">if</span><span class="p">(</span><span class="n">nentries</span><span class="o">%</span><span class="mi">100000</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">jentry</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
 <span class="p">}</span>
@@ -13330,7 +13344,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="&#20197;&#27491;&#38754;&#20026;&#20363;&#65292;&#26597;&#30475;&#20107;&#20214;&#30340;&#26102;&#38388;&#25490;&#24207;&#32467;&#26524;">&#20197;&#27491;&#38754;&#20026;&#20363;&#65292;&#26597;&#30475;&#20107;&#20214;&#30340;&#26102;&#38388;&#25490;&#24207;&#32467;&#26524;<a class="anchor-link" href="#&#20197;&#27491;&#38754;&#20026;&#20363;&#65292;&#26597;&#30475;&#20107;&#20214;&#30340;&#26102;&#38388;&#25490;&#24207;&#32467;&#26524;">&#182;</a></h3>
+<h3 id="&#26597;&#30475;&#20107;&#20214;&#30340;&#26102;&#38388;&#25490;&#24207;&#32467;&#26524;">&#26597;&#30475;&#20107;&#20214;&#30340;&#26102;&#38388;&#25490;&#24207;&#32467;&#26524;<a class="anchor-link" href="#&#26597;&#30475;&#20107;&#20214;&#30340;&#26102;&#38388;&#25490;&#24207;&#32467;&#26524;">&#182;</a></h3>
 </div>
 </div>
 </div>
@@ -13404,10 +13418,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="&#25353;&#29031;&#26102;&#38388;&#25490;&#24207;&#30340;&#20107;&#20214;&#65292;&#27491;&#38754;-&#32972;&#38754;&#20851;&#32852;&#19981;&#27491;&#30830;">&#25353;&#29031;&#26102;&#38388;&#25490;&#24207;&#30340;&#20107;&#20214;&#65292;&#27491;&#38754;-&#32972;&#38754;&#20851;&#32852;&#19981;&#27491;&#30830;<a class="anchor-link" href="#&#25353;&#29031;&#26102;&#38388;&#25490;&#24207;&#30340;&#20107;&#20214;&#65292;&#27491;&#38754;-&#32972;&#38754;&#20851;&#32852;&#19981;&#27491;&#30830;">&#182;</a></h3><ul>
-<li>正背面timestamp相差很远</li>
-</ul>
-
+<h3 id="&#25353;&#29031;&#26102;&#38388;&#25490;&#24207;&#30340;&#20107;&#20214;&#65292;&#27491;&#38754;-&#32972;&#38754;&#20851;&#32852;&#19981;&#27491;&#30830;">&#25353;&#29031;&#26102;&#38388;&#25490;&#24207;&#30340;&#20107;&#20214;&#65292;&#27491;&#38754;-&#32972;&#38754;&#20851;&#32852;&#19981;&#27491;&#30830;<a class="anchor-link" href="#&#25353;&#29031;&#26102;&#38388;&#25490;&#24207;&#30340;&#20107;&#20214;&#65292;&#27491;&#38754;-&#32972;&#38754;&#20851;&#32852;&#19981;&#27491;&#30830;">&#182;</a></h3>
 </div>
 </div>
 </div>
@@ -13499,7 +13510,8 @@ div#notebook {
 <ul>
 <li>即它们之间的时间差集中在固定的范围(如Gauss分布)。</li>
 </ul>
-<p>而对于不关联事件，探测器之间的时间差是任意的，因此时间差的分布是均匀分布。</p>
+<p>而对于不关联事件，探测器之间的时间差是任意的，因此时间差的分布是均匀分布。
+<img src="fig/coincidence.png" style="zoom:70%;" /></p>
 <ul>
 <li><p>map的lower_bound(),upper_bound()方法</p>
 <ul>
@@ -14849,7 +14861,9 @@ div#notebook {
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[NbConvertApp] Converting notebook 5.1_decay_analysis_I.ipynb to html
 
-[NbConvertApp] Writing 686409 bytes to 5.1_decay_analysis_I.html
+
+[NbConvertApp] Writing 784761 bytes to 5.1_decay_analysis_I.html
+
 
 </pre>
 </div>
