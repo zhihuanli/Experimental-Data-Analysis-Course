@@ -5,9 +5,12 @@
 - [HOME](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/)
 ### ROOT 
  - [RootTutorial](http://www.pp.rhul.ac.uk/~cowan/RootTutorial/)
+ - [TH1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/ROOT/TH1.html)
+ - [TH2](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/ROOT/TH2.html)
+ - [TGraph](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/ROOT/TGraph.html)
 ### Juypter
  - [juypter short instruction](jupyter-short-instruction.pdf)
-
+ - [juypter](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/ROOT/juypter.html)
  
  ## chapter 1. ROOT TTree 初阶
  - 1.1 [用TTree 结构存储事件数据](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.1_create_tree.html)
