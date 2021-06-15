@@ -11,7 +11,7 @@
 ### Juypter
  - [juypter安装](jupyter-short-instruction.pdf)
  - [juypter short instruction](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/ROOT/juypter.html)
- - [在线juypter网站|https://162.105.54.124:8888/] 访问仅限北大ip范围
+ - [在线juypter网站](https://162.105.54.124:8888) 访问仅限北大ip范围
  
  ## chapter 1. ROOT TTree 初阶
  - 1.1 [用TTree 结构存储事件数据](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.1_create_tree.html)
