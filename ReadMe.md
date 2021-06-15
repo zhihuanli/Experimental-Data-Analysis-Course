@@ -1,4 +1,4 @@
-# Experimental Data Analysis
+# Data-Analysis-in-Nuclear-Physics-Course
 - 开课记录
   - PKU: 2016,2017,2018,2019,2020
 
