@@ -2,7 +2,7 @@
 - 开课记录
   - PKU: 2016,2017,2018,2019,2020
 
-- [HOME](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/)
+- [HOME](https://zhihuanli.github.io/Data-Analysis-in-Nuclear-Physics-Course/)
 ### ROOT 
  - [RootTutorial](http://www.pp.rhul.ac.uk/~cowan/RootTutorial/)
  - [TH1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/ROOT/TH1.html)
