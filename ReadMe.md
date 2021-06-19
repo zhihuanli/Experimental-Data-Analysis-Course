@@ -44,7 +44,7 @@
 
  - 3.0 [TSpectrum and map](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.0_TSpectrum_map.html)
  - 3.1 [DSSD Energy Calibration](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.1_DSSD_energy_calibration_1.html)
- - 3.2 [利用可变长数组存储数据结构- Hit结构](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.2_TTree_Branch_with_Dynamic_Array.html) 
+ - 3.2 [利用可变长数组存储数据- Hit结构](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.2_TTree_Branch_with_Dynamic_Array.html) 
  - [作业 3.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/coursework3.1.html) 
  - 3.3 [DSSD Inter-strip correlation](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.3_DSSD_interstrip_correlation.html)
  - 3.4 [DSSD front-back correlation (I)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.4_DSSD_front_back_correlation_1.html)
@@ -54,7 +54,7 @@
  - 3.5 [DSSD front-back correlation (II)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.5_DSSD_front_back_correlation_2.html)
  - 3.6 [DSSD 数据分析](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.6_DSSD_data_analysis.html) 
  - [作业 3.2](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/coursework3.2.html) 
-
+ - 3.7* [用vector存储TTree数据](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.7_TTree_Branch_with_vector.html) 
 
 
 
