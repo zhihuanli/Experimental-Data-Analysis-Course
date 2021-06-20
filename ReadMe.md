@@ -55,6 +55,7 @@
  - 3.6 [DSSD 数据分析](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.6_DSSD_data_analysis.html) 
  - [作业 3.2](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/coursework3.2.html) 
  - 3.7* [用vector存储TTree数据](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.7_TTree_Branch_with_vector.html) 
+      - 代码见[code](https://github.com/zhihuanli/Experimental-Data-Analysis-Course/tree/master/chapt3/code)
 
 
 
