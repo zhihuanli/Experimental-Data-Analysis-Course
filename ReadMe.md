@@ -20,7 +20,7 @@
  - 1.1 [用TTree 结构存储事件数据](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.1_create_tree.html)
  - 1.2 [读取TTree数据，进行逐事件分析](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.2_read_tree.html)
  - 参考文献
-      - [1.ROOT for beginner - Trees](./chapt1/trees.pdf)
+      - [1.ROOT for beginner - Trees](./chapt1/ROOT_for_beginners_Day4.pdf)
       - [2.A large-area, position-sensitive neutron detector](./chapt1/neutron_detector.pdf)
       - [3.calibraton of neutron detector](./chapt1/neutron_cali.pdf)
       
