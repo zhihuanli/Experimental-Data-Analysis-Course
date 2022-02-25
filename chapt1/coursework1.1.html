@@ -13125,15 +13125,16 @@ div#notebook {
 </ul>
 <h3 id="&#35201;&#27714;">&#35201;&#27714;<a class="anchor-link" href="#&#35201;&#27714;">&#182;</a></h3><ul>
 <li>按照下列要求进行分析，将新参数存入新的ROOT文件。</li>
-<li>代码和root文件上传到自己的github目录上，用jupyter或ppt展示过程和结果。<ul>
+<li>代码和root文件上传到自己的github目录上或发给助教，用jupyter或ppt展示过程和结果。<ul>
 <li>写上原理，中间步骤，结果，结果分析或者存在的问题等。</li>
 </ul>
 </li>
 </ul>
-<p>1.利用两端时间和能量信息求粒子入射位置：$t_x$和$q_x$。<font color=red> (不得利用$\lambda，v_{sc}$) </font></p>
+<p>0.参考1.1代码，编写模拟程序，生成ROOT文件。参考1.2的做法，读入ROOT文件，将tu,td以及ctof，cx存入新的ROOT文件。其中ctof=(tu+td)/2，cx=(tu-td)/2。</p>
+<p>1.利用两端时间和能量信息求粒子入射位置：$t_x$和$Q_x$。<font color=red> (不得利用$\lambda，v_{sc}$) </font></p>
 <ul>
 <li>找出$t_u-t_d$的中心位置和两侧边界，根据几何条件确定 $t_x=a*(t_u-t_d)+b$中的a,b值（参照文献2.的做法）</li>
-<li>利用两端$q_u,q_d$的信号，计算粒子入射位置$q_x$。</li>
+<li>利用两端$Q_u,Q_d$的信号，计算粒子入射位置$Q_x$。</li>
 </ul>
 <p>2.中子能量$ce$。</p>
 <ul>
@@ -13142,7 +13143,7 @@ div#notebook {
 <li>利用上一步TOF信息，计算中子能量$ce$。</li>
 </ul>
 <ul>
-<li>在新文件中加入$t_x，q_x$，ntof，ce参数，并保留原来的所有参数。<ul>
+<li>在新文件中加入$t_x，Q_x$，ntof，ce参数，并保留原来的所有参数。<ul>
 <li>比较$t_x，q_x$哪种更好？。</li>
 </ul>
 </li>
@@ -13153,7 +13154,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="o">!</span><span class="n">jupyter</span> <span class="n">nbconvert</span> <span class="n">coursework1</span><span class="mf">.1</span><span class="p">.</span><span class="n">ipynb</span> <span class="o">--</span><span class="n">to</span> <span class="n">html</span>
@@ -13176,7 +13177,7 @@ div#notebook {
 <pre>[NbConvertApp] Converting notebook coursework1.1.ipynb to html
 
 
-[NbConvertApp] Writing 274468 bytes to coursework1.1.html
+[NbConvertApp] Writing 274629 bytes to coursework1.1.html
 
 
 </pre>
