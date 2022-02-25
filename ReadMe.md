@@ -1,7 +1,7 @@
 # Data-Analysis-in-Nuclear-Physics-Course
 - 开课记录
-  - PKU: 2016,2017,2018,2019,2020,2021
-  - Online: 2020,2021
+  - PKU: 2016,2017,2018,2019,2020,2021,2022
+  - Online: 2020,2021,2022
 
 - [HOME](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/)
 ### ROOT 
