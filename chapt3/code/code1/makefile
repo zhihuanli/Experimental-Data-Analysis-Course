@@ -15,12 +15,13 @@ IncludeFile := $(wildcard $(shell pwd)/include/*.h $(shell pwd)/include/*.hh $(s
 
 ROOTCFLAGS  = $(shell root-config --cflags)
 ROOTLIBS    = $(shell root-config --libs)
-ROOTGLIBS = $(shell root-config --glibs)
+ROOTGLIBS = $(shell root-config --glibs) #--glibs 与 --libs 的区别在于多了 -lGui 
 
 GXX = g++ 
 # -Wl ,--no-as-needed
-DIR_INC = -I$(ROOTSYS)/include  -I$(shell pwd)/include
-CFLAGS = -Wall -O2 $(DIR_INC) -I$(ROOTSYS)/include  $(ROOTLIBS) -lSpectrum -lXMLParser  -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64
+DIR_INC = -I$(shell pwd)/include
+CFLAGS = -Wall -O2 $(ROOTCFLAGS) $(DIR_INC) -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 #动态连接库不要写在这里
+LIBS = $(ROOTGLIBS) -lSpectrum -lXMLParser  #动态连接库写在这里 
 
 ###############################################################################
 
@@ -30,8 +31,8 @@ all:$(OBJ)
 $(LinkFile) : include/ana.h Linkdef.h
 	rootcling -f $(LinkFile) -c $^	
 
-$(OBJ): $(SourceFile)
-	$(GXX) $(CFLAGS) $(ROOTCFLAGS) $(ROOTLIBS) $(ROOTGLIBS) -o $@ $(SourceFile)
+$(OBJ): $(SourceFile) 
+	$(GXX) $(CFLAGS) -o $@ $(SourceFile) $(LIBS)
 	@echo "=============================================================="
 	@echo "$@ done !"
 	@echo "=============================================================="
