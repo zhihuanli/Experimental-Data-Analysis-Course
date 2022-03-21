@@ -13181,11 +13181,11 @@ div#notebook {
     <span class="n">TFile</span> <span class="o">*</span><span class="n">opf</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TFile</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span><span class="s">&quot;RECREATE&quot;</span><span class="p">);</span>
     <span class="n">TTree</span> <span class="o">*</span><span class="n">opt</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TTree</span><span class="p">(</span><span class="s">&quot;tree&quot;</span><span class="p">,</span><span class="s">&quot;ppac tracking&quot;</span><span class="p">);</span>
 
-    <span class="c1">//</span>
     <span class="n">tracking</span> <span class="o">*</span><span class="n">tk</span><span class="o">=</span><span class="k">new</span> <span class="n">tracking</span><span class="p">(</span><span class="n">ipt</span><span class="p">);</span><span class="c1">//当traking构造函数中传入的ipt已存在时，构造函数内部的tree指针就指向ipt</span>
     <span class="n">tk</span><span class="o">-&gt;</span><span class="n">Loop</span><span class="p">(</span><span class="n">opt</span><span class="p">);</span>
 
     <span class="c1">//</span>
+
     <span class="n">ipf</span><span class="o">-&gt;</span><span class="n">Close</span><span class="p">();</span>
     <span class="n">opf</span><span class="o">-&gt;</span><span class="n">Close</span><span class="p">();</span>
     <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>        
@@ -13520,13 +13520,14 @@ ROOTGLIBS = $(shell root-config --glibs)
 GXX = g++ 
 # -Wl ,--no-as-needed
 DIR_INC = -I$(ROOTSYS)/include  -I$(shell pwd)/include
-CFLAGS = -Wall -O2 $(DIR_INC) -I$(ROOTSYS)/include  $(ROOTLIBS) -lSpectrum -lXMLParser  -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64
+CFLAGS = -Wall -O2 $(ROOTCFLAGS) $(DIR_INC) -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 #动态连接库不要写在这里
+LIBS = $(ROOTGLIBS) -lSpectrum -lXMLParser  #动态连接库写在这里 
 
 ###############################################################################
 
 all:$(OBJ)
 $(OBJ): $(MainFile) $(SourceFile)
-    $(GXX) $(CFLAGS) $(ROOTCFLAGS) $(ROOTLIBS) $(ROOTGLIBS) -o $@ $(MainFile) $(SourceFile)
+    $(GXX) $(CFLAGS) -o $@ $(SourceFile) $(LIBS)
     @echo "=============================================================="
     @echo "$@ done !"
     @echo "=============================================================="
@@ -13611,7 +13612,7 @@ tracking.C  tracking.C~
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="o">!</span><span class="p">.</span><span class="o">/</span><span class="n">tracking</span> <span class="mi">1</span>
@@ -13631,77 +13632,44 @@ tracking.C  tracking.C~
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>processing 30000
+<pre>dyld[47342]: Library not loaded: @rpath/libCore.so
+  Referenced from: /Users/zhli/ana/course/data/chapt2/compile/compile-1/tracking
+  Reason: tried: &#39;/usr/local/lib/libCore.so&#39; (no such file), &#39;/usr/lib/libCore.so&#39; (no such file)
+Abort trap: 6
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="o">!</span><span class="n">jupyter</span> <span class="n">nbconvert</span> <span class="mf">2.3</span><span class="n">_comiling_1</span><span class="p">.</span><span class="n">ipynb</span> <span class="o">--</span><span class="n">to</span> <span class="n">html</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
 
 
-processing 50000
+<div class="output_area">
+
+    <div class="prompt"></div>
 
 
-processing 110000
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[NbConvertApp] Converting notebook 2.3_comiling_1.ipynb to html
 
-
-processing 130000
-
-
-processing 140000
-
-
-processing 150000
-
-
-processing 190000
-
-
-processing 240000
-
-
-processing 270000
-
-
-processing 360000
-
-
-processing 390000
-
-
-processing 400000
-
-
-processing 410000
-
-
-processing 440000
-
-
-processing 450000
-
-
-processing 490000
-
-
-processing 550000
-
-
-processing 560000
-
-
-processing 590000
-
-
-processing 600000
-
-
-processing 620000
-
-
-processing 630000
-
-
-processing 640000
-
-
-processing 650000
-
+[NbConvertApp] Writing 335247 bytes to 2.3_comiling_1.html
 
 </pre>
 </div>
