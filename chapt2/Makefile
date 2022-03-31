@@ -15,14 +15,15 @@ ROOTGLIBS = $(shell root-config --glibs)
 
 GXX = g++ 
 # -Wl ,--no-as-needed
-DIR_INC = -I$(ROOTSYS)/include  -I$(shell pwd)/include
-CFLAGS = -Wall -O2 $(DIR_INC) -I$(ROOTSYS)/include  $(ROOTLIBS) -lSpectrum -lXMLParser  -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64
+DIR_INC = -I$(shell pwd)/include
+CFLAGS = -Wall -O2 $(ROOTCFLAGS) $(DIR_INC)  #动态连接库不要写在这里
+LIBS = $(ROOTGLIBS) -lSpectrum   #动态连接库写在这里 
 
 ###############################################################################
 
 all:$(OBJ)
 $(OBJ): $(MainFile) $(SourceFile)
-	$(GXX) $(CFLAGS) $(ROOTCFLAGS) $(ROOTLIBS) $(ROOTGLIBS) -o $@ $(MainFile) $(SourceFile)
+	$(GXX) $(CFLAGS) -o $@ $(MainFile) $(SourceFile) $(LIBS)
 	@echo "=============================================================="
 	@echo "$@ done !"
 	@echo "=============================================================="
