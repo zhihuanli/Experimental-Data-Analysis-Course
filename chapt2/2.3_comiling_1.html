@@ -13501,6 +13501,7 @@ div#notebook {
 <h3 id="Makefile:-&#21578;&#35785;make&#21629;&#20196;&#22914;&#20309;&#32534;&#35793;&#21644;&#38142;&#25509;&#31243;&#24207;">Makefile: &#21578;&#35785;make&#21629;&#20196;&#22914;&#20309;&#32534;&#35793;&#21644;&#38142;&#25509;&#31243;&#24207;<a class="anchor-link" href="#Makefile:-&#21578;&#35785;make&#21629;&#20196;&#22914;&#20309;&#32534;&#35793;&#21644;&#38142;&#25509;&#31243;&#24207;">&#182;</a></h3><p>参考链接：跟我一起写Makefile：<a href="https://blog.csdn.net/xiaoshuai537/article/details/79340153">https://blog.csdn.net/xiaoshuai537/article/details/79340153</a></p>
 <p><font color="Red">  下面的Makefile中ROOTCFLAGS，ROOTLIBS，ROOTGLIBS是编译和链接ROOT环境的必要语句。 </font></p>
 <p><font color="Red">  OBJ = 程序编译后的名称 </font></p>
+<p><a href="Makefile">下载Makefile</a></p>
 
 <pre><code>#############################################################################
 OBJ = tracking
@@ -13519,15 +13520,15 @@ ROOTGLIBS = $(shell root-config --glibs)
 
 GXX = g++ 
 # -Wl ,--no-as-needed
-DIR_INC = -I$(ROOTSYS)/include  -I$(shell pwd)/include
-CFLAGS = -Wall -O2 $(ROOTCFLAGS) $(DIR_INC) -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 #动态连接库不要写在这里
-LIBS = $(ROOTGLIBS) -lSpectrum -lXMLParser  #动态连接库写在这里 
+DIR_INC = -I$(shell pwd)/include
+CFLAGS = -Wall -O2 $(ROOTCFLAGS) $(DIR_INC)  #动态连接库不要写在这里
+LIBS = $(ROOTGLIBS) -lSpectrum   #动态连接库写在这里 
 
 ###############################################################################
 
 all:$(OBJ)
 $(OBJ): $(MainFile) $(SourceFile)
-    $(GXX) $(CFLAGS) -o $@ $(SourceFile) $(LIBS)
+    $(GXX) $(CFLAGS) -o $@ $(MainFile) $(SourceFile) $(LIBS)
     @echo "=============================================================="
     @echo "$@ done !"
     @echo "=============================================================="
@@ -13572,7 +13573,7 @@ tracking done !
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="o">!</span><span class="n">ls</span> <span class="o">-</span><span class="n">R</span>
@@ -13592,9 +13593,10 @@ tracking done !
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Makefile       exe1.ipynb     main.cpp       <span class="ansi-blue-fg">src</span>
-Makefile~      f8ppac001.root main.cpp~      <span class="ansi-red-fg">tracking</span>
-exe.ipynb      <span class="ansi-blue-fg">include</span>        out001.root
+<pre>2.3_comiling_1.html  <span class="ansi-cyan-fg">include</span>              <span class="ansi-cyan-fg">src</span>
+2.3_comiling_1.ipynb main.cpp             <span class="ansi-red-fg">tracking</span>
+Makefile             main.cpp~
+f8ppac001.root       out001.root
 
 ./include:
 tracking.h  tracking.h~
@@ -13612,7 +13614,7 @@ tracking.C  tracking.C~
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="o">!</span><span class="p">.</span><span class="o">/</span><span class="n">tracking</span> <span class="mi">1</span>
@@ -13632,9 +13634,9 @@ tracking.C  tracking.C~
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>dyld[47342]: Library not loaded: @rpath/libCore.so
+<pre>dyld[76538]: Library not loaded: @rpath/libGui.so
   Referenced from: /Users/zhli/ana/course/data/chapt2/compile/compile-1/tracking
-  Reason: tried: &#39;/usr/local/lib/libCore.so&#39; (no such file), &#39;/usr/lib/libCore.so&#39; (no such file)
+  Reason: tried: &#39;/usr/local/lib/libGui.so&#39; (no such file), &#39;/usr/lib/libGui.so&#39; (no such file)
 Abort trap: 6
 
 </pre>
@@ -13647,7 +13649,7 @@ Abort trap: 6
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="o">!</span><span class="n">jupyter</span> <span class="n">nbconvert</span> <span class="mf">2.3</span><span class="n">_comiling_1</span><span class="p">.</span><span class="n">ipynb</span> <span class="o">--</span><span class="n">to</span> <span class="n">html</span>
@@ -13669,7 +13671,9 @@ Abort trap: 6
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[NbConvertApp] Converting notebook 2.3_comiling_1.ipynb to html
 
-[NbConvertApp] Writing 335247 bytes to 2.3_comiling_1.html
+
+[NbConvertApp] Writing 335871 bytes to 2.3_comiling_1.html
+
 
 </pre>
 </div>
