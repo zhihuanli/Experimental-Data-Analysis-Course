@@ -21,7 +21,7 @@
  - [Integration in TH1 & TF1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/Integration_in_TH1_and_TF1.html)
     - [Example](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/Example_of_Integration_in_TH1_and_TF1.html)
  
- ## chapter 1. ROOT TTree 初阶
+## chapter 1. ROOT TTree 初阶
  - 1.1 [用TTree 结构存储事件数据](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.1_create_tree.html)
  - 1.2 [读取TTree数据，进行逐事件分析](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.2_read_tree.html)
  - 参考文献
@@ -60,7 +60,6 @@
  - [作业 3.2](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/coursework3.2.html) 
  - 3.7* [用vector存储TTree数据](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.7_TTree_Branch_with_vector.html) 
       - 代码见[code](https://github.com/zhihuanli/Experimental-Data-Analysis-Course/tree/master/chapt3/code)
-
 
 
 ## chapter 4. γ-γ 符合分析 
