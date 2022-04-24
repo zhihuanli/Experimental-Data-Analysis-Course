@@ -15,6 +15,11 @@
  - [juypter安装](jupyter-short-instruction.pdf)
  - [juypter short instruction](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/ROOT/juypter.html)
  - [在线juypter网站](https://162.105.54.124:8888) 访问仅限北大ip范围
+
+### ROOT Tips
+ - [ROOT tips](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/ROOT_tips.html)
+ - [Integration in TH1 & TF1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/Integration_in_TH1_and_TF1.html)
+    - [Example](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/Example_of_Integration_in_TH1_and_TF1.html)
  
  ## chapter 1. ROOT TTree 初阶
  - 1.1 [用TTree 结构存储事件数据](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.1_create_tree.html)
@@ -28,8 +33,6 @@
  - 1.3 [ADC,TDC信号处理](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.3_adc_analysis.html)
  - 1.4 [TTree的MakeClass方法](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.4_root_tree_makeclass.html)
  - [作业 1.2](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/coursework1.2.html)
- 
- - [ROOT tips](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/ROOT_tips.html)
  
 
 ## chapter 2. 位置探测器(PPAC)数据处理
