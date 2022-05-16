@@ -13783,10 +13783,16 @@ div#notebook {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="&#24635;&#32467;">&#24635;&#32467;<a class="anchor-link" href="#&#24635;&#32467;">&#182;</a></h3><ul>
-<li><p>当两侧多重性不一致时：sx1e-sy1e 中心值不为零，向正(x1hit&gt;y1hit),负(x1hit&lt;y1hit)的一侧偏移</p>
+<li>当两侧多重性不一致时：sx1e-sy1e 中心值不为零，偏移$\Delta A=\pm 20$<ul>
+<li>原因是正面相邻条道址相加后包含两个Pedestal信号，而背面道址中只有一个Pedestal信号<ul>
+<li>刻度参考条的实际能量e与幅度A关系e=kA+b，中的b=20。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>向正(x1hit&gt;y1hit),负(x1hit&lt;y1hit)的一侧偏移</p>
 <ul>
-<li>意味着在能量沉积大时，有些条的感应信号因为阈值(硬件pedal的阈值)没有被记录</li>
-<li>但这个问题实际并不严重：在能量接近8000的时候最大偏移在50左右，对能量的相对影响为$\Delta E/E=50/8000 \approx 0.006$, 小于1%。</li>
+<li>意味着在能量沉积大时，有些条的感应信号因为阈值(硬件pedal的阈值)没有被记录。实际上这个问题并不严重：在能量接近8000的时候最大偏移在30左右，对能量的相对影响为$\Delta E/E=30/8000 \approx 0.004$, 远小于1%。</li>
 </ul>
 </li>
 <li><p>对于多粒子入射引起的x,y多重性事件：abs(sx1e-sy1e)&lt;10</p>
@@ -14339,7 +14345,9 @@ div#notebook {
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[NbConvertApp] Converting notebook 3.6_DSSD_data_analysis.ipynb to html
 
-[NbConvertApp] Writing 953119 bytes to 3.6_DSSD_data_analysis.html
+
+[NbConvertApp] Writing 953534 bytes to 3.6_DSSD_data_analysis.html
+
 
 </pre>
 </div>
