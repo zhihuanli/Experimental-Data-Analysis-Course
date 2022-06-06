@@ -13120,8 +13120,7 @@ div#notebook {
 <li>按照课件a的描述，分析数据确定各路信号之间的时间的offset，符合事件窗宽度<ul>
 <li>在符合时间窗内进行dssd的正背面信号匹配，合并相邻条事件，进行正背面关联cut</li>
 <li>将上述步骤生成结果存入ROOT文件</li>
-<li>包含dssd 正背面位置和能量，正面timestamp</li>
-<li>mwpc 能量</li>
+<li>包含dssd 正背面位置和能量，正面timestamp, mwpc 能量</li>
 </ul>
 </li>
 <li>参考课件b的代码，将重离子-衰变关联后的事件存入ROOT文件<ul>
@@ -13135,13 +13134,34 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="o">!</span><span class="n">jupyter</span> <span class="n">nbconvert</span> <span class="n">coursework5</span><span class="mf">.1</span><span class="p">.</span><span class="n">ipynb</span> <span class="o">--</span><span class="n">to</span> <span class="n">html</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[NbConvertApp] Converting notebook coursework5.1.ipynb to html
+
+[NbConvertApp] Writing 273185 bytes to coursework5.1.html
+
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
