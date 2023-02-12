@@ -303,10 +303,16 @@ int main()
 }
 ```
 * You can only use curly brackets like this at initialisation time.
+
 * We can also declare:
-    * `int favourite_numbers[] = {3,1,-4,1};`
+    * ```cpp
+      int favourite_numbers[] = {3,1,-4,1};
+      ```
+    
 * Multidimensional arrays work too
-    * `int magic_square[3][3] = {{4,9,2},{3,5,7},{8,1,6}};`
+    * ```cpp
+      int magic_square[3][3] = {{4,9,2},{3,5,7},{8,1,6}};
+      ```
 
 ### 11. Functions 
 
