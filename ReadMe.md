@@ -25,7 +25,7 @@
 ## chapter 0. A short introduction to C++
  - 0.1 [C++ basic](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt0/introduction_basic.html)
  - 0.2 [C++ advanced](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt0/introduction_advanced.html)
- - 更多高阶内容将在后续课程中讲授
+ * 更多高阶内容将在后续课程中讲授
 
 ## chapter 1. ROOT TTree 初阶
  - 1.1 [用TTree 结构存储事件数据](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.1_create_tree.html)
