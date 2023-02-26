@@ -13126,8 +13126,8 @@ div#notebook {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="c1">//%jsroot on</span>
-<span class="n">TFile</span> <span class="o">*</span><span class="n">ipf</span><span class="o">=</span><span class="k">new</span> <span class="n">TFile</span><span class="p">(</span><span class="s">&quot;run0005.root&quot;</span><span class="p">);</span> 
-<span class="n">TTree</span> <span class="o">*</span><span class="n">tree</span><span class="o">=</span><span class="p">(</span><span class="n">TTree</span><span class="o">*</span><span class="p">)</span>  <span class="n">ipf</span><span class="o">-&gt;</span><span class="n">Get</span><span class="p">(</span><span class="s">&quot;tree&quot;</span><span class="p">);</span>
+<span class="n">TFile</span> <span class="o">*</span><span class="n">ipf</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TFile</span><span class="p">(</span><span class="s">&quot;run0005.root&quot;</span><span class="p">);</span> 
+<span class="n">TTree</span> <span class="o">*</span><span class="n">tree</span> <span class="o">=</span> <span class="p">(</span><span class="n">TTree</span><span class="o">*</span><span class="p">)</span>  <span class="n">ipf</span><span class="o">-&gt;</span><span class="n">Get</span><span class="p">(</span><span class="s">&quot;tree&quot;</span><span class="p">);</span>
 </pre></div>
 
     </div>
@@ -13288,8 +13288,10 @@ div#notebook {
 <li>设置TBranch的地址(SetBranchAdress)</li>
 </ul>
 </li>
-<li>MyClass.C
-MyClass::Loop()函数的代码框架-用户需要填入自己的代码。</li>
+<li>MyClass.C<ul>
+<li>MyClass::Loop()函数的代码框架-用户需要填入自己的代码。</li>
+</ul>
+</li>
 </ul>
 
 </div>
@@ -13330,12 +13332,12 @@ MyClass::Loop()函数的代码框架-用户需要填入自己的代码。</li>
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>-rw-r--r--@ 1 zhli  staff   1.4K Mar  6 11:44 ppac.C
+<pre>-rw-r--r--@ 1 zhli  staff   1.4K Feb 26 21:45 ppac.C
 -rw-r--r--@ 1 zhli  staff   1.4K Mar 23  2019 ppac.C~
 -rw-r--r--@ 1 zhli  staff   3.1K Mar 23  2019 ppac.cpp
--rw-r--r--@ 1 zhli  staff   5.7K Mar  6 11:44 ppac.h
+-rw-r--r--@ 1 zhli  staff   5.7K Feb 26 21:45 ppac.h
 -rw-r--r--@ 1 zhli  staff    71K Mar 23  2019 ppac.png
--rw-r--r--  1 zhli  staff   6.3M Apr  3  2021 ppac.root
+-rw-r--r--  1 zhli  staff   5.8M Feb 26 21:44 ppac.root
 
 </pre>
 </div>
@@ -13606,13 +13608,13 @@ MyClass::Loop()函数的代码框架-用户需要填入自己的代码。</li>
 <span class="cp">#include</span> <span class="cpf">&lt;TH2.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;TStyle.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;TCanvas.h&gt;</span><span class="cp"></span>
-<span class="n">TCanvas</span> <span class="o">*</span><span class="n">c1</span><span class="o">=</span><span class="k">new</span> <span class="n">TCanvas</span><span class="p">(</span><span class="s">&quot;c1&quot;</span><span class="p">,</span><span class="s">&quot;c1&quot;</span><span class="p">);</span>
-<span class="n">TH1D</span> <span class="o">*</span><span class="n">h1</span><span class="o">=</span><span class="k">new</span> <span class="n">TH1D</span><span class="p">(</span><span class="s">&quot;h1&quot;</span><span class="p">,</span><span class="s">&quot;h1&quot;</span><span class="p">,</span><span class="mi">2000</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2000</span><span class="p">);</span>
+<span class="n">TCanvas</span> <span class="o">*</span><span class="n">c1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TCanvas</span><span class="p">(</span><span class="s">&quot;c1&quot;</span><span class="p">,</span><span class="s">&quot;c1&quot;</span><span class="p">);</span>
+<span class="n">TH1D</span> <span class="o">*</span><span class="n">h1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TH1D</span><span class="p">(</span><span class="s">&quot;h1&quot;</span><span class="p">,</span><span class="s">&quot;h1&quot;</span><span class="p">,</span><span class="mi">2000</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2000</span><span class="p">);</span>
 <span class="kt">void</span> <span class="n">ppac</span><span class="o">::</span><span class="n">Loop</span><span class="p">()</span>
 <span class="p">{</span>   
   <span class="c1">//new tree and root file  </span>
-  <span class="n">TFile</span> <span class="o">*</span><span class="n">opf</span><span class="o">=</span><span class="k">new</span> <span class="n">TFile</span><span class="p">(</span><span class="s">&quot;ppac.root&quot;</span><span class="p">,</span><span class="s">&quot;recreate&quot;</span><span class="p">);</span>
-  <span class="n">TTree</span> <span class="o">*</span><span class="n">tree</span><span class="o">=</span><span class="k">new</span> <span class="n">TTree</span><span class="p">(</span><span class="s">&quot;tree&quot;</span><span class="p">,</span><span class="s">&quot;ppac&quot;</span><span class="p">);</span>
+  <span class="n">TFile</span> <span class="o">*</span><span class="n">opf</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TFile</span><span class="p">(</span><span class="s">&quot;ppac.root&quot;</span><span class="p">,</span><span class="s">&quot;recreate&quot;</span><span class="p">);</span>
+  <span class="n">TTree</span> <span class="o">*</span><span class="n">tree</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TTree</span><span class="p">(</span><span class="s">&quot;tree&quot;</span><span class="p">,</span><span class="s">&quot;ppac&quot;</span><span class="p">);</span>
 
   <span class="n">Double_t</span> <span class="n">txl</span><span class="p">,</span><span class="n">txr</span><span class="p">,</span><span class="n">tyd</span><span class="p">,</span><span class="n">tyu</span><span class="p">,</span><span class="n">ta</span><span class="p">;</span>
   <span class="n">Double_t</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">;</span>
@@ -13634,23 +13636,24 @@ MyClass::Loop()函数的代码框架-用户需要填入自己的代码。</li>
       <span class="k">if</span> <span class="p">(</span><span class="n">ientry</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
       <span class="n">nb</span> <span class="o">=</span> <span class="n">fChain</span><span class="o">-&gt;</span><span class="n">GetEntry</span><span class="p">(</span><span class="n">jentry</span><span class="p">);</span>   <span class="n">nbytes</span> <span class="o">+=</span> <span class="n">nb</span><span class="p">;</span>
        <span class="c1">//user code</span>
-     <span class="k">if</span><span class="p">(</span><span class="n">jentry</span> <span class="o">%</span><span class="mi">10</span> <span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="n">h1</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="n">F8PPACRawData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">F8PPACRawData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">F8PPACRawData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">]);</span>
-     <span class="n">txl</span><span class="o">=</span><span class="n">F8PPACRawData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">];</span>
-     <span class="n">txr</span><span class="o">=</span><span class="n">F8PPACRawData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">];</span>
-     <span class="n">tyd</span><span class="o">=</span><span class="n">F8PPACRawData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">];</span>
-     <span class="n">tyu</span><span class="o">=</span><span class="n">F8PPACRawData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">];</span>
-     <span class="n">ta</span><span class="o">=</span><span class="n">F8PPACRawData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">];</span>
-     <span class="kt">bool</span> <span class="n">bx</span><span class="o">=</span><span class="n">txl</span><span class="o">&lt;</span><span class="mi">4900</span> <span class="o">&amp;&amp;</span> <span class="n">txr</span><span class="o">&lt;</span><span class="mi">4900</span><span class="p">;</span>
-     <span class="kt">bool</span> <span class="n">by</span><span class="o">=</span><span class="n">tyu</span><span class="o">&lt;</span><span class="mi">4900</span> <span class="o">&amp;&amp;</span> <span class="n">tyd</span><span class="o">&lt;</span><span class="mi">4900</span><span class="p">;</span>
-     <span class="kt">bool</span> <span class="n">ba</span><span class="o">=</span><span class="n">ta</span><span class="o">&lt;</span><span class="mi">600</span><span class="o">&amp;&amp;</span><span class="n">ta</span><span class="o">&gt;</span><span class="mi">250</span><span class="p">;</span> 
-     <span class="n">x</span><span class="o">=-</span><span class="mi">5000</span><span class="p">;</span>
-     <span class="n">y</span><span class="o">=-</span><span class="mi">5000</span><span class="p">;</span>
+     <span class="k">if</span><span class="p">(</span><span class="n">jentry</span> <span class="o">%</span><span class="mi">10</span> <span class="o">==</span><span class="mi">0</span><span class="p">)</span> 
+         <span class="n">h1</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="n">F8PPACRawData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">F8PPACRawData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">F8PPACRawData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">]);</span>
+     <span class="n">txl</span> <span class="o">=</span> <span class="n">F8PPACRawData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">];</span>
+     <span class="n">txr</span> <span class="o">=</span> <span class="n">F8PPACRawData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">];</span>
+     <span class="n">tyd</span> <span class="o">=</span> <span class="n">F8PPACRawData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">];</span>
+     <span class="n">tyu</span> <span class="o">=</span> <span class="n">F8PPACRawData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">];</span>
+     <span class="n">ta</span> <span class="o">=</span> <span class="n">F8PPACRawData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">];</span>
+     <span class="kt">bool</span> <span class="n">bx</span> <span class="o">=</span> <span class="n">txl</span><span class="o">&lt;</span><span class="mi">4900</span> <span class="o">&amp;&amp;</span> <span class="n">txr</span><span class="o">&lt;</span><span class="mi">4900</span><span class="p">;</span>
+     <span class="kt">bool</span> <span class="n">by</span> <span class="o">=</span> <span class="n">tyu</span><span class="o">&lt;</span><span class="mi">4900</span> <span class="o">&amp;&amp;</span> <span class="n">tyd</span><span class="o">&lt;</span><span class="mi">4900</span><span class="p">;</span>
+     <span class="kt">bool</span> <span class="n">ba</span> <span class="o">=</span> <span class="n">ta</span><span class="o">&lt;</span><span class="mi">600</span> <span class="o">&amp;&amp;</span> <span class="n">ta</span><span class="o">&gt;</span><span class="mi">250</span><span class="p">;</span> 
+     <span class="n">x</span> <span class="o">=-</span> <span class="mi">5000</span><span class="p">;</span>
+     <span class="n">y</span> <span class="o">=-</span> <span class="mi">5000</span><span class="p">;</span>
      <span class="k">if</span><span class="p">(</span><span class="n">bx</span> <span class="o">&amp;&amp;</span> <span class="n">by</span> <span class="o">&amp;&amp;</span> <span class="n">ba</span><span class="p">)</span> <span class="p">{</span>
-         <span class="n">x</span><span class="o">=</span><span class="n">txr</span><span class="o">-</span><span class="n">txl</span><span class="p">;</span>
-         <span class="n">y</span><span class="o">=</span><span class="n">tyu</span><span class="o">-</span><span class="n">tyd</span><span class="p">;</span>
+         <span class="n">x</span> <span class="o">=</span> <span class="n">txr</span> <span class="o">-</span> <span class="n">txl</span><span class="p">;</span>
+         <span class="n">y</span> <span class="o">=</span> <span class="n">tyu</span> <span class="o">-</span> <span class="n">tyd</span><span class="p">;</span>
          <span class="n">tree</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">();</span>
      <span class="p">}</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">jentry</span><span class="o">%</span><span class="mi">100000</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;processing &quot;</span><span class="o">&lt;&lt;</span><span class="n">jentry</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">jentry</span><span class="o">%</span><span class="mi">100000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;processing &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">jentry</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
    <span class="p">}</span>
     <span class="n">tree</span><span class="o">-&gt;</span><span class="n">Write</span><span class="p">();</span>
     <span class="n">opf</span><span class="o">-&gt;</span><span class="n">Close</span><span class="p">();</span>
@@ -13898,8 +13901,8 @@ processing 500000
 <div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="n">TFile</span> <span class="o">*</span><span class="n">ipf1</span><span class="o">=</span><span class="k">new</span> <span class="n">TFile</span><span class="p">(</span><span class="s">&quot;ppac.root&quot;</span><span class="p">);</span>
-<span class="n">TTree</span> <span class="o">*</span><span class="n">tree1</span><span class="o">=</span><span class="p">(</span><span class="n">TTree</span><span class="o">*</span><span class="p">)</span> <span class="n">ipf1</span><span class="o">-&gt;</span><span class="n">Get</span><span class="p">(</span><span class="s">&quot;tree&quot;</span><span class="p">);</span>
+<div class=" highlight hl-c++"><pre><span></span><span class="n">TFile</span> <span class="o">*</span><span class="n">ipf1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TFile</span><span class="p">(</span><span class="s">&quot;ppac.root&quot;</span><span class="p">);</span>
+<span class="n">TTree</span> <span class="o">*</span><span class="n">tree1</span> <span class="o">=</span> <span class="p">(</span><span class="n">TTree</span><span class="o">*</span><span class="p">)</span> <span class="n">ipf1</span><span class="o">-&gt;</span><span class="n">Get</span><span class="p">(</span><span class="s">&quot;tree&quot;</span><span class="p">);</span>
 </pre></div>
 
     </div>
@@ -13955,7 +13958,7 @@ processing 500000
 <div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="n">TChain</span><span class="o">*</span> <span class="n">chain</span><span class="o">=</span><span class="k">new</span> <span class="n">TChain</span><span class="p">(</span><span class="s">&quot;tree&quot;</span><span class="p">);</span>
+<div class=" highlight hl-c++"><pre><span></span><span class="n">TChain</span><span class="o">*</span> <span class="n">chain</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TChain</span><span class="p">(</span><span class="s">&quot;tree&quot;</span><span class="p">);</span>
 </pre></div>
 
     </div>
@@ -14074,7 +14077,9 @@ processing 500000
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[NbConvertApp] Converting notebook 1.4_root_tree_makeclass.ipynb to html
 
-[NbConvertApp] Writing 404785 bytes to 1.4_root_tree_makeclass.html
+
+[NbConvertApp] Writing 404607 bytes to 1.4_root_tree_makeclass.html
+
 
 </pre>
 </div>
