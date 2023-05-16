@@ -14114,10 +14114,10 @@ $$</li>
 <div class="text_cell_render border-box-sizing rendered_html">
 <div class="highlight"><pre><span></span><span class="c1">//output</span>
 <span class="n">Int_t</span> <span class="n">ahit</span><span class="p">;</span>
-<span class="k">const</span> <span class="n">Int_t</span> <span class="n">MaxHit</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
-<span class="n">Int_t</span> <span class="n">idet</span><span class="p">[</span><span class="n">MaxHit</span><span class="p">],</span><span class="n">eflag</span><span class="p">[</span><span class="n">MaxHit</span><span class="p">];</span>
-<span class="n">Double_t</span> <span class="n">ae</span><span class="p">[</span><span class="n">MaxHit</span><span class="p">];</span>
-<span class="n">Long64_t</span> <span class="n">at</span><span class="p">[</span><span class="n">MaxHit</span><span class="p">];</span>
+<span class="k">const</span> <span class="n">Double_t</span> <span class="n">nDet</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span><span class="c1">//number of clover detectors.</span>
+<span class="n">Int_t</span> <span class="n">idet</span><span class="p">[</span><span class="n">nDet</span><span class="p">],</span><span class="n">eflag</span><span class="p">[</span><span class="n">nDet</span><span class="p">];</span>
+<span class="n">Double_t</span> <span class="n">ae</span><span class="p">[</span><span class="n">nDet</span><span class="p">];</span>
+<span class="n">Long64_t</span> <span class="n">at</span><span class="p">[</span><span class="n">nDet</span><span class="p">];</span>
 <span class="n">TFile</span> <span class="o">*</span><span class="n">fout</span><span class="o">=</span><span class="k">new</span> <span class="n">TFile</span><span class="p">(</span><span class="s">&quot;addback.root&quot;</span><span class="p">,</span><span class="s">&quot;recreate&quot;</span><span class="p">);</span>
 <span class="n">TTree</span><span class="o">*</span> <span class="n">tout</span><span class="o">=</span><span class="k">new</span> <span class="n">TTree</span><span class="p">(</span><span class="s">&quot;tree&quot;</span><span class="p">,</span><span class="s">&quot;event&quot;</span><span class="p">);</span>
 <span class="n">tout</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">&quot;ahit&quot;</span><span class="p">,</span><span class="o">&amp;</span><span class="n">ahit</span><span class="p">,</span><span class="s">&quot;ahit/I&quot;</span><span class="p">);</span>
@@ -14133,8 +14133,7 @@ $$</li>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<div class="highlight"><pre><span></span><span class="n">Double_t</span> <span class="n">nDet</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span><span class="c1">//number of clover detectors.</span>
-<span class="n">Double_t</span> <span class="n">ae1</span><span class="p">[</span><span class="n">nDet</span><span class="p">];</span>
+<div class="highlight"><pre><span></span><span class="n">Double_t</span> <span class="n">ae1</span><span class="p">[</span><span class="n">nDet</span><span class="p">];</span>
 <span class="n">Long64_t</span> <span class="n">at1</span><span class="p">[</span><span class="n">nDet</span><span class="p">];</span>
 <span class="n">Int_t</span> <span class="n">aflag1</span><span class="p">[</span><span class="n">nDet</span><span class="p">];</span>
 <span class="n">Int_t</span> <span class="n">ahit1</span><span class="p">[</span><span class="n">nDet</span><span class="p">];</span>
@@ -14185,6 +14184,19 @@ $$</li>
 
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
 </div>
     </div>
   </div>
