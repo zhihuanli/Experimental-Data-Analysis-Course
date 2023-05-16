@@ -13341,6 +13341,7 @@ $$B_{ij}=\frac{1}{T}(b_i p_j+b_j p_i+b_i b_j)=\frac{1}{T}(P_i P_j-p_i p_j)$$</p>
 <ul>
 <li>上述方法可以推广到 3-fold，4-fold的矩阵</li>
 </ul>
+<p><img src="fig/prompt_random_gated.png" alt="" style="zoom:50%;" /></p>
 <h3 id="&#20854;&#20182;&#26041;&#27861;&#65306;">&#20854;&#20182;&#26041;&#27861;&#65306;<a class="anchor-link" href="#&#20854;&#20182;&#26041;&#27861;&#65306;">&#182;</a></h3><ul>
 <li>G. Palameta and J.C. Waddington, Nucl. Instr. Meth. A234(1985)476</li>
 <li>TSpectrum2的Background()方法 <ul>
@@ -13380,6 +13381,7 @@ $$B_{ij}=\frac{1}{T}(b_i p_j+b_j p_i+b_i b_j)=\frac{1}{T}(P_i P_j-p_i p_j)$$</p>
       <span class="n">pi</span><span class="o">=</span><span class="n">hpeak</span><span class="o">-&gt;</span><span class="n">GetBinContent</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
       <span class="n">pj</span><span class="o">=</span><span class="n">hpeak</span><span class="o">-&gt;</span><span class="n">GetBinContent</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
       <span class="n">Bij</span><span class="o">=</span><span class="p">(</span><span class="n">Pi</span><span class="o">*</span><span class="n">Pj</span><span class="o">-</span><span class="n">pi</span><span class="o">*</span><span class="n">pj</span><span class="p">)</span><span class="o">/</span><span class="n">T</span><span class="p">;</span>
+      <span class="k">if</span><span class="p">(</span><span class="n">Bij</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)</span> <span class="n">Bij</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
       <span class="n">x</span><span class="o">=</span><span class="n">hg</span><span class="o">-&gt;</span><span class="n">GetBinCenter</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
       <span class="n">y</span><span class="o">=</span><span class="n">hg</span><span class="o">-&gt;</span><span class="n">GetBinCenter</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
       <span class="n">hggb</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">Bij</span><span class="p">);</span><span class="c1">// backgound gg matix</span>
@@ -14874,9 +14876,26 @@ $$B_{ij}=\frac{1}{T}(b_i p_j+b_j p_i+b_i b_j)=\frac{1}{T}(P_i P_j-p_i p_j)$$</p>
 </li>
 <li><p>一般同轴型HPGe的效率在200keV附近为峰值，在50keV附近效率很低。</p>
 </li>
-<li>根据上述讨论和实际观察到的gamma之间的关联，可以确认53keV-160keV有符合关系。 </li>
+<li>根据上述讨论和实际观察到的gamma之间的关联，可以确认53keV-160keV有符合关系。</li>
 </ul>
-<h2 id="&#28436;&#31034;&#22914;&#20309;&#22312;NNDC&#32593;&#31449;&#20013;&#26597;&#35810;&#26576;&#19968;&#26680;&#32032;&#30340;$\gamma$&#23556;&#32447;&#33021;&#37327;&#20449;&#24687;&#65292;$\gamma-\gamma$&#31526;&#21512;&#20449;&#24687;&#12290;">&#28436;&#31034;&#22914;&#20309;&#22312;NNDC&#32593;&#31449;&#20013;&#26597;&#35810;&#26576;&#19968;&#26680;&#32032;&#30340;$\gamma$&#23556;&#32447;&#33021;&#37327;&#20449;&#24687;&#65292;$\gamma-\gamma$&#31526;&#21512;&#20449;&#24687;&#12290;<a class="anchor-link" href="#&#28436;&#31034;&#22914;&#20309;&#22312;NNDC&#32593;&#31449;&#20013;&#26597;&#35810;&#26576;&#19968;&#26680;&#32032;&#30340;$\gamma$&#23556;&#32447;&#33021;&#37327;&#20449;&#24687;&#65292;$\gamma-\gamma$&#31526;&#21512;&#20449;&#24687;&#12290;">&#182;</a></h2><ul>
+<ul>
+<li>二维，三维γ矩阵分析程序 GATE2，GATE3：<a href="https://github.com/zhihuanli/gamma-gamma-coincidence-analysis">https://github.com/zhihuanli/gamma-gamma-coincidence-analysis</a></li>
+</ul>
+<h3 id="&#20598;&#28982;&#31526;&#21512;&#30697;&#38453;">&#20598;&#28982;&#31526;&#21512;&#30697;&#38453;<a class="anchor-link" href="#&#20598;&#28982;&#31526;&#21512;&#30697;&#38453;">&#182;</a></h3>
+<pre><code>在熔合蒸发反应γ谱学实验中，低能区通常会观察到来自实验靶的衬底成分（如Au或Pb）的X射线峰，例如图b、c中的68、79和279keV附近的峰。这些X射线是由于被束流激发的衬底原子在退激时产生的。与熔合蒸发反应产物的γ-γ之间不同的是，X射线和γ射线之间没有符合关系（不相关）。然而，由于X射线的生成截面远大于γ射线的生成截面，在γ−γ符合时间窗内会混入显著的偶然符合成分(见图a)。
+
+可以通过构建偶然符合矩阵，按照下述步骤去除符合时间窗内的偶然符合成分。
+首先，将符合时间窗范围内的γ符合事件填入瞬发符合矩阵PAM（Prompt+Accindental Matrix）中。然后，在符合时间窗范围外选取左右对称的两个偶然符合时间窗（图a中红色阴影区），将该区域的事件填入偶然符合本底矩阵AM（Accindental Matrix）。通过将PAM矩阵减去AM矩阵得到最终的矩阵PM（Prompt Matrix）：设瞬发时间窗长度为dPT，偶然符合窗总长度dAT，则 PM = PAM - (dPT/dAT) * AM。
+
+经验表明，所选偶然符合时间窗距离符合时间窗越近，其偶然符合事件的扣除效果越好。原则上，偶然符合时间窗的选择应紧挨着符合时间窗的两个对称时间窗。图b和c展示了扣除偶然符合前后的投影谱对比图。粉色表示未扣除偶然符合的投影谱，而蓝色表示扣除偶然符合后的投影谱。可以看出，通过偶然符合的扣除，197Au的X射线影响大大减少。</code></pre>
+<ul>
+<li></li>
+<li>AM矩阵可以按照上述Radware方法进行进一步分析。</li>
+</ul>
+<ul>
+<li>参考文献：D.W. Luo, H.Y. Wu et al., NUCL. SCI. TECH. 32,79 (2021)
+<a href="https://link.springer.com/article/10.1007/s41365-021-00917-8">https://link.springer.com/article/10.1007/s41365-021-00917-8</a>
+## 演示如何在NNDC网站中查询某一核素的$\gamma$射线能量信息，$\gamma-\gamma$符合信息。</li>
 <li>www.nndc.bnl.gov</li>
 </ul>
 
