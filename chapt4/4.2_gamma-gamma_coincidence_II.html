@@ -14884,10 +14884,10 @@ $$B_{ij}=\frac{1}{T}(b_i p_j+b_j p_i+b_i b_j)=\frac{1}{T}(P_i P_j-p_i p_j)$$</p>
 <pre><code>在熔合蒸发反应γ谱学实验中，低能区通常会观察到来自实验靶的衬底成分（如Au或Pb）的X射线峰，例如图b、c中的68、79和279keV附近的峰。这些X射线是由于被束流激发的衬底原子在退激时产生的。与熔合蒸发反应产物的γ-γ之间不同的是，X射线和γ射线之间没有符合关系（不相关）。然而，由于X射线的生成截面远大于γ射线的生成截面，在γ−γ符合时间窗内会混入显著的偶然符合成分(见图a)。
 
 可以通过构建偶然符合矩阵，按照下述步骤去除符合时间窗内的偶然符合成分。
-首先，将符合时间窗范围内的γ符合事件填入瞬发符合矩阵PAM（Prompt+Accindental Matrix）中。然后，在符合时间窗范围外选取左右对称的两个偶然符合时间窗（图a中红色阴影区），将该区域的事件填入偶然符合本底矩阵AM（Accindental Matrix）。通过将PAM矩阵减去AM矩阵得到最终的矩阵PM（Prompt Matrix）：设瞬发时间窗长度为dPT，偶然符合窗总长度dAT，则 PM = PAM - (dPT/dAT) * AM。
+首先，将符合时间窗范围内的γ符合事件填入瞬发符合矩阵PAM（Prompt+Accindental Matrix）中。然后，在符合时间窗范围外选取左右对称的两个偶然符合时间窗（图a中红色阴影区），将该区域的事件填入偶然符合本底矩阵AM（Accindental Matrix）。通过将PAM矩阵减去AM矩阵得到最终的矩阵PM（Prompt Matrix）：设符合时间窗长度为dPT，偶然符合窗总长度dAT，则 PM = PAM - (dPT/dAT) * AM。
 
 经验表明，所选偶然符合时间窗距离符合时间窗越近，其偶然符合事件的扣除效果越好。原则上，偶然符合时间窗的选择应紧挨着符合时间窗的两个对称时间窗。图b和c展示了扣除偶然符合前后的投影谱对比图。粉色表示未扣除偶然符合的投影谱，而蓝色表示扣除偶然符合后的投影谱。可以看出，通过偶然符合的扣除，197Au的X射线影响大大减少。</code></pre>
-<p><img src="fig/prompt_random_gated.png" alt="" style="zoom:50%;" /></p>
+<p><img src="fig/prompt_random_gated.png" alt="" style="zoom:80%;" /></p>
 <ul>
 <li>AM矩阵可以按照上述Radware方法进行进一步分析。</li>
 </ul>
@@ -14900,40 +14900,6 @@ $$B_{ij}=\frac{1}{T}(b_i p_j+b_j p_i+b_i b_j)=\frac{1}{T}(P_i P_j-p_i p_j)$$</p>
 
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="o">!</span><span class="n">jupyter</span> <span class="n">nbconvert</span> <span class="mf">4.2</span><span class="n">_gamma</span><span class="o">-</span><span class="n">gamma_coincidence_II</span><span class="p">.</span><span class="n">ipynb</span> <span class="o">--</span><span class="n">to</span> <span class="n">html</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>[NbConvertApp] Converting notebook 4.2_gamma-gamma_coincidence_II.ipynb to html
-
-[NbConvertApp] Writing 1073063 bytes to 4.2_gamma-gamma_coincidence_II.html
-
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
     </div>
   </div>

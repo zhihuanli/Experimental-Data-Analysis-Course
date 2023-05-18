@@ -14094,92 +14094,90 @@ $$</li>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<div class="highlight"><pre><span></span><span class="c1">//input</span>
-<span class="n">TFile</span><span class="o">*</span> <span class="n">f</span><span class="o">=</span><span class="k">new</span> <span class="n">TFile</span><span class="p">(</span><span class="s">&quot;gamma.root&quot;</span><span class="p">);</span>
-<span class="n">TTree</span><span class="o">*</span> <span class="n">tree</span><span class="o">=</span><span class="p">(</span><span class="n">TTree</span><span class="o">*</span><span class="p">)</span><span class="n">f</span><span class="o">-&gt;</span><span class="n">Get</span><span class="p">(</span><span class="s">&quot;t&quot;</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">Reset</span><span class="p">(</span><span class="n">Long64_t</span> <span class="o">&amp;</span><span class="n">gt0</span><span class="p">,</span> <span class="n">Long64_t</span> <span class="n">gt</span><span class="p">,</span>
+       <span class="kt">int</span> <span class="n">nDet</span><span class="p">,</span> <span class="n">Int_t</span> <span class="o">*</span><span class="n">amul</span><span class="p">,</span><span class="n">Int_t</span> <span class="o">*</span><span class="n">aflag</span><span class="p">,</span> <span class="n">Double_t</span> <span class="o">*</span><span class="n">ae</span><span class="p">,</span> <span class="n">Long64_t</span> <span class="o">*</span><span class="n">at</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">nDet</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">ae</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="n">aflag</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">amul</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="n">gt0</span> <span class="o">=</span> <span class="n">gt</span><span class="p">;</span>
+<span class="p">}</span>
 
-<span class="n">Int_t</span> <span class="n">gid</span><span class="p">;</span>
-<span class="n">Double_t</span> <span class="n">ge</span><span class="p">;</span>
-<span class="n">Long64_t</span> <span class="n">gt</span><span class="p">;</span>
-<span class="n">tree</span><span class="o">-&gt;</span><span class="n">SetBranchAddress</span><span class="p">(</span><span class="s">&quot;flagcrystal&quot;</span><span class="p">,</span><span class="o">&amp;</span><span class="n">gid</span><span class="p">);</span>
-<span class="n">tree</span><span class="o">-&gt;</span><span class="n">SetBranchAddress</span><span class="p">(</span><span class="s">&quot;ecrystal&quot;</span><span class="p">,</span><span class="o">&amp;</span><span class="n">ge</span><span class="p">);</span>
-<span class="n">tree</span><span class="o">-&gt;</span><span class="n">SetBranchAddress</span><span class="p">(</span><span class="s">&quot;tcrystal&quot;</span><span class="p">,</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">);</span>
-</pre></div>
+<span class="kt">void</span> <span class="nf">gamma</span><span class="p">()</span>
+<span class="p">{</span>  
+  <span class="c1">//input</span>
+  <span class="n">TFile</span><span class="o">*</span> <span class="n">f</span><span class="o">=</span><span class="k">new</span> <span class="n">TFile</span><span class="p">(</span><span class="s">&quot;gamma.root&quot;</span><span class="p">);</span>
+  <span class="n">TTree</span><span class="o">*</span> <span class="n">tree</span><span class="o">=</span><span class="p">(</span><span class="n">TTree</span><span class="o">*</span><span class="p">)</span><span class="n">f</span><span class="o">-&gt;</span><span class="n">Get</span><span class="p">(</span><span class="s">&quot;t&quot;</span><span class="p">);</span>
 
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<div class="highlight"><pre><span></span><span class="c1">//output</span>
-<span class="n">Int_t</span> <span class="n">ahit</span><span class="p">;</span>
-<span class="k">const</span> <span class="n">Double_t</span> <span class="n">nDet</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span><span class="c1">//number of clover detectors.</span>
-<span class="n">Int_t</span> <span class="n">idet</span><span class="p">[</span><span class="n">nDet</span><span class="p">],</span><span class="n">eflag</span><span class="p">[</span><span class="n">nDet</span><span class="p">];</span>
-<span class="n">Double_t</span> <span class="n">ae</span><span class="p">[</span><span class="n">nDet</span><span class="p">];</span>
-<span class="n">Long64_t</span> <span class="n">at</span><span class="p">[</span><span class="n">nDet</span><span class="p">];</span>
-<span class="n">TFile</span> <span class="o">*</span><span class="n">fout</span><span class="o">=</span><span class="k">new</span> <span class="n">TFile</span><span class="p">(</span><span class="s">&quot;addback.root&quot;</span><span class="p">,</span><span class="s">&quot;recreate&quot;</span><span class="p">);</span>
-<span class="n">TTree</span><span class="o">*</span> <span class="n">tout</span><span class="o">=</span><span class="k">new</span> <span class="n">TTree</span><span class="p">(</span><span class="s">&quot;tree&quot;</span><span class="p">,</span><span class="s">&quot;event&quot;</span><span class="p">);</span>
-<span class="n">tout</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">&quot;ahit&quot;</span><span class="p">,</span><span class="o">&amp;</span><span class="n">ahit</span><span class="p">,</span><span class="s">&quot;ahit/I&quot;</span><span class="p">);</span>
-<span class="n">tout</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">&quot;idet&quot;</span><span class="p">,</span><span class="o">&amp;</span><span class="n">idet</span><span class="p">,</span><span class="s">&quot;idet[ahit]/I&quot;</span><span class="p">);</span>
-<span class="n">tout</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">&quot;ae&quot;</span><span class="p">,</span><span class="o">&amp;</span><span class="n">ae</span><span class="p">,</span><span class="s">&quot;ae[ahit]/D&quot;</span><span class="p">);</span>
-<span class="n">tout</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">&quot;at&quot;</span><span class="p">,</span><span class="o">&amp;</span><span class="n">at</span><span class="p">,</span><span class="s">&quot;at[ahit]/L&quot;</span><span class="p">);</span>
-<span class="n">tout</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">&quot;aflag&quot;</span><span class="p">,</span><span class="o">&amp;</span><span class="n">aflag</span><span class="p">,</span><span class="s">&quot;aflag[ahit]/I&quot;</span><span class="p">);</span>
-</pre></div>
+  <span class="n">Int_t</span> <span class="n">gid</span><span class="p">;</span>
+  <span class="n">Double_t</span> <span class="n">ge</span><span class="p">;</span>
+  <span class="n">Long64_t</span> <span class="n">gt</span><span class="p">;</span>
+  <span class="n">tree</span><span class="o">-&gt;</span><span class="n">SetBranchAddress</span><span class="p">(</span><span class="s">&quot;flagcrystal&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">gid</span><span class="p">);</span>
+  <span class="n">tree</span><span class="o">-&gt;</span><span class="n">SetBranchAddress</span><span class="p">(</span><span class="s">&quot;ecrystal&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ge</span><span class="p">);</span>
+  <span class="n">tree</span><span class="o">-&gt;</span><span class="n">SetBranchAddress</span><span class="p">(</span><span class="s">&quot;tcrystal&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">gt</span><span class="p">);</span>
 
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<div class="highlight"><pre><span></span><span class="n">Double_t</span> <span class="n">ae1</span><span class="p">[</span><span class="n">nDet</span><span class="p">];</span>
-<span class="n">Long64_t</span> <span class="n">at1</span><span class="p">[</span><span class="n">nDet</span><span class="p">];</span>
-<span class="n">Int_t</span> <span class="n">aflag1</span><span class="p">[</span><span class="n">nDet</span><span class="p">];</span>
-<span class="n">Int_t</span> <span class="n">ahit1</span><span class="p">[</span><span class="n">nDet</span><span class="p">];</span>
-<span class="n">Int_t</span> <span class="n">mh</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+  <span class="c1">//output</span>
+  <span class="k">const</span> <span class="n">Int_t</span> <span class="n">nDet</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span><span class="c1">//number of clover detectors.</span>
+  <span class="n">Int_t</span> <span class="n">ahit</span><span class="p">;</span>
+  <span class="n">Int_t</span> <span class="n">adet</span><span class="p">[</span><span class="n">nDet</span><span class="p">],</span> <span class="n">aflag</span><span class="p">[</span><span class="n">nDet</span><span class="p">];</span>
+  <span class="n">Double_t</span> <span class="n">ae</span><span class="p">[</span><span class="n">nDet</span><span class="p">];</span>
+  <span class="n">Long64_t</span> <span class="n">at</span><span class="p">[</span><span class="n">nDet</span><span class="p">];</span>
+  <span class="n">TFile</span> <span class="o">*</span><span class="n">fout</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TFile</span><span class="p">(</span><span class="s">&quot;addback.root&quot;</span><span class="p">,</span><span class="s">&quot;recreate&quot;</span><span class="p">);</span>
+  <span class="n">TTree</span><span class="o">*</span> <span class="n">tout</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TTree</span><span class="p">(</span><span class="s">&quot;tree&quot;</span><span class="p">,</span><span class="s">&quot;event&quot;</span><span class="p">);</span>
+  <span class="n">tout</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">&quot;ahit&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ahit</span><span class="p">,</span> <span class="s">&quot;ahit/I&quot;</span><span class="p">);</span>
+  <span class="n">tout</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">&quot;adet&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">adet</span><span class="p">,</span> <span class="s">&quot;adet[ahit]/I&quot;</span><span class="p">);</span>
+  <span class="n">tout</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">&quot;ae&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ae</span><span class="p">,</span> <span class="s">&quot;ae[ahit]/D&quot;</span><span class="p">);</span>
+  <span class="n">tout</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">&quot;at&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">at</span><span class="p">,</span> <span class="s">&quot;at[ahit]/L&quot;</span><span class="p">);</span>
+  <span class="n">tout</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">&quot;aflag&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">aflag</span><span class="p">,</span> <span class="s">&quot;aflag[ahit]/I&quot;</span><span class="p">);</span>
 
-<span class="c1">//event loop</span>
-<span class="n">Long64_t</span> <span class="n">gt0</span><span class="p">;</span>
-<span class="n">Long64_t</span> <span class="n">nentries</span><span class="o">=</span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">GetEntriesFast</span><span class="p">();</span>
-<span class="k">for</span><span class="p">(</span><span class="n">Long64_t</span> <span class="n">jentry</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">jentry</span> <span class="o">&lt;</span> <span class="n">nentries</span><span class="p">;</span> <span class="n">jentry</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">Double_t</span> <span class="n">ae1</span><span class="p">[</span><span class="n">nDet</span><span class="p">];</span>
+  <span class="n">Long64_t</span> <span class="n">at1</span><span class="p">[</span><span class="n">nDet</span><span class="p">];</span>
+  <span class="n">Int_t</span> <span class="n">aflag1</span><span class="p">[</span><span class="n">nDet</span><span class="p">];</span>
+  <span class="n">Int_t</span> <span class="n">amul1</span><span class="p">[</span><span class="n">nDet</span><span class="p">];</span>
+
+  <span class="c1">//event loop</span>
+  <span class="n">Long64_t</span> <span class="n">gt0</span><span class="p">;</span>
+  <span class="n">Long64_t</span> <span class="n">nentries</span> <span class="o">=</span> <span class="n">tree</span><span class="o">-&gt;</span><span class="n">GetEntriesFast</span><span class="p">();</span>
+  <span class="k">for</span><span class="p">(</span><span class="n">Long64_t</span> <span class="n">jentry</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">jentry</span> <span class="o">&lt;</span> <span class="n">nentries</span><span class="p">;</span> <span class="n">jentry</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">tree</span><span class="o">-&gt;</span><span class="n">GetEntry</span><span class="p">(</span><span class="n">jentry</span><span class="p">);</span>
     <span class="k">if</span><span class="p">(</span><span class="n">jentry</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">gt0</span> <span class="o">=</span> <span class="n">gt</span><span class="p">;</span>
+      <span class="n">Reset</span><span class="p">(</span><span class="n">gt0</span><span class="p">,</span> <span class="n">gt</span><span class="p">,</span> <span class="n">nDet</span><span class="p">,</span> <span class="n">amul1</span><span class="p">,</span> <span class="n">aflag1</span><span class="p">,</span> <span class="n">ae1</span><span class="p">,</span> <span class="n">at1</span><span class="p">);</span>
     <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">gt</span><span class="o">-</span><span class="n">gt0</span> <span class="o">&gt;</span> <span class="mi">200</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">ahit</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span><span class="n">nDet</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">if</span><span class="p">(</span><span class="n">ae1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">40</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
-            <span class="c1">// if(ae1[i] &lt; 100) continue;//remove Au X-ray coincidence.</span>
-            <span class="n">idet</span><span class="p">[</span><span class="n">ahit</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
-            <span class="n">ae</span><span class="p">[</span><span class="n">ahit</span><span class="p">]</span> <span class="o">=</span> <span class="n">ae1</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
-            <span class="n">at</span><span class="p">[</span><span class="n">ahit</span><span class="p">]</span> <span class="o">=</span> <span class="n">at1</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
-            <span class="n">aflag</span><span class="p">[</span><span class="n">hit</span><span class="p">]</span> <span class="o">=</span> <span class="n">aflag1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">ahit1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span><span class="p">;</span>
-            <span class="k">if</span><span class="p">(</span><span class="n">aflag</span><span class="p">[</span><span class="n">ahit</span><span class="p">]</span> <span class="o">==</span> <span class="mi">23</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span> <span class="c1">//reject 0-3,1-2 in double-hit</span>
-            <span class="k">if</span><span class="p">(</span><span class="n">aflag</span><span class="p">[</span><span class="n">ahit</span><span class="p">]</span> <span class="o">&gt;</span><span class="mi">29</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span> <span class="c1">//reject triple-hit，quadruple-hit</span>
-            <span class="n">ahit</span><span class="o">++</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="n">mh</span><span class="p">[</span><span class="n">ahit</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
-        <span class="n">tout</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">();</span>
-        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">nDet</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-            <span class="n">ae1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-            <span class="n">at1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-            <span class="n">aflag1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-            <span class="n">ahit1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="n">gt0</span><span class="o">=</span><span class="n">gt</span><span class="p">;</span>
+    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">gt</span><span class="o">-</span><span class="n">gt0</span> <span class="o">&gt;</span> <span class="mi">1000</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">ahit</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span><span class="n">nDet</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">ae1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+        <span class="n">adet</span><span class="p">[</span><span class="n">ahit</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+        <span class="n">ae</span><span class="p">[</span><span class="n">ahit</span><span class="p">]</span> <span class="o">=</span> <span class="n">ae1</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="n">at</span><span class="p">[</span><span class="n">ahit</span><span class="p">]</span> <span class="o">=</span> <span class="n">at1</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="n">aflag</span><span class="p">[</span><span class="n">ahit</span><span class="p">]</span> <span class="o">=</span> <span class="n">aflag1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">amul1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">aflag</span><span class="p">[</span><span class="n">ahit</span><span class="p">]</span> <span class="o">==</span> <span class="mi">23</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span> <span class="c1">//reject 0-3,1-2 in double-hit</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">aflag</span><span class="p">[</span><span class="n">ahit</span><span class="p">]</span> <span class="o">&gt;</span><span class="mi">29</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span> <span class="c1">//reject triple-hit，quadruple-hit</span>
+        <span class="n">ahit</span> <span class="o">++</span><span class="p">;</span>
+       <span class="p">}</span>
+      <span class="k">if</span><span class="p">(</span><span class="n">ahit</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span> <span class="n">tout</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">();</span>
+      <span class="n">Reset</span><span class="p">(</span><span class="n">gt0</span><span class="p">,</span> <span class="n">gt</span><span class="p">,</span> <span class="n">nDet</span><span class="p">,</span> <span class="n">amul1</span><span class="p">,</span> <span class="n">aflag1</span><span class="p">,</span> <span class="n">ae1</span><span class="p">,</span> <span class="n">at1</span><span class="p">);</span>     
     <span class="p">}</span>
     <span class="kt">int</span> <span class="n">idet</span> <span class="o">=</span> <span class="n">gid</span> <span class="o">/</span> <span class="mi">4</span><span class="p">;</span>
     <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="n">gid</span> <span class="o">%</span> <span class="mi">4</span><span class="p">;</span>
     <span class="n">ae1</span><span class="p">[</span><span class="n">idet</span><span class="p">]</span> <span class="o">+=</span> <span class="n">ge</span><span class="p">;</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">at1</span><span class="p">[</span><span class="n">idet</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)</span> <span class="n">t1</span><span class="p">[</span><span class="n">idet</span><span class="p">]</span> <span class="o">=</span> <span class="n">gt</span><span class="p">;</span> 
-    <span class="n">ahit1</span><span class="p">[</span><span class="n">idet</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">at1</span><span class="p">[</span><span class="n">idet</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)</span> <span class="n">at1</span><span class="p">[</span><span class="n">idet</span><span class="p">]</span> <span class="o">=</span> <span class="n">gt</span><span class="p">;</span>
+    <span class="n">amul1</span><span class="p">[</span><span class="n">idet</span><span class="p">]</span> <span class="o">++</span><span class="p">;</span>
     <span class="n">aflag1</span><span class="p">[</span><span class="n">idet</span><span class="p">]</span> <span class="o">+=</span> <span class="n">id</span><span class="p">;</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">jentry</span> <span class="o">%</span> <span class="mf">1e5</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="n">cout</span><span class="o">&lt;&lt;</span> <span class="n">jentry</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+
+    <span class="k">if</span><span class="p">((</span><span class="n">jentry</span><span class="p">)</span> <span class="o">%</span> <span class="n">Long64_t</span><span class="p">(</span><span class="mf">1e5</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Process %.2f %%, %5d k / %5d k </span><span class="se">\r</span><span class="s">&quot;</span><span class="p">,</span><span class="n">Double_t</span><span class="p">(</span><span class="n">jentry</span><span class="p">)</span><span class="o">/</span><span class="n">nentries</span><span class="o">*</span><span class="mf">100.</span><span class="p">,</span>
+         <span class="kt">int</span><span class="p">(</span><span class="n">jentry</span><span class="o">/</span><span class="mi">1000</span><span class="p">),</span> <span class="kt">int</span><span class="p">(</span><span class="n">nentries</span><span class="o">/</span><span class="mi">1000</span><span class="p">));</span>
+      <span class="n">fflush</span><span class="p">(</span><span class="n">stdout</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+  <span class="n">tout</span><span class="o">-&gt;</span><span class="n">Write</span><span class="p">();</span>
+  <span class="n">fout</span><span class="o">-&gt;</span><span class="n">Close</span><span class="p">();</span>
 <span class="p">}</span>
-<span class="n">tout</span><span class="o">-&gt;</span><span class="n">Write</span><span class="p">();</span>
-<span class="n">fout</span><span class="o">-&gt;</span><span class="n">Close</span><span class="p">()</span>
 </pre></div>
 
 </div>
