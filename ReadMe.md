@@ -84,3 +84,7 @@
  - [作业 5.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/coursework5.1.html)
  - 参考文献
      - [5.A gas-filled recoil separator, SHANS](./chapt5/SHANS.pdf)
+
+## chapter 6. 基于白光中子源的(n,n')反应测量
+ - 6.1 [(n,n')反应数据分析](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt6/6.1_netron_capture_reaction.html)
+- [作业 6.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt6/coursework6.1.html)
