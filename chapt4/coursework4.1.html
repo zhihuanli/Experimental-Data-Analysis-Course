@@ -13116,16 +13116,35 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="&#20316;&#19994;-4.1">&#20316;&#19994; 4.1<a class="anchor-link" href="#&#20316;&#19994;-4.1">&#182;</a></h3><p>1.利用Clover探测器数据文件gamma-raw.root，在200ns的范围内组装事件，并存入输出文件(参照4.0中addback部分的代码)。</p>
+<h3 id="&#20316;&#19994;-4.1">&#20316;&#19994; 4.1<a class="anchor-link" href="#&#20316;&#19994;-4.1">&#182;</a></h3><p>1.按照课件的做法从eurica.root建立二维对称矩阵。</p>
+<p>2.按照Radware的方法，验证$^{152}$Eu的纲图中的较强跃迁之间的符合关系，并在$^{152}$Eu简化纲图(下图)的基础上进行扩展。</p>
 <ul>
-<li>保存addback后的事件(ahit,aid[ahit],ae[ahit],ae[ahit])，以及addback之前的事件(ghit,gid[ghit],ge[ghit],ge[ghit])。</li>
+<li>参照网上的完整$^{152}Eu$衰变纲图。 
+<img src="./fig/level.png" alt=""></li>
 </ul>
-<p>2.按照课件的做法从eurica.root建立二维对称矩阵。</p>
-<p>3.按照Radware的方法，验证152Eu的纲图中的较强跃迁之间的符合关系(参考152Eu的简化纲图）。</p>
-<p>4.利用Clover探测器数据文件gamma-raw.root，在1000ns的范围内组装addback事件，验证4.2中《偶然符合矩阵》的内容。</p>
-<p><img src="./fig/level.png" alt=""></p>
-<h3 id="Decay-scheme-of-152Eu">Decay scheme of 152Eu<a class="anchor-link" href="#Decay-scheme-of-152Eu">&#182;</a></h3><p><img src="./fig/level1.png" alt="">
-<img src="./fig/level2.png" alt=""></p>
+<p>3.利用Clover探测器数据文件gamma-raw.root，完成下列要求(参照4.0中addback部分的代码)。</p>
+<ul>
+<li>a) 将200ns的范围内的gamma探测器信息组成一个事件。<ul>
+<li>将结果存到root文件。TBranch:ghit,gid[ghit],ge[ghit],ge[ghit]。</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>b) 分析从上一步生成的文件，确认一个clover内4个单元的相邻关系，即哪些单元之间是相邻的，哪些是交叉的。</li>
+</ul>
+<ul>
+<li>c) 根据clover的4个单元的符合关系，把200ns的范围内对相邻单元的事件进行加合(addback)后组成一个事件。<ul>
+<li>将结果存到root文件。 TBranch:ahit,aid[ahit],ae[ahit],ae[ahit]。</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>d) 在1000ns的范围内组装addback事件。<ul>
+<li>画出两个探测器的时间差谱，确定符合时间窗和偶然符合时间窗的范围。</li>
+<li>验证4.2中《偶然符合矩阵》的内容。</li>
+</ul>
+</li>
+</ul>
 
 </div>
 </div>
