@@ -14085,7 +14085,7 @@ $$</li>
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="&#23558;200ns&#30340;&#31526;&#21512;&#31383;&#21475;&#23558;&#20107;&#20214;&#32452;&#35013;&#22312;&#19968;&#36215;">&#23558;200ns&#30340;&#31526;&#21512;&#31383;&#21475;&#23558;&#20107;&#20214;&#32452;&#35013;&#22312;&#19968;&#36215;<a class="anchor-link" href="#&#23558;200ns&#30340;&#31526;&#21512;&#31383;&#21475;&#23558;&#20107;&#20214;&#32452;&#35013;&#22312;&#19968;&#36215;">&#182;</a></h3><ul>
 <li>如果在一个探测器内有多个单元有信号，按上述规则进行addback。</li>
-<li>aflag: single:10-13, double: 21,22,23(0+3,1+2),24, triple: 33,34,35,36...</li>
+<li>aflag: single:10-13, double: 21,22,23,24, triple: 33,34,35,36...</li>
 </ul>
 
 </div>
@@ -14154,8 +14154,8 @@ $$</li>
         <span class="n">ae</span><span class="p">[</span><span class="n">ahit</span><span class="p">]</span> <span class="o">=</span> <span class="n">ae1</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
         <span class="n">at</span><span class="p">[</span><span class="n">ahit</span><span class="p">]</span> <span class="o">=</span> <span class="n">at1</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
         <span class="n">aflag</span><span class="p">[</span><span class="n">ahit</span><span class="p">]</span> <span class="o">=</span> <span class="n">aflag1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">amul1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span><span class="p">;</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">aflag</span><span class="p">[</span><span class="n">ahit</span><span class="p">]</span> <span class="o">==</span> <span class="mi">23</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span> <span class="c1">//reject 0-3,1-2 in double-hit</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">aflag</span><span class="p">[</span><span class="n">ahit</span><span class="p">]</span> <span class="o">&gt;</span><span class="mi">29</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span> <span class="c1">//reject triple-hit，quadruple-hit</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">aflag</span><span class="p">[</span><span class="n">ahit</span><span class="p">]</span> <span class="o">==</span> <span class="mi">23</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span> <span class="c1">//reject events with signals in two segments located at diagonal positions. </span>
+        <span class="k">if</span><span class="p">(</span><span class="n">aflag</span><span class="p">[</span><span class="n">ahit</span><span class="p">]</span> <span class="o">&gt;</span><span class="mi">29</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>   <span class="c1">//reject triple-hit，quadruple-hit</span>
         <span class="n">ahit</span> <span class="o">++</span><span class="p">;</span>
        <span class="p">}</span>
       <span class="k">if</span><span class="p">(</span><span class="n">ahit</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span> <span class="n">tout</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">();</span>
