@@ -13580,17 +13580,15 @@ div#notebook {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">ULong64_t</span> <span class="n">twindow</span><span class="o">=</span><span class="mi">100000</span><span class="p">;</span><span class="c1">//ns</span>
-<span class="n">ULong64_t</span> <span class="n">toffset</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="c1">//ns</span>
 <span class="n">TH1I</span> <span class="o">*</span><span class="n">hdt</span><span class="o">=</span><span class="k">new</span> <span class="n">TH1I</span><span class="p">(</span><span class="s">&quot;hdt&quot;</span><span class="p">,</span><span class="s">&quot;fts-bts distribution(ns)&quot;</span><span class="p">,</span><span class="mi">20000</span><span class="p">,</span><span class="o">-</span><span class="mi">100000</span><span class="p">,</span><span class="mi">100000</span><span class="p">);</span>
-<span class="c1">//time window: [ts-offset-twindow, ts-offset+twindow]</span>
-<span class="k">for</span><span class="p">(</span><span class="n">ifts</span><span class="o">=</span><span class="n">mapf1</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">ifts</span><span class="o">!=</span><span class="n">mapf1</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="n">ifts</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-     <span class="n">ibts</span><span class="o">=</span><span class="n">mapb</span><span class="p">.</span><span class="n">lower_bound</span><span class="p">((</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">first</span><span class="o">-</span><span class="n">toffset</span><span class="p">)</span><span class="o">-</span><span class="n">twindow</span><span class="p">);</span><span class="c1">//大于等于指定时间的第一个事件</span>
-    <span class="k">while</span><span class="p">(</span><span class="n">ibts</span><span class="o">!=</span><span class="n">mapb</span><span class="p">.</span><span class="n">end</span><span class="p">())</span> <span class="p">{</span><span class="c1">//until out of range.</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">ibts</span><span class="o">-&gt;</span><span class="n">first</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">first</span><span class="o">-</span><span class="n">toffset</span><span class="p">)</span> <span class="o">+</span> <span class="n">twindow</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span> <span class="c1">//如果超出给定时间范围，break</span>
-        <span class="kt">int</span> <span class="n">dt</span><span class="o">=</span><span class="p">(</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">first</span><span class="o">-</span><span class="n">toffset</span><span class="p">)</span><span class="o">-</span><span class="n">ibts</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">;</span>
+<span class="c1">//time window: [ts-twindow, ts+twindow]</span>
+<span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="n">ifts</span><span class="o">=</span><span class="n">mapf1</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">ifts</span><span class="o">!=</span><span class="n">mapf1</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="n">ifts</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">auto</span> <span class="n">ibts1</span> <span class="o">=</span> <span class="n">mapb</span><span class="p">.</span><span class="n">lower_bound</span><span class="p">(</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">first</span><span class="o">-</span><span class="n">twindow</span><span class="p">);</span><span class="c1">//left boundary</span>
+    <span class="k">auto</span> <span class="n">ibts2</span> <span class="o">=</span> <span class="n">mapb</span><span class="p">.</span><span class="n">upper_bound</span><span class="p">(</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">first</span><span class="o">+</span><span class="n">twindow</span><span class="p">);</span><span class="c1">//right boundary</span>
+    <span class="k">for</span> <span class="p">(</span> <span class="p">;</span> <span class="n">ibts1</span> <span class="o">!=</span> <span class="n">ibts2</span><span class="p">;</span> <span class="o">++</span><span class="n">ibts1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">dt</span><span class="o">=</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">first</span><span class="o">-</span><span class="n">ibts1</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">;</span>
         <span class="n">hdt</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="n">dt</span><span class="p">);</span>
-        <span class="n">ibts</span><span class="o">++</span><span class="p">;</span>
-    <span class="p">}</span>   
+    <span class="p">}</span>
 <span class="p">}</span>
 <span class="n">hdt</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 <span class="n">c1</span><span class="o">-&gt;</span><span class="n">SetLogy</span><span class="p">();</span>
@@ -13673,13 +13671,44 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="n">toffset</span><span class="o">=-</span><span class="mi">550</span><span class="p">;</span>
+<div class=" highlight hl-c++"><pre><span></span><span class="n">ULong64_t</span> <span class="n">toffset</span> <span class="o">=</span> <span class="o">-</span><span class="mi">550</span><span class="p">;</span>
 <span class="n">multimap</span><span class="o">&lt;</span><span class="n">ULong64_t</span><span class="p">,</span><span class="n">dssd</span><span class="o">&gt;</span> <span class="n">mapf</span><span class="p">;</span>
 <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="n">ifts</span><span class="o">=</span><span class="n">mapf1</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">ifts</span><span class="o">!=</span><span class="n">mapf1</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="n">ifts</span><span class="o">++</span><span class="p">)</span> 
-    <span class="n">mapf</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">ULong64_t</span><span class="p">,</span><span class="n">dssd</span><span class="o">&gt;</span><span class="p">(</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">first</span> <span class="o">-</span> <span class="n">toffset</span><span class="p">,</span> <span class="n">ifts</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">));</span>
+    <span class="n">mapf</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">ULong64_t</span><span class="p">,</span><span class="n">dssd</span><span class="o">&gt;</span><span class="p">(</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">first</span> <span class="o">-</span><span class="n">toffset</span><span class="p">,</span> <span class="n">ifts</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">));</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-c++"><pre><span></span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">mapf</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>111442
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -13697,7 +13726,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">TH2F</span> <span class="o">*</span><span class="n">hxyc</span><span class="o">=</span><span class="k">new</span> <span class="n">TH2F</span><span class="p">(</span><span class="s">&quot;hxyc&quot;</span><span class="p">,</span><span class="s">&quot;front-back correlation within coincidence window&quot;</span><span class="p">,</span><span class="mi">3000</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">30000</span><span class="p">,</span><span class="mi">3000</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">30000</span><span class="p">);</span>
@@ -13710,17 +13739,16 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">twindow</span><span class="o">=</span><span class="mi">100</span><span class="p">;</span><span class="c1">//ns</span>
-<span class="k">for</span><span class="p">(</span><span class="n">ifts</span><span class="o">=</span><span class="n">mapf</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">ifts</span><span class="o">!=</span><span class="n">mapf</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="n">ifts</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">ibts</span><span class="o">=</span><span class="n">mapb</span><span class="p">.</span><span class="n">lower_bound</span><span class="p">(</span> <span class="p">(</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">)</span><span class="o">-</span><span class="n">twindow</span><span class="p">);</span>
-    <span class="k">while</span><span class="p">(</span><span class="n">ibts</span><span class="o">!=</span><span class="n">mapb</span><span class="p">.</span><span class="n">end</span><span class="p">())</span> <span class="p">{</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">ibts</span><span class="o">-&gt;</span><span class="n">first</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">)</span> <span class="o">+</span> <span class="n">twindow</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
-        <span class="kt">int</span> <span class="n">dt</span><span class="o">=</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">first</span><span class="o">-</span><span class="n">ibts</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">;</span>
-        <span class="n">hxyc</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">energy</span><span class="p">,</span><span class="n">ibts</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">energy</span><span class="p">);</span>
-        <span class="n">ibts</span><span class="o">++</span><span class="p">;</span>
+<span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="n">ifts</span><span class="o">=</span><span class="n">mapf</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">ifts</span><span class="o">!=</span><span class="n">mapf</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="n">ifts</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">auto</span> <span class="n">ibts1</span><span class="o">=</span><span class="n">mapb</span><span class="p">.</span><span class="n">lower_bound</span><span class="p">(</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">first</span> <span class="o">-</span> <span class="n">twindow</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">ibts2</span><span class="o">=</span><span class="n">mapb</span><span class="p">.</span><span class="n">upper_bound</span><span class="p">(</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">first</span> <span class="o">+</span> <span class="n">twindow</span><span class="p">);</span>   
+    <span class="k">for</span> <span class="p">(</span> <span class="p">;</span> <span class="n">ibts1</span> <span class="o">!=</span> <span class="n">ibts2</span><span class="p">;</span> <span class="o">++</span><span class="n">ibts1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">dt</span><span class="o">=</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">first</span> <span class="o">-</span> <span class="n">ibts1</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">;</span>
+        <span class="n">hxyc</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">energy</span><span class="p">,</span><span class="n">ibts1</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">energy</span><span class="p">);</span>
     <span class="p">}</span>   
 <span class="p">}</span>
 <span class="n">hxyc</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">&quot;colz&quot;</span><span class="p">);</span>
@@ -13771,7 +13799,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">Int_t</span> <span class="n">nhit</span><span class="p">;</span>
@@ -13792,7 +13820,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">twindow</span><span class="o">=</span><span class="mi">200</span><span class="p">;</span><span class="c1">//ns</span>
@@ -13852,7 +13880,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">Int_t</span> <span class="n">xhit</span><span class="p">,</span><span class="n">yhit</span><span class="p">;</span>
@@ -13870,7 +13898,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">ifts</span><span class="o">=</span><span class="n">mapb</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
@@ -13926,7 +13954,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">hdtx</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
@@ -13970,7 +13998,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">multimap</span><span class="o">&lt;</span><span class="n">ULong64_t</span><span class="p">,</span><span class="n">dssd</span><span class="o">&gt;</span> <span class="n">mapfn</span><span class="p">,</span><span class="n">mapbn</span><span class="p">;</span>
@@ -13985,7 +14013,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">twindow</span><span class="o">=</span><span class="mi">200</span><span class="p">;</span><span class="c1">//ns</span>
@@ -14037,7 +14065,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">mby</span>
@@ -14068,7 +14096,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">twindow</span><span class="o">=</span><span class="mi">200</span><span class="p">;</span><span class="c1">//ns</span>
@@ -14120,7 +14148,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">mfx</span>
@@ -14168,7 +14196,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">TH2F</span> <span class="o">*</span><span class="n">hxy</span><span class="o">=</span><span class="k">new</span> <span class="n">TH2F</span><span class="p">(</span><span class="s">&quot;hxy&quot;</span><span class="p">,</span><span class="s">&quot;front-back correlation for corrected data&quot;</span><span class="p">,</span><span class="mi">3000</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">30000</span><span class="p">,</span><span class="mi">3000</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">30000</span><span class="p">);</span>
@@ -14183,7 +14211,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="k">struct</span> <span class="n">dssdxy</span>
@@ -14196,20 +14224,19 @@ div#notebook {
 <span class="n">multimap</span><span class="o">&lt;</span><span class="n">ULong64_t</span><span class="p">,</span> <span class="n">dssdxy</span><span class="o">&gt;</span> <span class="n">mapdssd</span><span class="p">;</span>
 <span class="n">twindow</span><span class="o">=</span><span class="mi">200</span><span class="p">;</span><span class="c1">//ns</span>
 <span class="k">for</span><span class="p">(</span><span class="n">ifts</span><span class="o">=</span><span class="n">mapfn</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">ifts</span><span class="o">!=</span><span class="n">mapfn</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="n">ifts</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-     <span class="n">ibts</span><span class="o">=</span><span class="n">mapbn</span><span class="p">.</span><span class="n">lower_bound</span><span class="p">(</span> <span class="p">(</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">)</span><span class="o">-</span><span class="n">twindow</span><span class="p">);</span>
-    <span class="k">while</span><span class="p">(</span><span class="n">ibts</span><span class="o">!=</span><span class="n">mapbn</span><span class="p">.</span><span class="n">end</span><span class="p">())</span> <span class="p">{</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">ibts</span><span class="o">-&gt;</span><span class="n">first</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">)</span> <span class="o">+</span> <span class="n">twindow</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
-        <span class="kt">int</span> <span class="n">dt</span><span class="o">=</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">first</span><span class="o">-</span><span class="n">ibts</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">;</span>
-        <span class="n">hxy</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">energy</span><span class="p">,</span><span class="n">ibts</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">energy</span><span class="p">);</span><span class="c1">//no f-b correlation cut</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">abs</span><span class="p">(</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">energy</span><span class="o">-</span><span class="n">ibts</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">energy</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">500</span><span class="p">)</span> <span class="p">{</span>
-            <span class="n">hxyfbc</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">energy</span><span class="p">,</span><span class="n">ibts</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">energy</span><span class="p">);</span><span class="c1">//with f-b correlation cut</span>
+    <span class="k">auto</span> <span class="n">ibts1</span> <span class="o">=</span> <span class="n">mapbn</span><span class="p">.</span><span class="n">lower_bound</span><span class="p">(</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">first</span><span class="o">-</span><span class="n">twindow</span><span class="p">);</span><span class="c1">//left boundary</span>
+    <span class="k">auto</span> <span class="n">ibts2</span> <span class="o">=</span> <span class="n">mapbn</span><span class="p">.</span><span class="n">upper_bound</span><span class="p">(</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">first</span><span class="o">+</span><span class="n">twindow</span><span class="p">);</span><span class="c1">//right boundary</span>
+    <span class="k">for</span> <span class="p">(</span> <span class="p">;</span> <span class="n">ibts1</span> <span class="o">!=</span> <span class="n">ibts2</span><span class="p">;</span> <span class="o">++</span><span class="n">ibts1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">dt</span><span class="o">=</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">first</span><span class="o">-</span><span class="n">ibts1</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">;</span>
+        <span class="n">hxy</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">energy</span><span class="p">,</span><span class="n">ibts1</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">energy</span><span class="p">);</span><span class="c1">//no f-b correlation cut</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">abs</span><span class="p">(</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">energy</span><span class="o">-</span><span class="n">ibts1</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">energy</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">500</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">hxyfbc</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">energy</span><span class="p">,</span><span class="n">ibts1</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">energy</span><span class="p">);</span><span class="c1">//with f-b correlation cut</span>
             <span class="n">xy</span><span class="p">.</span><span class="n">xstrip</span><span class="o">=</span><span class="n">ifts</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">strip</span><span class="p">;</span>
-            <span class="n">xy</span><span class="p">.</span><span class="n">ystrip</span><span class="o">=</span><span class="n">ibts</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">strip</span><span class="p">;</span>
-            <span class="n">xy</span><span class="p">.</span><span class="n">energy</span><span class="o">=</span><span class="n">ibts</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">energy</span><span class="p">;</span>
-            <span class="n">mapdssd</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">ULong64_t</span><span class="p">,</span> <span class="n">dssdxy</span><span class="o">&gt;</span><span class="p">(</span><span class="n">ibts</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">,</span> <span class="n">xy</span><span class="p">));</span>
+            <span class="n">xy</span><span class="p">.</span><span class="n">ystrip</span><span class="o">=</span><span class="n">ibts1</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">strip</span><span class="p">;</span>
+            <span class="n">xy</span><span class="p">.</span><span class="n">energy</span><span class="o">=</span><span class="n">ibts1</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">energy</span><span class="p">;</span>
+            <span class="n">mapdssd</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">ULong64_t</span><span class="p">,</span> <span class="n">dssdxy</span><span class="o">&gt;</span><span class="p">(</span><span class="n">ibts1</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">,</span> <span class="n">xy</span><span class="p">));</span>
             <span class="n">hxystrip</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="n">xy</span><span class="p">.</span><span class="n">ystrip</span><span class="p">,</span><span class="n">xy</span><span class="p">.</span><span class="n">xstrip</span><span class="p">);</span>
         <span class="p">}</span>
-        <span class="n">ibts</span><span class="o">++</span><span class="p">;</span>
     <span class="p">}</span>   
 <span class="p">}</span>
 <span class="n">hxy</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">&quot;colz&quot;</span><span class="p">);</span>
@@ -14254,7 +14281,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="c1">//hxy-&gt;GetXaxis()-&gt;SetRangeUser(6000,8000);</span>
@@ -14292,7 +14319,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">TH1F</span> <span class="o">*</span><span class="n">hfe</span><span class="o">=</span><span class="p">(</span><span class="n">TH1F</span><span class="o">*</span><span class="p">)</span> <span class="n">hxyfbc</span><span class="o">-&gt;</span><span class="n">ProjectionX</span><span class="p">(</span><span class="s">&quot;hfe&quot;</span><span class="p">);</span>
@@ -14329,7 +14356,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="c1">//hxystrip-&gt;Draw(&quot;colz&quot;);</span>
@@ -14354,7 +14381,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">TFile</span> <span class="o">*</span><span class="n">fmw</span><span class="o">=</span><span class="k">new</span> <span class="n">TFile</span><span class="p">(</span><span class="s">&quot;mwpc.root&quot;</span><span class="p">);</span>
@@ -14401,7 +14428,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">tmw</span><span class="o">-&gt;</span><span class="n">Scan</span><span class="p">(</span><span class="s">&quot;timestamp:energy&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="s">&quot;colsize=15&quot;</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
@@ -14445,7 +14472,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">multimap</span><span class="o">&lt;</span><span class="n">ULong64_t</span><span class="p">,</span> <span class="n">Float_t</span><span class="o">&gt;</span> <span class="n">mapmw1</span><span class="p">;</span><span class="c1">//map for mwpc</span>
@@ -14484,7 +14511,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="k">auto</span> <span class="n">imw</span><span class="o">=</span><span class="n">mapmw1</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span><span class="c1">//</span>
@@ -14558,18 +14585,17 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">twindow</span><span class="o">=</span><span class="mi">5000</span><span class="p">;</span><span class="c1">//ns</span>
 <span class="n">TH1I</span> <span class="o">*</span><span class="n">hmdt</span><span class="o">=</span><span class="k">new</span> <span class="n">TH1I</span><span class="p">(</span><span class="s">&quot;hmdt&quot;</span><span class="p">,</span><span class="s">&quot;mts-fts distribution(ns)&quot;</span><span class="p">,</span><span class="mi">1000</span><span class="p">,</span><span class="o">-</span><span class="mi">5000</span><span class="p">,</span><span class="mi">5000</span><span class="p">);</span>
 <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="n">idts</span><span class="o">=</span><span class="n">mapdssd</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">idts</span><span class="o">!=</span><span class="n">mapdssd</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="n">idts</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">auto</span> <span class="n">imts</span><span class="o">=</span><span class="n">mapmw1</span><span class="p">.</span><span class="n">lower_bound</span><span class="p">(</span> <span class="p">(</span><span class="n">idts</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">)</span><span class="o">-</span><span class="n">twindow</span><span class="p">);</span>
-    <span class="k">while</span><span class="p">(</span><span class="n">imts</span><span class="o">!=</span><span class="n">mapmw1</span><span class="p">.</span><span class="n">end</span><span class="p">())</span> <span class="p">{</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">imts</span><span class="o">-&gt;</span><span class="n">first</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="n">idts</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">)</span> <span class="o">+</span> <span class="n">twindow</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
-        <span class="kt">int</span> <span class="n">dt</span><span class="o">=</span><span class="n">imts</span><span class="o">-&gt;</span><span class="n">first</span><span class="o">-</span><span class="n">idts</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">;</span>
+    <span class="k">auto</span> <span class="n">imts1</span><span class="o">=</span><span class="n">mapmw1</span><span class="p">.</span><span class="n">lower_bound</span><span class="p">(</span><span class="n">idts</span><span class="o">-&gt;</span><span class="n">first</span><span class="o">-</span><span class="n">twindow</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">imts2</span><span class="o">=</span><span class="n">mapmw1</span><span class="p">.</span><span class="n">upper_bound</span><span class="p">(</span><span class="n">idts</span><span class="o">-&gt;</span><span class="n">first</span><span class="o">+</span><span class="n">twindow</span><span class="p">);</span>   
+    <span class="k">for</span> <span class="p">(</span> <span class="p">;</span> <span class="n">imts1</span> <span class="o">!=</span> <span class="n">imts2</span><span class="p">;</span> <span class="o">++</span><span class="n">imts1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">dt</span><span class="o">=</span><span class="n">imts1</span><span class="o">-&gt;</span><span class="n">first</span><span class="o">-</span><span class="n">idts</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">;</span>
         <span class="n">hmdt</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="n">dt</span><span class="p">);</span>
-        <span class="n">imts</span><span class="o">++</span><span class="p">;</span>
     <span class="p">}</span>   
 <span class="p">}</span>
 <span class="n">hmdt</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
@@ -14606,7 +14632,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">hmdt</span><span class="o">-&gt;</span><span class="n">GetXaxis</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">SetRangeUser</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span><span class="mi">1000</span><span class="p">);</span>
@@ -14650,7 +14676,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">toffset</span><span class="o">=</span><span class="mi">650</span><span class="p">;</span>
@@ -14676,7 +14702,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">TH1F</span> <span class="o">*</span><span class="n">hmwec</span><span class="o">=</span><span class="k">new</span> <span class="n">TH1F</span><span class="p">(</span><span class="s">&quot;hmwec&quot;</span><span class="p">,</span><span class="s">&quot;energy of mwpc coincided with DSSD &quot;</span><span class="p">,</span><span class="mi">3500</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">35000</span><span class="p">);</span>
@@ -14701,7 +14727,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">twindow</span><span class="o">=</span><span class="mi">200</span><span class="p">;</span><span class="c1">//ns</span>
@@ -14711,13 +14737,12 @@ div#notebook {
      <span class="n">y</span><span class="o">=</span><span class="n">idts</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">ystrip</span><span class="p">;</span>
      <span class="n">de</span><span class="o">=</span><span class="n">idts</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">energy</span><span class="p">;</span>
      <span class="n">me</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span>
-    <span class="k">auto</span> <span class="n">imts</span><span class="o">=</span><span class="n">mapmw</span><span class="p">.</span><span class="n">lower_bound</span><span class="p">(</span> <span class="p">(</span><span class="n">idts</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">)</span><span class="o">-</span><span class="n">twindow</span><span class="p">);</span>
-    <span class="k">while</span><span class="p">(</span><span class="n">imts</span><span class="o">!=</span><span class="n">mapmw</span><span class="p">.</span><span class="n">end</span><span class="p">())</span> <span class="p">{</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">imts</span><span class="o">-&gt;</span><span class="n">first</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="n">idts</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">)</span> <span class="o">+</span> <span class="n">twindow</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
-        <span class="n">me</span><span class="o">=</span><span class="n">imts</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span>
-        <span class="n">hmwec</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="n">imts</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">imts1</span><span class="o">=</span><span class="n">mapmw</span><span class="p">.</span><span class="n">lower_bound</span><span class="p">(</span><span class="n">idts</span><span class="o">-&gt;</span><span class="n">first</span><span class="o">-</span><span class="n">twindow</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">imts2</span><span class="o">=</span><span class="n">mapmw</span><span class="p">.</span><span class="n">upper_bound</span><span class="p">(</span><span class="n">idts</span><span class="o">-&gt;</span><span class="n">first</span><span class="o">+</span><span class="n">twindow</span><span class="p">);</span>
+    <span class="k">for</span><span class="p">(</span> <span class="p">;</span> <span class="n">imts1</span><span class="o">!=</span><span class="n">imts2</span><span class="p">;</span> <span class="n">imts1</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">me</span><span class="o">=</span><span class="n">imts1</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span>
+        <span class="n">hmwec</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="n">imts1</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">);</span>
         <span class="n">hdsec</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="n">idts</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">energy</span><span class="p">);</span>
-        <span class="n">imts</span><span class="o">++</span><span class="p">;</span>
     <span class="p">}</span>  
     <span class="k">if</span><span class="p">(</span><span class="n">me</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)</span> <span class="n">hdsenc</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="n">idts</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">energy</span><span class="p">);</span>    
     <span class="n">t1</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">();</span>
@@ -14766,7 +14791,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">hmwe</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
@@ -14814,7 +14839,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[38]:</div>
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">hfe</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span><span class="c1">//dssd only</span>
@@ -14853,7 +14878,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="n">c1</span><span class="o">-&gt;</span><span class="n">Clear</span><span class="p">();</span>
@@ -14890,7 +14915,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="prompt input_prompt">In&nbsp;[41]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-c++"><pre><span></span><span class="o">!</span><span class="n">jupyter</span> <span class="n">nbconvert</span> <span class="mf">5.1</span><span class="n">_decay_analysis_I</span><span class="p">.</span><span class="n">ipynb</span> <span class="o">--</span><span class="n">to</span> <span class="n">html</span>
@@ -14912,7 +14937,9 @@ div#notebook {
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[NbConvertApp] Converting notebook 5.1_decay_analysis_I.ipynb to html
 
-[NbConvertApp] Writing 767693 bytes to 5.1_decay_analysis_I.html
+
+[NbConvertApp] Writing 796948 bytes to 5.1_decay_analysis_I.html
+
 
 </pre>
 </div>
@@ -14921,14 +14948,6 @@ div#notebook {
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>ok!</p>
-
-</div>
-</div>
 </div>
     </div>
   </div>
