@@ -62,7 +62,7 @@
       - [3.Automatic intrinsic calibration of double-sided silicon strip detectors](./chapt3/DSSD_cali.pdf)
       - [4.DSSD Adjacent strip correlations.pdf](./chapt3/DSSD_Adjacent.pdf)
  - 3.5.1 [Single-hit XY events](https://github.com/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt3/3.5.1_single_hit_XY_dssd1.html)
- - 3.5.2 [DSSD front-back correlation (II)](https://github.com/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt3/3.5.2_DSSD_front_back_correlation_2_dssd1.html))
+ - 3.5.2 [DSSD front-back correlation (II)](https://github.com/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt3/3.5.2_DSSD_front_back_correlation_2_dssd1.html)
  - 3.5.3 [DSSD amplitude normalization](3.5.3_DSSD_calibration.html)
  - 3.6 [DSSD 数据分析](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.6_DSSD_data_analysis.html) 
  - [作业 3.2](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/coursework3.2.html) 
