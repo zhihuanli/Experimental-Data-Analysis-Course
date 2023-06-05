@@ -57,7 +57,7 @@
  - 3.2 [利用可变长数组存储数据- Hit结构](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.2_TTree_Branch_with_Dynamic_Array.html) 
  - [作业 3.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/coursework3.1.html) 
  - 3.3 [DSSD Inter-strip correlation](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.3_DSSD_interstrip_correlation.html)
- - 3.4 [DSSD front-back correlation (I)](3.4_DSSD_front_back_correlation_1_dssd1.html)
+ - 3.4 [DSSD front-back correlation (I)](https://github.com/zhihuanli/Experimental-Data-Analysis-Course/blob/master/chapt3/3.4_DSSD_front_back_correlation_1_dssd1.html)
  - 参考文献
       - [3.Automatic intrinsic calibration of double-sided silicon strip detectors](./chapt3/DSSD_cali.pdf)
       - [4.DSSD Adjacent strip correlations.pdf](./chapt3/DSSD_Adjacent.pdf)
