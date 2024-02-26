@@ -15157,19 +15157,43 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </ul>
 <p><img src="fig/vetowall.png" alt="" /></p>
 <h3 id="%E8%A6%81%E6%B1%82">&#35201;&#27714;<a class="anchor-link" href="#%E8%A6%81%E6%B1%82">&#182;</a></h3><ul>
-<li><p>用1.3的代码生成 ROOT 文件，读入该 ROOT 文件。</p>
+<li><p>用1.3的代码生成 ROOT 文件。</p>
 </li>
-<li><p>用 tree-makeclass 的方法，将上述信息加入到代码，并生成新的 ROOT 文件。</p>
+<li><p>读入ROOT文件参数( 采用 <code>tree-&gt;makeclass()</code> 方法 )；生成新的ROOT文件，文件中加入veto相关参数。</p>
+<ul>
+<li>新ROOT文件中，保留原 ROOT 文件的所有参数。</li>
+</ul>
 </li>
-<li><p>通过数据分析，验证薄塑料闪烁体可作为带电粒子的 veto 探测器。</p>
+<li><p>分析新生成ROOT文件，运用veto探测器信息去除带电粒子对中子探测器的影响。</p>
+<ul>
+<li>给出加入veto条件前后的tof-Q的二维图。<ul>
+<li>tof 归一到 d = 100cm。</li>
+<li>利用两端能量信号计算原始能量沉积Q</li>
+</ul>
 </li>
-<li><p>保留原 ROOT 文件的所有参数。</p>
+</ul>
 </li>
 </ul>
 
 </div>
 </div>
 </div>
+</div><div  class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-c++"><pre><span></span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
 </div>
 </body>
 

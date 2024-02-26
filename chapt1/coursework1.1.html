@@ -15159,29 +15159,43 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <li>用 jupyter 或 ppt 展示过程和结果。</li>
 <li>写上原理，中间步骤，结果，结果分析或者存在的问题等。</li>
 </ul>
-<p>0.参考1.1代码，编写模拟程序，生成 ROOT 文件。参考 1.2 的做法，读入 ROOT 文件，将 tu, td 以及 ctof，cx 存入新的 ROOT 文件。其中 ctof = (tu + td)/2，cx = (tu - td)/2。</p>
+<p>0.参考1.1代码，编写模拟程序，生成 ROOT 文件，并参考 1.2 的做法进行分析。</p>
 <p>1.利用两端时间和能量信息求粒子入射位置：$t_x$ 和 $q_x$。<font color=red> (不得利用 $\lambda，v_{sc}$) </font></p>
 <ul>
 <li>找出 $t_u - t_d$ 的中心位置和两侧边界，根据几何条件确定 $t_x = a * (t_u - t_d) + b$中的a,b值（参照文献2.的做法）</li>
 <li>利用两端 $q_u, q_d$ 的信号，计算粒子入射位置 $q_x$。</li>
+<li>在一张图中画出$t_x$和$q_x$, 比较 $t_x，q_x$ 哪个更好，并分析原因。<ul>
+<li>tips: 比较不同qRes( = 0.01, 0.1, 0.3)下生成的$q_x$.</li>
+</ul>
+</li>
 </ul>
 <p>2.中子能量$ce$。</p>
 <ul>
-<li><p>利用TOF中的 $\gamma$ 峰的位置，对TOF进行绝对刻度（找到飞行时间零点）</p>
-</li>
-<li><p>对TOF进行常数修正，将飞行距离归一到 100cm，生成新的TOF参数ntof</p>
-</li>
-<li><p>利用上一步TOF信息，计算中子能量 $ce$。</p>
-</li>
-<li><p>在新文件中加入 $t_x，q_x$，ntof，ce参数，并保留原来的所有参数。</p>
-</li>
-<li><p>比较 $t_x，q_x$ 哪种更好？。</p>
-</li>
+<li>利用TOF中的 $\gamma$ 峰的位置，对TOF进行绝对刻度（找到飞行时间零点）</li>
+<li>对TOF进行常数修正，将飞行距离归一到 100cm，生成新的TOF参数ntof</li>
+<li>利用上一步TOF信息，计算中子能量 $ce$。</li>
 </ul>
+<p>生成新的ROOT文件，在文件中加入 $t_x，q_x$，ntof，ce参数，并保留原来的所有参数。</p>
 
 </div>
 </div>
 </div>
+</div><div  class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-c++"><pre><span></span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
 </div>
 </body>
 
