@@ -15149,7 +15149,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="2.2-PPAC-%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86-II">2.2 PPAC &#20449;&#21495;&#22788;&#29702;-II<a class="anchor-link" href="#2.2-PPAC-%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86-II">&#182;</a></h2><h3 id="1.-Tracking">1. Tracking<a class="anchor-link" href="#1.-Tracking">&#182;</a></h3><p>利用多个 PPAC 的位置 (x,y,z) 信息进行 traking 的原理如下图所示, 图中黑点和红点分别代表粒子实际入射位置以及探测器测量位置。由于 PPAC 的探测效率小于100%，对于每个入射粒子只有部分 PPAC 的 x 或 y 方向可给出位置信息。假设对于某一入射粒子，有两个以上(含两个)探测器给出x位置信息 (如图:1Ax,1Bx,3x) 时，入射粒子的 x-z 径迹可由上述 x-z 点进行线性拟合得到。y-z 径迹的处理方法与 x-z 径迹的处理方法一致。其他位置(z)的 (x,y) 坐标可利用上述线性方程内插或外推得到。图中黑点代表由线性方程计算得到的位置。</p>
+<h2 id="2.2-PPAC-%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86-II">2.2 PPAC &#20449;&#21495;&#22788;&#29702;-II<a class="anchor-link" href="#2.2-PPAC-%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86-II">&#182;</a></h2><h3 id="1.-Tracking">1. Tracking<a class="anchor-link" href="#1.-Tracking">&#182;</a></h3><p>利用多个 PPAC 的位置 (x,y,z) 信息进行 traking 的原理如下图所示, 图中黑点和红点分别代表粒子实际入射位置以及探测器测量位置。由于 PPAC 的探测效率小于100%，对于每个入射粒子只有部分 PPAC 的 x 或 y 方向可给出位置信息。假设对于某一入射粒子，有两个以上(含两个)探测器给出x位置信息 (如图: 1Ax, 1Bx, 3x) 时，入射粒子的 x/y-z 径迹可由上述 x/y-z 点进行线性拟合得到。其他位置(z)的 (x,y) 坐标可利用上述线性方程内插或外推得到。图中黑点代表由线性方程计算得到的位置。</p>
 <p><img src="fig/tracking.png" alt="setup" /></p>
 <h3 id="%E6%9C%AC%E5%AE%9E%E9%AA%8C%E4%B8%AD%E9%87%87%E7%94%A8%E7%9A%84%E9%87%8D%E5%BB%BA%E7%AD%96%E7%95%A5%E4%B8%BA%EF%BC%9A">&#26412;&#23454;&#39564;&#20013;&#37319;&#29992;&#30340;&#37325;&#24314;&#31574;&#30053;&#20026;&#65306;<a class="anchor-link" href="#%E6%9C%AC%E5%AE%9E%E9%AA%8C%E4%B8%AD%E9%87%87%E7%94%A8%E7%9A%84%E9%87%8D%E5%BB%BA%E7%AD%96%E7%95%A5%E4%B8%BA%EF%BC%9A">&#182;</a></h3><ol>
 <li><p>F8PPAC3有位置信号，且F8PPAC1和F8PPAC2中至少有一层PPAC有效。</p>
@@ -15207,11 +15207,10 @@ $$
 $$<ul>
 <li>用上述做法可分别计算探测器的x，y，x-y的效率</li>
 </ul>
-<h2 id="Branch">Branch<a class="anchor-link" href="#Branch">&#182;</a></h2><p>$PPACF8[i][j]$ -Calibrated Data(位置已刻度好)</p>
+<h2 id="ROOT%E6%96%87%E4%BB%B6%E4%B8%ADTTree%E7%9A%84Branch%EF%BC%9A">ROOT&#25991;&#20214;&#20013;TTree&#30340;Branch&#65306;<a class="anchor-link" href="#ROOT%E6%96%87%E4%BB%B6%E4%B8%ADTTree%E7%9A%84Branch%EF%BC%9A">&#182;</a></h2><p>$PPACF8[i][j]$ -Calibrated Data(位置已刻度好)</p>
 <ul>
-<li>x,y的信号有效时，同时要求anode信号有效。</li>
 <li>z的位置为探测器平面的z方向坐标，通过位置测量给定。</li>
-<li>不正确的位置信息，如超界，pileup等用 值-999表示,。</li>
+<li>已构建 x,y 信号(要求anode信号有效)。 不正确的位置信息：如超界、pileup等用 -999 表示,。</li>
 </ul>
 <table>
 <thead>
@@ -16034,7 +16033,7 @@ class="
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <ul>
-<li>上图中呈现的残差分布并不是单一的gaus分布，有一个窄的gauss重叠在宽的gauss之上。其可能的原因为:探测器位置分辨率并非是常数，实际位置分辨率与粒子的入射位置相关。[Nucl.Instr.Meth.A 593,376 (2008)]</li>
+<li>上图中呈现的残差分布并不是单一的gaus分布，有一个窄的gauss重叠在宽的gauss之上。其可能的原因为:探测器位置分辨率并非是常数，实际位置分辨率与粒子的入射位置相关。[Nucl.Instr.Meth.A 593,376 (2008)], 一般只考虑窄的gaus分布。</li>
 </ul>
 
 </div>
