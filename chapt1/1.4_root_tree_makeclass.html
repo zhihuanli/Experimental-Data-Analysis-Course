@@ -15150,7 +15150,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="1.4-TTree-%E7%9A%84-MakeClass-%E6%96%B9%E6%B3%95">1.4 TTree &#30340; MakeClass &#26041;&#27861;<a class="anchor-link" href="#1.4-TTree-%E7%9A%84-MakeClass-%E6%96%B9%E6%B3%95">&#182;</a></h2><ul>
-<li>MakeClass方法，提供了访问ROOT文件的TTree内部数据所需的类(class)的结构</li>
+<li>MakeClass方法提供了访问ROOT文件的TTree内部数据所需的类(class)的结构</li>
 </ul>
 
 </div>
@@ -15434,8 +15434,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="ppac.h"><font color="Blue">ppac.h</font><a class="anchor-link" href="#ppac.h">&#182;</a></h3><ul>
-<li>declarations for all tree branches</li>
-<li>setting the corresponding branch address</li>
+<li><font color="Red">  declarations for all tree branches</font></li>
+<li><font color="Red">  setting the corresponding branch address</font></li>
 </ul>
 <div class="highlight"><pre><span></span><span class="c1">//////////////////////////////////////////////////////////</span>
 <span class="c1">// This class has been automatically generated on</span>
@@ -15708,7 +15708,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <span class="w">  </span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">&quot;ta&quot;</span><span class="p">,</span><span class="w">  </span><span class="o">&amp;</span><span class="n">ta</span><span class="p">,</span><span class="w">  </span><span class="s">&quot;ta/D&quot;</span><span class="p">);</span>
 <span class="w">  </span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">&quot;x&quot;</span><span class="p">,</span><span class="w">   </span><span class="o">&amp;</span><span class="n">x</span><span class="p">,</span><span class="w">   </span><span class="s">&quot;x/D&quot;</span><span class="p">);</span>
 <span class="w">  </span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">&quot;y&quot;</span><span class="p">,</span><span class="w">   </span><span class="o">&amp;</span><span class="n">y</span><span class="p">,</span><span class="w">   </span><span class="s">&quot;y/D&quot;</span><span class="p">);</span>
-<span class="w">    </span><span class="c1">//Ttree *fChain - Pointer pointing to the tree</span>
+
+<span class="w">    </span><span class="c1">//TTree *fChain - Pointer pointing to the tree </span>
 <span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">fChain</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
 
 <span class="w">   </span><span class="n">Long64_t</span><span class="w"> </span><span class="n">nentries</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fChain</span><span class="o">-&gt;</span><span class="n">GetEntriesFast</span><span class="p">();</span>
@@ -15718,17 +15719,21 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <span class="w">      </span><span class="n">Long64_t</span><span class="w"> </span><span class="n">ientry</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoadTree</span><span class="p">(</span><span class="n">jentry</span><span class="p">);</span>
 <span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ientry</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
 <span class="w">      </span><span class="n">nb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fChain</span><span class="o">-&gt;</span><span class="n">GetEntry</span><span class="p">(</span><span class="n">jentry</span><span class="p">);</span><span class="w">   </span><span class="n">nbytes</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">nb</span><span class="p">;</span>
-<span class="w">       </span><span class="c1">//user code</span>
+
+<span class="w">     </span><span class="c1">//user code</span>
 <span class="w">     </span><span class="k">if</span><span class="p">(</span><span class="n">jentry</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="o">==</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span>
 <span class="w">         </span><span class="n">h1</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="n">F8PPACRawData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">F8PPACRawData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">F8PPACRawData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">]);</span>
+
 <span class="w">     </span><span class="n">txl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">F8PPACRawData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">];</span>
 <span class="w">     </span><span class="n">txr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">F8PPACRawData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">];</span>
 <span class="w">     </span><span class="n">tyd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">F8PPACRawData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">];</span>
 <span class="w">     </span><span class="n">tyu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">F8PPACRawData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">];</span>
 <span class="w">     </span><span class="n">ta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">F8PPACRawData</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">];</span>
+
 <span class="w">     </span><span class="kt">bool</span><span class="w"> </span><span class="n">bx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">txl</span><span class="o">&lt;</span><span class="mi">4900</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">txr</span><span class="o">&lt;</span><span class="mi">4900</span><span class="p">;</span>
 <span class="w">     </span><span class="kt">bool</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tyu</span><span class="o">&lt;</span><span class="mi">4900</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">tyd</span><span class="o">&lt;</span><span class="mi">4900</span><span class="p">;</span>
 <span class="w">     </span><span class="kt">bool</span><span class="w"> </span><span class="n">ba</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ta</span><span class="o">&lt;</span><span class="mi">600</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ta</span><span class="o">&gt;</span><span class="mi">250</span><span class="p">;</span><span class="w"> </span>
+
 <span class="w">     </span><span class="n">x</span><span class="w"> </span><span class="o">=-</span><span class="w"> </span><span class="mi">5000</span><span class="p">;</span>
 <span class="w">     </span><span class="n">y</span><span class="w"> </span><span class="o">=-</span><span class="w"> </span><span class="mi">5000</span><span class="p">;</span>
 <span class="w">     </span><span class="k">if</span><span class="p">(</span><span class="n">bx</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ba</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -15780,7 +15785,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-c++"><pre><span></span><span class="p">.</span><span class="n">L</span><span class="w"> </span><span class="n">ppac1</span><span class="p">.</span><span class="n">C</span>
+<div class=" highlight hl-c++"><pre><span></span><span class="p">.</span><span class="n">L</span><span class="w"> </span><span class="n">ppac</span><span class="p">.</span><span class="n">C</span>
 </pre></div>
 
      </div>
@@ -16090,7 +16095,7 @@ class="
 <span class="k">const</span><span class="w"> </span><span class="n">Int_t</span><span class="w"> </span><span class="n">fNFile</span><span class="o">=</span><span class="mi">11</span><span class="p">;</span>
 <span class="n">Int_t</span><span class="w"> </span><span class="n">iFile</span><span class="p">;</span>
 <span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">iFile</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">iFile</span><span class="o">&lt;</span><span class="n">fNFile</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">iFile</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">chain</span><span class="o">-&gt;</span><span class="n">Add</span><span class="p">(</span><span class="n">Form</span><span class="p">(</span><span class="s">&quot;../anadata/CALIB_RUN%d.root&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">iFile</span><span class="o">+</span><span class="mi">10</span><span class="p">));</span>
+<span class="w">    </span><span class="n">chain</span><span class="o">-&gt;</span><span class="n">Add</span><span class="p">(</span><span class="n">Form</span><span class="p">(</span><span class="s">&quot;../anadata/data%03d.root&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">iFile</span><span class="o">+</span><span class="mi">10</span><span class="p">));</span>
 <span class="p">}</span>
 </pre></div>
 
