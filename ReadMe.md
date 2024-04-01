@@ -62,11 +62,10 @@
  - 参考文献
       - [3.Automatic intrinsic calibration of double-sided silicon strip detectors](./chapt3/DSSD_cali.pdf)
       - [4.DSSD Adjacent strip correlations.pdf](./chapt3/DSSD_Adjacent.pdf)
- - 3.5.1 [DSSD front-back correlation (II)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.5.2_DSSD_front_back_correlation_2_dssd1.html)
- - 3.6.3 [DSSD多重性分析 (I)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.6.1_DSSD_Multiplicity_I.html)
+ - 3.5 [DSSD front-back correlation (II)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.5.2_DSSD_front_back_correlation_2_dssd1.html)
+ - 3.6 [DSSD多重性分析 (I)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.6.1_DSSD_Multiplicity_I.html)
  - [作业 3.3](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/coursework3.3.html)
- - 3.6.4 [DSSD多重性分析 (II)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.6.2_DSSD_Multiplicity_II.html) 
- - 3.6.5 [DSSD多重性分析代码](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.6.3_DSSD_Multiplicity_code.html)
+ - 3.6.1 [DSSD多重性分析 (II)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.6.2_DSSD_Multiplicity_II.html) 
  - 3.7 [DSSD数据分析](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.7_DSSD_data_analysis.html)
 
  - 3.8* [用vector存储TTree数据](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.7_TTree_Branch_with_vector.html) 
