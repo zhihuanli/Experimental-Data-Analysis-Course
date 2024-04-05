@@ -67,7 +67,7 @@
  - 3.6 [DSSD多重性分析](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.6.1_DSSD_Multiplicity_I.html)
  - 3.6.1 [DSSD多重性分析代码示例](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.6.2_DSSD_Multiplicity_II.html) 
  - 3.7 [DSSD数据分析](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.7_DSSD_data_analysis.html)
- - [作业 3.4](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/coursework3.4.html)
+ - [[选做]作业 3.4](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/coursework3.4.html)
  - 3.8* [用vector存储TTree数据](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.7_TTree_Branch_with_vector.html) 
       - 代码见[code](https://github.com/zhihuanli/Experimental-Data-Analysis-Course/tree/master/chapt3/code)
 
