@@ -15154,41 +15154,40 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 </div>
 </div>
-<div id="cell-id=59879c34" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=7e36bcc4" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p><strong>分类中x和y互换的事件计入同一类。即将如下两类事件视为一类2.b</strong></p>
+<h3 id="%E5%88%86%E7%B1%BB%EF%BC%9A">&#20998;&#31867;&#65306;<a class="anchor-link" href="#%E5%88%86%E7%B1%BB%EF%BC%9A">&#182;</a></h3><p><strong>只考虑x/y侧不大于4重的事件; xx和yy互换的事件计入同一类。即将如下两类事件视为一类2.b</strong></p>
 <ul>
-<li>(xe[0]+xe[1]=ye[0] &amp;&amp; |x[0]-x[1]|=1); xe[2]=ye[1]</li>
-<li>(ye[0]+ye[1]=xe[0] &amp;&amp; |y[0]-y[1]|=1); ye[2]=xe[1]</li>
-</ul>
-<h3 id="%E5%88%86%E7%B1%BB%EF%BC%9A">&#20998;&#31867;&#65306;<a class="anchor-link" href="#%E5%88%86%E7%B1%BB%EF%BC%9A">&#182;</a></h3><p><strong>只考虑x/y侧不大于4重的事件</strong></p>
-<ul>
+<li><p>(xe[0]+xe[1]=ye[0] &amp;&amp; |xx[0]-xx[1]|=1); xe[2]=ye[1]</p>
+</li>
+<li><p>(ye[0]+ye[1]=xe[0] &amp;&amp; |yy[0]-yy[1]|=1); ye[2]=xe[1]</p>
+</li>
 <li><p>2.a: xe[0]=ye[0]; xe[1]=ye[1]</p>
 <ul>
 <li>47, 78, 102, 123, 161, 255, 277, 284, 293, 343, 362, 367, 382,</li>
 <li>613, 639, 687, 720, 789, 858, 891, 902, 904, 964,</li>
 </ul>
 </li>
-<li><p>2.b: (xe[0]+xe[1]=ye[0] &amp;&amp; |x[0]-x[1]|=1); xe[2]=ye[1]</p>
+<li><p>2.b: (xe[0]+xe[1]=ye[0] &amp;&amp; |xx[0]-xx[1]|=1); xe[2]=ye[1]</p>
 <ul>
 <li>42, 130, 171, 265, 425, 429, 593, 610, 695, 739, 912</li>
 </ul>
 </li>
-<li><p>2.c: (xe[0]+xe[1]=ye[0] &amp;&amp; |x[0]-x[1]|$\neq$1)</p>
+<li><p>2.c: (xe[0]+xe[1]=ye[0] &amp;&amp; |xx[0]-xx[1]|$\neq$1)</p>
 <ul>
 <li>718</li>
 </ul>
 </li>
-<li><p>2.d: (xe[0]+xe[1]=ye[0] &amp;&amp; |x[0]-x[1]|=1); (xe[2]+xe[3]=ye[1]&amp;&amp;|x[2]-x[3]|=1)</p>
+<li><p>2.d: (xe[0]+xe[1]=ye[0] &amp;&amp; |xx[0]-xx[1]|=1); (xe[2]+xe[3]=ye[1] &amp;&amp; |xx[2]-xx[3]|=1)</p>
 <ul>
 <li>670</li>
 </ul>
 </li>
-<li><p>2.e: (xe[0]+xe[1]=ye[0]+ye[1] &amp;&amp; |x[0]-x[1]|$\neq$1 &amp;&amp; |y[0]-y[1]|=1)</p>
+<li><p>2.e: (xe[0]+xe[1]=ye[0]+ye[1] &amp;&amp; |xx[0]-xx[1]|$\neq$1 &amp;&amp; |yy[0]-yy[1]|=1)</p>
 <ul>
 <li>864,</li>
 </ul>
@@ -15198,7 +15197,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <li>115, 175, 188, 376, 539, 684, 728, 982, 388, 419, 519,</li>
 </ul>
 </li>
-<li><p>3.b: xe[0]=ye[0]; xe[1]=ye[1]; (xe[2]+xe[3]=ye[2] &amp;&amp; |x[2]-x[3]|=1)</p>
+<li><p>3.b: xe[0]=ye[0]; xe[1]=ye[1]; (xe[2]+xe[3]=ye[2] &amp;&amp; |xx[2]-xx[3]|=1)</p>
 <ul>
 <li>187, 994,</li>
 </ul>
@@ -15214,7 +15213,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 </div>
 </div>
-<div id="cell-id=b16d6187" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=797879d8" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -15225,19 +15224,19 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <ul>
 <li>剩余事件类型：<ul>
 <li><ol>
-<li>(xe[0]+xe[1]=ye[0] &amp;&amp; |x[0]-x[1]|=1)</li>
+<li>(xe[0]+xe[1]=ye[0] &amp;&amp; |xx[0]-xx[1]|=1)</li>
 </ol>
 </li>
 <li><ol start="2">
-<li>(xe[0]+xe[1]=ye[0] &amp;&amp; |x[0]-x[1]|=1); (xe[2]+xe[3]=ye[1] &amp;&amp; |x[2]-x[3]|=1)</li>
+<li>(xe[0]+xe[1]=ye[0] &amp;&amp; |xx[0]-xx[1]|=1); (xe[2]+xe[3]=ye[1] &amp;&amp; |xx[2]-xx[3]|=1)</li>
 </ol>
 </li>
 <li><ol start="3">
-<li>(xe[0]+xe[1]=ye[0] &amp;&amp; |x[0]-x[1]|$\neq$1)</li>
+<li>(xe[0]+xe[1]=ye[0] &amp;&amp; |xx[0]-xx[1]|$\neq$1)</li>
 </ol>
 </li>
 <li><ol start="4">
-<li>(xe[0]+xe[1]=ye[0]+ye[1] &amp;&amp; |x[0]-x[1]|$\neq$1 &amp;&amp; |y[0]-y[1]|=1)</li>
+<li>(xe[0]+xe[1]=ye[0]+ye[1] &amp;&amp; |xx[0]-xx[1]|$\neq$1 &amp;&amp; |yy[0]-yy[1]|=1)</li>
 </ol>
 </li>
 </ul>
@@ -15245,6 +15244,9 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </ul>
 </li>
 <li><p>处理剩余事件</p>
+<ul>
+<li>有能量共享的相邻条(i,i+1)的位置记录为(i+0.5)</li>
+</ul>
 </li>
 </ul>
 
@@ -15252,7 +15254,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 </div>
 </div>
-<div id="cell-id=9cda071b" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=a0f76d57" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -15299,7 +15301,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <span class="w">    </span><span class="c1">//unmatched events</span>
 <span class="w">    </span><span class="n">map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">mxe</span><span class="p">,</span><span class="w"> </span><span class="n">mye</span><span class="p">;</span><span class="w">    </span><span class="c1">//strip, energy</span>
 <span class="w">    </span><span class="c1">//matched events</span>
-<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vx</span><span class="p">,</span><span class="n">vy</span><span class="p">;</span>
+<span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vx</span><span class="p">,</span><span class="n">vy</span><span class="p">;</span>
 <span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ve</span><span class="p">;</span>
 
 <span class="w">    </span><span class="c1">//dssd1</span>
