@@ -15150,24 +15150,33 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="%E4%BD%9C%E4%B8%9A-4.1">&#20316;&#19994; 4.1<a class="anchor-link" href="#%E4%BD%9C%E4%B8%9A-4.1">&#182;</a></h3><ol>
-<li>对时间路进行walk修正； 在符合时间窗内，对每个探测器的相邻探测单元进行addback。</li>
+<li>对时间路进行walk修正； 对每个探测器的相邻探测单元进行addback。</li>
 </ol>
-<p><strong>addback做法</strong>：</p>
-<p>把符合事件窗内探测器内所有相邻单元能量(&gt;30keV)进行相加, 生成be[bhit]参数,bid[bhit]与bt[bhit]取为相邻探测单元中时间最快的单元的gid和gt。其他没参与addback的单元，作为addback的其他hit事件，保存到hit数组内。
-按照时间增加的顺序，排序hit事件。</p>
+<ul>
+<li><strong>AddBck of Eurica</strong>:</li>
+</ul>
+<p>The γ rays detected in two or more adjacent crystals within 400 ns were identified as a single γ ray scattered by the Compton effect whereas the energies detected in non- neighboring crystals or outside the 400-ns time window were regarded as independent γ-ray events. Timing of an addback γ ray were determined by the crystal with greatest energy deposition compared with neighboring crystals.</p>
 <ul>
 <li><p>将下列参数保存到新ROOT文件</p>
 <ul>
-<li>gt: 修正walk后的事件</li>
-<li>ghit,gid, ge, gt: 原文件参数</li>
-<li>ahit, aid, ae, at: 原文件参数</li>
-<li>bhit, bid, be, bt: 新生成的addback</li>
+<li><p><code>gt</code>:                   修正walk后的事件</p>
+</li>
+<li><p><code>ghit</code>,<code>gid</code>, <code>ge</code>, <code>gt</code>: 原文件参数</p>
+</li>
+<li><p><code>ahit</code>, <code>aid</code>, <code>ae</code>, <code>at</code>: 原文件参数</p>
+</li>
+<li><p><code>bhit</code>, <code>bid</code>, <code>be</code>, <code>bt</code>: 新生成的addback</p>
+</li>
 </ul>
 </li>
 <li><p>对比自己生成的addback与原文件参数</p>
 </li>
 </ul>
 <p>2.按照课件的做法从eurica.root建立二维对称矩阵。</p>
+<ul>
+<li>用<code>ae</code>和<code>ge</code>分别建立矩阵</li>
+<li>仿照课件的做法分析<code>ge</code>矩阵，对比<code>ge</code>矩阵和<code>ae</code>矩阵开窗谱的区别。</li>
+</ul>
 <p>3.按照Radware的方法，验证$^{152}$Eu的纲图中的较强跃迁之间的符合关系，并在$^{152}$Eu简化纲图(下图)的基础上进行扩展。</p>
 <ul>
 <li>参照网上的完整$^{152}Eu$衰变纲图。</li>
