@@ -29,15 +29,15 @@
 
 ## chapter 1. ROOT TTree 初阶
  - 1.1 [用TTree 结构存储事件数据](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.1_create_tree.html)
- - 1.2 [读取TTree数据，进行逐事件分析](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.2_read_tree.html)
+ - 1.2 [读取TTree数据，进行逐事件分析](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.2_read_tree0.html)
  - 参考文献
       - [1.ROOT for beginner - Trees](./chapt1/ROOT_for_beginners_Day4.pdf)
       - [2.A large-area, position-sensitive neutron detector](./chapt1/neutron_detector.pdf)
       - [3.calibraton of neutron detector](./chapt1/neutron_cali.pdf)
       
  - [作业 1.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/coursework1.1.html) 
- - 1.3 [ADC,TDC信号处理](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.3_adc_analysis.html)
- - 1.4 [TTree的MakeClass方法](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.4_root_tree_makeclass.html)
+ - 1.3 [ADC,TDC信号处理](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.3_adc_analysis0.html)
+ - 1.4 [TTree的MakeClass方法](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.4_root_tree_makeclass0.html)
  - [作业 1.2](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/coursework1.2.html)
  
 
@@ -47,8 +47,8 @@
   - 2.2 [PPAC Tracking](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/2.2_PPAC_tracking.html) 
   - [作业 2.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/coursework2.1.html) 
   - 2.3 [编译执行分析程序(1)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/2.3_comiling_1.html)
-  - 2.4 [编译执行分析程序(2)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/2.4_compiling_2.html)
-  - 2.5 [实验数据处理过程](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/2.5_data_analysis_process.html)
+  - 2.4 [编译执行分析程序(2)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/2.4_compiling_20.html)
+  - 2.5 [实验数据处理过程](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/2.5_data_analysis_process0.html)
   
 ## chapter 3. DSSD 数据处理 
 
@@ -57,14 +57,14 @@
  - 3.2 [利用可变长数组存储数据- Hit结构](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.2_TTree_Branch_with_Dynamic_Array.html) 
  - [作业 3.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/coursework3.1.html) 
  - 3.3 [DSSD Inter-strip correlation](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.3_DSSD_interstrip_correlation.html)
- - 3.4 [DSSD front-back correlation (I)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.4_DSSD_front_back_correlation_1_dssd1.html)
+ - 3.4 [DSSD front-back correlation (I)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.4_DSSD_front_back_correlation_1_dssd10.html)
  - [作业 3.2](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/coursework3.2.html) 
  - 参考文献
       - [3.Automatic intrinsic calibration of double-sided silicon strip detectors](./chapt3/DSSD_cali.pdf)
       - [4.DSSD Adjacent strip correlations.pdf](./chapt3/DSSD_Adjacent.pdf)
  - 3.5 [DSSD front-back correlation (II)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.5.2_DSSD_front_back_correlation_2_dssd1.html)
  - [作业 3.3](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/coursework3.3.html)
- - 3.6 [DSSD多重性分析](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.6.1_DSSD_Multiplicity_I.html)
+ - 3.6 [DSSD多重性分析](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.6.1_DSSD_Multiplicity_I0.html)
  - 3.6.1 [DSSD多重性分析代码示例](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.6.3_DSSD_Multiplicity_code.html) 
  - 3.7 [DSSD数据分析](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.7_DSSD_data_analysis.html)
  - [[选做]作业 3.4](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/coursework3.4.html)
