@@ -71,7 +71,6 @@
  - 3.8* [用vector存储TTree数据](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.7_TTree_Branch_with_vector.html) 
       - 代码见[code](https://github.com/zhihuanli/Experimental-Data-Analysis-Course/tree/master/chapt3/code)
 
-
 ## chapter 4. γ-γ 符合分析 
  - 4.0 [time walk, addback](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt4/4.0_gamma-gamma_coincidence_0.html)
  - 4.1 [γ-γ coincidence](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt4/4.1_gamma-gamma_coincidence_I.html)
@@ -92,3 +91,8 @@
 ## chapter 6. 基于白光中子源的(n,n')反应测量
  - 6.1 [(n,n')反应数据分析](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt6/6.1_netron_capture_reaction.html)
 - [作业 6.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt6/coursework6.1.html)
+
+## chapter 7. 核反应数据处理(不变质量谱)
+ - 7.1 [Relativistic Kinematics]
+ - 7.2 [Invariant mass and missing mass]
+ - 7.3  
