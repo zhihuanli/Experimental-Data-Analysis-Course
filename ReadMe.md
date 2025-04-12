@@ -94,5 +94,5 @@
 
 ## chapter 7. 核反应数据处理(不变质量谱)
  - 7.1 [Relativistic Kinematics]
- - 7.2 [Invariant mass and missing mass]
+ - 7.2 [Invariant mass and missing mass](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/invariant_mass.html)
  - 7.3  
