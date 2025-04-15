@@ -15149,51 +15149,41 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Invariant-mass-and-missing-mass">Invariant mass and missing mass<a class="anchor-link" href="#Invariant-mass-and-missing-mass">&#182;</a></h2><p>Two variables commonly used in high-energy physics and nuclear physics are invariant and missing masses. These characterize the energy and momentum of particle systems, aiding in the identification of particles and reaction mechanisms across all inertial reference frames.</p>
-<h3 id="Invariant-Mass-Definition">Invariant Mass Definition<a class="anchor-link" href="#Invariant-Mass-Definition">&#182;</a></h3><p>The invariant mass of a particle system is defined by the squared magnitude of its total four-momentum. For two particles with four-momenta $ P_1 $ and $ P_2 $:</p>
+<h2 id="Invariant-Mass">Invariant Mass<a class="anchor-link" href="#Invariant-Mass">&#182;</a></h2><p><strong>Invariant mass</strong> is a Lorentz-invariant quantity that characterizes the total energy and momentum of a particle or system, remaining constant across all reference frames. It’s a cornerstone for analyzing particle collisions and decays.</p>
+<p>The invariant mass for two particles with four-momenta $ P_1 = (E_1, \vec{p}_1) $ and $ P_2 = (E_2, \vec{p}_2) $ is defined as:</p>
 $$
-M^2_{\text{Inv}} = (P_1 + P_2)^2
-$$<p>This extends to any number of particles:</p>
+M^2_{Inv} = (P_1 + P_2)^2 = (E_1 + E_2)^2 - |\vec{p}_1 + \vec{p}_2|^2
+$$<p>Here, $ E_i $ is the energy, $ \vec{p}_i $ is the three-momentum, and units assume $ c = 1 $. For a system of $ n $ particles, this generalizes to:</p>
 $$
-M(n)^2_{\text{Inv}} = (P_1 + P_2 + \dots + P_n)^2
-$$<p>For a single particle, the invariant mass is its <strong>rest mass</strong>, $ m = \sqrt{P^2} $.</p>
-<h3 id="Two-Particle-Invariant-Mass">Two-Particle Invariant Mass<a class="anchor-link" href="#Two-Particle-Invariant-Mass">&#182;</a></h3><p>For two particles with four-momenta $ P_1 = (E_1, \vec{p}_1) $ and $ P_2 = (E_2, \vec{p}_2) $, the invariant mass squared is:</p>
+M(n)^2_{Inv} = (P_1 + P_2 + \dots + P_n)^2
+$$<p>For a single particle, the invariant mass equals its <strong>rest mass</strong>, $ m_0 $, since in its rest frame, $ P = (m_0, 0, 0, 0) $, yielding:</p>
 $$
-M^2_{\text{Inv}} = (E_1 + E_2)^2 - |\vec{p}_1 + \vec{p}_2|^2
-$$<p>This can be expressed as:</p>
-$$
-M^2_{\text{Inv}} = m_1^2 + m_2^2 + 2 (E_1 E_2 - \vec{p}_1 \cdot \vec{p}_2)
-$$<p>where $ m_1 $ and $ m_2 $ are the rest masses. Key points:</p>
-<ul>
-<li><strong>Lorentz Invariance</strong>: For each event, $ M^2_{\text{Inv}} $ is a Lorentz-invariant scalar, constant across all reference frames.</li>
-<li><strong>Event Variability</strong>: Across events, $ M_{\text{Inv}} $ varies due to differences in energies $ E_i $ and momenta $ \vec{p}_i $, shaped by the available phase space and interaction dynamics.</li>
-<li><strong>Not Sum of Rest Masses</strong>: The invariant mass $ M_{\text{Inv}} $ is generally not equal to $ m_1 + m_2 $, except when the particles are at rest relative to each other ($ \vec{p}_1 = \vec{p}_2 = 0 $), yielding $ M_{\text{Inv}} = m_1 + m_2 $.</li>
-</ul>
-<h3 id="Missing-Mass-Definition">Missing Mass Definition<a class="anchor-link" href="#Missing-Mass-Definition">&#182;</a></h3><p>The missing mass infers undetected particles by calculating the four-momentum difference between known initial and final states. For a reaction with initial particles $ A $ and $ B $ producing detected particles and an undetected system $ X $:</p>
-$$
-P_X = P_A + P_B - \sum P_{\text{detected}}
-$$<p>The missing mass squared is:</p>
-$$
-M^2_{\text{Miss}} = P_X^2
-$$<p>For a single undetected particle, $ M_{\text{Miss}} $ equals its rest mass; for multi-particle systems, it reflects their invariant mass.</p>
-<h3 id="Two-Particle-Missing-Mass">Two-Particle Missing Mass<a class="anchor-link" href="#Two-Particle-Missing-Mass">&#182;</a></h3><p>In a reaction like $ A + B \to c + e + X $ with $ c $ and $ e $ detected, the missing four-momentum is:</p>
-$$
-P_X = P_A + P_B - P_c - P_e
-$$<p>The missing mass squared is:</p>
-$$
-M^2_{\text{Miss}} = (E_A + E_B - E_c - E_e)^2 - |\vec{p}_A + \vec{p}_B - \vec{p}_c - \vec{p}_e|^2
-$$<p>Key points:</p>
-<ul>
-<li><strong>Lorentz Invariance</strong>: For each event, $ M^2_{\text{Miss}} $ is a Lorentz-invariant scalar.</li>
-<li><strong>Event Variability</strong>: Across events, $ M_{\text{Miss}} $ varies with kinematics, governed by phase space. For a single particle, it peaks at the rest mass; for multiple particles, it forms a distribution.</li>
-<li><strong>Not Sum of Masses</strong>: $ M_{\text{Miss}} $ does not generally equal the sum of undetected particles’ rest masses, except in specific cases.</li>
-</ul>
-<h3 id="Applications-in-Collisions-and-Nuclear-Reactions">Applications in Collisions and Nuclear Reactions<a class="anchor-link" href="#Applications-in-Collisions-and-Nuclear-Reactions">&#182;</a></h3><p>Invariant and missing masses probe intermediate states and undetected particles in collisions and nuclear reactions. Measuring four-momenta of detected particles allows reconstruction of $ M_{\text{Inv}} $ and $ M_{\text{Miss}} $. Phase space governs their distributions, shaped by reaction dynamics.</p>
-<p><img src="./two_body_decay.png" alt="" /></p>
+M^2_{Inv} = m_0^2
+$$<p>This invariance makes it ideal for identifying particles or resonances, regardless of the observer’s frame.</p>
+<h3 id="Intermediate-States-and-Resonances">Intermediate States and Resonances<a class="anchor-link" href="#Intermediate-States-and-Resonances">&#182;</a></h3><p>In collision experiments, short-lived <strong>intermediate particles</strong> or <strong>resonances</strong> often decay into secondary particles. To confirm their existence, physicists measure the four-momenta of decay products and compute the invariant mass of specific combinations. A peak in the invariant mass distribution indicates a resonance. For example, in $ Z \to e^+ + e^- $, the invariant mass of the electron-positron pair peaks around 91 GeV, confirming the Z boson.</p>
+<h3 id="Two-Body-Collision-Reactions">Two-Body Collision Reactions<a class="anchor-link" href="#Two-Body-Collision-Reactions">&#182;</a></h3><p><img src="./two_body_decay.png" alt="" /></p>
 <p><img src="./invariant_mass.png" alt="" /></p>
-<h4 id="Process-(a):-$-A-+-B-%5Cto-c-+-e-+-f-$">Process (a): $ A + B \to c + e + f $<a class="anchor-link" href="#Process-(a):-$-A-+-B-%5Cto-c-+-e-+-f-$">&#182;</a></h4><p>This is a 2-&gt;3 scattering process. The invariant mass $ M_{e+f} = \sqrt{(P_e + P_f)^2} $ forms a continuous distribution across events. Phase space permits a wide range of energies $ E_e $, $ E_f $ and momenta $ \vec{p}_e $, $ \vec{p}_f $, as $ e $ and $ f $ are not produced from a common intermediate state, leading to a broad $ M_{e+f} $ spectrum. Interaction dynamics may modulate this distribution, but the continuous nature reflects kinematic freedom. If $ f $ is undetected, the missing mass $ M_{\text{Miss}} = \sqrt{(P_A + P_B - P_c - P_e)^2} $ corresponds to $ f $’s rest mass, peaking at $ m_f $ across events for a single particle, with phase space determining peak resolution.</p>
-<h4 id="Process-(b):-$-A-+-B-%5Cto-c-+-d,-d-%5Cto-e-+-f-$">Process (b): $ A + B \to c + d, d \to e + f $<a class="anchor-link" href="#Process-(b):-$-A-+-B-%5Cto-c-+-d,-d-%5Cto-e-+-f-$">&#182;</a></h4><p>This involves a 2-&gt;2 process followed by $ d \to e + f $. The invariant mass $ M_{e+f} = \sqrt{(P_e + P_f)^2} $ peaks at the rest mass of $ d $, $ m_d $, since $ e $ and $ f $ originate from $ d $. Phase space constrains $ M_{e+f} $ near $ m_d $, with the distribution broadened by $ d $’s decay width, typically a Breit-Wigner shape. If $ f $ is undetected, the missing mass $ M_{\text{Miss}} = \sqrt{(P_A + P_B - P_c - P_e)^2} $ also peaks at $ m_d $, as $ P_f = P_d - P_e $, with phase space and decay width shaping the distribution.</p>
-<h4 id="Nuclear-Reactions">Nuclear Reactions<a class="anchor-link" href="#Nuclear-Reactions">&#182;</a></h4><p>Nuclear reactions often produce multiple final-state particles, some undetected. For any detected pair, $ M_{\text{Inv}} = \sqrt{(P_i + P_j)^2} $ is Lorentz invariant per event. Without a common intermediate state (like process (a)), phase space yields a continuous $ M_{\text{Inv}} $ spectrum, as in fission or multi-body scattering. With an intermediate state (like process (b)), $ M_{\text{Inv}} $ peaks at the resonance mass. For example, in a reaction $ A + B \to c + e + f $, the invariant mass $ M_{e+f} $ is continuous if $ e $ and $ f $ are independent (process (a)-like) or peaked if from a resonance (process (b)-like). For missing mass, consider $ A + B \to c + e + X $ with $ c $ and $ e $ detected. The missing mass $ M_{\text{Miss}} = \sqrt{(P_A + P_B - P_c - P_e)^2} $ reveals $ X $. If $ X $ is a single particle (e.g., a neutron), phase space produces a peak at $ m_X $; for a multi-particle $ X $, a continuous distribution results. Missing mass thus complements invariant mass in analyzing nuclear reaction dynamics and unseen particles.</p>
+<p>Consider a reaction $ A + B \to \text{products} $. Two processes highlight distinct invariant mass behaviors:</p>
+<ol>
+<li><p><strong>Process (a): $ A + B \to c + d + e $</strong><br />
+This is a <strong>2 → 3 scattering process</strong>, producing three particles directly. The invariant mass of a pair, e.g., $ c + d $, follows a <strong>statistical distribution</strong> governed by <strong>phase space</strong>, which defines kinematic constraints (energy-momentum conservation). This results in a broad, continuous spectrum:</p>
+$$
+M^2_{c+d} \sim \text{phase space distribution}
+$$</li>
+<li><p><strong>Process (b): $ A + B \to c + d, d \to e + f $</strong><br />
+Here, $ c $ and an intermediate particle $ d $ are produced, with $ d $ decaying into $ e + f $. The invariant mass of $ e + f $ follows a <strong>Breit-Wigner distribution</strong>, centered around the mass of $ d $, with a width determined by its lifetime:</p>
+$$
+M^2_{e+f} \sim \text{Breit-Wigner}(m_d, \Gamma_d)
+$$<p>For example, if $ d $ is a rho meson ($ \rho \to \pi^+ + \pi^- $), the pion pair’s invariant mass distribution peaks around 770 MeV with a Breit-Wigner shape.</p>
+</li>
+</ol>
+<h3 id="Missing-Mass">Missing Mass<a class="anchor-link" href="#Missing-Mass">&#182;</a></h3><p><strong>Missing mass</strong> complements invariant mass in experiments where particles (e.g., neutrinos) escape detection. By measuring the four-momenta of detected particles and knowing the initial state (e.g., $ P_A + P_B $), the missing four-momentum $ P_{\text{miss}} $ is calculated as:</p>
+$$
+P_{\text{miss}} = (P_A + P_B) - (P_{\text{detected}})
+$$<p>The invariant mass squared of this missing four-momentum gives the missing mass:</p>
+$$
+M^2_{\text{miss}} = P_{\text{miss}}^2
+$$<p>This quantity reveals properties of undetected particles, such as their mass, and is consistent with the total invariant mass of the system.</p>
 <h4 id="Example:-Detecting-Short-Lived-Resonances">Example: Detecting Short-Lived Resonances<a class="anchor-link" href="#Example:-Detecting-Short-Lived-Resonances">&#182;</a></h4><ul>
 <li><p>Particles liken $\rho,\omega,\phi$ have an average lifetime of 10$^{-22}$-10$^{-23}$s</p>
 <ul>
@@ -15216,7 +15206,7 @@ $M=(E^2- P^2)^{1/2}$</li>
 </div>
 </div>
 </div>
-</div><div id="cell-id=f39ab746" class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div id="cell-id=11b34ea8" class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -15246,7 +15236,7 @@ $M=(E^2- P^2)^{1/2}$</li>
 </div>
 </div>
 
-</div><div id="cell-id=579555d1" class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div id="cell-id=bf884f1e" class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -15334,7 +15324,7 @@ $M=(E^2- P^2)^{1/2}$</li>
 </div>
 </div>
 
-</div><div id="cell-id=10a6d012" class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div id="cell-id=f4e89574" class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -15350,7 +15340,7 @@ $M=(E^2- P^2)^{1/2}$</li>
 </div>
 </div>
 
-</div><div id="cell-id=fd276b5c" class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div id="cell-id=be724357" class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -15519,7 +15509,7 @@ $$<p>where $ Q = M - m_1 - m_2 - m_3 $ is the decay’s available energy. These 
 </div>
 </div>
 
-</div><div id="cell-id=54fc8000" class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div id="cell-id=510b20f0" class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -15542,7 +15532,7 @@ $$<p>where $ Q = M - m_1 - m_2 - m_3 $ is the decay’s available energy. These 
 </div>
 </div>
 
-</div><div id="cell-id=8eee008a" class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div id="cell-id=87e3fbe8" class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -15601,7 +15591,7 @@ $$<p>where $ Q = M - m_1 - m_2 - m_3 $ is the decay’s available energy. These 
 </div>
 </div>
 
-</div><div id="cell-id=bc8c2058" class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div id="cell-id=a4d914d1" class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -15617,7 +15607,7 @@ $$<p>where $ Q = M - m_1 - m_2 - m_3 $ is the decay’s available energy. These 
 </div>
 </div>
 
-</div><div id="cell-id=2a442fba" class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div id="cell-id=788e3eaa" class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -15684,7 +15674,7 @@ class="
 
 </div>
 
-</div><div id="cell-id=0592abc4" class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div id="cell-id=8a2b2269" class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
