@@ -15149,46 +15149,43 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="3.5-DSSD-front-back-Correlation(II)---dssd1">3.5 DSSD front-back Correlation(II) - dssd1<a class="anchor-link" href="#3.5-DSSD-front-back-Correlation(II)---dssd1">&#182;</a></h1><h2 id="Calibration">Calibration<a class="anchor-link" href="#Calibration">&#182;</a></h2><h3 id="Review-for-Previous-Section">Review for Previous Section<a class="anchor-link" href="#Review-for-Previous-Section">&#182;</a></h3><ul>
-<li>For a particle depositing energy $E$ at the intersection $(x_i, y_j)$ in a DSSD, the raw signal amplitudes $a_{xi}$ (from front strip $x_i$) and $a_{yj}$ (from back strip $y_j$) satisfy a linear relationship:
-$$ a_{xi} = k_{yj} a_{yj} + b_{yj}, $$
-where $k_{yj}$ and $b_{yj}$ are normalization coefficients derived from energy calibration.</li>
+<h1 id="3.5-DSSD-front-back-Correlation(II)---dssd1">3.5 DSSD front-back Correlation(II) - dssd1<a class="anchor-link" href="#3.5-DSSD-front-back-Correlation(II)---dssd1">&#182;</a></h1><h2 id="Purpose:">Purpose:<a class="anchor-link" href="#Purpose:">&#182;</a></h2><ul>
+<li>Based on the x-y correlation, normalize the amplitudes of all strips using the amplitude of a given strip as a reference.</li>
 </ul>
-<h3 id="Objective-of-Amplitude-Normalization">Objective of Amplitude Normalization<a class="anchor-link" href="#Objective-of-Amplitude-Normalization">&#182;</a></h3><p>The goal is to normalize the amplitudes of all x- and y-strips relative to a reference strip (e.g., $x_i$) to ensure a consistent energy scale across the detector. This involves determining linear coefficients that align each strip’s amplitude to the reference.</p>
-<h3 id="Method-1:-Sequential-Normalization">Method 1: Sequential Normalization<a class="anchor-link" href="#Method-1:-Sequential-Normalization">&#182;</a></h3><ol>
-<li><p><strong>Select a Reference Strip</strong>: Fix $x_i$ as the reference strip. For each y-strip $y_j$ ($j = 0, 1, \dots, N_y$), use the linear relationship:
+<h2 id="Normalization">Normalization<a class="anchor-link" href="#Normalization">&#182;</a></h2><ul>
+<li><p>For a particle depositing energy $E$ at the intersection $(x_i, y_j)$ in a DSSD, the raw signal amplitudes $a_{xi}$ (from front strip $x_i$) and $a_{yj}$ (from back strip $y_j$) satisfy a linear relationship:
 $$ a_{xi} = k_{yj} a_{yj} + b_{yj}, $$
-to obtain normalization coefficients $\{ k_{yj}, b_{yj} \}$ by fitting events at the $(x_i, y_j)$ pixel. Sufficient event statistics are required for each pixel.</p>
+where $k_{yj}$ and $b_{yj}$ are normalization coefficients derived from energy calibration.</p>
 </li>
-<li><p><strong>Normalize Y-Strips</strong>: Apply the coefficients to normalize all y-strip amplitudes:
-$$ a'_{yj} = k_{yj} a_{yj} + b_{yj}, \quad j = 0, 1, \dots, N_y. $$</p>
+<li><p>The goal is to normalize the amplitudes of all x- and y-strips relative to a reference strip (e.g., $x_i$) to ensure a consistent energy scale across the detector. This involves determining linear coefficients that align each strip’s amplitude to the reference.</p>
 </li>
-<li><p><strong>Normalize X-Strips</strong>: Select a normalized y-strip (e.g., $y_j$) as the new reference. For each x-strip $x_k$ ($k = 0, 1, \dots, N_x$), fit:
-$$ a'_{yj} = k_{xk} a_{xk} + b_{xk}, $$
-to obtain coefficients $\{ k_{xk}, b_{xk} \}$ and normalize x-strip amplitudes:
-$$ a'_{xk} = k_{xk} a_{xk} + b_{xk}. $$</p>
+</ul>
+<h3 id="Method-1:-Pixel-Normalization">Method 1: Pixel Normalization<a class="anchor-link" href="#Method-1:-Pixel-Normalization">&#182;</a></h3><ol>
+<li><p><strong>Select a Reference Strip</strong>: Fix $x_i^*$ as the reference strip. For each y-strip $y_j$ ($j = 0, 1, \dots, N_y$), use the linear relationship:</p>
+$$ a_{xi^*} = k_{yj} a_{yj} + b_{yj}, $$<p>to obtain normalization coefficients $\{ k_{yj}, b_{yj} \}$ by fitting events at the $(x_i, y_j)$ pixel. Sufficient event statistics are required for each pixel.</p>
 </li>
+<li><p><strong>Normalize Y-Strips</strong>: Apply the coefficients to normalize all y-strip amplitudes:</p>
+$$ a_{yj}' = k_{yj} a_{yj} + b_{yj}, \quad j = 0, 1, \dots, N_y. $$</li>
+<li><p><strong>Normalize X-Strips</strong>: Select a normalized y-strip (e.g., $y_j^*$) as the new reference. For each x-strip $x_k$ ($k = 0, 1, \dots, N_x$), fit:</p>
+$$ a'_{yj*} = k_{xk} a_{xk} + b_{xk}, $$<p>to obtain coefficients $\{ k_{xk}, b_{xk} \}$ and normalize x-strip amplitudes:</p>
+$$ a'_{xk} = k_{xk} a_{xk} + b_{xk}. $$</li>
 </ol>
 <p>After these steps, all x- and y-strip amplitudes are normalized to the energy scale of the initial reference strip $x_i$. This method relies on sufficient event statistics at each $(x_i, y_j)$ pixel for accurate fitting.</p>
-<h3 id="Method-2:-Iterative-Calibration-with-Busiest-Strips">Method 2: Iterative Calibration with Busiest Strips<a class="anchor-link" href="#Method-2:-Iterative-Calibration-with-Busiest-Strips">&#182;</a></h3><p>This method calibrates a double-sided silicon strip detector (DSSD) by starting with the strips that detect the most particles and gradually calibrating others, ensuring all strips measure energy consistently.</p>
+<h3 id="Method-2:-Strip-Normalization">Method 2: Strip Normalization<a class="anchor-link" href="#Method-2:-Strip-Normalization">&#182;</a></h3><p>This method normalizes a DSSD by starting with the strips that detect the most particles and gradually normalizing others, ensuring all strips measure energy consistently.</p>
 <ol>
-<li><p><strong>Identify High-Statistics Strips</strong>: Select the x-strip $x_{i^*}$ and y-strip $y_{j^*}$ with the highest event counts, typically in the detector’s central or most active regions.</p>
+<li><p><strong>Identify High-Statistics Strips</strong>: Select the x-strip $x_{i^*}$ or y-strip $y_{j^*}$ with the highest event counts, typically in the detector’s central or most active regions.</p>
 </li>
-<li><p><strong>Calibrate Back Strips</strong>: Use $x_{i^*}$ as the reference to calibrate nearby back strips $y_j$ (those close to $y_{j^*}$ with enough hits). For each $y_j$, fit the relationship:
-$$ a_{x_{i^*}} = k_{yj} a_{yj} + b_{yj}, $$
-to find coefficients $k_{yj}$ and $b_{yj}$. Then calibrate the back strip signals:
-$$ a'_{yj} = k_{yj} a_{yj} + b_{yj}. $$</p>
-</li>
-<li><p><strong>Calibrate Front Strips</strong>: Group the calibrated back strips (from $y_j$ near $y_{j^*}$) into a single reference  $y_{js}'$, like a wider strip. Use this to calibrate nearby front strips $x_i$ (those close to $x_{i^*}$ with enough hits). For each $x_i$, fit:
-$$ a'_{yj_s} = k_{xi} a_{xi} + b_{xi}, $$
-to find coefficients $k_{xi}$ and $b_{xi}$. Then calibrate the front strip signals:
-$$ a'_{xi} = k_{xi} a_{xi} + b_{xi}. $$</p>
-</li>
-<li><p><strong>Spread Outward</strong>: Repeat the process, using newly calibrated front or back strips as references to calibrate strips farther out. Continue until all strips are calibrated, ensuring enough particle hits for accurate fitting at each step.</p>
+<li><p><strong>Normalize Back Strips</strong>: Use $x_{i^*}$ as the reference to normalize nearby back strips $y_j$ (those close to $y_{j^*}$ with enough hits). For each $y_j$, fit the relationship:</p>
+$$ a_{x_{i^*}} = k_{yj} a_{yj} + b_{yj}, $$<p>to find coefficients $k_{yj}$ and $b_{yj}$. Then normalize the back strip signals:</p>
+$$ a'_{yj} = k_{yj} a_{yj} + b_{yj}. $$</li>
+<li><p><strong>Normalize Front Strips</strong>: Group the normalized back strips (from $y_j$ near $y_{j^*}$) into a single reference  $y_{js}'$, like a wider strip. Use this to normalize nearby front strips $x_i$ (those close to $x_{i^*}$ with enough hits). For each $x_i$, fit:</p>
+$$ a'_{yj_s} = k_{xi} a_{xi} + b_{xi}, $$<p>to find coefficients $k_{xi}$ and $b_{xi}$. Then normalize the front strip signals:</p>
+$$ a'_{xi} = k_{xi} a_{xi} + b_{xi}. $$</li>
+<li><p><strong>Spread Outward</strong>: Repeat the process, using newly normalized front or back strips as references to normalize strips farther out. Continue until all strips are normalized, ensuring enough particle hits for accurate fitting at each step.</p>
 </li>
 </ol>
 <img src="fig/xycalbration.png" width = "500" height = "200" alt="图片名称" align=center />
-<h2 id="DSSD1-calibration">DSSD1 calibration<a class="anchor-link" href="#DSSD1-calibration">&#182;</a></h2><p>The following analysis, using DSSD1 as an example, applies Method 2 to normalize amplitudes using coefficients $k_{yj}$ and $b_{yj}$ for y-strips and $k_{xi}$ and $b_{xi}$ for x-strips, achieving a consistent energy scale across strips.</p>
+<h2 id="DSSD1-Normalization">DSSD1 Normalization<a class="anchor-link" href="#DSSD1-Normalization">&#182;</a></h2><p>The following analysis, using DSSD1 as an example, applies Method 2 to normalize amplitudes using coefficients $k_{yj}$ and $b_{yj}$ for y-strips and $k_{xi}$ and $b_{xi}$ for x-strips, achieving a consistent energy scale across strips.</p>
 
 </div>
 </div>
@@ -15268,7 +15265,7 @@ class="
 <ul>
 <li>For <code>ix=16</code>, the y-direction strips <code>iy=8</code> to <code>iy=16</code> have statistics exceeding 600 counts.</li>
 </ul>
-<p>The first step is to use the x-strip amplitude <code>xe[16]</code> as the reference to fit the y-strip amplitudes <code>ye[iy]</code> for <code>iy=8</code> to <code>iy=16</code>, obtaining the calibration coefficients for the y-direction.</p>
+<p>The first step is to use the x-strip amplitude <code>xe[16]</code> as the reference to fit the y-strip amplitudes <code>ye[iy]</code> for <code>iy=8</code> to <code>iy=16</code>, obtaining the normalization coefficients for the y-direction.</p>
 
 </div>
 </div>
@@ -15562,21 +15559,21 @@ class="
 <ul>
 <li><p><code>fitmethod=&quot;fitx&quot;</code>:</p>
 <ul>
-<li><p>Calibrates x-strip amplitudes (<code>xe</code>) in the range <code>ix1</code> to <code>ix2</code> using known calibration coefficients (<code>parx[ix][0:2]</code>).</p>
+<li><p>Normalize x-strip amplitudes (<code>xe</code>) in the range <code>ix1</code> to <code>ix2</code> using known normalization coefficients (<code>parx[ix][0:2]</code>).</p>
 </li>
-<li><p>Uses the calibrated x-strip amplitudes as a reference to calibrate y-strip amplitudes (<code>ye</code>) in the range <code>iy1</code> to <code>iy2</code>.</p>
+<li><p>Uses the normalized x-strip amplitudes as a reference to calibrate y-strip amplitudes (<code>ye</code>) in the range <code>iy1</code> to <code>iy2</code>.</p>
 </li>
-<li><p>Stores the resulting calibration coefficients in the pary array for y-strips.</p>
+<li><p>Stores the resulting normalization coefficients in the pary array for y-strips.</p>
 </li>
 </ul>
 </li>
 <li><p><code>fitmethod=&quot;fity&quot;</code>:</p>
 <ul>
-<li><p>Calibrates y-strip amplitudes (<code>ye</code>) in the range <code>iy1</code> to <code>iy2</code> using known calibration coefficients (<code>pary[iy][0:2]</code>).</p>
+<li><p>Normalizes y-strip amplitudes (<code>ye</code>) in the range <code>iy1</code> to <code>iy2</code> using known normalization coefficients (<code>pary[iy][0:2]</code>).</p>
 </li>
-<li><p>Uses the calibrated y-strip amplitudes as a reference to calibrate x-strip amplitudes (<code>xe</code>) in the range <code>ix1</code> to <code>ix2</code>.</p>
+<li><p>Uses the normalized y-strip amplitudes as a reference to normalize x-strip amplitudes (<code>xe</code>) in the range <code>ix1</code> to <code>ix2</code>.</p>
 </li>
-<li><p>Stores the resulting calibration coefficients in the parx array for x-strips.</p>
+<li><p>Stores the resulting normalization coefficients in the parx array for x-strips.</p>
 </li>
 </ul>
 </li>
@@ -15585,7 +15582,7 @@ class="
 <ul>
 <li><p>Saves histograms as PNG files (e.g., <code>fity{id}.png</code> or <code>fitx{id}.png</code>), overwriting any existing files to retain only the latest results.</p>
 </li>
-<li><p>Prints a table to the console with fit parameters (<code>p0</code>, <code>p1</code>, <code>p2</code>), reduced chi-square (<code>chi2/ndf</code>), amplitude ranges (<code>ymin</code>, <code>ymax</code>), and point counts (<code>Ncounts</code>) for each fitted strip.</p>
+<li><p>Prints a table with fit parameters (<code>p0</code>, <code>p1</code>, <code>p2</code>), reduced chi-square (<code>chi2/ndf</code>), amplitude ranges (<code>ymin</code>, <code>ymax</code>), and point counts (<code>Ncounts</code>) for each fitted strip.</p>
 </li>
 </ul>
 
@@ -15789,7 +15786,7 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-c++"><pre><span></span><span class="n">fit</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="s">&quot;fity&quot;</span><span class="p">);</span><span class="c1">//calibrate iy=8-16 using ix=16 as a reference.</span>
+<div class=" highlight hl-c++"><pre><span></span><span class="n">fit</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="s">&quot;fity&quot;</span><span class="p">);</span><span class="c1">//normalize iy=8-16 using ix=16 as a reference.</span>
 <span class="n">viewFit</span><span class="p">(</span><span class="s">&quot;fity&quot;</span><span class="p">);</span>
 </pre></div>
 
@@ -15853,7 +15850,7 @@ class="
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="Determining-the-Next-Fitting-Range-for-ix">Determining the Next Fitting Range for ix<a class="anchor-link" href="#Determining-the-Next-Fitting-Range-for-ix">&#182;</a></h3><ul>
-<li>After combining iy=8 to 16, all x-strips (ix) have statistics exceeding 800 counts. Therefore, the next step is to fit the entire ix range.</li>
+<li>After combining iy=8 to 16, all x-strips (ix) have statistics exceeding 800 counts. The next step is to fit the entire ix range.</li>
 </ul>
 
 </div>
@@ -15911,8 +15908,8 @@ class="
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Combine-ye%5Biy%5D-for-iy=8-to-16-and-Calibrate-All-X-Direction-Strips">Combine ye[iy] for iy=8 to 16 and Calibrate All X-Direction Strips<a class="anchor-link" href="#Combine-ye%5Biy%5D-for-iy=8-to-16-and-Calibrate-All-X-Direction-Strips">&#182;</a></h3><ul>
-<li><code>ix=16</code>是刻度的参考条，上一步拟合ix的参数应满足 p0$\approx$0, p1$\approx$1.</li>
+<h3 id="Combine-ye%5Biy%5D-for-iy=8-to-16-and-Normalize-All-X-Direction-Strips">Combine ye[iy] for iy=8 to 16 and Normalize All X-Direction Strips<a class="anchor-link" href="#Combine-ye%5Biy%5D-for-iy=8-to-16-and-Normalize-All-X-Direction-Strips">&#182;</a></h3><ul>
+<li><code>ix=16</code> is the reference strip for normalization. The parameters fitted for <code>ix=16</code> should satisfy p0 ≈ 0 and p1 ≈ 1.</li>
 </ul>
 
 </div>
@@ -15926,7 +15923,7 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-c++"><pre><span></span><span class="n">fit</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">31</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="s">&quot;fitx&quot;</span><span class="p">);</span><span class="c1">//calibrate ix=0-31 using iy=8-16 as a reference.</span>
+<div class=" highlight hl-c++"><pre><span></span><span class="n">fit</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">31</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="s">&quot;fitx&quot;</span><span class="p">);</span><span class="c1">//Normalize ix=0-31 using iy=8-16 as a reference.</span>
 <span class="n">viewFit</span><span class="p">(</span><span class="s">&quot;fitx&quot;</span><span class="p">);</span>
 </pre></div>
 
@@ -16012,7 +16009,7 @@ class="
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Combine-xe%5Bix%5D-for-ix=0-to-31-and-Calibrate-All-y-Direction-Strips">Combine xe[ix] for ix=0 to 31 and Calibrate All y-Direction Strips<a class="anchor-link" href="#Combine-xe%5Bix%5D-for-ix=0-to-31-and-Calibrate-All-y-Direction-Strips">&#182;</a></h3>
+<h3 id="Combine-xe%5Bix%5D-for-ix=0-to-31-and-normalize-All-y-Direction-Strips">Combine xe[ix] for ix=0 to 31 and normalize All y-Direction Strips<a class="anchor-link" href="#Combine-xe%5Bix%5D-for-ix=0-to-31-and-normalize-All-y-Direction-Strips">&#182;</a></h3>
 </div>
 </div>
 </div>
@@ -16024,7 +16021,7 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-c++"><pre><span></span><span class="n">fit</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">31</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">31</span><span class="p">,</span><span class="s">&quot;fity&quot;</span><span class="p">);</span><span class="c1">//calibrate iy=0-31 using ix=0-31 as a reference.</span>
+<div class=" highlight hl-c++"><pre><span></span><span class="n">fit</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">31</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">31</span><span class="p">,</span><span class="s">&quot;fity&quot;</span><span class="p">);</span><span class="c1">//normalize iy=0-31 using ix=0-31 as a reference.</span>
 <span class="n">viewFit</span><span class="p">(</span><span class="s">&quot;fity&quot;</span><span class="p">);</span>
 </pre></div>
 
@@ -16110,7 +16107,7 @@ Warning: Too few points (0) for iy-strip 22
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Save-calibration-factors">Save calibration factors<a class="anchor-link" href="#Save-calibration-factors">&#182;</a></h3>
+<h3 id="Save-normalization-factors">Save normalization factors<a class="anchor-link" href="#Save-normalization-factors">&#182;</a></h3>
 </div>
 </div>
 </div>
@@ -16122,7 +16119,7 @@ Warning: Too few points (0) for iy-strip 22
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-c++"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">saveParameters</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">filename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;calibration_parameters.txt&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<div class=" highlight hl-c++"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">saveParameters</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">filename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;normalization_parameters.txt&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="c1">// Open output file (overwrite mode)</span>
 <span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="w"> </span><span class="nf">outFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ios</span><span class="o">::</span><span class="n">out</span><span class="p">);</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">outFile</span><span class="p">.</span><span class="n">is_open</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
@@ -16131,7 +16128,7 @@ Warning: Too few points (0) for iy-strip 22
 <span class="w">    </span><span class="p">}</span>
 
 <span class="w">    </span><span class="c1">// Header</span>
-<span class="w">    </span><span class="n">outFile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Calibration Parameters</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="n">outFile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Normalization Parameters</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
 <span class="w">    </span><span class="n">outFile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;---------------------</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
 
 <span class="w">    </span><span class="c1">// X-strip parameters (parx)</span>
@@ -16184,7 +16181,7 @@ Warning: Too few points (0) for iy-strip 22
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="Read-Parameters">Read Parameters<a class="anchor-link" href="#Read-Parameters">&#182;</a></h3><div class="highlight"><pre><span></span><span class="n">Double_t</span><span class="w"> </span><span class="n">parx</span><span class="p">[</span><span class="mi">32</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="n">pary</span><span class="p">[</span><span class="mi">32</span><span class="p">][</span><span class="mi">3</span><span class="p">];</span>
-<span class="n">readParameters</span><span class="p">(</span><span class="s">&quot;calibration_parameters.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">parx</span><span class="p">,</span><span class="w"> </span><span class="n">pary</span><span class="p">);</span>
+<span class="n">readParameters</span><span class="p">(</span><span class="s">&quot;normalization_parameters.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">parx</span><span class="p">,</span><span class="w"> </span><span class="n">pary</span><span class="p">);</span>
 </pre></div>
 
 </div>
@@ -16270,7 +16267,7 @@ Warning: Too few points (0) for iy-strip 22
 <div class=" highlight hl-c++"><pre><span></span><span class="n">TCanvas</span><span class="w"> </span><span class="o">*</span><span class="n">c_plots</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TCanvas</span><span class="p">(</span><span class="s">&quot;c_plots&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Calibrated Plots&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1200</span><span class="p">,</span><span class="w"> </span><span class="mi">600</span><span class="p">);</span>
 
 <span class="c1">// Create histograms</span>
-<span class="n">TH2F</span><span class="w"> </span><span class="o">*</span><span class="n">h_xy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TH2F</span><span class="p">(</span><span class="s">&quot;h_xy&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Calibrated xe vs ye;xe (keV);ye (keV)&quot;</span><span class="p">,</span>
+<span class="n">TH2F</span><span class="w"> </span><span class="o">*</span><span class="n">h_xy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TH2F</span><span class="p">(</span><span class="s">&quot;h_xy&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Normalize xe vs ye;xe (keV);ye (keV)&quot;</span><span class="p">,</span>
 <span class="w">                      </span><span class="mi">4000</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">8000</span><span class="p">,</span><span class="w"> </span><span class="mi">4000</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">8000</span><span class="p">);</span>
 <span class="n">TH2F</span><span class="w"> </span><span class="o">*</span><span class="n">h_xdiff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TH2F</span><span class="p">(</span><span class="s">&quot;h_xdiff&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Calibrated xe vs ye-xe;xe (keV);ye-xe (keV)&quot;</span><span class="p">,</span>
 <span class="w">                         </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">-50</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">4000</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">8000</span><span class="p">);</span>
@@ -16293,7 +16290,7 @@ Warning: Too few points (0) for iy-strip 22
 <span class="w">    </span>
 <span class="w">    </span><span class="n">Double_t</span><span class="w"> </span><span class="n">parx</span><span class="p">[</span><span class="mi">32</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="n">pary</span><span class="p">[</span><span class="mi">32</span><span class="p">][</span><span class="mi">3</span><span class="p">];</span><span class="w"> </span><span class="c1">//</span>
 <span class="w">    </span>
-<span class="w">    </span><span class="c1">// Read calibration parameters</span>
+<span class="w">    </span><span class="c1">// Read normalization parameters</span>
 <span class="w">    </span><span class="n">readParameters</span><span class="p">(</span><span class="n">paramFile</span><span class="p">,</span><span class="w"> </span><span class="n">parx</span><span class="p">,</span><span class="w"> </span><span class="n">pary</span><span class="p">);</span>
 
 <span class="w">    </span><span class="n">h_xy</span><span class="o">-&gt;</span><span class="n">Clear</span><span class="p">();</span>
@@ -16346,7 +16343,7 @@ Warning: Too few points (0) for iy-strip 22
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Check-the-X-Y-correlation-and-residual-plot-after-calibration">Check the X-Y correlation and residual plot after calibration<a class="anchor-link" href="#Check-the-X-Y-correlation-and-residual-plot-after-calibration">&#182;</a></h3>
+<h3 id="Check-the-X-Y-correlation-and-residual-plot-after-normalization">Check the X-Y correlation and residual plot after normalization<a class="anchor-link" href="#Check-the-X-Y-correlation-and-residual-plot-after-normalization">&#182;</a></h3>
 </div>
 </div>
 </div>
@@ -16413,7 +16410,7 @@ class="
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Front-back-energy-calibration-on-DSSD1,-DSSD2,-and-DSSD3.">Front-back energy calibration on DSSD1, DSSD2, and DSSD3.<a class="anchor-link" href="#Front-back-energy-calibration-on-DSSD1,-DSSD2,-and-DSSD3.">&#182;</a></h2><pre><code>- Record the calibrated events in a structured hit format.
+<h2 id="Front-back-energy-normalization-on-DSSD1,-DSSD2,-and-DSSD3.">Front-back energy normalization on DSSD1, DSSD2, and DSSD3.<a class="anchor-link" href="#Front-back-energy-normalization-on-DSSD1,-DSSD2,-and-DSSD3.">&#182;</a></h2><pre><code>- Record the normalized events in a structured hit format.
   - For each detector, sort the front and back signals in descending order of amplitude.
   - Detection threshold: Set to 100 channels (discard signals below this value).
 
@@ -16733,7 +16730,7 @@ class="
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Correction">Correction<a class="anchor-link" href="#Correction">&#182;</a></h3><p>After calibration, the amplitude $A'_i$ of each strip satisfies the linear relationship $E_i = k A'_i + b$, where $E_i$ is the energy. Let the multiplicity of the x-side be $m_x$ and the y-side be $m_y$. The calibrated amplitude sums for the x-side and y-side are defined as:</p>
+<h3 id="Correction">Correction<a class="anchor-link" href="#Correction">&#182;</a></h3><p>After normalization, the amplitude $A'_i$ of each strip satisfies the linear relationship $E_i = k A'_i + b$, where $E_i$ is the energy. Let the multiplicity of the x-side be $m_x$ and the y-side be $m_y$. The normalized amplitude sums for the x-side and y-side are defined as:</p>
 $$
 x1es = \sum_{{i}\in m_x} A'_{xi}, \quad y1es = \sum_{{j}\in m_y} A'_{yj}
 $$<p>The total energies for the x-side and y-side are then:</p>
@@ -16868,7 +16865,7 @@ class="
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Assignment:-Front-back-energy-calibration-on-DSSD1,-DSSD2,-and-DSSD3.">Assignment: Front-back energy calibration on DSSD1, DSSD2, and DSSD3.<a class="anchor-link" href="#Assignment:-Front-back-energy-calibration-on-DSSD1,-DSSD2,-and-DSSD3.">&#182;</a></h2><pre><code>- Record the calibrated events in a structured hit format.
+<h2 id="Assignment:-Front-back-energy-normalization-on-DSSD1,-DSSD2,-and-DSSD3.">Assignment: Front-back energy normalization on DSSD1, DSSD2, and DSSD3.<a class="anchor-link" href="#Assignment:-Front-back-energy-normalization-on-DSSD1,-DSSD2,-and-DSSD3.">&#182;</a></h2><pre><code>- Record the normalized events in a structured hit format.
   - For each detector, sort the front and back signals in descending order of amplitude.
   - Detection threshold: Set to 100 channels (discard signals below this value).
 
