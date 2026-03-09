@@ -37,7 +37,7 @@
       
  - 1.3 [ADC,TDC信号处理](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.3_adc_analysis.html)
  - 1.4 [TTree的MakeClass方法](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.4_root_tree_makeclass.html)
- - [作业 1.2](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/coursework1.2.html)
+
  
 
 ## chapter 2. 位置探测器(PPAC)数据处理
