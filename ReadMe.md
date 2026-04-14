@@ -30,11 +30,7 @@
 ## chapter 1. ROOT TTree 初阶
  - 1.1 [用TTree 结构存储事件数据](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.1_create_tree.html)
  - 1.2 [读取TTree数据，进行逐事件分析](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.2_read_tree.html)
- - 参考文献
-      - [1.ROOT for beginner - Trees](./chapt1/ROOT_for_beginners_Day4.pdf)
-      - [2.A large-area, position-sensitive neutron detector](./chapt1/neutron_detector.pdf)
-      - [3.calibraton of neutron detector](./chapt1/neutron_cali.pdf)
-      
+---
  - 1.3 [ADC,TDC信号处理](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.3_adc_analysis.html)
  - 1.4 [TTree的MakeClass方法](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.4_root_tree_makeclass.html)
 
@@ -44,7 +40,7 @@
 
   - 2.1 [PPAC 信号处理](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/2.1_PPAC_analysis.html)
   - 2.2 [PPAC Tracking](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/2.2_PPAC_tracking.html) 
-
+---
   - 2.3 [编译执行分析程序(1)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/2.3_comiling_1.html)
   - 2.4 [编译执行分析程序(2)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/2.4_compiling_2.html)
   - 2.5 [实验数据处理过程](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt2/2.5_data_analysis_process.html)
@@ -54,14 +50,11 @@
  - 3.0 [TSpectrum and map](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.0_TSpectrum_map.html)
  - 3.1 [DSSD Energy Calibration](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.1_DSSD_energy_calibration_1.html)
  - 3.2 [利用可变长数组存储数据- Hit结构](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.2_TTree_Branch_with_Dynamic_Array.html) 
- - [作业 3.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/coursework3.1.html) 
+---
  - 3.3 [DSSD Inter-strip correlation](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.3_DSSD_interstrip_correlation.html)
  - 3.4 [DSSD front-back correlation (I)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.4_DSSD_FB_correlation_I_DSSD1.html)
- - [作业 3.2](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/coursework3.2.html) 
- - 参考文献
-      - [3.Automatic intrinsic calibration of double-sided silicon strip detectors](./chapt3/DSSD_cali.pdf)
-      - [4.DSSD Adjacent strip correlations.pdf](./chapt3/DSSD_Adjacent.pdf)
  - 3.5 [DSSD front-back correlation (II)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.5_DSSD_FB_correlation_II_DSSD1.html)
+---
  - 3.6 [DSSD Multiplicity Event Analysis](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.6_DSSD_Multiplicity_Analysis.html)
  - 3.7 [DSSD数据分析](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.7_DSSD_data_analysis.html)
  - 3.8* [用vector存储TTree数据](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.7_TTree_Branch_with_vector.html) 
