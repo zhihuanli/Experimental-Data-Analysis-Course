@@ -45,7 +45,6 @@
   
 ## chapter 3. DSSD 数据处理 
 
- - 3.0 [TSpectrum and map](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.0_TSpectrum_map.html)
  - 3.1 [DSSD Energy Calibration](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.1_DSSD_energy_calibration_1.html)
  - 3.2 [利用可变长数组存储数据- Hit结构](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.2_TTree_Branch_with_Dynamic_Array.html)
  - 
