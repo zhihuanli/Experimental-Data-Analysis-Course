@@ -6,12 +6,10 @@
 
 - [HOME](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/)
 ### ROOT 
- - [RootTutorial](http://www.pp.rhul.ac.uk/~cowan/RootTutorial/)
- - [TH1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/ROOT/TH1.html)
- ,[TH2](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/ROOT/TH2.html)
- ,[TGraph](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/ROOT/TGraph.html)
- - 更多ROOT内容参照下面链接内的作业部分
-   - [核物理与粒子物理实验方法](https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/)
+ - [RootTutorial I] (https://zhihuanli.github.io/Experimental-Data-Analysis-Course/ROOT/ROOT%20Tutorial%20I.html)
+ - [RootTutorial II] (https://zhihuanli.github.io/Experimental-Data-Analysis-Course/ROOT/ROOT%20Tutorial%20II.html)
+ - [RootTutorial III-Example] (https://zhihuanli.github.io/Experimental-Data-Analysis-Course/ROOT/ROOT_III-Example.html)
+
 ### Juypter
  - [juypter安装](jupyter-short-instruction.pdf)
  - [juypter short instruction](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/ROOT/juypter.html)
