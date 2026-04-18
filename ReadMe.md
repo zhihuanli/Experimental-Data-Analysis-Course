@@ -49,8 +49,9 @@
  - 3.2 [利用可变长数组存储数据- Hit结构](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.2_TTree_Branch_with_Dynamic_Array.html)
  - 
  - 3.3 [DSSD Inter-strip correlation](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.3_DSSD_interstrip_correlation.html)
- - 3.4 [DSSD front-back correlation (I)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.4_DSSD_FB_correlation_I_DSSD1.html)
- - 3.5 [DSSD front-back correlation (II)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.5_DSSD_FB_correlation_II_DSSD1.html)
+ - 3.4 [DSSD front-back correlation (I)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.4_DSSD_FB_correlation_I_DSSD1-new.html)
+ - 3.5 [DSSD front-back correlation (II)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.5_DSSD_FB_correlation_II_DSSD1-new.html)
+  - 3.5 [Supplementary Note: Multi-path Calibration with Error Propagation](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.5_DSSD_FB_correlation_II_DSSD1_multi-path.html)
  - 3.6 [DSSD Multiplicity Event Analysis](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.6_DSSD_Multiplicity_Analysis.html)
  - 3.7 [DSSD数据分析](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.7_DSSD_data_analysis.html)
  - 3.8* [用vector存储TTree数据](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.7_TTree_Branch_with_vector.html) 
