@@ -50,14 +50,12 @@
  - 3.5 [DSSD front-back correlation (II)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.5_DSSD_FB_correlation_II_DSSD1-new.html)
     -  [Supplementary Note: Multi-path Calibration with Error Propagation](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.5_DSSD_FB_correlation_II_DSSD1_multi-path.html)
  - 3.6 [DSSD Multiplicity Event Analysis](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.6_DSSD_Multiplicity_Analysis.html)
-
- Latest update to here
- 
- ---
  - 3.7 [DSSD数据分析](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.7_DSSD_data_analysis.html)
  - 3.8* [用vector存储TTree数据](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.8_TTree_Branch_with_vector.html) 
       - 代码见[code](https://github.com/zhihuanli/Experimental-Data-Analysis-Course/tree/master/chapt3/code)
-
+        
+ Latest update to here
+ ---
 ## chapter 4. γ-γ 符合分析 
  - 4.0 [time walk, addback](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt4/4.0_gamma-gamma_coincidence_0.html)
  - 4.1 [γ-γ coincidence](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt4/4.1_gamma-gamma_coincidence_I.html)
