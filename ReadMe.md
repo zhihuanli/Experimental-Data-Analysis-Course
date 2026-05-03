@@ -52,35 +52,37 @@
  - 3.6 [DSSD Multiplicity Event Analysis](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.6_DSSD_Multiplicity_Analysis.html)
  - 3.7 [DSSD数据分析](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.7_DSSD_data_analysis.html)
  - 3.8* [用vector存储TTree数据](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.8_TTree_Branch_with_vector.html)
+
+## chapter 4. 核反应数据处理(不变质量谱)
+ - 4.1 [Relativistic Kinematics](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/Relativistic_Kinematics.html)
+ - 4.2 [Phase Space](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/phasespace.html)
+ - 4.3 [Invariant mass and missing mass](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/invariant_mass.html)
+ - 4.4 [14C\*→4He+10Be\* reaction simulation](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/7.4%2014C_reaction_sim.html)
+ - 4.5 [Q-Reconstruction](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/7.5%20Reaction%20Q-Reconstruction.html)
+ - 4.6 [Invariant mass reconstruction](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/7.6%20Invariant%20mass%20reconstruction.html)
    
  Latest update to here
  ---
-## chapter 4. γ-γ 符合分析 
- - 4.0 [time walk, addback](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt4/4.0_gamma-gamma_coincidence_0.html)
- - 4.1 [γ-γ coincidence](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt4/4.1_gamma-gamma_coincidence_I.html)
- - 4.2 [二维 𝛾−𝛾 对称矩阵方法](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt4/4.2_gamma-gamma_coincidence_II.html) 
- - [作业 4.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt4/coursework4.1.html)
+## chapter 5. γ-γ 符合分析 
+ - 5.0 [time walk, addback](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt4/4.0_gamma-gamma_coincidence_0.html)
+ - 5.1 [γ-γ coincidence](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt4/4.1_gamma-gamma_coincidence_I.html)
+ - 5.2 [二维 𝛾−𝛾 对称矩阵方法](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt4/4.2_gamma-gamma_coincidence_II.html) 
+ - [作业 5.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt4/coursework4.1.html)
  - 参考文献
-     - [4.Background subtraction from in-beam HPGe coincidence data sets](./chapt4/Radford.pdf)
+     - [5.Background subtraction from in-beam HPGe coincidence data sets](./chapt4/Radford.pdf)
 
-## chapter 5. 衰变实验的数据分析
+## chapter 6. 衰变实验的数据分析
 
- - 5.1 [基于timestamp的事件重构](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/5.1_decay_analysis_I.html)
- - 5.2 [重离子和衰变事件的关联](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/5.2_decay_analysis_II.html)
+ - 6.1 [基于timestamp的事件重构](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/5.1_decay_analysis_I.html)
+ - 6.2 [重离子和衰变事件的关联](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/5.2_decay_analysis_II.html)
     - [Least Square 和 Likelihood fitting](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/fitting_LS_LH.html)
- - [作业 5.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/coursework5.1.html)
+ - [作业 6.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/coursework5.1.html)
  - 参考文献
-     - [5.A gas-filled recoil separator, SHANS](./chapt5/SHANS.pdf)
+     - [6.A gas-filled recoil separator, SHANS](./chapt5/SHANS.pdf)
 
-## chapter 6. 基于白光中子源的(n,n')反应测量
- - 6.1 [(n,n')反应数据分析](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt6/6.1_netron_capture_reaction.html)
-- [作业 6.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt6/coursework6.1.html)
+## chapter 7. 基于白光中子源的(n,n')反应测量
+ - 7.1 [(n,n')反应数据分析](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt6/6.1_netron_capture_reaction.html)
+- [作业 7.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt6/coursework6.1.html)
 
-## chapter 7. 核反应数据处理(不变质量谱)
- - 7.1 [Relativistic Kinematics](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/Relativistic_Kinematics.html)
- - 7.2 [Phase Space](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/phasespace.html)
- - 7.3 [Invariant mass and missing mass](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/invariant_mass.html)
- - 7.4 [14C\*→4He+10Be\* reaction simulation](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/7.4%2014C_reaction_sim.html)
- - 7.5 [Q-Reconstruction](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/7.5%20Reaction%20Q-Reconstruction.html)
- - 7.6 [Invariant mass reconstruction](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/7.6%20Invariant%20mass%20reconstruction.html)
+
    
