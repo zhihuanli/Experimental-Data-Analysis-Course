@@ -80,4 +80,7 @@
  - 7.1 [Relativistic Kinematics](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/Relativistic_Kinematics.html)
  - 7.2 [Phase Space](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/phasespace.html)
  - 7.3 [Invariant mass and missing mass](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/invariant_mass.html)
- - 7.4 [1. 1H(14C,14C\*→4He+10Be\*)1H reaction simulation](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/1.0_C14H1_He4Be10x.html)
+ - 7.4 [14C\*→4He+10Be\* reaction simulation](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/7.4%2014C_reaction_sim.html)
+ - 7.5 [Q-Reconstruction](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/7.5%20Reaction%20Q-Reconstruction.html)
+ - 7.6 [Invariant mass reconstruction](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/7.6%20Invariant%20mass%20reconstruction.html)
+   
