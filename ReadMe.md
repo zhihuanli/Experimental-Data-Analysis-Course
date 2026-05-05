@@ -58,9 +58,10 @@
  - 4.2 [Phase Space](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/phasespace.html)
  - 4.3 [Invariant mass and missing mass](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/invariant_mass.html)
  - 4.4 [14C\*→4He+10Be\* reaction simulation](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/7.4%2014C_reaction_sim.html)
- - 4.5 [Q-Reconstruction](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/7.5%20Reaction%20Q-Reconstruction.html)
- - 4.6 [Invariant mass reconstruction](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/7.6%20Invariant%20mass%20reconstruction.html)
- - 4.7 [Geant4 simulation](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/7.7%20Geant4%20simulation.html)
+      - [mass.txt](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/mass.txt)
+ - 4.5 [14C\*→4He+10Be\* reaction Q-Reconstruction](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/7.5%20Reaction%20Q-Reconstruction.html)
+ - 4.6 [14C\*→4He+10Be\* reaction Invariant mass reconstruction](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/7.6%20Invariant%20mass%20reconstruction.html)
+ - 4.7 [14C\*→4He+10Be\* reaction Geant4 simulation](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt7/7.7%20Geant4%20simulation.html)
    
  Latest update to here
  ---
