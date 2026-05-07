@@ -21,8 +21,8 @@
     - [Example](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/Example_of_Integration_in_TH1_and_TF1.html)
     
 ## chapter 0. A short introduction to C++
- - 0.1 [C++ basic](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt0/introduction_basic.html)
- - 0.2 [C++ advanced](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt0/introduction_advanced.html)
+ - 0.1 [C++ basic](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt0/introduction_basic.md)
+ - 0.2 [C++ advanced](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt0/introduction_advanced.md)
  * 更多高阶内容将在后续课程中讲授
 
 ## chapter 1. ROOT TTree 初阶
