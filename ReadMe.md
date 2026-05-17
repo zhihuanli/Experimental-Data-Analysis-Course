@@ -70,8 +70,8 @@
  ---
 ## chapter 5. γ-γ 符合分析 
  - 5.0 [time walk,event building and addback](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt4/4.0_gamma-gamma_coincidence.html)
- - 5.1 [γ-γ coincidence](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt4/4.1_gamma-gamma_coincidence_matrix.html)
- - 5.2 [二维 𝛾−𝛾 对称矩阵方法](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt4/4.2_gamma-gamma_coincidence_II.html) 
+ - 5.1 [γ-γ coincidence matrix](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt4/4.1_gamma-gamma_coincidence_matrix.html)
+ - 5.2 [Radware approch](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt4/4.2_gamma-gamma_coincidence_II.html) 
  - [作业 5.1](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt4/coursework4.1.html)
  - 参考文献
      - [5.Background subtraction from in-beam HPGe coincidence data sets](./chapt4/Radford.pdf)
