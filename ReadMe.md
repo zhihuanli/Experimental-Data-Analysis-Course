@@ -73,10 +73,6 @@
  - 参考文献
      - [D.C.Radford, Nucl.Instr.Meth.A361(1995)306](./chapt4/Radford.pdf)
 
- Latest update to here
- 
- ---
-
 ## chapter 6. 衰变实验的数据分析
 
  - 6.1 [基于timestamp的事件重构](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/5.1_Decay_analysis_I.html)
@@ -84,6 +80,11 @@
     - [Least Square 和 Likelihood fitting](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/fitting_LS_LH.html)
  - 参考文献
      - [gas-filled recoil separator, SHANS](./chapt5/SHANS.pdf)
+---  
+
+Latest update to here
+
+---
 
 ## chapter 7. 基于白光中子源的(n,n')反应测量
  - 7.1 [(n,n')反应数据分析](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt6/6.1_netron_capture_reaction.html)
