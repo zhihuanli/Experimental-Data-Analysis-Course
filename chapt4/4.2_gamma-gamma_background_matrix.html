@@ -8228,176 +8228,86 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Background-matrix">Background matrix<a class="anchor-link" href="#Background-matrix">¶</a></h3><p>在二维 $\gamma-\gamma$ 矩阵中，一个点 $(e_x,e_y)$ 表示在同一个符合事件中，两个探测器或探测单元分别测到了能量 $e_x$ 和 $e_y$。</p>
-<p>设真实入射到两个探测器的 $\gamma$ 射线能量分别为 $E_{\gamma 1}$ 和 $E_{\gamma 2}$。由于探测器存在有限能量分辨、Compton 散射、阈值效应和 addback 处理，测得能量不一定等于入射 $\gamma$ 射线的全能量。</p>
-<p>对于一个入射能量为 $E_\gamma$ 的 $\gamma$ 射线，探测器测得能量 $e$ 的条件概率写作</p>
+<h3 id="Background-matrix">Background matrix<a class="anchor-link" href="#Background-matrix">¶</a></h3><p>设真实 $\gamma$ 跃迁能量为 $E$，测量能量为 $e$。探测器响应函数记为</p>
 <p>$$
-p(e\mid E_\gamma).
+R(e,E)=R_p(e,E)+R_b(e,E),
 $$</p>
-<p>该条件概率可以分成全能峰响应和非全能峰响应：</p>
+<p>其中 $R_p$ 表示 full-energy peak response，$R_b$ 表示 background response。</p>
+<p><img alt="" src="fig/response.png" style="zoom:50%;"/></p>
+<p>若真实符合 $\gamma$ 对 $(E_1,E_2)$ 在当前实验条件下进入二维矩阵的权重为 $W(E_1,E_2)$，则实验二维符合谱为</p>
 <p>$$
-p(e\mid E_\gamma)
+M(e_x,e_y)
 =
-p_{\mathrm{peak}}(e\mid E_\gamma)
-+
-p_{\mathrm{bg}}(e\mid E_\gamma).
+\int dE_1dE_2\,
+W(E_1,E_2)
+R(e_x,E_1)
+R(e_y,E_2).
 $$</p>
-<p>其中 $p_{\mathrm{peak}}(e\mid E_\gamma)$ 描述全能峰，$p_{\mathrm{bg}}(e\mid E_\gamma)$ 描述 Compton continuum、本底散射和其他非全能峰响应。</p>
-<p>如果两个探测器的响应近似独立，则在给定 $E_{\gamma 1}$ 和 $E_{\gamma 2}$ 时，同时测得 $(e_x,e_y)$ 的条件概率可以写成</p>
+<p>代入 $R=R_p+R_b$，二维谱可以分成</p>
 <p>$$
-p(e_x,e_y\mid E_{\gamma 1},E_{\gamma 2})
-\simeq
-p_x(e_x\mid E_{\gamma 1})
-p_y(e_y\mid E_{\gamma 2}).
+M=M_{pp}+M_{pb}+M_{bp}+M_{bb}.
 $$</p>
-<p>这一步是后面出现乘积形式的物理基础。这里相乘的是两个条件概率，而不是两个计数。</p>
-<p>将两个方向的响应分解为 peak 和 background：</p>
+<p>其中 $M_{pp}$ 表示两个方向都来自 full-energy peak 的真实符合，应该保留；而</p>
 <p>$$
-p_x(e_x\mid E_{\gamma 1})
+B_{\mathrm{exact}}
 =
-p_{x,\mathrm{peak}}(e_x\mid E_{\gamma 1})
-+
-p_{x,\mathrm{bg}}(e_x\mid E_{\gamma 1}),
+M_{pb}+M_{bp}+M_{bb}
 $$</p>
-<p>$$
-p_y(e_y\mid E_{\gamma 2})
-=
-p_{y,\mathrm{peak}}(e_y\mid E_{\gamma 2})
-+
-p_{y,\mathrm{bg}}(e_y\mid E_{\gamma 2}).
-$$</p>
-<p>二维响应展开为</p>
-<p>$$
-\begin{aligned}
-p(e_x,e_y\mid E_{\gamma 1},E_{\gamma 2})
-=&amp;\ 
-p_{x,\mathrm{peak}}(e_x\mid E_{\gamma 1})
-p_{y,\mathrm{peak}}(e_y\mid E_{\gamma 2}) \\
-&amp;+
-p_{x,\mathrm{bg}}(e_x\mid E_{\gamma 1})
-p_{y,\mathrm{peak}}(e_y\mid E_{\gamma 2}) \\
-&amp;+
-p_{x,\mathrm{peak}}(e_x\mid E_{\gamma 1})
-p_{y,\mathrm{bg}}(e_y\mid E_{\gamma 2}) \\
-&amp;+
-p_{x,\mathrm{bg}}(e_x\mid E_{\gamma 1})
-p_{y,\mathrm{bg}}(e_y\mid E_{\gamma 2}).
-\end{aligned}
-$$</p>
-<p>第一项是两个方向都测到全能峰的 peak-peak coincidence，是建立能级纲图时希望保留的部分。后三项分别对应 background-peak、peak-background 和 background-background，是二维矩阵中的连续本底贡献。</p>
-<hr/>
+<p>是严格意义下的二维本底，因为它们至少有一个方向来自 background response。</p>
 <h3 id="Radware-%E6%9C%AC%E5%BA%95%E7%9F%A9%E9%98%B5">Radware 本底矩阵<a class="anchor-link" href="#Radware-%E6%9C%AC%E5%BA%95%E7%9F%A9%E9%98%B5">¶</a></h3><ul>
 <li>D.C. Radford, Nucl. Instr. Meth. A361(1995)306</li>
 </ul>
-<p>实际数据中，我们不知道每一个 bin $(i,j)$ 对应的真实入射能量 $E_{\gamma 1}$ 和 $E_{\gamma 2}$，也不能逐事件判断测量能量来自全能峰还是 Compton continuum。因此，Radware approach 用 total projection 来估计平均的 peak / background 概率。</p>
-<p>Total projection 的总计数为</p>
+<p>严格本底的计算需要知道真实符合关系 $W(E_1,E_2)$ 以及每条 $\gamma$ 的响应函数 $R_p$ 和 $R_b$，实际分析中通常无法做到。Radware 方法因此采用一个全局平均近似。</p>
+<p>首先定义 total projection：</p>
 <p>$$
-T=\sum_i P_i.
+P(e)=\int M(e,e')\,de',
 $$</p>
-<p>第 $i$ 个能量 bin 在矩阵某一方向上出现的平均概率为</p>
+<p>并将其分成 peak 和 background 两部分：</p>
 <p>$$
-q_i=\frac{P_i}{T}.
+P(e)=p(e)+b(e).
 $$</p>
-<p>对应的 peak 和 background 平均概率为</p>
+<p>这里 $P(e)$ 不是普通 singles spectrum，而是二维 $\gamma-\gamma$ 谱的边缘分布；$p(e)$ 和 $b(e)$ 分别表示这个边缘分布中的 peak 成分和 background 成分。</p>
+<p>Radware 方法用 $p(e)$ 和 $b(e)$ 的一维平均形状近似二维本底中的三类贡献：</p>
 <p>$$
-q_i^{(p)}=\frac{p_i}{T},
-$$</p>
-<p>$$
-q_i^{(b)}=\frac{b_i}{T}.
-$$</p>
-<p>并且</p>
-<p>$$
-q_i=q_i^{(p)}+q_i^{(b)}.
-$$</p>
-<p>这里的 $q_i^{(p)}$ 和 $q_i^{(b)}$ 可以看作对 $p_{\mathrm{peak}}(e_i\mid E_\gamma)$ 和 $p_{\mathrm{bg}}(e_i\mid E_\gamma)$ 在所有真实 $\gamma$ 能量、所有探测器和所有符合关系上的平均。</p>
-<p>在平均意义下，二维本底中三类贡献的期望计数为</p>
-<p>$$
-Tq_i^{(b)}q_j^{(p)},
+M_{pb}(e_x,e_y)
+\approx
+\frac{p(e_x)b(e_y)}{T},
 $$</p>
 <p>$$
-Tq_i^{(p)}q_j^{(b)},
+M_{bp}(e_x,e_y)
+\approx
+\frac{b(e_x)p(e_y)}{T},
 $$</p>
 <p>$$
-Tq_i^{(b)}q_j^{(b)}.
+M_{bb}(e_x,e_y)
+\approx
+\frac{b(e_x)b(e_y)}{T},
 $$</p>
-<p>代入 $q_i^{(p)}=p_i/T$ 和 $q_i^{(b)}=b_i/T$，得到</p>
+<p>其中</p>
 <p>$$
-Tq_i^{(b)}q_j^{(p)}
+T=\int P(e)\,de.
+$$</p>
+<p>因此 Radware 本底矩阵为</p>
+<p>$$
+B_{\mathrm{RW}}(e_x,e_y)
 =
-\frac{b_ip_j}{T},
+\frac{
+p(e_x)b(e_y)
++
+b(e_x)p(e_y)
++
+b(e_x)b(e_y)
+}{T}.
 $$</p>
+<p>利用 $P(e)=p(e)+b(e)$，也可以写成</p>
 <p>$$
-Tq_i^{(p)}q_j^{(b)}
+B_{\mathrm{RW}}(e_x,e_y)
 =
-\frac{p_ib_j}{T},
+\frac{
+P(e_x)P(e_y)-p(e_x)p(e_y)
+}{T},
 $$</p>
-<p>$$
-Tq_i^{(b)}q_j^{(b)}
-=
-\frac{b_ib_j}{T}.
-$$</p>
-<p>因此，二维 background matrix 为</p>
-<p>$$
-B_{ij}
-=
-\frac{1}{T}
-\left(
-b_ip_j+p_ib_j+b_ib_j
-\right).
-$$</p>
-<p>其中：</p>
-<ul>
-<li>$b_ip_j/T$ 表示 $i$ 方向来自 background，$j$ 方向来自 peak；</li>
-<li>$p_ib_j/T$ 表示 $i$ 方向来自 peak，$j$ 方向来自 background；</li>
-<li>$b_ib_j/T$ 表示两个方向都来自 background。</li>
-</ul>
-<p>由于</p>
-<p>$$
-P_i=p_i+b_i,
-$$</p>
-<p>$$
-P_j=p_j+b_j,
-$$</p>
-<p>所以</p>
-<p>$$
-P_iP_j-p_ip_j
-=
-(p_i+b_i)(p_j+b_j)-p_ip_j
-=
-b_ip_j+p_ib_j+b_ib_j.
-$$</p>
-<p>因此也可写成</p>
-<p>$$
-B_{ij}
-=
-\frac{P_iP_j-p_ip_j}{T}.
-$$</p>
-<p>最后，从原始二维矩阵中扣除该本底矩阵：</p>
-<p>$$
-M_{ij}^{\mathrm{net}}
-=
-M_{ij}-B_{ij}.
-$$</p>
-<p>这个公式的物理含义是：尽量保留两个方向都来自全能峰的 peak-peak coincidence，扣除至少有一个方向来自连续本底的平均贡献。</p>
-<hr/>
-<h3 id="%E4%B8%8A%E8%BF%B0%E6%8E%A8%E5%AF%BC%E7%9A%84%E8%BF%91%E4%BC%BC%E6%9D%A1%E4%BB%B6">上述推导的近似条件<a class="anchor-link" href="#%E4%B8%8A%E8%BF%B0%E6%8E%A8%E5%AF%BC%E7%9A%84%E8%BF%91%E4%BC%BC%E6%9D%A1%E4%BB%B6">¶</a></h3><p>上述推导包含三个主要近似。</p>
-<h4 id="%E6%8E%A2%E6%B5%8B%E5%99%A8%E5%93%8D%E5%BA%94%E7%8B%AC%E7%AB%8B%E8%BF%91%E4%BC%BC">探测器响应独立近似<a class="anchor-link" href="#%E6%8E%A2%E6%B5%8B%E5%99%A8%E5%93%8D%E5%BA%94%E7%8B%AC%E7%AB%8B%E8%BF%91%E4%BC%BC">¶</a></h4><p>给定真实入射能量 $E_{\gamma 1}$ 和 $E_{\gamma 2}$ 后，两个方向的测量过程近似独立：</p>
-<p>$$
-p(e_x,e_y\mid E_{\gamma 1},E_{\gamma 2})
-\simeq
-p_x(e_x\mid E_{\gamma 1})
-p_y(e_y\mid E_{\gamma 2}).
-$$</p>
-<p>如果存在明显 cross-talk、错误 addback、pile-up 或 summing，这个近似会变差。</p>
-<h4 id="%E7%94%A8-total-projection-%E4%BB%A3%E6%9B%BF%E7%9C%9F%E5%AE%9E%E5%93%8D%E5%BA%94%E5%87%BD%E6%95%B0">用 total projection 代替真实响应函数<a class="anchor-link" href="#%E7%94%A8-total-projection-%E4%BB%A3%E6%9B%BF%E7%9C%9F%E5%AE%9E%E5%93%8D%E5%BA%94%E5%87%BD%E6%95%B0">¶</a></h4><p>真实的 $p(e\mid E_\gamma)$ 依赖入射 $\gamma$ 能量、探测器几何、晶体材料、阈值和 addback 方法。Radware approach 不逐个 $E_\gamma$ 建立响应函数，而是用 $p_i$ 和 $b_i$ 估计平均 peak / background 概率。</p>
-<p>因此，$p_i/T$ 和 $b_i/T$ 不是严格的单能 $\gamma$ 响应概率，而是整个数据集平均后的概率。</p>
-<h4 id="%E4%BA%8C%E7%BB%B4%E6%9C%AC%E5%BA%95%E5%9B%A0%E5%AD%90%E5%8C%96%E8%BF%91%E4%BC%BC">二维本底因子化近似<a class="anchor-link" href="#%E4%BA%8C%E7%BB%B4%E6%9C%AC%E5%BA%95%E5%9B%A0%E5%AD%90%E5%8C%96%E8%BF%91%E4%BC%BC">¶</a></h4><p>公式</p>
-<p>$$
-B_{ij}
-=
-\frac{P_iP_j-p_ip_j}{T}
-$$</p>
-<p>假设二维本底的平均能量分布可以由两个方向的一维平均概率相乘得到。这个近似可以描述主要的 Compton continuum 和 quasi-continuum，但不能精确描述所有二维相关结构，例如多重散射、summing、强 cascade 分支和探测器间串扰。</p>
+<p>这个近似的物理含义是：Radware 方法不再逐条计算真实 $\gamma$ 的 Compton continuum 和 partner 关系，而是用 total projection 中的平均 peak/background 分布构造二维本底。因此，它是一种全局平均本底估计，而不是严格的二维响应函数计算。</p>
 <ul>
 <li>上述方法可以推广到 3-fold，4-fold的矩阵</li>
 </ul>
@@ -9365,6 +9275,31 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Radware-%E6%96%B9%E6%B3%95%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7">Radware 方法的局限性<a class="anchor-link" href="#Radware-%E6%96%B9%E6%B3%95%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7">¶</a></h2><p>Radware 方法的优点是可以从二维 $\gamma-\gamma$ 矩阵本身出发，利用 total projection 构造一个全局本底矩阵。这样可以避免对每一条 $\gamma$ 峰逐一开窗扣本底，在峰密度较高、级联关系较复杂的核谱学分析中很实用。</p>
+<p>但是，Radware 方法不是严格的二维探测器响应计算，而是一种全局平均近似。它的局限性主要来自两个方面。</p>
+<h3 id="1.-%E5%85%A8%E5%B1%80%E5%B9%B3%E5%9D%87%E5%81%87%E8%AE%BE%E4%B8%8D%E4%B8%80%E5%AE%9A%E9%80%82%E5%90%88%E5%B1%80%E9%83%A8%E6%9C%AC%E5%BA%95">1. 全局平均假设不一定适合局部本底<a class="anchor-link" href="#1.-%E5%85%A8%E5%B1%80%E5%B9%B3%E5%9D%87%E5%81%87%E8%AE%BE%E4%B8%8D%E4%B8%80%E5%AE%9A%E9%80%82%E5%90%88%E5%B1%80%E9%83%A8%E6%9C%AC%E5%BA%95">¶</a></h3><p>Radware 方法隐含的基本假设是：某个局部本底区域所对应的符合 $\gamma$ 射线分布，可以用整个二维矩阵的 total projection 来近似。</p>
+<p>这个假设在平均意义上有一定合理性。因为 total projection 确实反映了当前矩阵中所有 $\gamma-\gamma$ 符合关系的总体分布。但是，对于某一个具体的本底区域，这个近似不一定准确。</p>
+<p>例如，某一段连续本底可能主要来自少数几条强 $\gamma$ 射线的 Compton 散射。这些强 $\gamma$ 射线在真实能级级联中只和特定的几条 $\gamma$ 射线符合。此时，这个局部本底对应的符合投影谱不一定和整个 total projection 的形状相同。</p>
+<p>如果 Radware 方法仍然使用全局 total projection 来估计这个局部本底，就可能把一些实际上无关的强峰也作为本底结构扣掉。这样在扣本底后的二维谱中，就可能出现负本底、负峰或负的水平线、垂直线。</p>
+<p>因此，Radware 扣本底后的负结构通常不应理解为物理上的负强度，而应理解为全局平均本底估计在局部区域发生了过扣。</p>
+<h3 id="2.-%E5%A4%9A%E5%8F%8D%E5%BA%94%E9%81%93%E6%B7%B7%E5%90%88%E4%BC%9A%E5%8A%A0%E9%87%8D%E8%BF%87%E6%89%A3">2. 多反应道混合会加重过扣<a class="anchor-link" href="#2.-%E5%A4%9A%E5%8F%8D%E5%BA%94%E9%81%93%E6%B7%B7%E5%90%88%E4%BC%9A%E5%8A%A0%E9%87%8D%E8%BF%87%E6%89%A3">¶</a></h3><p>在实际 in-beam $\gamma$ 谱学实验中，二维矩阵常常不是来自单一反应道，而是多个反应道、多个残余核、多个级联体系的叠加。</p>
+<p>这时，total projection 也变成了多个反应道的混合谱。它包含了不同核素、不同级联分支和不同反应道的强峰。</p>
+<p>问题在于：某一个局部本底区域可能主要来自其中一个反应道，但 Radware 方法却使用所有反应道混合后的 total projection 来估计本底。这样，其他反应道中的强峰也会被带入本底矩阵。</p>
+<p>这些强峰本来可能和当前局部本底没有真实符合关系，但在扣本底时却被当作本底的一部分扣除。结果就容易在扣本底后的二维谱中形成负峰或负线。</p>
+<p>因此，多反应道混合会削弱 total projection 的物理代表性，使 Radware 的全局平均近似更容易失效。这个问题在 fusion-evaporation 反应、高峰密度谱、反应道选择不干净的数据中尤其明显。</p>
+<h3 id="3.-%E5%A6%82%E4%BD%95%E9%83%A8%E5%88%86%E6%94%B9%E5%96%84">3. 如何部分改善<a class="anchor-link" href="#3.-%E5%A6%82%E4%BD%95%E9%83%A8%E5%88%86%E6%94%B9%E5%96%84">¶</a></h3><p>Radware 方法本身不能区分不同反应道。为了减小过扣，应尽量在构造二维矩阵或本底矩阵之前减少反应道混合。</p>
+<p>可以根据实验条件进行筛选，例如：</p>
+<ul>
+<li>粒子 gate；</li>
+<li>recoil gate 或 mass gate；</li>
+<li>prompt/delayed time gate；</li>
+<li>multiplicity 条件；</li>
+<li>已知强 $\gamma$ transition gate；</li>
+<li>与目标核素相关的符合条件。</li>
+</ul>
+<p>筛选后的矩阵更接近单一反应道或单一物理过程。此时 total projection 更有可能代表该矩阵中局部本底的平均符合 $\gamma$ 分布，Radware 扣本底也会更稳定。</p>
+<p>对于关键的 $\gamma$ 峰和关键符合关系，还应结合峰旁窗方法进行检查。峰旁窗方法直接利用峰附近的本底区域估计峰下本底，局部性更强。在孤立峰或本底较平滑的情况下，它通常比全局 Radware 方法更直观，也更适合验证某一条具体符合关系。</p>
+<p>因此，Radware 方法适合用于全局二维矩阵的初步本底处理；而对于重要的弱峰、新能级或可疑符合关系，应结合反应道筛选、峰旁窗方法、double gate 等更有物理选择性的手段进行复核。</p>
 <h3 id="%E5%85%B3%E4%BA%8E%E5%81%B6%E7%84%B6%E7%AC%A6%E5%90%88">关于偶然符合<a class="anchor-link" href="#%E5%85%B3%E4%BA%8E%E5%81%B6%E7%84%B6%E7%AC%A6%E5%90%88">¶</a></h3><p>Radware approach 主要处理 Compton continuum 和 quasi-continuum 形成的连续本底，不等同于时间偶然符合扣除。</p>
 <p>在本节代码中，二维矩阵由 prompt 时间窗内的 $\gamma-\gamma$ pair 构成。如果实验计数率较低，偶然符合通常只是较小修正，可以先观察 Radware 减本底后的效果。</p>
 <p>在高计数率束流实验中，低能区可能出现强 X-ray。例如 Au、Pb 等材料被束流激发后，会产生特征 X-ray。这些 X-ray 与反应产物的 $\gamma$ 射线通常没有真实级联关系，但可能由于计数率高而进入 prompt 窗，形成偶然符合。</p>
