@@ -7832,48 +7832,46 @@ a.anchor-link {
     white-space: normal;
   }
 </style>
-<!-- End of mermaid configuration --></head>
+<!-- End of mermaid configuration --><style>.chapter-nav,.chapter-explanation {margin:1em 4%;line-height:1.75}
+.chapter-explanation {max-width:1050px}
+.jp-RenderedHTMLCommon img,.jp-OutputArea-output img {max-width:min(100%,820px);height:auto}
+.chapter-result img {display:block;max-width:min(100%,820px);height:auto;margin:12px 0}
+.chapter-result pre {white-space:pre-wrap}
+.chapter-result {margin:12px 4%;line-height:1.6}
+</style></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a59786dc-7168-49d8-8ff2-d35b85ad9fdc">
+<nav class="chapter-nav"><a href="../">课程主页</a> · <a href="7.6 Invariant mass reconstruction.html">上一节：4.6</a></nav><div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a59786dc-7168-49d8-8ff2-d35b85ad9fdc">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="%E5%9F%BA%E4%BA%8E-Geant4-%E7%9A%84%E5%AE%9E%E9%AA%8C%E6%A8%A1%E6%8B%9F">基于 Geant4 的实验模拟<a class="anchor-link" href="#%E5%9F%BA%E4%BA%8E-Geant4-%E7%9A%84%E5%AE%9E%E9%AA%8C%E6%A8%A1%E6%8B%9F">¶</a></h1><h2 id="1-%E6%9C%AC%E8%8A%82%E7%9B%AE%E6%A0%87">1 本节目标<a class="anchor-link" href="#1-%E6%9C%AC%E8%8A%82%E7%9B%AE%E6%A0%87">¶</a></h2><p>本节对文献[<em>Commun Phys</em> 6, 220 (2023)]的实验进行 Geant4 模拟，以服务实验设计和实验分析。前面的 4.4 已经建立了反应学模型，4.5 与 4.6 分别给出了 Q 值重建和 invariant mass reconstruction 的分析思路。本节的任务是在这些工作的基础上，引入真实的靶、死层和探测器几何，使模拟结果不仅包含末态粒子的真值运动学信息，还包含粒子在材料中的能量损失、在探测器中的能量沉积以及实验读出形式，从而为后续的 PID、gate、Q 值重建和 invariant mass reconstruction 提供输入。</p>
-<p>本实验关心的三体末态为
-$$
-{}^{10}\mathrm{Be}+\alpha+p .
-$$
-其中前向发射的 $^{10}\mathrm{Be}$ 和 $\alpha$ 主要由零度望远镜 $T_0$ 探测，反冲质子主要由侧向望远镜 $T_{1x}$、$T_{2x}$ 探测。因此，Geant4 模拟不能停留在 step 级信息上，而应最终整理为与实验分析兼容的事件级量。</p>
-<hr/>
-<h2 id="2-%E5%8F%8D%E5%BA%94%E6%9C%BA%E5%88%B6%E4%B8%8E%E5%9F%BA%E6%9C%AC%E8%BF%91%E4%BC%BC">2 反应机制与基本近似<a class="anchor-link" href="#2-%E5%8F%8D%E5%BA%94%E6%9C%BA%E5%88%B6%E4%B8%8E%E5%9F%BA%E6%9C%AC%E8%BF%91%E4%BC%BC">¶</a></h2><p>本实验的核心反应道为
-$$
-{}^{1}\mathrm H(^{14}\mathrm C,\,^{14}\mathrm C^\ast){}^{1}\mathrm H,\qquad
-{}^{14}\mathrm C^\ast\rightarrow {}^{10}\mathrm{Be}^{(\ast)}+\alpha .
-$$
-第一步是非弹散射形成 $^{14}\mathrm C^\ast$，第二步是 $^{14}\mathrm C^\ast$ 的二体衰变。对于第一步反应，质心系散射角分布采用经验形式
-$$
-\frac{d\sigma}{d\Omega^\ast}\propto \exp\!\left(-\frac{\theta^\ast}{\alpha}\right),\qquad \alpha=53^\circ .
-$$
-对于第二步衰变，采用 $4\pi$ 各向同性二体衰变近似。$^{10}\mathrm{Be}$ 末态至少保留基态和 $3.37\ \mathrm{MeV}$ 激发态，必要时再加入更高激发分支。</p>
+<h1 id="%E5%9F%BA%E4%BA%8E-Geant4-%E7%9A%84%E5%AE%9E%E9%AA%8C%E6%A8%A1%E6%8B%9F">基于 Geant4 的实验模拟<a class="anchor-link" href="#%E5%9F%BA%E4%BA%8E-Geant4-%E7%9A%84%E5%AE%9E%E9%AA%8C%E6%A8%A1%E6%8B%9F">¶</a></h1><h2 id="1-%E6%9C%AC%E8%8A%82%E7%9B%AE%E6%A0%87">1 本节目标<a class="anchor-link" href="#1-%E6%9C%AC%E8%8A%82%E7%9B%AE%E6%A0%87">¶</a></h2><p>4.4 给出了反应点处的粒子四动量，4.5–4.6 用简化读数练习重建。本节沿同一反应继续讨论：粒子经过靶和探测器后，怎样由能量沉积形成可分析的事件。</p>
+<p>保持以下分工：反应发生器生成末态；Geant4 处理材料输运；读出模型把沉积转换成通道信号；离线分析完成 PID、粒子关联、能损修正、Q 与不变质量重建。真值只作检查，不替代测量输入。</p>
+<p>下面各小节给出模块接口和关键代码片段，<strong>不是一份已齐备的 Geant4 工程</strong>。诸如 <code>SiHit</code>、<code>RootIO</code> 是应用程序需要实现的类，不是 Geant4 自动提供的功能；<code>beam_ppac.root</code> 和完整几何参数也需实验输入。</p>
+<h2 id="2-%E5%8F%8D%E5%BA%94%E6%9C%BA%E5%88%B6%E4%B8%8E%E5%9F%BA%E6%9C%AC%E8%BF%91%E4%BC%BC">2 反应机制与基本近似<a class="anchor-link" href="#2-%E5%8F%8D%E5%BA%94%E6%9C%BA%E5%88%B6%E4%B8%8E%E5%9F%BA%E6%9C%AC%E8%BF%91%E4%BC%BC">¶</a></h2><p>反应仍为 $^{14}\mathrm C+p\to{}^{14}\mathrm C^*+p$，随后 $^{14}\mathrm C^*\to\alpha+{}^{10}\mathrm{Be}^{(*)}$。第一步是非弹散射，第二步是激发核衰变。可先沿用 4.4 的各向同性两体抽样，检查分析链；研究接受度对角分布的依赖时，再给第一步指定分布。例如
+$$\frac{d\sigma}{d\Omega^*}\propto\exp(-\theta^*/\alpha).$$
+下面以 $\alpha=53^\circ$ 为<strong>演示参数</strong>，不将其当作由所引文献确定的实验截面。第二步仍采用各向同性近似，不包含自旋关联。</p>
+<p>几何背景参见 <a href="https://www.nature.com/articles/s42005-023-01342-6#Sec9">Han et al., <em>Communications Physics</em> <strong>6</strong>, 220 (2023), Methods</a>。</p>
+
 <p>这里需要强调，Geant4 内部并不具备本实验所需的专用反应机制。Geant4 可以处理粒子在材料中的输运，但不会自动产生“指定 $^{14}\mathrm C^\ast$ 激发态、指定分支比、指定角分布、再顺序衰变”的信号事件。因此，本节采用如下近似方法：</p>
 <p>首先，在 <code>PrimaryGeneratorAction</code> 中由用户自定义信号反应发生器，生成该事件的真值四动量；然后，将生成的反冲质子、$\alpha$ 和 $^{10}\mathrm{Be}$ 作为 primary 交给 Geant4；最后，由 Geant4 处理这些粒子在靶、死层和探测器中的真实输运与能量沉积。</p>
-<p>这一步最自然的实现方式，是直接复用 4.4 的 sequential two-body decay 代码。也就是说，在 <code>PrimaryGeneratorAction.cc</code> 中保留 4.4 已经建立的反应学生成逻辑，而不再额外重写一套新的衰变程序。这样既保持系列讲义的一致性，也避免重复实现已经验证过的运动学部分。</p>
+<p>可复用 4.4 中“给定初态与各核质量，生成一次级联衰变”的部分。不要把 <code>Simulation()</code> 连同读出展宽一起搬入 <code>PrimaryGeneratorAction</code>：本节的能量沉积已经由 Geant4 产生，读出展宽应只在后续通道整理时施加一次。若改用了经验散射角抽样，就替换第一步各向同性方向，不要再叠加一套互不相容的方向抽样。</p>
+
 <hr/>
-<h2 id="3-%E6%9D%9F%E6%B5%81%E3%80%81%E9%9D%B6%E5%92%8C%E6%8E%A2%E6%B5%8B%E5%99%A8%E5%87%A0%E4%BD%95">3 束流、靶和探测器几何<a class="anchor-link" href="#3-%E6%9D%9F%E6%B5%81%E3%80%81%E9%9D%B6%E5%92%8C%E6%8E%A2%E6%B5%8B%E5%99%A8%E5%87%A0%E4%BD%95">¶</a></h2><p>PPAC 用于确定束流粒子的靶前轨迹。在本节中，PPAC 不作为真实气体探测器详细模拟，而作为束流抽样输入，提供靶前 $x$、$y$ 位置与入射方向分布。位置分辨取
-$$
-\sigma_x=\sigma_y=0.65\ \mathrm{mm} .
-$$
-因此，Geant4 中的入射束流不应视为理想平行束，而应从 PPAC 重建结果中逐事件抽样。</p>
+<h2 id="3-%E6%9D%9F%E6%B5%81%E3%80%81%E9%9D%B6%E5%92%8C%E6%8E%A2%E6%B5%8B%E5%99%A8%E5%87%A0%E4%BD%95">3 束流、靶和探测器几何<a class="anchor-link" href="#3-%E6%9D%9F%E6%B5%81%E3%80%81%E9%9D%B6%E5%92%8C%E6%8E%A2%E6%B5%8B%E5%99%A8%E5%87%A0%E4%BD%95">¶</a></h2><p>PPAC 数据提供束流位置与方向的相关分布。若输入树中保存的是已重建的实验轨迹，抽样这些记录已经包含测量分辨，不再额外叠加同一 PPAC 分辨。若从理想束流真值生成 PPAC 读数，才需要加入独立规定的测量误差；例如可用 $\sigma_x=\sigma_y=0.65$ mm 作教学假设，但本节不把它当作已验证的实测参数。</p>
+<p>本例的 <code>x,y</code> 定义在靶中心平面，单位 mm；<code>tx,ty</code> 是无量纲斜率。读取实验文件时先核对其参考平面和单位。保持同一条轨迹的四个量一起抽样，才能保留束斑与发散角的相关性。</p>
+
 <p>实验使用多种靶条件，包括 $(\mathrm{CH}_2)_n$、$(\mathrm{CD}_2)_n$、C 靶和空靶。束流能量按高斯分布处理。若某种靶条件下束流均值为 $E_0$，FWHM 为 $\Delta E$，则高斯标准差应写为
 $$
 \sigma_E=\frac{\Delta E}{2.355} .
 $$
 在程序中，应使用 $\sigma_E$ 进行随机抽样，而不能直接把 FWHM 当作高斯标准差。</p>
-<p>前向零度望远镜 $T_0$ 是本实验最关键的探测器。它由三层 BB7 DSSD、后续 SSD 和 $2\times2$ CsI(Tl) 组成。三层 BB7 的厚度均取 $1000\ \mu\mathrm m$，有效面积为 $64\times64\ \mathrm{mm}^2$，条带数为 $32+32$。这里尤其要注意，$T_0$ 第一层硅探测器 T0D1 的厚度必须严格保留为 $1000\ \mu\mathrm m$。这是因为低能粒子能否穿透第一层硅，将直接决定低能区域的探测效率和后续 PID 结构；若第一层厚度写错，后面的接受度、低能截止以及能谱结构都会发生系统偏差。</p>
-<p>侧向望远镜 $T_1$、$T_2$ 用于探测反冲质子。其放置角度分别取约 $30.8^\circ$ 和 $68.5^\circ$，距靶距离约 $170\ \mathrm{mm}$。在 Geant4 中，应将这两个望远镜作为真实几何体摆放在相应方向上，而不是仅在分析阶段用一个理想角度窗口替代。</p>
+<p>文献中的前向 $T_0$ 包含三层 1000 μm 的 BB7 DSSD、三层 SSD 和 $2\times2$ CsI(Tl)。下面仅示范三层 DSSD 的构造：有效面积取 $64\times64$ mm²、每面 32 条，条带间距 2 mm。层间距、死层及后级 SSD/CsI 的具体尺寸必须从实验几何补齐，不能据这段简化代码计算整套装置的效率。</p>
+
+<p>文献中侧向望远镜中心角约为 $30.8^\circ$ 和 $68.5^\circ$，距靶约 170 mm。$T_{1x}$ 包含 50 μm W1 与 300 μm BB7 两层 DSSD，$T_{2x}$ 的 DSSD 为 65 μm BB7；二者均有后续探测器。这里的 $T_1,T_2$ 只表示两类侧向位置，不应误认为完整实验只有两个侧向模块。</p>
+
 <hr/>
 <h2 id="4-%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84">4 程序结构<a class="anchor-link" href="#4-%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84">¶</a></h2><p>建议程序按如下结构组织：</p>
 <div class="highlight"><pre><span></span>project/
@@ -8006,8 +8004,9 @@ $$
 
 <span class="n">nBeamEntries</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fBeamTree</span><span class="o">-&gt;</span><span class="n">GetEntries</span><span class="p">();</span>
 </pre></div>
-<p>逐事件抽样时，位置加入 PPAC 的位置分辨，能量按高斯分布抽样：</p>
-<div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">PrimaryGeneratorAction::SampleBeam</span><span class="p">(</span><span class="kt">double</span><span class="o">&amp;</span><span class="w"> </span><span class="n">x</span><span class="p">,</span>
+<p>逐事件读取同一条束流记录，位置乘以单位 mm，能量沿用本练习的 Gaussian 输入：</p>
+
+<div class="highlight"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">PrimaryGeneratorAction::SampleBeam</span><span class="p">(</span><span class="kt">double</span><span class="o">&amp;</span><span class="w"> </span><span class="n">x</span><span class="p">,</span>
 <span class="w">                                        </span><span class="kt">double</span><span class="o">&amp;</span><span class="w"> </span><span class="n">y</span><span class="p">,</span>
 <span class="w">                                        </span><span class="kt">double</span><span class="o">&amp;</span><span class="w"> </span><span class="n">tx</span><span class="p">,</span>
 <span class="w">                                        </span><span class="kt">double</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ty</span><span class="p">,</span>
@@ -8016,19 +8015,20 @@ $$
 <span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">G4RandFlat</span><span class="o">::</span><span class="n">shootInt</span><span class="p">(</span><span class="n">nBeamEntries</span><span class="p">);</span>
 <span class="w">    </span><span class="n">fBeamTree</span><span class="o">-&gt;</span><span class="n">GetEntry</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
 
-<span class="w">    </span><span class="n">x</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">bx</span><span class="w">  </span><span class="o">+</span><span class="w"> </span><span class="n">G4RandGauss</span><span class="o">::</span><span class="n">shoot</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.65</span><span class="o">*</span><span class="n">mm</span><span class="p">);</span>
-<span class="w">    </span><span class="n">y</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">by</span><span class="w">  </span><span class="o">+</span><span class="w"> </span><span class="n">G4RandGauss</span><span class="o">::</span><span class="n">shoot</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.65</span><span class="o">*</span><span class="n">mm</span><span class="p">);</span>
+<span class="w">    </span><span class="n">x</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">bx</span><span class="o">*</span><span class="n">mm</span><span class="p">;</span><span class="w"> </span><span class="c1">// 已测得的位置，不重复叠加 PPAC 分辨</span>
+<span class="w">    </span><span class="n">y</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">by</span><span class="o">*</span><span class="n">mm</span><span class="p">;</span>
 
 <span class="w">    </span><span class="n">tx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">btx</span><span class="p">;</span>
 <span class="w">    </span><span class="n">ty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bty</span><span class="p">;</span>
 
 <span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">mean</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mf">317.1</span><span class="o">*</span><span class="n">MeV</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">fwhm</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mf">1.98</span><span class="o">*</span><span class="n">MeV</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">fwhm</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mf">1.83</span><span class="o">*</span><span class="n">MeV</span><span class="p">;</span><span class="w"> </span><span class="c1">// 与 4.4 的教学输入一致</span>
 <span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">sigma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fwhm</span><span class="o">/</span><span class="mf">2.355</span><span class="p">;</span>
 
 <span class="w">    </span><span class="n">ekin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">G4RandGauss</span><span class="o">::</span><span class="n">shoot</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span><span class="w"> </span><span class="n">sigma</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
+</div>
 <p>其中，<code>tx</code> 和 <code>ty</code> 用小角近似理解为
 $$
 t_x=\frac{p_x}{p_z},\qquad t_y=\frac{p_y}{p_z},
@@ -8037,12 +8037,14 @@ $$
 <div class="highlight"><pre><span></span><span class="n">G4ThreeVector</span><span class="w"> </span><span class="nf">dir</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span><span class="w"> </span><span class="n">ty</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">);</span>
 <span class="n">dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dir</span><span class="p">.</span><span class="n">unit</span><span class="p">();</span>
 </pre></div>
-<h3 id="2.-%E5%8F%8D%E5%BA%94%E7%82%B9%E6%8A%BD%E6%A0%B7">2. 反应点抽样<a class="anchor-link" href="#2.-%E5%8F%8D%E5%BA%94%E7%82%B9%E6%8A%BD%E6%A0%B7">¶</a></h3><p>反应点不应固定在靶中心，而应在靶厚范围内均匀抽样。若反应点位于 $z_{\mathrm{vertex}}$，则入射束流在到达该位置前已经在靶中走过一段路径，其有效入射能量应相应降低。</p>
+<h3 id="2.-%E5%8F%8D%E5%BA%94%E7%82%B9%E6%8A%BD%E6%A0%B7">2. 反应点抽样<a class="anchor-link" href="#2.-%E5%8F%8D%E5%BA%94%E7%82%B9%E6%8A%BD%E6%A0%B7">¶</a></h3><p>薄靶、反应概率和束流衰减沿深度变化可忽略时，可在靶厚内均匀抽取 $z$。厚靶反应概率可能随能量改变，不能总作均匀假设。给定一条在 $z=0$ 平面记录的轨迹，反应点应满足 $x_v=x_0+t_xz_v$、$y_v=y_0+t_yz_v$，并检查仍位于靶内。</p>
+
 <p>设入射能量为 $E_{\mathrm{in}}$，入射前在靶中走过的路径长度为 $\ell_{\mathrm{in}}$，则反应点处的能量写为
 $$
 E_{\mathrm{reaction}} = E_{\mathrm{in}} - \left(\frac{dE}{dx}\right)\ell_{\mathrm{in}} .
 $$</p>
-<p>为了避免重复实现已有过程，停能本领应尽量调用 Geant4 内部机制。可使用 <code>G4EmCalculator</code> 查询离子在靶材料中的总能量损失率：</p>
+<p>下面用 <code>G4EmCalculator</code> 查询已初始化物理表中的平均阻止本领，作薄靶的一步近似；若沿路径能量变化明显，应分段更新 $dE/dx$ 或实际输运入射束流。这段估计不产生能量歧离。若入射束流已被 Geant4 跟踪到反应点，就直接使用该处动能，不再重复扣除这段能损。</p>
+
 <div class="highlight"><pre><span></span><span class="n">G4EmCalculator</span><span class="w"> </span><span class="n">emCal</span><span class="p">;</span>
 
 <span class="k">auto</span><span class="w"> </span><span class="n">ionTable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">G4IonTable</span><span class="o">::</span><span class="n">GetIonTable</span><span class="p">();</span>
@@ -8069,42 +8071,68 @@ $$
 p_a=\sqrt{E_a^2-m_a^2} .
 $$</p>
 <p>程序中可写为</p>
-<div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="n">EaTot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Ereac</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">m14C</span><span class="p">;</span>
+<div class="highlight"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="n">EaTot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Ereac</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">m14C</span><span class="p">;</span>
 <span class="kt">double</span><span class="w"> </span><span class="n">pa</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">sqrt</span><span class="p">(</span><span class="n">EaTot</span><span class="o">*</span><span class="n">EaTot</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">m14C</span><span class="o">*</span><span class="n">m14C</span><span class="p">);</span>
 
 <span class="n">G4ThreeVector</span><span class="w"> </span><span class="nf">beamDir</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span><span class="w"> </span><span class="n">ty</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">);</span>
 <span class="n">beamDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">beamDir</span><span class="p">.</span><span class="n">unit</span><span class="p">();</span>
+
+<span class="c1">// 以下质量、动能和动量统一用 Geant4 能量单位。</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m14C</span><span class="o">*</span><span class="n">m14C</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">mp</span><span class="o">*</span><span class="n">mp</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">2.0</span><span class="o">*</span><span class="n">mp</span><span class="o">*</span><span class="n">EaTot</span><span class="p">;</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">sqrtS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">sqrt</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
 </pre></div>
+</div>
 <p>设 Mandelstam 变量为 $s$，则质心系中末态动量大小为
 $$
 p^\ast =
 \frac{\sqrt{[s-(m_b+m_B)^2][s-(m_b-m_B)^2]}}{2\sqrt{s}} .
 $$</p>
 <p>程序中为</p>
-<div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="n">mC14star</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m14C</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Ex</span><span class="p">;</span>
+<div class="highlight"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="n">mC14star</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m14C</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Ex</span><span class="p">;</span>
 <span class="kt">double</span><span class="w"> </span><span class="n">mOutP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mp</span><span class="p">;</span>
 
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sqrtS</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">mC14star</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">mOutP</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w"> </span><span class="c1">// 此候选事件不允许</span>
 <span class="kt">double</span><span class="w"> </span><span class="n">pcm</span><span class="w"> </span><span class="o">=</span>
 <span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">sqrt</span><span class="p">((</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">pow</span><span class="p">(</span><span class="n">mC14star</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">mOutP</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span><span class="w"> </span><span class="o">*</span>
 <span class="w">              </span><span class="p">(</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">pow</span><span class="p">(</span><span class="n">mC14star</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">mOutP</span><span class="p">,</span><span class="mi">2</span><span class="p">)))</span>
 <span class="w">    </span><span class="o">/</span><span class="p">(</span><span class="mf">2.0</span><span class="o">*</span><span class="n">sqrtS</span><span class="p">);</span>
 </pre></div>
+</div>
 <p>散射角采用经验分布抽样。实现时可以用接受拒绝法。若抽样函数权重取
 $$
 w(\theta^\ast)=\sin\theta^\ast\exp\!\left(-\frac{\theta^\ast}{\alpha}\right),
 $$
 则程序可写为</p>
-<div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="n">weight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">*</span><span class="n">std</span><span class="o">::</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">theta</span><span class="o">/</span><span class="n">alpha</span><span class="p">);</span>
-<span class="k">if</span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">weight</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">theta</span><span class="p">;</span>
+<div class="highlight"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="nf">SampleThetaCM</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">53.0</span><span class="o">*</span><span class="n">deg</span><span class="p">;</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="nb">true</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">theta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">G4RandFlat</span><span class="o">::</span><span class="n">shoot</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="n">CLHEP</span><span class="o">::</span><span class="n">pi</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">*</span><span class="n">std</span><span class="o">::</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">theta</span><span class="o">/</span><span class="n">alpha</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">G4RandFlat</span><span class="o">::</span><span class="n">shoot</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">w</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">theta</span><span class="p">;</span><span class="w"> </span><span class="c1">// w &lt;= 1</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
+</div>
 <p>随后对 $\phi^\ast$ 取均匀分布：</p>
-<div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="n">theta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SampleThetaCM</span><span class="p">();</span>
+<div class="highlight"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="n">theta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SampleThetaCM</span><span class="p">();</span>
 <span class="kt">double</span><span class="w"> </span><span class="n">phi</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">G4RandFlat</span><span class="o">::</span><span class="n">shoot</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="n">twopi</span><span class="p">);</span>
 
 <span class="n">CLHEP</span><span class="o">::</span><span class="n">Hep3Vector</span><span class="w"> </span><span class="nf">pStarVec</span><span class="p">(</span><span class="n">pcm</span><span class="o">*</span><span class="n">std</span><span class="o">::</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">*</span><span class="n">std</span><span class="o">::</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">),</span>
 <span class="w">                           </span><span class="n">pcm</span><span class="o">*</span><span class="n">std</span><span class="o">::</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">*</span><span class="n">std</span><span class="o">::</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">),</span>
 <span class="w">                           </span><span class="n">pcm</span><span class="o">*</span><span class="n">std</span><span class="o">::</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">));</span>
+
+<span class="c1">// 这里 theta 是 14C* 在质心系中相对束流的极角。</span>
+<span class="n">pStarVec</span><span class="p">.</span><span class="n">rotateUz</span><span class="p">(</span><span class="n">beamDir</span><span class="p">);</span>
+<span class="n">G4LorentzVector</span><span class="w"> </span><span class="nf">starCM</span><span class="p">(</span><span class="n">pStarVec</span><span class="p">,</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">sqrt</span><span class="p">(</span><span class="n">pcm</span><span class="o">*</span><span class="n">pcm</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">mC14star</span><span class="o">*</span><span class="n">mC14star</span><span class="p">));</span>
+<span class="n">G4LorentzVector</span><span class="w"> </span><span class="nf">recoilCM</span><span class="p">(</span><span class="o">-</span><span class="n">pStarVec</span><span class="p">,</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">sqrt</span><span class="p">(</span><span class="n">pcm</span><span class="o">*</span><span class="n">pcm</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">mp</span><span class="o">*</span><span class="n">mp</span><span class="p">));</span>
+<span class="n">G4ThreeVector</span><span class="w"> </span><span class="n">betaCM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pa</span><span class="o">*</span><span class="n">beamDir</span><span class="o">/</span><span class="p">(</span><span class="n">EaTot</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">mp</span><span class="p">);</span>
+<span class="n">starCM</span><span class="p">.</span><span class="n">boost</span><span class="p">(</span><span class="n">betaCM</span><span class="p">);</span>
+<span class="n">recoilCM</span><span class="p">.</span><span class="n">boost</span><span class="p">(</span><span class="n">betaCM</span><span class="p">);</span><span class="w"> </span><span class="c1">// 两者现在均在实验室系</span>
 </pre></div>
+</div>
 <h3 id="4.-%E6%BF%80%E5%8F%91%E6%80%81%E4%B8%8E-sequential-decay">4. 激发态与 sequential decay<a class="anchor-link" href="#4.-%E6%BF%80%E5%8F%91%E6%80%81%E4%B8%8E-sequential-decay">¶</a></h3><p>本节中，$^{14}\mathrm C^\ast$ 的激发态与 $^{10}\mathrm{Be}$ 的末态分支仍按 4.4 的方式处理。若某核处于激发态，则其参与运动学的质量应写为
 $$
 m^\ast = m_{\rm gs}+E_x .
@@ -8139,7 +8167,9 @@ $$
 
 <span class="n">event</span><span class="o">-&gt;</span><span class="n">AddPrimaryVertex</span><span class="p">(</span><span class="n">vertex</span><span class="p">);</span>
 </pre></div>
-<p>在这里，不再手工实现靶中能损、多重散射或死层修正。这些过程全部交由 Geant4 的输运模型处理。</p>
+<p>上述分量是实验室系的动量，单位需与 Geant4 一致。若复用 4.4 的 GeV 数值，先乘 <code>GeV</code>；不要将 ROOT 中裸数值的 GeV 当成 Geant4 的 MeV。生成器与输运粒子还应采用一致的核质量。若生成器已让 $^{10}\mathrm{Be}^*$ 退激，则交给 Geant4 的是基态 Be，并按模拟范围决定是否输运同时生成的 γ；不能再让同一 Be 重复退激。</p>
+<p>出射粒子从反应点向外的能损由 Geant4 处理，不再手工重复扣除。完整真值守恒检查仍要包含生成的 γ，即使分析中不测量它。</p>
+
 <hr/>
 <h2 id="7-PhysicsList.cc%EF%BC%9A%E8%BE%93%E8%BF%90%E8%BF%87%E7%A8%8B%E7%9A%84%E9%80%89%E5%8F%96">7 <code>PhysicsList.cc</code>：输运过程的选取<a class="anchor-link" href="#7-PhysicsList.cc%EF%BC%9A%E8%BE%93%E8%BF%90%E8%BF%87%E7%A8%8B%E7%9A%84%E9%80%89%E5%8F%96">¶</a></h2><p>本节的重点不是由 Geant4 自动生成信号反应，而是让 Geant4 正确处理末态粒子在材料中的输运。因此，应尽量使用 Geant4 内部已有、经过验证的电磁与输运机制，避免自行重复实现 ionisation、multiple scattering 或 stopping power。</p>
 <p>推荐采用 <code>G4EmStandardPhysics_option4</code> 作为低能电磁过程的核心配置。若使用 modular physics list，可写为</p>
@@ -8147,80 +8177,96 @@ $$
 <span class="n">RegisterPhysics</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">G4DecayPhysics</span><span class="p">());</span>
 </pre></div>
 <p>若使用 reference physics list，也可写为</p>
-<div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">physicsList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">FTFP_BERT</span><span class="p">;</span>
+<div class="highlight"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">physicsList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">FTFP_BERT</span><span class="p">;</span><span class="w"> </span><span class="c1">// 包含强子过程的参考配置；需验证具体离子的适用性</span>
 <span class="n">physicsList</span><span class="o">-&gt;</span><span class="n">ReplacePhysics</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">G4EmStandardPhysics_option4</span><span class="p">());</span>
 </pre></div>
-<p>对于本实验中的质子、$\alpha$ 和 $^{10}\mathrm{Be}$，需要重点保留的物理过程包括：</p>
+</div>
+<p>第一种配置用于研究电离能损和多重散射等电磁效应，<strong>不包含完整的强子反应</strong>。若要研究核弹性散射、非弹性反应造成的损失或本底，需要第二类包含强子过程的配置，并核对质子、α、重离子在相应能区的模型。两种配置的物理范围不同，不是可任意互换的写法。过程清单和能区应查阅 <a href="https://geant4.web.cern.ch/documentation/dev/plg_html/index.html">Geant4 Physics List Guide</a>。</p>
+
 <p>质子的 ionisation、multiple scattering 和 elastic scattering；$\alpha$ 与重离子的 ionisation、multiple scattering 以及相应的 nuclear stopping。这样处理之后，粒子在靶、死层、硅和 CsI 中的能量沉积将由 Geant4 自动给出，从而能够自然反映几何厚度与材料结构对实验响应的影响。</p>
 <hr/>
 <h2 id="8-SensitiveDetector.cc%EF%BC%9Astep-%E7%BA%A7-hit-%E7%9A%84%E8%AE%B0%E5%BD%95">8 <code>SensitiveDetector.cc</code>：step 级 hit 的记录<a class="anchor-link" href="#8-SensitiveDetector.cc%EF%BC%9Astep-%E7%BA%A7-hit-%E7%9A%84%E8%AE%B0%E5%BD%95">¶</a></h2><p><code>SensitiveDetector</code> 负责记录 Geant4 的原始 hit 信息，而不直接构造实验事件。对于每个 hit，至少应保留以下量：</p>
 <p>探测器编号 <code>detID</code>，层编号 <code>layerID</code>，能量沉积 <code>edep</code>，粒子编号 <code>trackID</code>，粒子种类 <code>pdg</code>，全局位置 <code>posGlobal</code>，局域位置 <code>posLocal</code>，条带编号 <code>stripX</code>、<code>stripY</code>，以及 step 前后动能 <code>preKinE</code>、<code>postKinE</code>。</p>
-<p>实现时，先取得该 step 的总能量沉积，若 <code>edep&lt;=0</code> 则直接返回；否则从 <code>PreStepPoint</code> 和 <code>Touchable</code> 中读取位置和 copy number，并将结果写入 hit：</p>
-<div class="highlight"><pre><span></span><span class="n">G4bool</span><span class="w"> </span><span class="nf">SiSD::ProcessHits</span><span class="p">(</span><span class="n">G4Step</span><span class="o">*</span><span class="w"> </span><span class="n">step</span><span class="p">,</span>
+<p>在 <code>ConstructSDandField()</code> 中创建并注册 <code>SiSD</code>，将它关联到硅的 logical volume；在 <code>SiSD::Initialize()</code> 中为每个事件创建并登记 <code>hitsCollection</code>。这样有沉积的 step 才会调用下面的 <code>ProcessHits()</code>，且不同事件不会共用上一事件的 hit。接口见 <a href="https://geant4.web.cern.ch/documentation/dev/bfad_html/ForApplicationDevelopers/Detector/hit.html">Geant4：Hits</a>。</p>
+<p>实现时，先读取该 step 的总能量沉积；若 <code>edep&lt;=0</code> 则返回。下面将沉积位置近似取为 step 中点，并转换到探测器局域坐标：</p>
+
+<div class="highlight"><div class="highlight"><pre><span></span><span class="n">G4bool</span><span class="w"> </span><span class="nf">SiSD::ProcessHits</span><span class="p">(</span><span class="n">G4Step</span><span class="o">*</span><span class="w"> </span><span class="n">step</span><span class="p">,</span>
 <span class="w">                         </span><span class="n">G4TouchableHistory</span><span class="o">*</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">edep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">step</span><span class="o">-&gt;</span><span class="n">GetTotalEnergyDeposit</span><span class="p">();</span>
 <span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">edep</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
 
-<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">pre</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">step</span><span class="o">-&gt;</span><span class="n">GetPreStepPoint</span><span class="p">();</span>
-<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">post</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">step</span><span class="o">-&gt;</span><span class="n">GetPostStepPoint</span><span class="p">();</span>
-<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">touchable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pre</span><span class="o">-&gt;</span><span class="n">GetTouchableHandle</span><span class="p">();</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="k">pre</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">step</span><span class="o">-&gt;</span><span class="n">GetPreStepPoint</span><span class="p">();</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="k">post</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">step</span><span class="o">-&gt;</span><span class="n">GetPostStepPoint</span><span class="p">();</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">touchable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">pre</span><span class="o">-&gt;</span><span class="n">GetTouchableHandle</span><span class="p">();</span>
 
 <span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">copyNo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">touchable</span><span class="o">-&gt;</span><span class="n">GetCopyNumber</span><span class="p">();</span>
 
 <span class="w">    </span><span class="n">SiHit</span><span class="o">*</span><span class="w"> </span><span class="n">hit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SiHit</span><span class="p">;</span>
-<span class="w">    </span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">detID</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">copyNo</span><span class="p">;</span>
+<span class="w">    </span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">detID</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// 这里只示范 T0 的三层 DSSD</span>
+<span class="w">    </span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">layerID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">copyNo</span><span class="p">;</span><span class="w"> </span><span class="c1">// 与上面的 placement 编号 0,1,2 对应</span>
+<span class="w">    </span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">posGlobal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="k">pre</span><span class="o">-&gt;</span><span class="n">GetPosition</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">post</span><span class="o">-&gt;</span><span class="n">GetPosition</span><span class="p">());</span>
+<span class="w">    </span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">posLocal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">touchable</span><span class="o">-&gt;</span><span class="n">GetHistory</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">GetTopTransform</span><span class="p">()</span>
+<span class="w">                             </span><span class="p">.</span><span class="n">TransformPoint</span><span class="p">(</span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">posGlobal</span><span class="p">);</span>
+<span class="w">    </span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">stripX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">int</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">floor</span><span class="p">((</span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">posLocal</span><span class="p">.</span><span class="n">x</span><span class="p">()</span><span class="o">/</span><span class="n">mm</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">32.0</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span><span class="p">));</span>
+<span class="w">    </span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">stripY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">int</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">floor</span><span class="p">((</span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">posLocal</span><span class="p">.</span><span class="n">y</span><span class="p">()</span><span class="o">/</span><span class="n">mm</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">32.0</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span><span class="p">));</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">stripX</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">stripX</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">32</span><span class="w"> </span><span class="o">||</span>
+<span class="w">        </span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">stripY</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">stripY</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">32</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">delete</span><span class="w"> </span><span class="n">hit</span><span class="p">;</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="w">    </span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">edep</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">edep</span><span class="p">;</span>
 <span class="w">    </span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">trackID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">step</span><span class="o">-&gt;</span><span class="n">GetTrack</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">GetTrackID</span><span class="p">();</span>
 <span class="w">    </span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">pdg</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">step</span><span class="o">-&gt;</span><span class="n">GetTrack</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">GetDefinition</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">GetPDGEncoding</span><span class="p">();</span>
-<span class="w">    </span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">preKinE</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">pre</span><span class="o">-&gt;</span><span class="n">GetKineticEnergy</span><span class="p">();</span>
-<span class="w">    </span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">postKinE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">post</span><span class="o">-&gt;</span><span class="n">GetKineticEnergy</span><span class="p">();</span>
+<span class="w">    </span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">preKinE</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="k">pre</span><span class="o">-&gt;</span><span class="n">GetKineticEnergy</span><span class="p">();</span>
+<span class="w">    </span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">postKinE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">post</span><span class="o">-&gt;</span><span class="n">GetKineticEnergy</span><span class="p">();</span>
 
 <span class="w">    </span><span class="n">hitsCollection</span><span class="o">-&gt;</span><span class="n">insert</span><span class="p">(</span><span class="n">hit</span><span class="p">);</span>
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
-<p>如果希望后续按实验读出形式整理，则在这里还应保留局域坐标，以便后续映射为 strip 编号。</p>
+</div>
+<p>这段条带映射把一个 step 的全部沉积归到中点所在条带。它适用于 step 横向长度远小于条带宽度的近似；跨越多个条带时应细分沉积或使用条带几何，否则会误计多重性。电荷共享属于后续读出模型，不由这个整数编号自动产生。</p>
+
 <hr/>
-<h2 id="9-EventAction.cc%EF%BC%9A%E4%BB%8E-hit-%E5%88%B0%E5%AE%9E%E9%AA%8C%E4%BA%8B%E4%BB%B6">9 <code>EventAction.cc</code>：从 hit 到实验事件<a class="anchor-link" href="#9-EventAction.cc%EF%BC%9A%E4%BB%8E-hit-%E5%88%B0%E5%AE%9E%E9%AA%8C%E4%BA%8B%E4%BB%B6">¶</a></h2><p><code>EventAction</code> 负责把 <code>SensitiveDetector</code> 记录下来的 step 级 hit 整理为实验事件级数据。这一步包括四个连续过程：同一通道内多 step 合并、连续位置离散为 strip 读出、能量分辨与 threshold 处理、按望远镜组织实验事件。</p>
+<h2 id="9-EventAction.cc%EF%BC%9A%E4%BB%8E-hit-%E5%88%B0%E5%AE%9E%E9%AA%8C%E4%BA%8B%E4%BB%B6">9 <code>EventAction.cc</code>：从 hit 到实验事件<a class="anchor-link" href="#9-EventAction.cc%EF%BC%9A%E4%BB%8E-hit-%E5%88%B0%E5%AE%9E%E9%AA%8C%E4%BA%8B%E4%BB%B6">¶</a></h2><p>EventAction 先把局域位置映射到条带，再合并同一通道的多个 step，最后施加一次读出分辨与阈值。为便于理解，下面先说明通道合并的目标，再给出位置到条带的关系。</p>
+
 <h3 id="1.-%E9%80%9A%E9%81%93%E5%90%88%E5%B9%B6">1. 通道合并<a class="anchor-link" href="#1.-%E9%80%9A%E9%81%93%E5%90%88%E5%B9%B6">¶</a></h3><p>由于同一粒子在同一条带、同一层中可能产生多个 Geant4 step，因此不能把每个 step 都视为一个独立读出。应按探测器、层号和条带号进行聚合。可以定义</p>
-<div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">ChannelID</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">detID</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">layerID</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">stripX</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">stripY</span><span class="p">;</span>
-
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="k">operator</span><span class="o">&lt;</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ChannelID</span><span class="o">&amp;</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="w"> </span><span class="k">const</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">detID</span><span class="w">  </span><span class="o">!=</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">detID</span><span class="p">)</span><span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="n">detID</span><span class="w">  </span><span class="o">&lt;</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">detID</span><span class="p">;</span>
-<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">layerID</span><span class="o">!=</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">layerID</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">layerID</span><span class="o">&lt;</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">layerID</span><span class="p">;</span>
-<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">stripX</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">stripX</span><span class="p">)</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">stripX</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">stripX</span><span class="p">;</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">stripY</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">stripY</span><span class="p">;</span>
+<div class="highlight"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">ChannelID</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">detID</span><span class="p">,</span><span class="w"> </span><span class="n">layerID</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">side</span><span class="p">;</span><span class="w">   </span><span class="c1">// 0: front, 1: back</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">strip</span><span class="p">;</span><span class="w">  </span><span class="c1">// 本面条带号</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="k">operator</span><span class="o">&lt;</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ChannelID</span><span class="o">&amp;</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">tie</span><span class="p">(</span><span class="n">detID</span><span class="p">,</span><span class="w"> </span><span class="n">layerID</span><span class="p">,</span><span class="w"> </span><span class="n">side</span><span class="p">,</span><span class="w"> </span><span class="n">strip</span><span class="p">)</span>
+<span class="w">             </span><span class="o">&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">tie</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">detID</span><span class="p">,</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">layerID</span><span class="p">,</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">side</span><span class="p">,</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">strip</span><span class="p">);</span>
 <span class="w">    </span><span class="p">}</span>
-<span class="p">};</span>
+<span class="p">};</span><span class="w"> </span><span class="c1">// 需要 #include &lt;tuple&gt; 和 &lt;map&gt;</span>
 </pre></div>
+</div>
 <p>随后用 <code>std::map&lt;ChannelID,double&gt;</code> 或 <code>std::map&lt;ChannelID,ChannelSignal&gt;</code> 对能量沉积进行累加：</p>
-<div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">ChannelID</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">edepMap</span><span class="p">;</span>
-
-<span class="k">for</span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">hit</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">hits</span><span class="p">){</span>
-<span class="w">    </span><span class="n">ChannelID</span><span class="w"> </span><span class="n">ch</span><span class="p">{</span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">detID</span><span class="p">,</span>
-<span class="w">                 </span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">layerID</span><span class="p">,</span>
-<span class="w">                 </span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">stripX</span><span class="p">,</span>
-<span class="w">                 </span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">stripY</span><span class="p">};</span>
-
-<span class="w">    </span><span class="n">edepMap</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">edep</span><span class="p">;</span>
+<div class="highlight"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">ChannelID</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">edepMap</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">hit</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">hits</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// stripX/Y 已由局域坐标得到，先确认在 [0,31] 内。</span>
+<span class="w">    </span><span class="n">ChannelID</span><span class="w"> </span><span class="n">front</span><span class="p">{</span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">detID</span><span class="p">,</span><span class="w"> </span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">layerID</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">stripX</span><span class="p">};</span>
+<span class="w">    </span><span class="n">ChannelID</span><span class="w"> </span><span class="n">back</span><span class="w"> </span><span class="p">{</span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">detID</span><span class="p">,</span><span class="w"> </span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">layerID</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">stripY</span><span class="p">};</span>
+<span class="w">    </span><span class="n">edepMap</span><span class="p">[</span><span class="n">front</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">edep</span><span class="p">;</span>
+<span class="w">    </span><span class="n">edepMap</span><span class="p">[</span><span class="n">back</span><span class="p">]</span><span class="w">  </span><span class="o">+=</span><span class="w"> </span><span class="n">hit</span><span class="o">-&gt;</span><span class="n">edep</span><span class="p">;</span>
 <span class="p">}</span>
+<span class="c1">// 两面是同一次沉积的两套读出；求粒子能量时不能把 front+back 相加。</span>
 </pre></div>
-<p>若需要同时保留位置、时间和多重性，则可定义</p>
-<div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">ChannelSignal</span><span class="w"> </span><span class="p">{</span>
+</div>
+<p>DSSD 是两面各一组条带读出，不是 <code>stripX,stripY</code> 定义的逐像素读出。上例在两面分别累加同一能量沉积。<code>std::tie</code> 只是按四个编号排序，供 <code>std::map</code> 区分通道；它不做任何物理选择。若还需记录通道时间与位置，可保存：</p>
+
+<div class="highlight"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">ChannelSignal</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">edep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
 <span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1e99</span><span class="p">;</span>
 <span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
 <span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
 <span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">multiplicity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">nSteps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// 累加的 step 数，不是触发条带数或粒子数</span>
 <span class="p">};</span>
 </pre></div>
+</div>
 <h3 id="2.-strip-%E6%98%A0%E5%B0%84">2. strip 映射<a class="anchor-link" href="#2.-strip-%E6%98%A0%E5%B0%84">¶</a></h3><p>Geant4 中的 hit 位置是连续量，而实验读出是离散的 strip 编号。因此在 <code>EventAction</code> 中，需要将局域坐标映射为 strip 号，并在需要时再换算成 strip 中心位置。</p>
 <p>对于 BB7，条带间距为
 $$
@@ -8247,12 +8293,13 @@ $$</p>
 <span class="p">}</span>
 </pre></div>
 <h3 id="3.-%E8%83%BD%E9%87%8F%E5%88%86%E8%BE%A8%E4%B8%8E-threshold">3. 能量分辨与 threshold<a class="anchor-link" href="#3.-%E8%83%BD%E9%87%8F%E5%88%86%E8%BE%A8%E4%B8%8E-threshold">¶</a></h3><p>实验读出中，DSSD、SSD 和 CsI 的能量测量都具有有限分辨；同时，电子学读出还存在触发阈值。因此，在通道合并之后，应对每个通道施加能量展宽和 threshold。</p>
-<p>一个简单的处理方式为</p>
-<div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="nf">SmearEnergy</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">E</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">detType</span><span class="p">)</span>
+<p>下面的 30 keV 和 2% 是读出模型的演示参数，不是实测标定；<code>kDSSD/kSSD/kCsI</code> 是应用程序定义的探测器类型。CsI 的真实光输出可能依赖粒子种类，不能普遍用沉积能量的固定比例描述：</p>
+
+<div class="highlight"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="nf">SmearEnergy</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">E</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">detType</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">sigma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
 
-<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">detType</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">kDSSD</span><span class="p">){</span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">detType</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">kDSSD</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">detType</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">kSSD</span><span class="p">){</span>
 <span class="w">        </span><span class="n">sigma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.03</span><span class="o">*</span><span class="n">MeV</span><span class="p">;</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="p">(</span><span class="n">detType</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">kCsI</span><span class="p">){</span>
@@ -8262,11 +8309,13 @@ $$</p>
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">G4RandGauss</span><span class="o">::</span><span class="n">shoot</span><span class="p">(</span><span class="n">E</span><span class="p">,</span><span class="w"> </span><span class="n">sigma</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
+</div>
 <p>然后在写入事件之前施加阈值：</p>
 <div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="n">threshold</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.2</span><span class="o">*</span><span class="n">MeV</span><span class="p">;</span>
 <span class="k">if</span><span class="p">(</span><span class="n">E_smeared</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">threshold</span><span class="p">)</span><span class="w"> </span><span class="k">continue</span><span class="p">;</span>
 </pre></div>
-<p>这一步应放在事件整理层，而不放在 <code>SensitiveDetector</code> 中。因为 step 级 hit 记录的任务是尽可能完整地保存输运结果，而实验读出形式的形成属于事件级处理。</p>
+<p>每个通道先累加沉积，再展宽一次并应用读出阈值。不要对每个 step 分别展宽。条带多重性是阈值后有信号的条带数，不是 step 数或 track 数。Geant4 已产生的能损歧离不能作为同一效应再额外叠加一次。</p>
+
 <h3 id="4.-%E6%9C%9B%E8%BF%9C%E9%95%9C%E7%BA%A7%E4%BA%8B%E4%BB%B6%E7%BB%84%E7%BB%87">4. 望远镜级事件组织<a class="anchor-link" href="#4.-%E6%9C%9B%E8%BF%9C%E9%95%9C%E7%BA%A7%E4%BA%8B%E4%BB%B6%E7%BB%84%E7%BB%87">¶</a></h3><p>在完成通道合并、strip 离散化、展宽和 threshold 后，应将信号组织为望远镜级读出。对于 $T_0$，至少需要整理出三层 DSSD、后续 SSD 和 CsI 的能量，以及第一层条带编号和多重性；对于 $T_1$、$T_2$，至少需要整理出 DSSD、SSD 和 CsI 的能量、条带编号和多重性。</p>
 <p>此外，还应在事件级形成基本符合标志，例如：</p>
 <ul>
@@ -8332,7 +8381,8 @@ make<span class="w"> </span>-j4
 <p>随后执行</p>
 <div class="highlight"><pre><span></span>./g4sim<span class="w"> </span>run.mac
 </pre></div>
-<p>程序运行结束后，将生成供后续分析使用的事件 ROOT 文件。</p>
+<p>上述命令适用于已补齐用户类、数据路径与完整几何的工程。在只有本页片段的情况下不能直接编译运行；这也不代表已经生成了可验证的实验模拟结果。</p>
+
 <h2 id="11-RunAction.cc-%E4%B8%8E-ROOT-%E6%96%87%E4%BB%B6%E8%BE%93%E5%87%BA">11 <code>RunAction.cc</code> 与 ROOT 文件输出<a class="anchor-link" href="#11-RunAction.cc-%E4%B8%8E-ROOT-%E6%96%87%E4%BB%B6%E8%BE%93%E5%87%BA">¶</a></h2><p>Geant4 事件在 <code>EventAction.cc</code> 中已经被整理为实验事件级量。接下来的任务，是将这些量写入 ROOT 文件，供后续离线分析直接读取。这里不输出 step 级原始信息，而输出与实验分析兼容的事件树。</p>
 <p>程序中可将 ROOT 文件的创建、树的建立和分支定义集中在一个单独的类中，例如 <code>RootIO</code>，再由 <code>RunAction</code> 在每一轮运行开始和结束时负责打开、写入和关闭文件。</p>
 <p><code>RunAction.cc</code> 的基本结构可写为</p>
@@ -8349,7 +8399,8 @@ make<span class="w"> </span>-j4
 </pre></div>
 <p>这里输出文件名取为 <code>g4sim.root</code>。若需要区分不同靶条件、不同激发态方案或不同几何设置，可以在文件名中加入相应标签，例如 <code>g4sim_ch2.root</code>、<code>g4sim_cd2.root</code> 或 <code>g4sim_ex.root</code>。</p>
 <hr/>
-<h2 id="12-ROOT-%E6%A0%91%E7%9A%84%E7%BB%84%E7%BB%87%E6%96%B9%E5%BC%8F">12 ROOT 树的组织方式<a class="anchor-link" href="#12-ROOT-%E6%A0%91%E7%9A%84%E7%BB%84%E7%BB%87%E6%96%B9%E5%BC%8F">¶</a></h2><p>ROOT 输出应尽量贴近实验分析所使用的变量，而不是直接暴露 Geant4 内部 step 级细节。因此，树中至少应包含以下三类信息：</p>
+<h2 id="12-ROOT-%E6%A0%91%E7%9A%84%E7%BB%84%E7%BB%87%E6%96%B9%E5%BC%8F">12 ROOT 树的组织方式<a class="anchor-link" href="#12-ROOT-%E6%A0%91%E7%9A%84%E7%BB%84%E7%BB%87%E6%96%B9%E5%BC%8F">¶</a></h2><p>输出同时保留真值、通道读数和选择标志；不必把全部 step 写入分析树。下面先展示标量分支的写法，完整多粒子分析还需要后述的逐通道信息，不能仅用望远镜总能量直接计算 Q 值。能量与动量输出分别统一用 MeV、MeV/$c$，位置用 mm。</p>
+
 <p>第一类是真值信息，用于后续将模拟结果与真实输入反应学进行对照；</p>
 <p>第二类是望远镜级实验读出信息，用于直接构造 $\Delta E-E$、gate、Q 值与 invariant mass reconstruction；</p>
 <p>第三类是符合标志，用于快速筛选事件类型。</p>
@@ -8392,7 +8443,8 @@ make<span class="w"> </span>-j4
 <span class="n">fTree</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">"be_E"</span><span class="p">,</span><span class="w">  </span><span class="o">&amp;</span><span class="n">be_E</span><span class="p">,</span><span class="w">  </span><span class="s">"be_E/D"</span><span class="p">);</span>
 </pre></div>
 <p>这些量主要用于理解模拟输入、检查不同激发态分支的重建效果，以及在需要时和实验分析结果进行对照。</p>
-<h3 id="2.-$T_0$-%E7%9A%84%E5%AE%9E%E9%AA%8C%E8%AF%BB%E5%87%BA%E5%88%86%E6%94%AF">2. $T_0$ 的实验读出分支<a class="anchor-link" href="#2.-$T_0$-%E7%9A%84%E5%AE%9E%E9%AA%8C%E8%AF%BB%E5%87%BA%E5%88%86%E6%94%AF">¶</a></h3><p>对于零度望远镜 $T_0$，建议保留三层 DSSD、SSD 和 CsI 的能量读出，以及第一层 DSSD 的条带编号和多重性。这样即可直接构造前向望远镜的 $\Delta E-E$ 图和位置读出。</p>
+<h3 id="2.-$T_0$-%E7%9A%84%E5%AE%9E%E9%AA%8C%E8%AF%BB%E5%87%BA%E5%88%86%E6%94%AF">2. $T_0$ 的实验读出分支<a class="anchor-link" href="#2.-$T_0$-%E7%9A%84%E5%AE%9E%E9%AA%8C%E8%AF%BB%E5%87%BA%E5%88%86%E6%94%AF">¶</a></h3><p>$T_0$ 中可能同时有 α 和 Be。下面的每层标量总能量可作监视谱，但不能单独保存两粒子的独立测量。用于实际重建时，还要保存每面、每条被触发条带的能量和编号，再做 front/back 配对、跨层关联与 PID。不要从真值 trackID 直接指定重建的粒子配对。</p>
+
 <p>建议包含：</p>
 <ul>
 <li><code>t0_E_D1</code></li>
@@ -8446,7 +8498,8 @@ make<span class="w"> </span>-j4
 <li><code>flag_hitT2</code></li>
 <li><code>flag_triple</code></li>
 </ul>
-<p>其中，<code>flag_triple</code> 表示 $T_0$、$T_1$、$T_2$ 三个望远镜均有有效信号。</p>
+<p>这里的三体符合指 <strong>α、$^{10}\mathrm{Be}$ 和反冲质子</strong>均被重建：前两者在 $T_0$，质子通常在某一个侧向模块。它不是要求 $T_0,T_1,T_2$ 三台望远镜都触发。<code>flag_hitT0</code> 也不足以证明其中有两种已鉴别的粒子；应在通道关联和 PID 后定义 <code>hasAlpha &amp;&amp; hasBe10 &amp;&amp; hasProton</code>。</p>
+
 <div class="highlight"><pre><span></span><span class="n">fTree</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">"flag_hitT0"</span><span class="p">,</span><span class="w">  </span><span class="o">&amp;</span><span class="n">flag_hitT0</span><span class="p">,</span><span class="w">  </span><span class="s">"flag_hitT0/I"</span><span class="p">);</span>
 <span class="n">fTree</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">"flag_hitT1"</span><span class="p">,</span><span class="w">  </span><span class="o">&amp;</span><span class="n">flag_hitT1</span><span class="p">,</span><span class="w">  </span><span class="s">"flag_hitT1/I"</span><span class="p">);</span>
 <span class="n">fTree</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">"flag_hitT2"</span><span class="p">,</span><span class="w">  </span><span class="o">&amp;</span><span class="n">flag_hitT2</span><span class="p">,</span><span class="w">  </span><span class="s">"flag_hitT2/I"</span><span class="p">);</span>
@@ -8487,9 +8540,10 @@ make<span class="w"> </span>-j4
 <span class="w">    </span><span class="n">io</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">();</span>
 <span class="p">}</span>
 </pre></div>
-<p>这里的关键点是：事件整理完成后再统一写入 ROOT，而不是在 <code>SensitiveDetector</code> 中逐个 step 写入。这样输出树中的每一行才对应一个实验事件，而不是一个 Geant4 step。</p>
+<p>每个事件开始时将缓存能量和多重性清零、未命中条带编号设为 −1，事件结束后再统一 Fill()。本例的单一 RootIO 写法用于串行运行；多线程运行需要线程独立输出或 Geant4 的分析合并机制，不能让多个 worker 同时写同一个 TTree。</p>
+
 <hr/>
-<h2 id="4.7.14-ROOT-%E6%96%87%E4%BB%B6%E7%9A%84%E6%89%93%E5%BC%80%E6%96%B9%E5%BC%8F">4.7.14 ROOT 文件的打开方式<a class="anchor-link" href="#4.7.14-ROOT-%E6%96%87%E4%BB%B6%E7%9A%84%E6%89%93%E5%BC%80%E6%96%B9%E5%BC%8F">¶</a></h2><p>程序运行结束后，将得到 ROOT 文件，例如</p>
+<h2 id="4.7.14-ROOT-%E6%96%87%E4%BB%B6%E7%9A%84%E6%89%93%E5%BC%80%E6%96%B9%E5%BC%8F">14 ROOT 文件的打开方式<a class="anchor-link" href="#4.7.14-ROOT-%E6%96%87%E4%BB%B6%E7%9A%84%E6%89%93%E5%BC%80%E6%96%B9%E5%BC%8F">¶</a></h2><p>程序运行结束后，将得到 ROOT 文件，例如</p>
 <div class="highlight"><pre><span></span>g4sim.root
 </pre></div>
 <p>打开 ROOT 文件的方法为</p>
@@ -8505,10 +8559,10 @@ make<span class="w"> </span>-j4
 <div class="highlight"><pre><span></span><span class="n">tr</span><span class="o">-&gt;</span><span class="n">GetEntries</span><span class="p">();</span>
 </pre></div>
 <hr/>
-<h2 id="14-%E6%A8%A1%E6%8B%9F%E6%95%B0%E6%8D%AE%E7%9A%84%E5%90%8E%E7%BB%AD%E5%88%86%E6%9E%90">14 模拟数据的后续分析<a class="anchor-link" href="#14-%E6%A8%A1%E6%8B%9F%E6%95%B0%E6%8D%AE%E7%9A%84%E5%90%8E%E7%BB%AD%E5%88%86%E6%9E%90">¶</a></h2><p>ROOT 文件生成之后，相应的数据分析按照 4.5 和 4.6 的相应部分进行。也就是说，对模拟数据施加和实际数据分析<strong>完全相同</strong>的条件、gate 和处理步骤，使模拟结果能够直接与实际数据进行对应比较。</p>
-<p>具体而言，首先按照实际数据分析中的粒子鉴别方法，对 $T_0$、$T_1$ 和 $T_2$ 的探测器信号构造相同的 $\Delta E-E$ 变量，并施加与实际数据一致的 PID gate，选出 $\alpha$、$^{10}\mathrm{Be}$ 和反冲质子事件。随后，按照 4.5 中的处理流程，对选出的事件进行反应 Q 值重建，以区分不同的 $^{10}\mathrm{Be}$ 末态分支，并建立与实际数据完全一致的 Q 值条件。</p>
-<p>在完成 Q 值选择之后，再按照 4.6 中 invariant mass reconstruction 的相应步骤，对 $\alpha+{}^{10}\mathrm{Be}$ 末态进行不变质量重建。这里所使用的事件选择、粒子组合方式、门选条件和重建顺序，都与实际数据分析保持一致。这样得到的模拟谱线可以直接与实验谱线进行比较，用于判断几何接受度、探测器响应、能量损失和门选条件对最终谱形的影响。</p>
-<p>采用这种处理方式的目的是使 Geant4 模拟真正进入实验分析链，而不是停留在独立的数值模拟层面。通过施加和实际数据分析完全相同的条件和步骤，模拟结果中的每一个结构都可以在与实验相同的分析框架下进行理解，从而用于实验设计优化、探测器响应评估以及谱结构解释。</p>
+<h2 id="14-%E6%A8%A1%E6%8B%9F%E6%95%B0%E6%8D%AE%E7%9A%84%E5%90%8E%E7%BB%AD%E5%88%86%E6%9E%90">15 模拟数据的后续分析<a class="anchor-link" href="#14-%E6%A8%A1%E6%8B%9F%E6%95%B0%E6%8D%AE%E7%9A%84%E5%90%8E%E7%BB%AD%E5%88%86%E6%9E%90">¶</a></h2><p>从通道读数走到 4.5–4.6 的粒子四动量，还需要中间一步：完成 DSSD 两面配对、相邻条带合并和跨层关联，用 $\Delta E-E$ 做 PID，再从停止层和各层沉积恢复粒子动能。探测器入口的动能还需按路径修正死层及靶中能损，才可与反应点处的运动学比较。</p>
+<p>经这些步骤整理出 α、Be、反冲质子的动能和方向后，才能复用 4.5 的 Q 值公式以及 4.6 的分支选择与不变质量重建。对模拟和实验采用相同定义的观测量与选择；4.6 的数值门限是 toy MC 示例，不能不经检查就照搬到带真实几何的模拟。</p>
+<p>依次比较反应真值、通过几何的事件、形成读出的事件、通过 PID/Q 门的事件。这样才能区分物理输入、接受度、分辨和选择各自对最终谱的影响，而不是用修改输入峰形来补偿重建问题。</p>
+<p>关于用户类和 hit 的完整接口，参见 <a href="https://geant4.web.cern.ch/documentation/dev/bfad_html/ForApplicationDevelopers/index.html">Geant4 Application Developers Guide</a>。</p>
 </div>
 </div>
 </div>
@@ -8518,11 +8572,8 @@ make<span class="w"> </span>-j4
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-c++"><pre><span></span><span class="w"> </span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span>
 </pre></div>
-</div>
 </div>
 </div>
 </div>
