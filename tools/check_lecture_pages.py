@@ -2,7 +2,7 @@
 from pathlib import Path
 from urllib.parse import urlparse,unquote
 from collections import Counter
-import subprocess,json
+import subprocess,json,re,base64,zlib
 import nbformat
 from bs4 import BeautifulSoup
 from lecture_editor import ROOT,PAGES
@@ -29,10 +29,43 @@ for rel in pages:
         for cell,ncell in zip(htmlcells,nb.cells):
             editor=cell.select_one('.jp-InputArea-editor,.input_area')
             if editor:
-                assert editor.get_text().strip()==ncell.source,(rel,'code differs')
-                assert len(cell.select('.verified-output img'))==sum(o.output_type=='display_data' for o in ncell.outputs),(rel,'figures differ')
-        figures=len(soup.select('.verified-output img'))
-        print(rel, 'cells',len(nb.cells),'executed figures',figures)
+                assert editor.get_text().strip()==ncell.source.strip(),(rel,'code differs')
+                # Native Jupyter MIME bundles belong to their generating code
+                # cell. Check their plot IDs and scripts, not exported images.
+                expected=[]
+                for output in ncell.outputs:
+                    assert output.output_type!='error',(rel,'execution error')
+                    markup=output.get('data',{}).get('text/html','')
+                    packed=re.search(r"Core.unzipJSON\((\d+),'([^']+)'",markup)
+                    if packed:
+                        payload=base64.b64decode(packed[2]);raw=b''
+                        while payload:
+                            assert payload[:2]==b'ZL',(rel,'ROOT compression header')
+                            size=int.from_bytes(payload[3:6],'little')
+                            raw+=zlib.decompress(payload[9:9+size])
+                            payload=payload[9+size:]
+                        assert len(raw)==int(packed[1]),(rel,'truncated JSROOT data')
+                        json.loads(raw)
+                    bundle=BeautifulSoup(markup,'html.parser')
+                    expected.extend(n['id'] for n in bundle.select('[id^="root_plot_"]'))
+                    for script in bundle.find_all('script'):
+                        assert any(script.get_text().strip()==s.get_text().strip()
+                                   for s in cell.find_all('script')),(rel,'native script differs')
+                    if output.output_type=='stream':
+                        plain=re.sub(r'\x1b\[[0-9;]*m','',output.text).replace('\r','\n').strip()
+                        rendered='\n'.join(p.get_text() for p in cell.select('.jp-OutputArea pre'))
+                        assert plain in rendered,(rel,'printed output differs',plain[:100])
+                actual=[n['id'] for n in cell.select('[id^="root_plot_"]')]
+                assert expected==actual,(rel,'JSROOT output attached to wrong cell',expected,actual)
+                assert not cell.select('.verified-output'),(rel,'legacy manual output wrapper')
+        if rel not in [PAGES[19]]:
+            assert any(c.cell_type=='code' and re.search(r'^%jsroot\s+on\s*$',c.source,re.M)
+                       for c in nb.cells),(rel,'JSROOT not enabled')
+            assert nb.metadata.kernelspec.name=='root',(rel,'ROOT kernel')
+        figures=len(soup.select('[id^="root_plot_"]'))
+        identifiers=[p['id'] for p in soup.select('[id^="root_plot_"]')]
+        assert len(set(identifiers))==len(identifiers),(rel,'duplicate JSROOT plot IDs')
+        print(rel, 'cells',len(nb.cells),'native JSROOT outputs',figures)
 
 # Compare semantic notebook content of later chapters, not serialization.
 for rel in subprocess.check_output(['git','diff','--name-only'],cwd=ROOT,text=True).splitlines():
@@ -54,7 +87,13 @@ for path in ROOT.glob('chapt[123]/coursework*.html'):
 home=BeautifulSoup((ROOT/'index.html').read_text(),'html.parser')
 prefix='https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/'
 assert not home.select('.course-nav,nav'), 'The course index should not have section navigation'
-assert home.select_one('.course-home').find_all('a',href=True)[-1]['href']==prefix, 'Methods link should end the index'
+links=home.select_one('.course-home').find_all('a',href=prefix)
+assert len(links)==1,'Use one Methods link, before chapter 1'
+chapters=[h for h in home.find_all(['h2','h3']) if re.search(r'第一章|chapter\s+1\.',h.get_text(),re.I)]
+assert chapters,'Chapter 1 heading'
+assert links[0] in list(chapters[0].previous_elements),'Methods link should precede chapter 1'
+root_heading=next(h for h in home.find_all(['h2','h3']) if h.get_text(strip=True)=='ROOT 基础')
+assert root_heading.find_next('a')==links[0], 'ROOT basics links directly to Methods'
 for link in home.select('a[href]'):
     if link['href'].startswith(prefix):
         target=ROOT.parent/'method'/unquote(link['href'][len(prefix):] or 'README.md')

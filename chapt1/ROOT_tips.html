@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="zh-CN">
 <head><meta charset="utf-8"/>
 <title>ROOT_tips</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
@@ -13099,14 +13099,14 @@ div#notebook {
         }
     });
     </script>
-<!-- End of mathjax configuration --><link data-course-header="true" href="../assets/css/course-header.css" rel="stylesheet"/></head>
-<body><header class="course-banner"><div class="course-banner-inner">
+<!-- End of mathjax configuration --><link data-course-header="true" href="../assets/css/course-header.css" rel="stylesheet"/><link data-lecture-layout="true" href="../assets/css/lecture-layout.css" rel="stylesheet"/></head>
+<body class="lecture-review"><header class="course-banner"><div class="course-banner-inner">
 <a href="../index.html"><img alt="课程标志" src="../assets/images/course-logo.png"/></a>
 <div class="course-banner-title"><a href="../index.html">核物理实验数据处理</a>
 <span class="course-banner-en">Experimental Data Analysis in Nuclear Physics</span></div></div></header>
 <div class="border-box-sizing" id="notebook" tabindex="-1">
 <div class="container" id="notebook-container">
-<div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><h1>ROOT 实用操作</h1><p>本页补充逐事件分析中常用的文件与 TTree 操作。普通绘图、Scan 和 Cut 见 <a href="https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/ROOT/ROOT_Tutorial_II_CPP.html">ROOT Tutorial II</a>。下面的片段按小节独立使用，文件名、tree 名和变量名应与实际输入一致。</p><h2>1. 文件读写与对象保存</h2><p>打开文件后先检查是否成功，再取出所需对象。创建输出文件后，将要保存的对象写入该文件。</p></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><pre><code class="language-cpp">TFile *input = TFile::Open("input.root");
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-0"><div class="jp-Cell-inputWrapper"><div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput"><h1>ROOT 实用操作</h1><p>本页补充逐事件分析中常用的文件与 TTree 操作。普通绘图、Scan 和 Cut 见 <a href="https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/ROOT/ROOT_Tutorial_II_CPP.html">ROOT Tutorial II</a>。下面的片段按小节独立使用，文件名、tree 名和变量名应与实际输入一致。</p><h2>1. 文件读写与对象保存</h2><p>打开文件后先检查是否成功，再取出所需对象。创建输出文件后，将要保存的对象写入该文件。</p></div></div></div></div><div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-1"><div class="jp-Cell-inputWrapper"><div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput"><pre><code class="language-cpp">TFile *input = TFile::Open("input.root");
 if (!input || input-&gt;IsZombie()) return;
 TH1 *spectrum = input-&gt;Get&lt;TH1&gt;("spectrum");
 if (!spectrum) return;
@@ -13114,11 +13114,11 @@ if (!spectrum) return;
 TFile output("selected.root", "RECREATE");
 spectrum-&gt;Write("spectrum");
 output.Close();
-input-&gt;Close();</code></pre><p><code>RECREATE</code> 会覆盖同名文件；不希望覆盖时用 <code>NEW</code>。文件读出的直方图通常由输入文件管理，关闭文件后不能继续使用原指针。若要继续使用，关闭前调用 <code>spectrum-&gt;SetDirectory(nullptr)</code>，并自行管理对象寿命。</p><h2>2. 连续读取多个文件与合并文件</h2><p><code>TChain</code> 将多个文件中的同名 tree 当作一条树顺序读取，不生成新的合并文件；各文件的分支名称和类型应一致。</p></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><pre><code class="language-cpp">TChain chain("tree");
+input-&gt;Close();</code></pre><p><code>RECREATE</code> 会覆盖同名文件；不希望覆盖时用 <code>NEW</code>。文件读出的直方图通常由输入文件管理，关闭文件后不能继续使用原指针。若要继续使用，关闭前调用 <code>spectrum-&gt;SetDirectory(nullptr)</code>，并自行管理对象寿命。</p><h2>2. 连续读取多个文件与合并文件</h2><p><code>TChain</code> 将多个文件中的同名 tree 当作一条树顺序读取，不生成新的合并文件；各文件的分支名称和类型应一致。</p></div></div></div></div><div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-2"><div class="jp-Cell-inputWrapper"><div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput"><pre><code class="language-cpp">TChain chain("tree");
 chain.Add("run001.root");
 chain.Add("run002.root");
 cout &lt;&lt; "Total entries = " &lt;&lt; chain.GetEntries() &lt;&lt; endl;
-chain.Draw("energy&gt;&gt;hEnergy(400,0,20)", "energy&gt;0", "hist");</code></pre><p><code>hadd</code> 在终端执行，生成一个合并文件：同名直方图相加，兼容的 tree 接续事件。避免把同一输入重复加入；不同刻度版本的文件不能未经检查就合并。</p><pre><code class="language-cpp">hadd merged.root run001.root run002.root</code></pre><p>逐 run 执行分析与日志管理见 <a href="../chapt2/2.5_data_analysis_process.html">实验数据处理过程</a>。</p><h2>3. 选择事件与分支</h2><p><code>CopyTree</code> 按条件复制事例。新树应属于输出文件，因此先切换到输出文件。</p></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><pre><code class="language-cpp">TFile input("input.root");
+chain.Draw("energy&gt;&gt;hEnergy(400,0,20)", "energy&gt;0", "hist");</code></pre><p><code>hadd</code> 在终端执行，生成一个合并文件：同名直方图相加，兼容的 tree 接续事件。避免把同一输入重复加入；不同刻度版本的文件不能未经检查就合并。</p><pre><code class="language-cpp">hadd merged.root run001.root run002.root</code></pre><p>逐 run 执行分析与日志管理见 <a href="../chapt2/2.5_data_analysis_process.html">实验数据处理过程</a>。</p><h2>3. 选择事件与分支</h2><p><code>CopyTree</code> 按条件复制事例。新树应属于输出文件，因此先切换到输出文件。</p></div></div></div></div><div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-3"><div class="jp-Cell-inputWrapper"><div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput"><pre><code class="language-cpp">TFile input("input.root");
 TTree *tree = input.Get&lt;TTree&gt;("tree");
 if (!tree) return;
 TFile output("selected.root", "RECREATE");
@@ -13128,11 +13128,28 @@ selected-&gt;Write();</code></pre><p>若逐事件计算只需少数分支，可�
 tree-&gt;SetBranchStatus("hit", 1);
 tree-&gt;SetBranchStatus("energy", 1);
 // 随后按通常方式 SetBranchAddress、GetEntry。
-// 恢复全部读取：tree-&gt;SetBranchStatus("*", 1);</code></pre><h2>4. 从 TTree::Draw 取得直方图或逐事例数值</h2><p>预先定义直方图可以明确 bin 数和范围。<code>&gt;&gt;h</code> 重新填充，<code>&gt;&gt;+h</code> 在已有内容上累加；不要误把重复运行当成新的数据。</p></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><pre><code class="language-cpp">TH1D *h = new TH1D("h", "Energy;Energy (MeV);Counts", 400, 0, 20);
+// 恢复全部读取：tree-&gt;SetBranchStatus("*", 1);</code></pre><h2>4. 从 TTree::Draw 取得直方图或逐事例数值</h2><p>预先定义直方图可以明确 bin 数和范围。<code>&gt;&gt;h</code> 重新填充，<code>&gt;&gt;+h</code> 在已有内容上累加；不要误把重复运行当成新的数据。</p></div></div></div></div><div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-4"><div class="jp-Cell-inputWrapper"><div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput"><pre><code class="language-cpp">TH1D *h = new TH1D("h", "Energy;Energy (MeV);Counts", 400, 0, 20);
 tree-&gt;Draw("energy&gt;&gt;h", "energy&gt;0", "hist");</code></pre><p>用 <code>goff</code> 只取数值，不自动作图。<code>Draw("y:x")</code> 中 GetV1 对应 y，GetV2 对应 x。</p><pre><code class="language-cpp">tree-&gt;SetEstimate(tree-&gt;GetEntries()+1);
 tree-&gt;Draw("y:x", "energy&gt;2", "goff");
 TGraph *graph = new TGraph(tree-&gt;GetSelectedRows(), tree-&gt;GetV2(), tree-&gt;GetV1());
-graph-&gt;Draw("AP");</code></pre><p>这里假设 x、y 是每个事件各一个数值。数组展开后的行数可能多于事件数，应设置足够的缓冲容量。GetV1/GetV2 指向的缓冲区会被后续 Draw 更新；TGraph 构造时会复制这些数值。</p><p>默认 TH1F 用 Float_t 存储 bin content，单位计数累加超过 2<sup>24</sup> 后不能保持逐整数精度；高统计量可预先使用 TH1D。<code>GetEntries()</code> 与 bin content 的和不等价，加权和积分的例子见 <a href="Integration_in_TH1_and_TF1.html">TH1 与 TF1 的积分</a>。</p><p>参考：<a href="https://root.cern.ch/manual/trees/">ROOT Trees</a> · <a href="https://root.cern.ch/manual/object_ownership/">Object ownership</a>。</p></div></div>
+graph-&gt;Draw("AP");</code></pre><p>这里假设 x、y 是每个事件各一个数值。数组展开后的行数可能多于事件数，应设置足够的缓冲容量。GetV1/GetV2 指向的缓冲区会被后续 Draw 更新；TGraph 构造时会复制这些数值。</p><p>默认 TH1F 用 Float_t 存储 bin content，单位计数累加超过 2<sup>24</sup> 后不能保持逐整数精度；高统计量可预先使用 TH1D。<code>GetEntries()</code> 与 bin content 的和不等价，加权和积分的例子见 <a href="Integration_in_TH1_and_TF1.html">TH1 与 TF1 的积分</a>。</p><p>参考：<a href="https://root.cern.ch/manual/trees/">ROOT Trees</a> · <a href="https://root.cern.ch/manual/object_ownership/">Object ownership</a>。</p><h2>5. Scan 与直方图信息</h2><p><code>Scan</code> 用于直接检查少量事例；数组展开时，同一 Row 下不同 Instance 是该事例中的不同元素。最后两个参数依次是最多扫描的事例数与起始事例号。</p><pre><code class="language-cpp">tree-&gt;Scan("hit:energy", "hit&gt;0", "", 10, 0);
+h-&gt;Print("base");  // bin 数及范围
+h-&gt;Print("range"); // 当前显示范围的 bin content 和 error
+h-&gt;Print("all");   // 包含 underflow、overflow
+h-&gt;Draw("hist");   // 用直方图轮廓显示
+h-&gt;Draw("E");      // 显示误差棒</code></pre><p><code>hist</code> 和 <code>E</code> 改变显示方式，不改变直方图中储存的计数及误差。</p>
+<h2>6. 数值数组、TVectorD 与 TGraph</h2><p>若要保存 Draw 得到的值供后续计算，可在下一次 Draw 前复制到 TVectorD：</p><pre><code class="language-cpp">tree-&gt;Draw("energy", "energy&gt;0", "goff");
+TVectorD values(tree-&gt;GetSelectedRows(), tree-&gt;GetV1());
+// 为已有的图添加一个点：
+graph-&gt;SetPoint(graph-&gt;GetN(), 5.0, 12.0);</code></pre><p>把 TGraph 的点填入 TH2 时，每个点贡献一次 Fill，得到的是点的密度分布，而不是自动恢复原实验的计数或权重。</p><pre><code class="language-cpp">TH2D hxy("hxy", "Graph points;x;y", 100,0,10, 100,0,20);
+for (int i=0; i&lt;graph-&gt;GetN(); ++i) {
+    double x, y;
+    graph-&gt;GetPoint(i,x,y);
+    hxy.Fill(x,y);
+}</code></pre><h2>7. 宏、文件检查与编译</h2><pre><code class="language-cpp">gROOT-&gt;ProcessLine(".L analysis.C+"); // 用 ACLiC 编译并载入
+if (!gSystem-&gt;AccessPathName("input.root")) {
+    cout &lt;&lt; "Input file exists" &lt;&lt; endl;
+}</code></pre><p><code>AccessPathName</code> 在文件可访问时返回 false，因此这里有一个逻辑取反。独立程序的编译、头文件和链接说明见<a href="../chapt2/2.3_comiling_1.html">2.3 编译执行</a>。</p></div></div></div></div>
 </div>
 </div>
 </body>

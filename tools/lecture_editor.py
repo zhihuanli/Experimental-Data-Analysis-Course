@@ -5,6 +5,7 @@ import json
 import re
 import subprocess
 import base64
+from collections import defaultdict, deque
 from bs4 import BeautifulSoup
 from pygments import highlight
 from pygments.lexers import CppLexer
@@ -38,9 +39,9 @@ def pre(s):
     return '<pre><code class="language-cpp">'+html.escape(s.strip())+'</code></pre>'
 
 class Page:
-    def __init__(self, path, current=False):
+    def __init__(self, path, current=False, revision='HEAD'):
         self.path = path
-        original = (ROOT/path).read_text() if current else subprocess.check_output(['git','show', 'HEAD:'+path], cwd=ROOT).decode()
+        original = (ROOT/path).read_text() if current else subprocess.check_output(['git','show', revision+':'+path], cwd=ROOT).decode()
         self.soup = BeautifulSoup(original, 'html.parser')
         self.cells = self.soup.select('.jp-Cell') or self.soup.select('.cell')
         self.changed = set()
@@ -104,8 +105,13 @@ class Page:
     def save(self):
         # A page is runnable from its own directory. Never resolve files through
         # another checkout or change the original data in materials/.
+        previous = defaultdict(deque)
+        notebook_path=(ROOT/self.path).with_suffix('.ipynb')
+        if notebook_path.exists():
+            for cell in nbformat.read(notebook_path,as_version=4).cells:
+                if cell.cell_type=='code':previous[cell.source.strip()].append(cell)
         nb = nbformat.v4.new_notebook()
-        nb.metadata.kernelspec = {'display_name':'ROOT C++','language':'c++','name':'root_cpp'}
+        nb.metadata.kernelspec = {'display_name':'ROOT C++','language':'c++','name':'root'}
         nb.metadata.language_info = {'name':'c++','file_extension':'.C','pygments_lexer':'cpp'}
         code = {}
         for i,c in enumerate(self.cells):
@@ -118,6 +124,7 @@ class Page:
                 source = editor.get_text().strip()
                 code[i] = source
                 nc=nbformat.v4.new_code_cell(source)
+                prior=previous[source].popleft() if previous[source] else None
                 result=c.select_one('.verified-output')
                 if result is not None:
                     nc.execution_count=i+1
@@ -126,7 +133,14 @@ class Page:
                     for img in result.find_all('img',src=True):
                         image_path=(ROOT/self.path).parent/img['src']
                         if image_path.exists():
+                            # Legacy static output; native notebooks retain their
+                            # real MIME bundle below instead of being rebuilt.
+                            image_path=image_path.with_suffix('.png')
                             nc.outputs.append(nbformat.v4.new_output('display_data',data={'image/png':base64.b64encode(image_path.read_bytes()).decode()}))
+                elif prior is not None:
+                    nc.outputs=prior.outputs
+                    nc.execution_count=prior.execution_count
+                if prior is not None:nc.id=prior.id
                 nb.cells.append(nc)
         path = ROOT / self.path
         path.write_text(str(self.soup))
@@ -140,9 +154,12 @@ class Page:
         """Insert small Markdown/code cells; original indices stay valid until save."""
         for kind, value in items:
             if kind == 'md':
-                markup = '<div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput">'+value+'</div></div>'
+                content = '<div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">'+value+'</div>'
+                kind_class = 'jp-MarkdownCell'
             else:
-                markup = '<div class="jp-Cell jp-CodeCell"><div class="jp-InputArea"><div class="jp-InputArea-editor">'+highlight(value.strip(), CppLexer(), HtmlFormatter())+'</div></div></div>'
+                content = '<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor"><div class="cm-editor cm-s-jupyter">'+highlight(value.strip(), CppLexer(), HtmlFormatter())+'</div></div>'
+                kind_class = 'jp-CodeCell'
+            markup = '<div class="jp-Cell '+kind_class+' jp-Notebook-cell"><div class="jp-Cell-inputWrapper"><div class="jp-InputArea jp-Cell-inputArea">'+content+'</div></div></div>'
             self.cells[i].insert_before(fragment(markup))
 
     def refresh(self):

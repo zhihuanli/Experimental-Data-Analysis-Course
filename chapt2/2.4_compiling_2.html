@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="zh-CN">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>2.4_compiling_2</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>2.4 编译执行：分开数据读取与分析代码</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -53,45 +53,6 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .highlight .s1 { color: var(--jp-mirror-editor-string-color) } /* Literal.String.Single */
 .highlight .ss { color: var(--jp-mirror-editor-string-color) } /* Literal.String.Symbol */
 .highlight .il { color: var(--jp-mirror-editor-number-color) } /* Literal.Number.Integer.Long */
-  </style>
-<style type="text/css">
-    /* JupyROOT CSS */
-
-div#ipython_notebook img {
-display:block;
-background: url(root-banner_99x33.jpg) no-repeat;
-width: 99px;
-height: 33px;
-padding-left: 99px;
--moz-box-sizing: border-box;
-box-sizing: border-box;
-}
-
-span#login_widget {
-padding-left: 2px;
-}
-
-span#kernel_logo_widget img {
-display: block;
-background: url(root-logo-darkblue_33x33.png) no-repeat;
-width: 33px;
-height: 33px;
-padding-left: 33px;
--moz-box-sizing: border-box;
-box-sizing: border-box;
-}
-
-div#root_banner {
-padding-top: 15px;
-padding-bottom: 10px;
-}
-
-div#root_banner img {
-display: block;
-margin: 0 auto;
-}
-
-
   </style>
 <style type="text/css">
 /*-----------------------------------------------------------------------------
@@ -7832,13 +7793,18 @@ a.anchor-link {
     white-space: normal;
   }
 </style>
-<!-- End of mermaid configuration --><link data-course-header="true" href="../assets/css/course-header.css" rel="stylesheet"/></head>
-<body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light"><header class="course-banner"><div class="course-banner-inner">
+<!-- End of mermaid configuration --><link data-course-header="true" href="../assets/css/course-header.css" rel="stylesheet"/><link data-lecture-layout="true" href="../assets/css/lecture-layout.css" rel="stylesheet"/></head>
+<body class="jp-Notebook lecture-review" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light"><header class="course-banner"><div class="course-banner-inner">
 <a href="../index.html"><img alt="课程标志" src="../assets/images/course-logo.png"/></a>
 <div class="course-banner-title"><a href="../index.html">核物理实验数据处理</a>
 <span class="course-banner-en">Experimental Data Analysis in Nuclear Physics</span></div></div></header>
 <main>
-<div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><h1>2.4 编译执行：分开数据读取与分析代码</h1>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8fb40510">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h1>2.4 编译执行：分开数据读取与分析代码</h1>
 <p>这一节保留 2.3 的 tracking 算法。区别是把它从 MakeClass 生成的文件中移到 <code>ana</code> 类。以后 branch 变化需要重新生成 reader 时，物理分析代码仍保留在自己的文件中。</p>
 <h2>1. 文件与继承关系</h2><p>本例位于 <code>code/compile2</code>。<code>tracking.h/C</code> 由 MakeClass 生成，负责读取 branch；<code>ana.h/ana.cpp</code> 是用户分析代码。<code>main.cpp</code> 仍负责打开文件和保存结果。</p><pre><code class="language-cpp">class ana : public tracking {
 public:
@@ -7847,104 +7813,486 @@ public:
         : tracking(input), fOutTree(output) {}
     void Analysis();
     // xx、yy、tx 等计算变量及方法声明见完整 ana.h
-};</code></pre><p><code>: tracking(input)</code> 调用基类构造函数，绑定输入树；<code>fOutTree(output)</code> 保存输出树指针。<code>Analysis()</code> 中的 <code>GetEntry</code>、径迹拟合和 <code>Fill</code> 与上一节相同，不需要再复制一遍学习。</p></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><h2>2. 主程序：参数、文件、分析调用</h2><p><code>argc</code> 是参数个数，<code>argv[1]</code> 是 run 号。没有提供目录时，输入在章目录，输出在本例程序目录。下面代码与实际 main.cpp 一致；读取失败时返回非零值，供批处理脚本判断。</p><pre><code class="language-cpp">#include &lt;TFile.h&gt;
+};</code></pre><p><code>: tracking(input)</code> 调用基类构造函数，绑定输入树；<code>fOutTree(output)</code> 保存输出树指针。<code>Analysis()</code> 中的 <code>GetEntry</code>、径迹拟合和 <code>Fill</code> 与上一节相同，不需要再复制一遍学习。</p><h3>初始化列表的含义</h3><p>构造函数冒号后的 <code>tracking(input)</code> 调用基类构造函数，让基类绑定输入 Branch；<code>fOutTree(output)</code> 直接初始化成员指针。它们在构造函数的大括号执行前完成。</p><p>初始化与先构造后赋值并不相同。对类对象，初始化列表可避免先默认构造再赋值；对未显式初始化的基本类型，不应把其未确定的值描述为“系统分配的随机数”。</p>
+<h3>保留自动生成的读取层</h3><p>以后 TTree 结构变化时，重新生成 tracking 的读取成员，物理分析仍放在 ana 中。<code>ana::Analysis()</code> 使用继承来的 <code>GetEntry</code>、Branch 变量和输入树指针，输出树则由 main 创建并传入。这样可以检查数据读取的改动是否影响分析，而不必把两部分代码混在一起重写。</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=jsroot-on">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-c++"><pre><span></span><span class="o">%</span><span class="n">jsroot</span><span class="w"> </span><span class="n">on</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c9620463">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2>2. 主程序：参数、文件、分析调用</h2><p><code>argc</code> 是参数个数，<code>argv[1]</code> 是 run 号。没有提供目录时，输入在章目录，输出在本例程序目录。下面代码与实际 main.cpp 一致；读取失败时返回非零值，供批处理脚本判断。</p><pre><code class="language-cpp">#include &lt;TFile.h&gt;
 #include &lt;TTree.h&gt;
 #include &lt;TString.h&gt;
 #include &lt;cstdlib&gt;
 #include &lt;iostream&gt;
 #include "ana.h"
 
-int main(int argc, char** argv) {
-    if (argc!=2 &amp;&amp; argc!=4) {
-        std::cerr &lt;&lt; "Usage: ./tracking run [input_dir output_dir]\n";
-        return 1;
-    }
-    char* end = nullptr;
-    long parsed = std::strtol(argv[1], &amp;end, 10);
-    if (end==argv[1] || *end!='\0' || parsed&lt;0 || parsed&gt;999999) {
-        std::cerr &lt;&lt; "Invalid run number: " &lt;&lt; argv[1] &lt;&lt; '\n';
-        return 1;
-    }
-    int run = int(parsed);
-    const char* inputDir = argc==4 ? argv[2] : "../..";
-    const char* outputDir = argc==4 ? argv[3] : ".";
-    TString inputName = Form("%s/f8ppac%03d.root",inputDir,run);
-    TString outputName = Form("%s/out%03d.root",outputDir,run);
-    TFile* input = TFile::Open(inputName);
-    if (!input || input-&gt;IsZombie()) {
-        std::cerr &lt;&lt; "Cannot open " &lt;&lt; inputName &lt;&lt; '\n';
-        delete input;
-        return 1;
-    }
-    TTree* tin = input-&gt;Get&lt;TTree&gt;("tree");
-    if (!tin) {
-        std::cerr &lt;&lt; "Missing tree in " &lt;&lt; inputName &lt;&lt; '\n';
-        delete input;
-        return 1;
-    }
-    TFile output(outputName,"RECREATE");
-    if (output.IsZombie()) return 1;
-    TTree* tout = new TTree("tree","PPAC tracking");
-    {
-        ana analysis(tin,tout);
-        analysis.Analysis();
-
-        std::cout &lt;&lt; "Input=" &lt;&lt; tin-&gt;GetEntries() &lt;&lt; ", output=" &lt;&lt; tout-&gt;GetEntries() &lt;&lt; '\n';
-        output.Write();
-    } // MakeClass 基类析构时释放输入文件；不再重复 delete input。
-    return 0;
-}</code></pre></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><h2>3. Makefile：编译与链接</h2><pre><code class="language-cpp">CXX = c++
+<p>int main(int argc, char** argv) {
+if (argc!=2 &amp;&amp; argc!=4) {
+std::cerr &lt;&lt; "Usage: ./tracking run [input_dir output_dir]\n";
+return 1;
+}
+char* end = nullptr;
+long parsed = std::strtol(argv[1], &amp;end, 10);
+if (end==argv[1] || <em>end!='\0' || parsed&lt;0 || parsed&gt;999999) {
+std::cerr &lt;&lt; "Invalid run number: " &lt;&lt; argv[1] &lt;&lt; '\n';
+return 1;
+}
+int run = int(parsed);
+const char</em> inputDir = argc==4 ? argv[2] : "../..";
+const char* outputDir = argc==4 ? argv[3] : ".";
+TString inputName = Form("%s/f8ppac%03d.root",inputDir,run);
+TString outputName = Form("%s/out%03d.root",outputDir,run);
+TFile* input = TFile::Open(inputName);
+if (!input || input-&gt;IsZombie()) {
+std::cerr &lt;&lt; "Cannot open " &lt;&lt; inputName &lt;&lt; '\n';
+delete input;
+return 1;
+}
+TTree* tin = input-&gt;Get&lt;TTree&gt;("tree");
+if (!tin) {
+std::cerr &lt;&lt; "Missing tree in " &lt;&lt; inputName &lt;&lt; '\n';
+delete input;
+return 1;
+}
+TFile output(outputName,"RECREATE");
+if (output.IsZombie()) return 1;
+TTree* tout = new TTree("tree","PPAC tracking");
+{
+ana analysis(tin,tout);
+analysis.Analysis();</p>
+<pre><code>    std::cout &amp;lt;&amp;lt; "Input=" &amp;lt;&amp;lt; tin-&amp;gt;GetEntries() &amp;lt;&amp;lt; ", output=" &amp;lt;&amp;lt; tout-&amp;gt;GetEntries() &amp;lt;&amp;lt; '\n';
+    output.Write();
+} // MakeClass 基类析构时释放输入文件；不再重复 delete input。
+return 0;</code></pre>
+<p>}</p></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c370c31d">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2>3. Makefile：编译与链接</h2><pre><code class="language-cpp">CXX = c++
 CPPFLAGS = -Iinclude $(shell root-config --cflags)
 CXXFLAGS = -O2 -Wall
 LDLIBS = $(shell root-config --libs)
 SOURCES = main.cpp $(wildcard src/*.cpp src/*.C)
 HEADERS = $(wildcard include/*.h)
 
-all: tracking
-
-tracking: $(SOURCES) $(HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(SOURCES) $(LDLIBS) -o $@
-
-clean:
-	rm -f tracking</code></pre><p><code>root-config --cflags</code> 提供 ROOT 头文件及编译选项，<code>--libs</code> 提供链接库。包含头文件解决声明问题，链接解决函数实现问题，两者不能互相替代。修改源码后重新执行 <code>make</code>；编译失败先看第一条 error。</p></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><h2>4. 运行和核对</h2><p>在章目录执行下面两行。程序读取 <code>f8ppac001.root</code>，写出 <code>code/compile2/out001.root</code>。原始文件不变。使用同一输入与选择条件时，输出事例编号、靶点位置及拟合参数应与 2.2 一致，而不只是比较最终事例数。</p></div></div><div class="jp-Cell jp-CodeCell"><div class="jp-InputArea"><div class="jp-InputArea-editor"><div class="highlight"><pre><span></span><span class="o">!</span><span class="n">make</span><span class="w"> </span><span class="o">-</span><span class="n">C</span><span class="w"> </span><span class="n">code</span><span class="o">/</span><span class="n">compile2</span>
+<p>all: tracking</p>
+<p>tracking: $(SOURCES) $(HEADERS)
+$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(SOURCES) $(LDLIBS) -o $@</p>
+<p>clean:
+rm -f tracking</p></code></pre><p><code>root-config --cflags</code> 提供 ROOT 头文件及编译选项，<code>--libs</code> 提供链接库。包含头文件解决声明问题，链接解决函数实现问题，两者不能互相替代。修改源码后重新执行 <code>make</code>；编译失败先看第一条 error。</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7a02ee2e">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2>4. 运行和核对</h2><p>在章目录执行下面两行。程序读取 <code>f8ppac001.root</code>，写出 <code>code/compile2/out001.root</code>。原始文件不变。使用同一输入与选择条件时，输出事例编号、靶点位置及拟合参数应与 2.2 一致，而不只是比较最终事例数。</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=4">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-c++"><pre><span></span><span class="o">!</span><span class="n">make</span><span class="w"> </span><span class="o">-</span><span class="n">C</span><span class="w"> </span><span class="n">code</span><span class="o">/</span><span class="n">compile2</span>
 <span class="o">!</span><span class="n">cd</span><span class="w"> </span><span class="n">code</span><span class="o">/</span><span class="n">compile2</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">.</span><span class="o">/</span><span class="n">tracking</span><span class="w"> </span><span class="mi">1</span>
 </pre></div>
-</div></div><div class="verified-output"><pre>c++ -Iinclude -stdlib=libc++ -pthread -std=c++17 -m64 -I/opt/homebrew/Cellar/root/6.40.02/include/root -O2 -Wall main.cpp src/ana.cpp src/tracking.C -L/opt/homebrew/Cellar/root/6.40.02/lib/root -lCore -lImt -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lROOTVecOps -lTree -lTreePlayer -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -lROOTNTuple -lROOTNTupleUtil -lMultiProc -lROOTDataFrame -stdlib=libc++ -Wl,-rpath,/opt/homebrew/Cellar/root/6.40.02/lib/root -lpthread -lm -ldl -o tracking
-Processing Event: 30000 / 739685
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>make: Nothing to be done for `all'.
+
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Processing Event: 30000 / 739685
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Processing Event: 50000 / 739685
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Processing Event: 110000 / 739685
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Processing Event: 130000 / 739685
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Processing Event: 140000 / 739685
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Processing Event: 150000 / 739685
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Processing Event: 190000 / 739685
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Processing Event: 240000 / 739685
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Processing Event: 270000 / 739685
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Processing Event: 360000 / 739685
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Processing Event: 390000 / 739685
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Processing Event: 400000 / 739685
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Processing Event: 410000 / 739685
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Processing Event: 440000 / 739685
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Processing Event: 450000 / 739685
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Processing Event: 490000 / 739685
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Processing Event: 550000 / 739685
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Processing Event: 560000 / 739685
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Processing Event: 590000 / 739685
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Processing Event: 600000 / 739685
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Processing Event: 620000 / 739685
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Processing Event: 630000 / 739685
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Processing Event: 640000 / 739685
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Processing Event: 650000 / 739685
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Input events=739685, accepted reference tracks=232180
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
 Input=739685, output=232180
-src/ana.cpp:94:14: warning: variable 'nbytes' set but not used [-Wunused-but-set-variable]
-   94 |     Long64_t nbytes = 0, nb = 0;
-      |              ^
-1 warning generated.
-src/tracking.C:36:13: warning: variable 'nbytes' set but not used [-Wunused-but-set-variable]
-   36 |    Long64_t nbytes = 0, nb = 0;
-      |             ^
-1 warning generated.
-ld: warning: search path '/usr/local/lib' is not a directory</pre></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><p>完整源码：<a href="code/compile2/main.cpp">main.cpp</a> · <a href="code/compile2/include/tracking.h">tracking.h</a> · <a href="code/compile2/src/tracking.C">tracking.C</a> · <a href="code/compile2/include/ana.h">ana.h</a> · <a href="code/compile2/src/ana.cpp">ana.cpp</a></p></div></div>
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0870cfcc">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>完整源码：<a href="code/compile2/main.cpp">main.cpp</a> · <a href="code/compile2/include/tracking.h">tracking.h</a> · <a href="code/compile2/src/tracking.C">tracking.C</a> · <a href="code/compile2/include/ana.h">ana.h</a> · <a href="code/compile2/src/ana.cpp">ana.cpp</a></p>
+</div>
+</div>
+</div>
+</div>
 </main>
 </body>
 </html>

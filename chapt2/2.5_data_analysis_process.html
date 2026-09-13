@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="zh-CN">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>2.5_data_analysis_process</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>2.5 实验数据处理过程</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -53,45 +53,6 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .highlight .s1 { color: var(--jp-mirror-editor-string-color) } /* Literal.String.Single */
 .highlight .ss { color: var(--jp-mirror-editor-string-color) } /* Literal.String.Symbol */
 .highlight .il { color: var(--jp-mirror-editor-number-color) } /* Literal.Number.Integer.Long */
-  </style>
-<style type="text/css">
-    /* JupyROOT CSS */
-
-div#ipython_notebook img {
-display:block;
-background: url(root-banner_99x33.jpg) no-repeat;
-width: 99px;
-height: 33px;
-padding-left: 99px;
--moz-box-sizing: border-box;
-box-sizing: border-box;
-}
-
-span#login_widget {
-padding-left: 2px;
-}
-
-span#kernel_logo_widget img {
-display: block;
-background: url(root-logo-darkblue_33x33.png) no-repeat;
-width: 33px;
-height: 33px;
-padding-left: 33px;
--moz-box-sizing: border-box;
-box-sizing: border-box;
-}
-
-div#root_banner {
-padding-top: 15px;
-padding-bottom: 10px;
-}
-
-div#root_banner img {
-display: block;
-margin: 0 auto;
-}
-
-
   </style>
 <style type="text/css">
 /*-----------------------------------------------------------------------------
@@ -7832,38 +7793,50 @@ a.anchor-link {
     white-space: normal;
   }
 </style>
-<!-- End of mermaid configuration --><link data-course-header="true" href="../assets/css/course-header.css" rel="stylesheet"/></head>
-<body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light"><header class="course-banner"><div class="course-banner-inner">
+<!-- End of mermaid configuration --><link data-course-header="true" href="../assets/css/course-header.css" rel="stylesheet"/><link data-lecture-layout="true" href="../assets/css/lecture-layout.css" rel="stylesheet"/></head>
+<body class="jp-Notebook lecture-review" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light"><header class="course-banner"><div class="course-banner-inner">
 <a href="../index.html"><img alt="课程标志" src="../assets/images/course-logo.png"/></a>
 <div class="course-banner-title"><a href="../index.html">核物理实验数据处理</a>
 <span class="course-banner-en">Experimental Data Analysis in Nuclear Physics</span></div></div></header>
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=130a295e">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h1 id="2.5-%E5%AE%9E%E9%AA%8C%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B">2.5 实验数据处理过程</h1>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=jsroot-on">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><p>实验数据分析通常沿着<strong>解码 → 刻度 → 事件重建 → 物理分析</strong>展开。原始信号保存一次；在耗时或反复使用的阶段保存中间结果。改变 PID cut 时，不必重新解码。</p><p>每个结果应能追溯到输入 run、事例编号和所用刻度。直方图便于检查，TTree 保留逐事件信息，两者用途不同。</p><h2>第一阶段：从原始读数到可分析的信号</h2><p>DAQ 原始文件按电子学插件协议保存数据块，包含 ADC/TDC 道值、通道地址及 overflow 等状态。读取格式之前，先确认本实验使用的插件协议和 mapping。</p></div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-c++"><pre><span></span><span class="o">%</span><span class="n">jsroot</span><span class="w"> </span><span class="n">on</span>
+</pre></div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=50a9c0ae">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>实验数据分析通常沿着<strong>解码 → 刻度 → 事件重建 → 物理分析</strong>展开。原始信号保存一次；在耗时或反复使用的阶段保存中间结果。改变 PID cut 时，不必重新解码。</p><p>每个结果应能追溯到输入 run、事例编号和所用刻度。直方图便于检查，TTree 保留逐事件信息，两者用途不同。</p><h2>第一阶段：从原始读数到可分析的信号</h2><p>DAQ 原始文件按电子学插件协议保存数据块，包含 ADC/TDC 道值、通道地址及 overflow 等状态。读取格式之前，先确认本实验使用的插件协议和 mapping。</p><p>例如，可把解码、刻度、粒子重建和物理量计算分别放在独立模块中。反复调整末端 PID 或拟合区间时，只需读取已经完成刻度与重建的结果。是否每一步都写新文件，取决于计算成本和复用需求，不必把每个小变换都拆成一个文件。</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c7976323">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h4 id="%E8%A7%A3%E7%A0%81(decoding-or-mapping)%EF%BC%9A"><font color="Blue">解码(decoding or mapping)</font>：</h4><ul>
 <li>解码程序通过读取数据中每个插件的特定标识，按对应协议进行解码。随后，根据实验设定的“探测器信号-插件通道”对应表（Mapping Map），将上述硬件数据转换成每个物理事件中具体探测器的测量值。经过此步骤生成的文件通常称为<strong>原始 ROOT 文件 (Raw ROOT File)</strong>。</li>
 </ul>
@@ -7871,12 +7844,11 @@ a.anchor-link {
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=13aa5cf5">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h4 id="%E4%BA%8B%E4%BB%B6%E9%87%8D%E6%9E%84(event-building)%EF%BC%9A"><font color="Blue">事件重构(event building)</font>：</h4><ul>
 <li>根据探测器信号之间的时间逻辑关系，重新组织和对齐事件结构（具体算法机制见第 5 章）。</li>
 </ul>
@@ -7884,30 +7856,31 @@ a.anchor-link {
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1a83db8b">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>步骤一：检查原始道值与量化</h3><p>保留 ADC/TDC 的整数码及无效、overflow 等状态，检查其有效区间。刻度可以直接作用于原始码或 bin 中心。1.3 的 dithering 是基于 bin 内均匀近似的可选处理，不是刻度的必需步骤，也不恢复丢失的精度。</p></div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3>步骤一：检查原始道值与量化</h3><p>保留 ADC/TDC 的整数码及无效、overflow 等状态，检查其有效区间。刻度可以直接作用于原始码或 bin 中心。1.3 的 dithering 是基于 bin 内均匀近似的可选处理，不是刻度的必需步骤，也不恢复丢失的精度。</p>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ac74a6ee">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>步骤二：有效信号与可重建信息</h3><p>先按各通道的范围和状态判断有效性，再计算位置、能量等组合量。缺失与真实零值分开保存；无效标记不参与刻度、求和和拟合。</p><p>例如 PPAC 两端时间差可以在 anode 缺失时计算，但本节的 time-sum 检查需要 anode。是否保留这类位置，要用独立 reference tracks 检查 residual 和误判率，不能只因为公式仍能计算就认定结果有效。若采用不同重建方法，在输出中保存方法标记。</p></div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3>步骤二：有效信号与可重建信息</h3><p>先按各通道的范围和状态判断有效性，再计算位置、能量等组合量。缺失与真实零值分开保存；无效标记不参与刻度、求和和拟合。</p><p>例如 PPAC 两端时间差可以在 anode 缺失时计算，但本节的 time-sum 检查需要 anode。是否保留这类位置，要用独立 reference tracks 检查 residual 和误判率，不能只因为公式仍能计算就认定结果有效。若采用不同重建方法，在输出中保存方法标记。</p><p>长条闪烁体也有类似情况：若一端电荷缺失，但两端时间仍有效，可先由时间差估计位置，再在已经标定光衰减和单端响应的条件下，由另一端幅度估计沉积信号。这属于不同的重建方法，分辨和选择效率也不同，应分别标记、验证，不能把缺失电荷直接填成零。</p>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0f2f21cc">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h4 id="%E6%AD%A5%E9%AA%A4%E4%B8%89%EF%BC%9A%E5%85%B3%E9%94%AE%E4%BF%A1%E6%81%AF%E7%9A%84%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%8C%96%E5%AD%98%E5%82%A8-(Histograms)">步骤三：关键信息的直方图化存储 (Histograms)</h4><p>反复查看大型 TTree 的同一分布会重复读取数据。可把常用直方图与树一起保存，或另存为 hist001.root，供日常检查；按具体数据量决定是否缓存。</p>
 <ul>
 <li><strong>常用信息包括</strong>：ADC/TDC 各通道的原始能谱和时间谱、同类型探测器的 Hit 分布图、探测器间的二维关联谱（如 $\Delta E-E$, $TOF-\Delta E$）等。</li>
@@ -7923,8 +7896,14 @@ a.anchor-link {
 </div>
 </div>
 </div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=b896fcd9">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-Cell jp-CodeCell"><div class="jp-Cell-inputWrapper"><div class="jp-InputArea"><div class="jp-InputArea-editor"><div class="highlight"><pre><span></span><span class="n">gRandom</span><span class="o">-&gt;</span><span class="n">SetSeed</span><span class="p">(</span><span class="mi">2501</span><span class="p">);</span><span class="w"> </span><span class="c1">// 固定示例的随机数种子</span>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-c++"><pre><span></span><span class="n">gRandom</span><span class="o">-&gt;</span><span class="n">SetSeed</span><span class="p">(</span><span class="mi">2501</span><span class="p">);</span><span class="w"> </span><span class="c1">// 固定示例的随机数种子</span>
 <span class="c1">// 1. 创建用于存储直方图的 ROOT 文件</span>
 <span class="n">TFile</span><span class="w"> </span><span class="o">*</span><span class="n">fout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TFile</span><span class="p">(</span><span class="s">"hist_test.root"</span><span class="p">,</span><span class="w"> </span><span class="s">"RECREATE"</span><span class="p">);</span>
 
@@ -7961,13 +7940,17 @@ a.anchor-link {
 <span class="n">fout</span><span class="o">-&gt;</span><span class="n">Write</span><span class="p">();</span>
 <span class="n">fout</span><span class="o">-&gt;</span><span class="n">Close</span><span class="p">();</span>
 </pre></div>
-</div></div></div></div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0b54ac53">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><p>写入后的目录结构：</p><img alt="1" src="fig/dir.png"/>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>写入后的目录结构：</p><img alt="1" src="fig/dir.png"/>
 <h4 id="Read-hist-from-the-file">Read hist from the file</h4><ul>
 <li>root环境直接读取(见上图)</li>
 </ul>
@@ -7981,12 +7964,11 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=ff131c65">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-c++"><pre><span></span><span class="n">TFile</span><span class="w"> </span><span class="o">*</span><span class="n">fin</span><span class="o">=</span><span class="k">new</span><span class="w"> </span><span class="n">TFile</span><span class="p">(</span><span class="s">"hist_test.root"</span><span class="p">);</span>
@@ -7995,12 +7977,11 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=10">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-c++"><pre><span></span><span class="n">fin</span><span class="o">-&gt;</span><span class="n">ls</span><span class="p">();</span>
@@ -8009,16 +7990,27 @@ a.anchor-link {
 </div>
 </div>
 </div>
-<div class="verified-output"><pre>TFile**		hist_test.root
- TFile*		hist_test.root
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>TFile**		hist_test.root	
+ TFile*		hist_test.root	
   KEY: TDirectoryFile	dir1;1	ADC Spectra
   KEY: TDirectoryFile	dir2;1	TDC Spectra
-  KEY: TH1I	h0;1	Global Hist</pre></div></div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+  KEY: TH1I	h0;1	Global Hist
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=0a4d5039">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-c++"><pre><span></span><span class="n">TH1I</span><span class="o">*</span><span class="w"> </span><span class="n">h0a</span><span class="o">=</span><span class="p">(</span><span class="n">TH1I</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">fin</span><span class="o">-&gt;</span><span class="n">Get</span><span class="p">(</span><span class="s">"h0"</span><span class="p">);</span>
@@ -8030,26 +8022,71 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=12">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">TCanvas</span><span class="w"> </span><span class="o">*</span><span class="n">c1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TCanvas</span><span class="p">(</span><span class="s">"c1"</span><span class="p">,</span><span class="s">"Directory example"</span><span class="p">);</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-c++"><pre><span></span><span class="n">TCanvas</span><span class="w"> </span><span class="o">*</span><span class="n">c1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TCanvas</span><span class="p">(</span><span class="s">"c1"</span><span class="p">,</span><span class="s">"Directory example"</span><span class="p">);</span>
 <span class="n">h1suba</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 <span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="verified-output"><img alt="2.5_data_analysis_process: cell 12, c1" src="figures/2.5_data_analysis_process/cell_12_c1.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
+<div id="root_plot_1789296834906" style="width: 700px; height: 500px; position: relative">
+</div>
+<script>
+   function process_root_plot_1789296834906() {
+      function execCode(Core) {
+         Core.settings.HandleKeys = false;
+         
+Core.unzipJSON(21939,'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').then(json => {
+   const obj = Core.parse(json);
+   Core.draw('root_plot_1789296834906', obj, '');
+});
+
+      }
+      const servers = ['/static/', 'https://root.cern/js/7.11.0/', 'https://jsroot.gsi.de/7.11.0/'],
+            path = 'build/jsroot';
+      if (typeof JSROOT !== 'undefined')
+         execCode(JSROOT);
+      else if (typeof requirejs !== 'undefined') {
+         servers.forEach((s,i) => { servers[i] = s + path; });
+         requirejs.config({ paths: { 'jsroot' : servers } })(['jsroot'],  execCode);
+      } else {
+         const config = document.getElementById('jupyter-config-data');
+         if (config)
+            servers[0] = (JSON.parse(config.innerHTML || '{}')?.baseUrl || '/') + 'static/';
+         else
+            servers.shift();
+         function loadJsroot() {
+            return !servers.length ? 0 : import(servers.shift() + path + '.js').catch(loadJsroot).then(() => execCode(JSROOT));
+         }
+         loadJsroot();
+      }
+   }
+   process_root_plot_1789296834906();
+</script>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=19ddabe1">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h4 id="%E6%AD%A5%E9%AA%A4%E5%9B%9B%EF%BC%9A%E5%AE%9E%E9%AA%8C%E5%8F%82%E6%95%B0%E4%B8%80%E8%87%B4%E6%80%A7%E6%A3%80%E9%AA%8C-(Drift-Check)">步骤四：实验参数一致性检验 (Drift Check)</h4><p>由于探测器工作条件的变化（温度波动、噪声引入等）以及电子学参数的长期漂移，实验设备的增益或基线可能会随时间发生改变。
 <strong>在进入正式物理刻度和设定数据切割条件（Cut）之前，先检查基础参数的时间稳定性，并进行必要的动态修正。</strong></p>
 <ul>
@@ -8062,24 +8099,41 @@ a.anchor-link {
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c343faad">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h2>第二阶段：事件重建与物理分析</h2>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2>第二阶段：事件重建与物理分析</h2>
 <p>用刻度后的信号构建粒子 hit，处理相邻条的 charge sharing、front-back 对应关系和探测器间符合，再计算位置、能量及时间。第三章将逐步处理 DSSD 的这些问题。</p>
 <p>物理选择常来自 ΔE–E 或 TOF–ΔE 的 PID、prompt 时间区间以及几何或运动学约束。选择后的数据仍可能含本底，且 cut 会改变效率与接受度。</p>
-<p>在确定的反应假设下，用能量和方向计算 Q 值、激发能等物理量。截面还需要束流归一、靶厚、探测效率与接受度。重建和选择参数保存在结果旁，后续改变 cut 时就能知道哪些步骤需要重算。</p></div>
+<p>在确定的反应假设下，用能量和方向计算 Q 值、激发能等物理量。截面还需要束流归一、靶厚、探测效率与接受度。重建和选择参数保存在结果旁，后续改变 cut 时就能知道哪些步骤需要重算。</p><h3>物理条件的选择</h3><p>用 $\Delta E$–$E$ 或 TOF–$\Delta E$ 的粒子带作 PID；用符合时间窗减少不相关信号；用探测器几何、靶点和守恒关系检验反应候选。prompt 窗口内仍含偶然符合，必要时以时间 sideband 估计。每项 cut 都可能改变效率或接受度，不是“选后数据必然纯净”。</p>
+<h3>运动学重建</h3><p>由靶点和击中位置求出射方向，结合刻度后的能量计算 Q 值、激发能或不变质量。多粒子实验还需先确定各层信号属于哪个粒子。保存中间 hit 与事例编号，能把最终谱中的异常追溯到信号层。</p>
+<h3>谱分析与截面</h3><p>峰的拟合给出中心、宽度和净计数，但观测峰宽同时包含探测器分辨与物理展宽；只有分离这些贡献后，才可能由自然宽度讨论寿命。Gaussian、Breit–Wigner 及连续本底模型应根据具体反应和响应选择。</p>
+<p>反应截面需要将净计数对束流总数、靶核面密度、探测效率及几何接受度归一化。蒙特卡罗可计算给定装置和分析条件下的接受度，但其结果也依赖输入模型；数据质量检查和模型验证仍要保留在这一链条中。</p>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7dca44f2">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h2>批量处理多个 run</h2><p>先确认单个文件能正常处理，再用 Bash 循环调用 2.4 的程序。下面脚本接收起止 run、输入目录、输出目录和程序路径；每个 run 单独留日志，失败时继续处理其他 run，最后返回失败状态。</p><pre><code class="language-cpp">#!/usr/bin/env bash
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2>用 Bash 组织多个 run 的处理</h2><h3>先从终端循环开始</h3><p>下面在 <code>code/compile2</code> 目录运行。同一程序依次接收不同 run 号：</p><pre><code class="language-cpp">for run in {1..10}; do
+    ./tracking "$run"
+done</code></pre><p><code>run</code> 是当前编号，<code>do ... done</code> 是循环体，<code>"$run"</code> 取出变量的值。单个 run 已验证后，再把循环保存成脚本并增加参数及错误检查。</p>
+<h3>给脚本传入范围和目录</h3><p><code>$1</code>、<code>$2</code> 表示调用脚本时的前两个参数，<code>$#</code> 是参数个数。下面的完整脚本还检查输入文件是否存在、输出是否已有，并为每个 run 留下日志。</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=d525ed37">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2>批量处理多个 run</h2><p>先确认单个文件能正常处理，再用 Bash 循环调用 2.4 的程序。下面脚本接收起止 run、输入目录、输出目录和程序路径；每个 run 单独留日志，失败时继续处理其他 run，最后返回失败状态。</p><pre><code class="language-cpp">#!/usr/bin/env bash
 set -u
 if [ "$#" -ne 5 ]; then
     echo "Usage: bash run_batch.sh first last input_dir output_dir program" &gt;&amp;2
@@ -8107,15 +8161,16 @@ for ((run=first; run&lt;=last; run++)); do
         failed=1
     fi
 done
-exit "$failed"</code></pre><p>在章目录运行：</p><pre><code class="language-cpp">bash run_batch.sh 1 1 . batch_output code/compile2/tracking</code></pre><p><code>"$var"</code> 保留路径中的空格；<code>&gt;log 2&gt;&amp;1</code> 把正常输出和错误都写入日志。输入文件缺失或程序返回非零状态时，该 run 不被当作成功结果。再次运行前先检查输出目录，避免覆盖此前结果。</p></div>
+exit "$failed"</code></pre><p>在章目录运行：</p><pre><code class="language-cpp">bash run_batch.sh 1 1 . batch_output code/compile2/tracking</code></pre><p><code>"$var"</code> 保留路径中的空格；<code>&gt;log 2&gt;&amp;1</code> 把正常输出和错误都写入日志。输入文件缺失或程序返回非零状态时，该 run 不被当作成功结果。再次运行前先检查输出目录，避免覆盖此前结果。</p><h3>后台运行与日志</h3><p>长时间处理可在服务器上用 nohup 启动：</p><pre><code class="language-cpp">nohup bash run_batch.sh 1 100 . batch_output code/compile2/tracking &gt; analysis.log 2&gt;&amp;1 &amp;
+tail -f analysis.log</code></pre><p><code>&amp;</code> 使命令在后台运行，<code>nohup</code> 忽略终端挂断信号；它不保证机器休眠、关机或作业被系统终止后仍继续。<code>tail -f</code> 跟随日志的新内容，按 Ctrl+C 只退出日志查看，不停止分析程序。</p>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=332e11a7">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-c++"><pre><span></span><span class="w"> </span>

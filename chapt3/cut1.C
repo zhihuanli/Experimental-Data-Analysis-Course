@@ -20,5 +20,4 @@
    cutg->SetPoint(10,19.914,1351.84);
    cutg->SetPoint(11,19.914,1351.84);
    cutg->SetPoint(12,-325,1925);
-   cutg->Draw("");
 }

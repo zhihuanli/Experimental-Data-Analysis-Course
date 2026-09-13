@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="zh-CN">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>1.3_adc_analysis</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>1.3 ADC/TDC 信号处理：从物理量到数字化</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -53,45 +53,6 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .highlight .s1 { color: var(--jp-mirror-editor-string-color) } /* Literal.String.Single */
 .highlight .ss { color: var(--jp-mirror-editor-string-color) } /* Literal.String.Symbol */
 .highlight .il { color: var(--jp-mirror-editor-number-color) } /* Literal.Number.Integer.Long */
-  </style>
-<style type="text/css">
-    /* JupyROOT CSS */
-
-div#ipython_notebook img {
-display:block;
-background: url(root-banner_99x33.jpg) no-repeat;
-width: 99px;
-height: 33px;
-padding-left: 99px;
--moz-box-sizing: border-box;
-box-sizing: border-box;
-}
-
-span#login_widget {
-padding-left: 2px;
-}
-
-span#kernel_logo_widget img {
-display: block;
-background: url(root-logo-darkblue_33x33.png) no-repeat;
-width: 33px;
-height: 33px;
-padding-left: 33px;
--moz-box-sizing: border-box;
-box-sizing: border-box;
-}
-
-div#root_banner {
-padding-top: 15px;
-padding-bottom: 10px;
-}
-
-div#root_banner img {
-display: block;
-margin: 0 auto;
-}
-
-
   </style>
 <style type="text/css">
 /*-----------------------------------------------------------------------------
@@ -7832,19 +7793,17 @@ a.anchor-link {
     white-space: normal;
   }
 </style>
-<!-- End of mermaid configuration --><link data-course-header="true" href="../assets/css/course-header.css" rel="stylesheet"/></head>
-<body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light"><header class="course-banner"><div class="course-banner-inner">
+<!-- End of mermaid configuration --><link data-course-header="true" href="../assets/css/course-header.css" rel="stylesheet"/><link data-lecture-layout="true" href="../assets/css/lecture-layout.css" rel="stylesheet"/></head>
+<body class="jp-Notebook lecture-review" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light"><header class="course-banner"><div class="course-banner-inner">
 <a href="../index.html"><img alt="课程标志" src="../assets/images/course-logo.png"/></a>
 <div class="course-banner-title"><a href="../index.html">核物理实验数据处理</a>
 <span class="course-banner-en">Experimental Data Analysis in Nuclear Physics</span></div></div></header>
-
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1bdaa5eb">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h1 id="1.3-ADC/TDC-%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86%EF%BC%9A%E4%BB%8E%E7%89%A9%E7%90%86%E9%87%8F%E5%88%B0%E6%95%B0%E5%AD%97%E5%8C%96">1.3 ADC/TDC 信号处理：从物理量到数字化</h1><h3 id="1.-%E7%9B%AE%E7%9A%84">1. 目的</h3><ol>
 <li>掌握模拟电信号（时间、幅度）如何进行数字化（保存为整数道值）。</li>
 <li>理解基线偏移（Pedestal）、超界（Overflow）。</li>
@@ -7918,76 +7877,87 @@ Int_t iAL, iAR;  // QDC道值 (0-4095)
 Int_t itL, itR;  // TDC道值 (0-4095)
 // 复用已有 pid：0:G, 1:N, 2:LP, 3:Pedestal
 
-// --- 数字化与电子学参数 ---
+<p>// --- 数字化与电子学参数 ---
 const Double_t ADC_Gain = 5.0;    // 增益
 const Double_t TDC_Gain = 25.0;   // 转换系数 (如40ps/ch)
 const Double_t Ped_L = 140.0, Ped_R = 130.0; // 基线
 const Double_t Noise = 8.5;       // 电子学噪声
 const Double_t Trig_Dly = 50.0;   // 延迟
 const Int_t    Max_ADC = 4095;    // 12-bit
-const Int_t    Threshold = 180;   // 触发阈值(道值)
-
-// --- Branch 映射 (省略原有部分) ---
+const Int_t    Threshold = 180;   // 触发阈值(道值)</p>
+<p>// --- Branch 映射 (省略原有部分) ---
 // pid 分支已在原模拟中建立，不再重复声明。
-opt-&gt;Branch("iAL", &amp;iAL, "iAL/I"); // ... 其余同理</code></pre></div>
+opt-&gt;Branch("iAL", &amp;iAL, "iAL/I"); // ... 其余同理</p></code></pre></div>
 <h4 id="%E4%BA%8B%E4%BB%B6%E7%94%9F%E6%88%90-($E_n-%5Cto-E_p-%5Cto-E_%7Bee%7D$)">事件生成 ($E_n \to E_p \to E_{ee}$)</h4><div class="highlight"><pre><code class="language-cpp">// 1. 抽样生成 pid
 Double_t rnd = gr-&gt;Uniform();
 if (rnd &lt; 0.10)      pid = 3; // 空触发/时钟触发
 else if (rnd &lt; 0.20) pid = 2; // LP (质子)
 else                 pid = (gr-&gt;Uniform() &lt; 0.3) ? 0 : 1;
 
-// 2. 物理过程修改
+<p>// 2. 物理过程修改
 ...
 if (pid == 2) {
-    Eee = gr-&gt;Gaus(50.0, 5.0);           // 此处直接指定 LP 的示意光输出分布（MeVee）
+Eee = gr-&gt;Gaus(50.0, 5.0);           // 此处直接指定 LP 的示意光输出分布（MeVee）
 }
 if (pid == 3) {
-    Eee = 0.0;                           // Pedestal 无能量
-}</code></pre></div>
+Eee = 0.0;                           // Pedestal 无能量
+}</p></code></pre></div>
 <h4 id="%E6%95%B0%E5%AD%97%E5%8C%96-(Digitization)-%E4%B8%8E-%E8%A7%A6%E5%8F%91%E9%80%BB%E8%BE%91-(Trigger)">数字化 (Digitization) 与 触发逻辑 (Trigger)</h4><div class="highlight"><pre><code class="language-cpp">...
 
-// 1. ADC: 幅度 * 增益 + 基线 + 噪声
+<p>// 1. ADC: 幅度 * 增益 + 基线 + 噪声
 iAL = (Int_t)(AL* ADC_Gain + Ped_L + gr-&gt;Gaus(0, Noise));
-iAR = (Int_t)(AR * ADC_Gain + Ped_R + gr-&gt;Gaus(0, Noise));
-
-// 2. TDC: (时间 + 延迟) * 转换系数
+iAR = (Int_t)(AR * ADC_Gain + Ped_R + gr-&gt;Gaus(0, Noise));</p>
+<p>// 2. TDC: (时间 + 延迟) * 转换系数
 if (pid == 3) {
-    itL = Max_ADC; itR = Max_ADC; // 无物理信号，TDC默认溢出
+itL = Max_ADC; itR = Max_ADC; // 无物理信号，TDC默认溢出
 } else {
-    itL = (Int_t)((tL + Trig_Dly) * TDC_Gain );
-    itR = (Int_t)((tR + Trig_Dly) * TDC_Gain );
-}
-
-// 3. 超界截断处理
+itL = (Int_t)((tL + Trig_Dly) * TDC_Gain );
+itR = (Int_t)((tR + Trig_Dly) * TDC_Gain );
+}</p>
+<p>// 3. 超界截断处理
 if (iAL &gt; Max_ADC) iAL = Max_ADC; if (iAL &lt; 0) iAL = 0;
-// ... iAR, itL, itR 同理 ...
-
-// 4. DAQ 触发逻辑 (物理符合触发 OR 时钟触发)
+// ... iAR, itL, itR 同理 ...</p>
+<p>// 4. DAQ 触发逻辑 (物理符合触发 OR 时钟触发)
 bool Trig_Phys = (iAL &gt; Threshold) &amp;&amp; (iAR &gt; Threshold);
-bool Trig_Clock = (pid == 3);
-
-if (Trig_Phys || Trig_Clock) {
-    opt-&gt;Fill(); // 只有满足触发条件才存入 Tree
-}</code></pre></div>
-<h3>道值、量程与状态</h3><p>12-bit ADC 有 4096 个码。理想 0–4 V 量程的步距为 \(4/4096\) V，约 0.977 mV；码间距不是完整的仪器精度。Pedestal 是无物理信号时的基线分布，均值为 pedestal offset、宽度反映噪声，增加 offset 不保证所有噪声样本都为正。</p><p>本例约定超量程信号饱和到最大码；真实 ADC/TDC 对 overflow、无命中和无效时间的编码应查对应模块。TDC 的符号和有效区间还取决于 common-start/common-stop 等读出方式。</p></div>
+bool Trig_Clock = (pid == 3);</p>
+<p>if (Trig_Phys || Trig_Clock) {
+opt-&gt;Fill(); // 只有满足触发条件才存入 Tree
+}</p></code></pre></div>
+<h3>道值、量程与状态</h3><p>12-bit ADC 有 4096 个码。理想 0–4 V 量程的步距为 \(4/4096\) V，约 0.977 mV；码间距不是完整的仪器精度。Pedestal 是无物理信号时的基线分布，均值为 pedestal offset、宽度反映噪声，增加 offset 不保证所有噪声样本都为正。</p><p>本例约定超量程信号饱和到最大码；真实 ADC/TDC 对 overflow、无命中和无效时间的编码应查对应模块。TDC 的符号和有效区间还取决于 common-start/common-stop 等读出方式。</p>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h2>2. 数字化数据的处理</h2><h3>Pedestal 与有效区间</h3><p>先画原始 channel 分布，识别 pedestal、物理信号和无效码。阈值由噪声水平与信号需求选择。对理想 Gaussian 噪声，单侧超过均值 3σ 的概率约 0.135%；这是纯噪声的越阈概率，不是“该事例为真实信号的概率”。对数、开方及倒数运算前，检查其输入是否有效。</p><h3>量化与 Dithering</h3><p>ADC/TDC 原始整数道值可以直接保留。若 N 表示区间 [N,N+1)，可用 N+0.5 作代表值；变换后的直方图 bin 宽度应与输入步距相称。Dithering 是按“bin 内均匀”近似加上 U(0,1) 的可选做法，并不恢复真实的连续信号，也不改善探测器分辨。</p><p>下面用同一组模拟时间比较 bin 中心取值与 bin 内随机化。两者保持相同的平均刻度，随机化只是改变量化结构的显示，并额外引入随机涨落。</p></div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=jsroot-on">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">TRandom3</span><span class="w"> </span><span class="nf">rng</span><span class="p">(</span><span class="mi">1301</span><span class="p">);</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-c++"><pre><span></span><span class="o">%</span><span class="n">jsroot</span><span class="w"> </span><span class="n">on</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c24ca4f8">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2>2. 数字化数据的处理</h2><h3>Pedestal 与有效区间</h3><p>先画原始 channel 分布，识别 pedestal、物理信号和无效码。阈值由噪声水平与信号需求选择。对理想 Gaussian 噪声，单侧超过均值 3σ 的概率约 0.135%；这是纯噪声的越阈概率，不是“该事例为真实信号的概率”。对数、开方及倒数运算前，检查其输入是否有效。</p><h3>量化与 Dithering</h3><p>ADC/TDC 原始整数道值可以直接保留。若 N 表示区间 [N,N+1)，可用 N+0.5 作代表值；变换后的直方图 bin 宽度应与输入步距相称。Dithering 是按“bin 内均匀”近似加上 U(0,1) 的可选做法，并不恢复真实的连续信号，也不改善探测器分辨。</p><p>下面用同一组模拟时间比较 bin 中心取值与 bin 内随机化。两者保持相同的平均刻度，随机化只是改变量化结构的显示，并额外引入随机涨落。</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=2">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-c++"><pre><span></span><span class="n">TRandom3</span><span class="w"> </span><span class="nf">rng</span><span class="p">(</span><span class="mi">1301</span><span class="p">);</span>
 <span class="n">TH1D</span><span class="w"> </span><span class="o">*</span><span class="n">hcenter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TH1D</span><span class="p">(</span><span class="s">"hcenter"</span><span class="p">,</span><span class="s">"Bin-center values;Mean time (channel);Counts"</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">70</span><span class="p">);</span>
 <span class="n">TH1D</span><span class="w"> </span><span class="o">*</span><span class="n">hdither</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TH1D</span><span class="p">(</span><span class="s">"hdither"</span><span class="p">,</span><span class="s">"Uniform within-bin model;Mean time (channel);Counts"</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">70</span><span class="p">);</span>
 <span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="mi">100000</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -8007,14 +7977,66 @@ if (Trig_Phys || Trig_Clock) {
 </div>
 </div>
 </div>
-<div class="verified-output"><pre>Bin centers: mean=49.9874, RMS=3.55508
-Dither model: mean=49.9884, RMS=3.56175</pre><img alt="1.3_adc_analysis: cell 2, c1" src="figures/1.3_adc_analysis/cell_02_c1.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
+<div id="root_plot_1789296804272" style="width: 900px; height: 400px; position: relative">
+</div>
+<script>
+   function process_root_plot_1789296804272() {
+      function execCode(Core) {
+         Core.settings.HandleKeys = false;
+         
+Core.unzipJSON(31755,'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').then(json => {
+   const obj = Core.parse(json);
+   Core.draw('root_plot_1789296804272', obj, '');
+});
+
+      }
+      const servers = ['/static/', 'https://root.cern/js/7.11.0/', 'https://jsroot.gsi.de/7.11.0/'],
+            path = 'build/jsroot';
+      if (typeof JSROOT !== 'undefined')
+         execCode(JSROOT);
+      else if (typeof requirejs !== 'undefined') {
+         servers.forEach((s,i) => { servers[i] = s + path; });
+         requirejs.config({ paths: { 'jsroot' : servers } })(['jsroot'],  execCode);
+      } else {
+         const config = document.getElementById('jupyter-config-data');
+         if (config)
+            servers[0] = (JSON.parse(config.innerHTML || '{}')?.baseUrl || '/') + 'static/';
+         else
+            servers.shift();
+         function loadJsroot() {
+            return !servers.length ? 0 : import(servers.shift() + path + '.js').catch(loadJsroot).then(() => execCode(JSROOT));
+         }
+         loadJsroot();
+      }
+   }
+   process_root_plot_1789296804272();
+</script>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Bin centers: mean=49.9874, RMS=3.55508
+Dither model: mean=49.9884, RMS=3.56175
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=cfd1e3ab">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h2>3. 用于后续分析</h2><p>保留原始码和状态，再生成刻度后的幅度、时间。有效性检查与阈值选择记录在分析中；是否使用 dithering 是量化模型的选择，不是所有数据的必做步骤。</p></div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2>3. 用于后续分析</h2><p>保留原始码和状态，再生成刻度后的幅度、时间。有效性检查与阈值选择记录在分析中；是否使用 dithering 是量化模型的选择，不是所有数据的必做步骤。</p>
+</div>
 </div>
 </div>
 </div>

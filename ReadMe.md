@@ -10,15 +10,7 @@
 
 ## ROOT 基础
 
-本课程承接核物理实验方法，围绕实际数据组织与分析展开。各章保留所需的探测器背景和分析方法，未修读前一课程也可结合讲义学习。作业随相应讲义给出。
-
-编程和 ROOT 入门使用两门课程的共用资料。先完成 [ROOT 与 Jupyter 安装及运行检查](https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/setup/ROOT_Jupyter_Installation.html)，再按所用语言阅读：
-
-| 内容 | PyROOT | ROOT C++ |
-| --- | --- | --- |
-| 编程基础（按需阅读） | [Python 基础与数组](https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/python/Python_Essentials_for_PyROOT.html) | [C++ 基础](https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/cpp/introduction_basic.html) · [对象与指针](https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/cpp/introduction_advanced.html) |
-| ROOT Tutorial I：直方图、绘图与拟合 | [PyROOT](https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/ROOT/ROOT_Tutorial_I_PyROOT.html) | [ROOT C++](https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/ROOT/ROOT_Tutorial_I_CPP.html) |
-| ROOT Tutorial II：TTree、关联分析与 Cut | [PyROOT](https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/ROOT/ROOT_Tutorial_II_PyROOT.html) | [ROOT C++](https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/ROOT/ROOT_Tutorial_II_CPP.html) |
+[核物理与粒子物理实验方法](https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/)
 
 ## chapter 1. ROOT TTree 初阶
  - 1.1 [用TTree 结构存储事件数据](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.1_create_tree.html)
@@ -40,13 +32,13 @@
   
 ## chapter 3. DSSD 数据处理 
 
- - 3.1 [DSSD Energy Calibration](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.1_DSSD_energy_calibration_1.html)
+ - 3.1 [DSSD 能量刻度](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.1_DSSD_energy_calibration_1.html)
  - 3.2 [利用可变长数组存储数据- Hit结构](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.2_TTree_Branch_with_Dynamic_Array.html)
- - 3.3 [DSSD Inter-strip correlation](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.3_DSSD_interstrip_correlation.html)
- - 3.4 [DSSD front-back correlation (I)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.4_DSSD_FB_correlation_I_DSSD1-new.html)
- - 3.5 [DSSD front-back correlation (II)](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.5_DSSD_FB_correlation_II_DSSD1-new.html)
-    -  [Supplementary Note: Multi-path Calibration with Error Propagation](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.5_DSSD_FB_correlation_II_DSSD1_multi-path.html)
- - 3.6 [DSSD Multiplicity Event Analysis](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.6_DSSD_Multiplicity_Analysis.html)
+ - 3.3 [DSSD 相邻条关联](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.3_DSSD_interstrip_correlation.html)
+ - 3.4 [DSSD 正反面关联（I）：pixel-pixel 相对刻度](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.4_DSSD_FB_correlation_I_DSSD1-new.html)
+ - 3.5 [DSSD 正反面关联（II）：逐条归一](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.5_DSSD_FB_correlation_II_DSSD1-new.html)
+    -  [补充：多路径刻度与误差传播](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.5_DSSD_FB_correlation_II_DSSD1_multi-path.html)
+ - 3.6 [DSSD 多击事件分析](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.6_DSSD_Multiplicity_Analysis.html)
  - 3.7 [DSSD数据分析](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.7_DSSD_data_analysis.html)
  - 3.8* [用vector存储TTree数据](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt3/3.8_TTree_Branch_with_vector.html)
 
@@ -72,7 +64,3 @@
  - 6.2 [重离子和衰变事件的关联](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/5.2_Decay_analysis_II.html)
     - [Least Square 和 Likelihood fitting](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/fitting_LS_LH.html)
  - 参考文献 [gas-filled recoil separator, SHANS](./chapt5/SHANS.pdf)
-
----
-
-[核物理与粒子物理实验方法](https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/)

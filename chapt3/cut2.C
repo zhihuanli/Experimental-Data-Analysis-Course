@@ -2,7 +2,7 @@
 //========= Macro generated from object: cut2/Graph
 //========= by ROOT version6.18/04
    
-   cutg = new TCutG("cut2",7);
+   TCutG *cutg = new TCutG("cut2",7);
    cutg->SetVarX("re[13]");
    cutg->SetVarY("re[14]");
    cutg->SetTitle("Graph");
@@ -14,5 +14,4 @@
    cutg->SetPoint(4,40.6877,1012.63);
    cutg->SetPoint(5,34.957,1050.53);
    cutg->SetPoint(6,52.149,1092.63);
-   cutg->Draw("");
 }

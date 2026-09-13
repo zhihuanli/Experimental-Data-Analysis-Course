@@ -1,0 +1,37 @@
+/* The Methods course notebook layout: one column, code followed by output.
+   Scoped to reviewed lectures; the course homepage and legacy pages are unchanged. */
+body.lecture-review main { max-width: 1100px; margin: 0 auto; padding: 20px 22px 50px; }
+.lecture-review .jp-Cell { padding: 0; margin: 14px 0; }
+.lecture-review .jp-InputArea,
+.lecture-review .jp-MarkdownOutput,
+.lecture-review .jp-Cell-inputWrapper,
+.lecture-review .jp-Cell-outputWrapper,
+.lecture-review .jp-OutputArea-child { display: block; width: auto; min-width: 0; }
+.lecture-review .jp-InputPrompt,
+.lecture-review .jp-OutputPrompt,
+.lecture-review .jp-Collapser { display: none; }
+.lecture-review .jp-MarkdownOutput { padding: 0; font-size: 16px; line-height: 1.75; }
+.lecture-review .jp-MarkdownOutput p { margin: 0 0 0.85em; }
+.lecture-review .jp-MarkdownOutput h2 { margin-top: 1.5em; }
+.lecture-review .jp-MarkdownOutput h3 { margin-top: 1.2em; }
+.lecture-review .jp-InputArea-editor { display: block; overflow: auto; width: auto; }
+.lecture-review .jp-InputArea-editor pre,
+.lecture-review .jp-MarkdownOutput pre { white-space: pre; overflow-x: auto; font-size: 14px; line-height: 1.5; padding: 10px 12px; }
+.lecture-review .jp-OutputArea-output { min-width: 0; max-width: 100%; padding: 0; }
+.lecture-review .jp-OutputArea { margin: 10px 0 22px; }
+.lecture-review .jp-RenderedText pre { white-space: pre; word-break: normal; overflow-wrap: normal; overflow-x: auto; font-size: 13px; line-height: 1.45; }
+.lecture-review .jp-RenderedHTML { overflow-x: auto; }
+.lecture-review .jp-OutputArea-output img { display: block; max-width: 100%; height: auto; margin: 14px auto; }
+.lecture-review .jp-MarkdownOutput img { max-width: 100%; height: auto; }
+.lecture-review figure { margin: 1em 0; }
+.lecture-review figcaption { color: #555; font-size: 0.95em; line-height: 1.6; }
+.lecture-review .lecture-table-scroll { overflow-x: auto; margin: 1em 0; }
+.lecture-review table.lecture-table { width: 100%; table-layout: auto; margin: 0; font-size: 15px; border-collapse: collapse; }
+.lecture-review table.lecture-table > thead > tr > th,
+.lecture-review table.lecture-table > tbody > tr > td { text-align: left; vertical-align: top; padding: 10px 12px; line-height: 1.65; overflow-wrap: normal; word-break: normal; }
+.lecture-review table.lecture-table > thead > tr > th { border-bottom: 2px solid #ccc; }
+.lecture-review table.matching-table { table-layout: fixed; min-width: 740px; }
+@media(max-width:600px) {
+  body.lecture-review main { padding: 16px 12px 36px; }
+  .lecture-review .jp-MarkdownOutput { font-size: 15px; }
+}
