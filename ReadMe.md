@@ -73,5 +73,6 @@
     - [Least Square 和 Likelihood fitting](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt5/fitting_LS_LH.html)
  - 参考文献 [gas-filled recoil separator, SHANS](./chapt5/SHANS.pdf)
 
+---
 
-   
+[核物理与粒子物理实验方法](https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/)

@@ -1,4 +1,4 @@
-"""Share the methods-course header style without restyling lecture bodies."""
+"""Keep one course index and a shared banner, without section navigation."""
 from pathlib import Path
 from urllib.parse import urlparse, unquote
 import os
@@ -17,10 +17,7 @@ def header(prefix):
     return f'''<header class="course-banner"><div class="course-banner-inner">
 <a href="{prefix}index.html"><img src="{prefix}assets/images/course-logo.png" alt="课程标志"></a>
 <div class="course-banner-title"><a href="{prefix}index.html">核物理实验数据处理</a>
-<span class="course-banner-en">Experimental Data Analysis in Nuclear Physics</span></div></div></header>
-<nav class="course-nav" aria-label="课程导航"><div class="course-nav-inner">
-<a href="{prefix}index.html">课程主页</a><a href="{prefix}index.html#preparation">课前准备</a>
-<a href="{prefix}index.html#lectures">课程讲义</a><a href="{METHOD}">实验方法课程</a></div></nav>'''
+<span class="course-banner-en">Experimental Data Analysis in Nuclear Physics</span></div></div></header>'''
 
 body=mistune.create_markdown(plugins=['table'])((ROOT/'ReadMe.md').read_text())
 soup=BeautifulSoup(body,'html.parser')

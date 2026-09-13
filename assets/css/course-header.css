@@ -4,14 +4,11 @@
 .course-banner a,.course-banner a:visited{color:#fff;text-decoration:none}
 .course-banner-title{font-family:Georgia,"Noto Serif CJK SC",serif;font-size:25px;font-weight:700;line-height:1.4}
 .course-banner-en{display:block;color:#d7d9dd;font-size:14px;font-weight:400;line-height:1.6}
-.course-nav{background:#fff;border-bottom:1px solid #d9dce1;font-family:Arial,"Noto Sans CJK SC",sans-serif}
-.course-nav-inner{max-width:1180px;display:flex;flex-wrap:wrap;gap:0 26px;margin:auto;padding:0 20px}
-.course-nav a,.course-nav a:visited{font-size:15px;line-height:1.6;font-weight:600;padding:12px 0;color:#30343b;text-decoration:none}
-.course-nav a:hover{color:#9d1c2f}
 .course-home{max-width:1040px;padding:24px 28px 60px;margin:auto;line-height:1.75;font-family:Arial,"Noto Sans CJK SC",sans-serif;color:#24292f}
 .course-home h1{font-size:28px}.course-home h2{font-size:22px;margin-top:32px;border-bottom:1px solid #d9dce1;padding-bottom:8px}
 .course-home a{color:#0969da;text-decoration:none}.course-home a:hover{text-decoration:underline}
+.course-home hr{border:0;border-top:1px solid #d9dce1;margin:32px 0 18px}
 .verified-output{padding:8px 10px 18px;overflow:auto}.verified-output pre{white-space:pre-wrap;font-size:13px}
 .verified-output img{display:block;max-width:100%;height:auto;margin:10px auto}
 body.course-home-body{margin:0;background:white}
-@media(max-width:600px){.course-banner img{width:76px;height:76px}.course-banner-title{font-size:20px}.course-banner-en{font-size:12px}.course-nav-inner{gap:0 18px}.course-home{padding:18px}}
+@media(max-width:600px){.course-banner img{width:76px;height:76px}.course-banner-title{font-size:20px}.course-banner-en{font-size:12px}.course-home{padding:18px}}

@@ -53,6 +53,8 @@ for path in ROOT.glob('chapt[123]/coursework*.html'):
         assert BeautifulSoup(target.read_text(),'html.parser').find(id=url.fragment),(target,url.fragment)
 home=BeautifulSoup((ROOT/'index.html').read_text(),'html.parser')
 prefix='https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/'
+assert not home.select('.course-nav,nav'), 'The course index should not have section navigation'
+assert home.select_one('.course-home').find_all('a',href=True)[-1]['href']==prefix, 'Methods link should end the index'
 for link in home.select('a[href]'):
     if link['href'].startswith(prefix):
         target=ROOT.parent/'method'/unquote(link['href'][len(prefix):] or 'README.md')
