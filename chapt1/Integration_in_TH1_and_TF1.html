@@ -1,14 +1,10 @@
 <!DOCTYPE html>
+
 <html>
-<head><meta charset="utf-8" />
-
+<head><meta charset="utf-8"/>
 <title>Integration_in_TH1_and_TF1</title>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-
-
-
 <style type="text/css">
     /*!
 *
@@ -9129,15 +9125,15 @@ label {
 }
 /* Flexible box model classes */
 /* Taken from Alex Russell http://infrequently.org/2009/08/css-3-progress/ */
-/* This file is a compatability layer.  It allows the usage of flexible box 
+/* This file is a compatability layer.  It allows the usage of flexible box
 model layouts accross multiple browsers, including older browsers.  The newest,
 universal implementation of the flexible box model is used when available (see
-`Modern browsers` comments below).  Browsers that are known to implement this 
+`Modern browsers` comments below).  Browsers that are known to implement this
 new spec completely include:
 
     Firefox 28.0+
     Chrome 29.0+
-    Internet Explorer 11+ 
+    Internet Explorer 11+
     Opera 17.0+
 
 Browsers not listed, including Safari, are supported via the styling under the
@@ -12519,7 +12515,7 @@ div#pager .ui-resizable-handle {
   background: #f7f7f7;
   border-top: 1px solid #cfcfcf;
   border-bottom: 1px solid #cfcfcf;
-  /* This injects handle bars (a short, wide = symbol) for 
+  /* This injects handle bars (a short, wide = symbol) for
         the resize handle. */
 }
 div#pager .ui-resizable-handle::after {
@@ -13056,8 +13052,6 @@ margin: 0 auto;
 
 
     </style>
-
-
 <style type="text/css">
 /* Overrides of notebook CSS for static HTML export */
 body {
@@ -13072,26 +13066,23 @@ div#notebook {
   div.cell {
     display: block;
     page-break-inside: avoid;
-  } 
-  div.output_wrapper { 
-    display: block;
-    page-break-inside: avoid; 
   }
-  div.output { 
+  div.output_wrapper {
     display: block;
-    page-break-inside: avoid; 
+    page-break-inside: avoid;
+  }
+  div.output {
+    display: block;
+    page-break-inside: avoid;
   }
 }
 </style>
-
 <!-- Custom stylesheet, it must be in the same directory as the html file -->
-<link rel="stylesheet" href="custom.css">
-
 <!-- Loading mathjax macro -->
 <!-- Load mathjax -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_HTML"></script>
-    <!-- MathJax configuration -->
-    <script type="text/x-mathjax-config">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_HTML"></script>
+<!-- MathJax configuration -->
+<script type="text/x-mathjax-config">
     MathJax.Hub.Config({
         tex2jax: {
             inlineMath: [ ['$','$'], ["\\(","\\)"] ],
@@ -13108,116 +13099,85 @@ div#notebook {
         }
     });
     </script>
-    <!-- End of mathjax configuration --></head>
-<body>
-  <div tabindex="-1" id="notebook" class="border-box-sizing">
-    <div class="container" id="notebook-container">
+<!-- End of mathjax configuration --><link data-course-header="true" href="../assets/css/course-header.css" rel="stylesheet"/></head>
+<body><header class="course-banner"><div class="course-banner-inner">
+<a href="../index.html"><img alt="课程标志" src="../assets/images/course-logo.png"/></a>
+<div class="course-banner-title"><a href="../index.html">核物理实验数据处理</a>
+<span class="course-banner-en">Experimental Data Analysis in Nuclear Physics</span></div></div></header>
+<nav aria-label="课程导航" class="course-nav"><div class="course-nav-inner">
+<a href="../index.html">课程主页</a><a href="../index.html#preparation">课前准备</a>
+<a href="../index.html#lectures">课程讲义</a><a href="https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/">实验方法课程</a></div></nav>
 
+<div class="border-box-sizing" id="notebook" tabindex="-1">
+<div class="container" id="notebook-container">
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Integration-in-TH1-and-TF1">Integration in TH1 and TF1<a class="anchor-link" href="#Integration-in-TH1-and-TF1">&#182;</a></h2>
+<h2 id="Integration-in-TH1-and-TF1">Integration in TH1 and TF1</h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="c1">//%jsroot on</span>
+<div class="input_area">
+<div class="highlight hl-c++"><pre><span></span><span class="c1">//%jsroot on</span>
 <span class="k">auto</span> <span class="n">c1</span><span class="o">=</span><span class="k">new</span> <span class="n">TCanvas</span><span class="p">;</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Create-TH1">Create TH1<a class="anchor-link" href="#Create-TH1">&#182;</a></h4>
+<h4 id="Create-TH1">Create TH1</h4>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="n">TH1D</span> <span class="o">*</span> <span class="n">h</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TH1D</span><span class="p">(</span><span class="s">&quot;h&quot;</span><span class="p">,</span><span class="s">&quot;h&quot;</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">);</span>
+<div class="input_area">
+<div class="highlight hl-c++"><pre><span></span><span class="n">TH1D</span> <span class="o">*</span> <span class="n">h</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TH1D</span><span class="p">(</span><span class="s">"h"</span><span class="p">,</span><span class="s">"h"</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">);</span>
 <span class="n">Double_t</span> <span class="n">count</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mf">1.5</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mf">2.5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mf">3.5</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mf">2.5</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.5</span><span class="p">};</span>
 <span class="n">h</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="c1">//underflow</span>
 <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">12</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">h</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="n">i</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span><span class="n">count</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
 <span class="n">h</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="c1">//overflow</span>
 <span class="n">h</span><span class="o">-&gt;</span><span class="n">SetMinimum</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-<span class="n">h</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">&quot;hist&quot;</span><span class="p">);</span>
+<span class="n">h</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"hist"</span><span class="p">);</span>
 <span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAArgAAAHYCAIAAAApvgy/AAAABmJLR0QAAAAAAAD5Q7t/AAAbrElEQVR4nO3dYXqjOrouUHSfMy/k03PZwyigZ9E1l9PAyLg/1FFT2PJ2EmyDstaPehIb24JyrNeS+AjLsjQAALf8v3c3AAA4LkEBACgSFACAIkEBACgSFACAIkEBACgSFACAIkEBACgSFOCn6/s+xvjuVgAHJSjATzdN0zzP0zS9uyHAEQkKAECRoAAAFAkKwH9M0xRjDCHEGM1EAElw9Uj44WKM8zy3bTvP8/r2cRwtcgSMKABN0zTzPI/juCzLsixd1zVN0/f9uxsFvJ+gADRN03Rdl8cPUkTYDDAAP5OgADRN05hlAG4SFACAIkEBACgSFACAIkEBACgSFACAIkEBAChSmREAKDKiAAAUCQoAQJGgAAAUCQoAQJGgAAAU/c+7GwBAbUII724Cf+/B0x4FBQD259z7g3s8zJl6AACKBAUAoEhQAACKBAUAuC2E0Pf9u1vxZoICABRN0/TuJryZoAAAFAkKAHBP3/cxxh87DeEy0wDsLIRKOpdcbKBt23me0w91TEY8/n9Uyf8lAMdRWVDI+7L59dQe/z8y9QAARW3b3vz55xAUAIAiQQEAKBIUAIAiQQEAKBIUAICiSs5gyR6/wDYAz1NZ51Kfx0+P/J9nN+X1vDsB3st3tppUGBQAeDtZoRqCAgD7M7h7cI8nOYsZAYAiQQEAKBIUAHiRvu/DLTHG7zxtugb0Tm1kS1AA4EXSBZrbK48EhRBC3/dPbuDJ3Dlu0zR9M35lFjMC8FJ93+/VhyUpf/w0fd/P81y693K57PVCFY4o3BzXMioFcHD5S3CaoYgx5gSQbh+GIQ0qpLvSZs1V8kjPs3mG/DypRzj14ETa32EYShvsm8OapS717RHA6ZQ+itu2bZpmHMeb947jmPumtGXaeBzH/GvbtsufJ17mp01P0nXd9TPkVq1vT091Rvc78fVhvP8kj77cV9p4YIICwNvdDwrXuq5bPnq43H9vfs2bLR895eZp813rBJC3TAFiExp22dl3SXt0fXs6AqV715s9+EIVTj0AcGTXixnX9+ZJgfvj5zczR5poWE8r5AGGPKmRtsmdZWXSXMy+izbOvZgxhDCO486TMQA80y6LGW8+Q+ogr9fxpVULbdvO85zubdu2viWQKSGtpx52ceKgYH0iANe6rtvEiPRrHm+Ypmme58cvn3gK0zQNw5AGWqZpSjub/v1mLDvr1MOpF6wC8Ay5R4wf0skRzWoYIwWFNCVR36BCGjK5XC7pzMn08zef85QjCjk33TmFFIBjujn1sMvXv3wWZR5CyF+ym6aZ5zlFh/yFu6aZ6xjjetIhVVm4Hlz5glMGhcvl0rZt3/c7FpQA4DXmeb7+mvdIUBiGYRiG+/MFy7KEEHLvkNcirGcc0l15nWM11pkgxjjP8y7x63xBIefE0pDRF9Yu1DRNBd8Uwu93N+G/luWvdzeBPd0f6o8xLldFAtY/54dvNts87XrLTSGmm7dz38mWcvR9PwxDOtNhmqbL5bI566GyxSnweiH8Pkj3fJyW8Fk+io/v8f+jk40oXJ/6kn72jgSAZzhZUMi1MpqmSbNND152DAD4ghOPDpl6gGc4zoD/cVrCZ/koPr7H/4/OWkcBAHiBk009rF2vjwXgyNJZaV3XXZ+2l+5SlX9d4+H+ocjH8Ppg5otx73IwaxsdMt4F33ScAf/jtITPKn0U59PXN/emM9qaHx8UNqf3ly5IkWbe17fk47m5684lLUw9AHAaKSX8cGkYIF9KO1UfvtnN54s/5YtN50GFfCZgumuXmksVBoVQ8O52AfAfj/Refd+HEGKMm43TpSCv7+r7Pp0Zl+/dt83PltJS3qPrS2bn29e1mfu+zzWqN1ePXN/1LUtd6tsjeLGm+de7m/Afx2kJn1X6KG6apm3b1HvlG9N34vRv+pa8fAyJ536ubdv1xuu78lfw3K/ll8iPOoWu6/K+LMuS+vvrXUhHIG+zvmt9YDd3XXu8u6ytWxUU4JuO0z0fpyV81v2gcJ0JNjfeTBLprs1X3PWv6ef8tJsnOZ3N7mQ5A62DUemudfK4fv4HW1Lh1AMAR5ZGyNez75tpglRM7+b260705vz9+krTO7X31dKcS9M0d679OM/zOI7jOKalDOkQpUttre8ahmGH60J9MuIcXX17BC92nO/xx2kJn1X6KG4+vv7mr/t5IP162GBj8735uiNr/hyoXw/Rn0jeqdLcQdr99b35INy56+YLPdikE9dRAOCk0kWQp2kahuHmgru2bW9+FV5/1U6LFp/d1Fd6vJjEeoM0qHDzrl2YegDg1VIIyHWBrjeY5zl+aD7O+ktzDale03lnFkrSHi3L8kidpfW0S04J6YH3r+X9BYICAG+QvwdfjxykWYMYYypTmFJC7j5zR1hZVkhHI/4px4IQwjpXXS6XdHDSr+tqCpu78tmSX2bqAYA3SLMPN+cdUoc3DEMuMph6uxhjihd5xiH/uhRWNpxFTj/rSYTNvXmbZVlCCPngrEtij+N4uVzWd30/Tp3+4G7cma+qbE/hSY5TOPk4LeGz9uq581UPrm9s/hxpr2x04RF3dvyRY/L4/1GFQaGyPYIXO073fJyW8Fk+io/PtR4AgB0ICgBAkaAAABQJCgBAkaAAABSpowAAr5aKSz5ShLG5VZMqSYWVNvf+7aM+7cFrQpxFfXsEL3acSzEdpyV81p2P4k2hwPVlnO5LD7x5qaRNv5YuWv2Vdr/Q/X2/Lqd4Z8evb7n/qLzlg02tcOohFLy7XQA/Xa7H3HVd13WbMotN0+RCxTcfe//29sM8z8MwHLMEUxoA+NsuKR2E3M03H1e7WLt+knxNqTuP+oIKg8Kd9ATAG6V+a1mWvu/7vp+mKX11XoeDr13TqG3b6cOyLCku7Db2vp90wcy/3SwVt85Z57rQdWnX1o9KF4D4/jWiKgwKAJxFunxD/rn5uG5kuiVd2ejOMENJ6h3XXXJ+qnStqfyKqTddt2dzy776vn/ku+s4jnd2OaWNNCSzvr10be7venCK4izq2yN4seOsDDhOS/is0kdx7s9uzp3nbi9N3ucOe90dXj8wjUlcz/enR623WT9VWsSw3mZZlv/7v/9rmubXr19f2OXPutnmjXEcc4PXO54fu2n/5rH3e/nHu0sjCgC8SOq95nm+XC6bL/fNxzBAmkRommYYhtQdptmEz77W+pJRecojT0ykwYZfv341H0P0TdP885//bP4ch3i7fDHJm5fCKun7Pu3y968x3Zh6AOBlYozrL8o5MVxvmYbQ1wPpX54RSH3q+uG5r/3f//3f5iMfNB8rA772Ks+QDldONmkh5DzPXdel1RgpRmzCVgghZ6xdVnQKCgC8VBpIyF1gc2sBf97yy6+SL7WcxyfySXDrMYOcDP797383H2MM75UCwbr7T4Ep3zIMw+VyyWc0XC6XHH3yQML31zBmCi4B8AqpGxvHcd39p2/Adx7y5ayQB+1jjGnp3+ap0q+/fv36xz/+0XVd2j6NMbxXjDH19+tFnenXTY2mzfxCnmHZuUEPrmU4i/r2CF7sOEsIj9MSPqv0UdzcWsG37ozyBqnzW9dNSl/9H1zMmCYa8sM3T5Xu3TTgZtue5/rl1isTU3vSzt5ZllhasLlWqrn0eHdZ4YhCKZwuSikAvFUqbxBj3JQZvl5/kL43pzmCNH2QRwhuylUT8pbrcwXz6sX0VGkKPz/2169faZnCe+cd1ju4LEsIYV0u6W+XJea5hvsH6iseDBRnUd8ewYsd53v8cVrCZ935KL5eLbj+rr/pm9ab3R9RuPOcN193fVc6K/KA3cf44RlP/vj+hqWu79kh1LZH8GIh/F6Wv97diqY5Ukv4rL/9KN6c7Hd91/X0/PdbdedFf6DHu8vaulVBAb7pON3zcVrCZ/koPr7H/4+OdXpkulRGqsJR2mZzqSfBEACe50CLGWOMudhFup7YnbCzqQ0OwKG4Zm81jhIU0jrVrutyNa5UhWqTA9IM0+Y0XAAO5SfPO9Q37XKsqYfc/ZdywKbSFgDwVEcZUUgVrZumSfWr8wmvNzdej2hVFtwA4FCOEhSyXF/i5vU/8rU9ctGM60GeL0yMSRu8Vwi/390EgNsOFxSWZVkPKqwvHdb8eY2sXLdrs5RBr88ZOQ8QOKajrFFI4SD9nKt7/u1CBEsaAeCpDhQU1kWtSzaFE3as2AUAXDtKUEidfT6dIf2axxVCCOnndEGRtM31hT0AgH0dZY1CjLHrumEY1osZU1xYT0Ck5Qh5m7ZtnScJAM9zuLoQD84mXNdiSuqrdMFP4KIGNzksnFF93dBRRhSyBxccWJcAAC9wlDUKAMABHW5E4ftKBZcqGwsCgBeoMCgIBACwF1MPAECRoAAAFAkKAECRoAAAFAkKAECRoAAAFAkKAEBRhXUUFFwCgL1UGBQEAgDYi6kHAKBIUAAAigQFAKBIUAAAigQFAKBIUAAAigQFAKCowjoKCi4BwF4qDAoCAQDsxdQDAFAkKAAARYICAFAkKAAARYICAFAkKAAARYICAFBUYR0FBZcAYC8VBgWBAAD2YuoBACgSFACAolMGhb7vQwghhBjju9sCADU73xqFGOM8z23bNk0zz3MIwaIEAHiSk40oTNM0z3PXddM0TdPUdV268d3tAoA6nSwoJHnGwdQDADzVyaYeYoxpoiGNKAzD0IgLAPA0JwsK2eVyST+k2Ye1UsGlO6xy+JlC+P3uJvA3jvN/tCx/vbsJ8B5nDQrLsqwHFfq+X9/1tmZxNj79j+w4/zvHySvweidbo5DCQfo5xpjygcWMAPAk5wsKedIBAHi2kwWFtG4xxphGEdKv63kHAGBH5wsKXdfN83y5XEIIqaaCsx4A4EnOWtZwPaKwplAjjwvh93GWy3Fk3io8rr5u6KxnPRhFAIAXONnUAwDwSmcdUbijVHCpsrEgAHiBCoOCQAAAezH1AAAUCQoAQJGgAAAUCQoAQJGgAAAUCQoAQJGgAAAUVVhHQcElANhLhUFBIACAvZh6AACKBAUAoEhQAACKBAUAoEhQAACKBAUAoEhQAACKKqyjoOASAOylwqAgEADAXkw9AABFggIAUCQoAABFggIAUCQoAABFggIAUCQoAABFFdZRUHAJAPZSYVAQCABgL6YeAIAiQQEAKDpWUOj7PoQQQogxTtN0c5vwpxjjS5sIAD/JgdYoxBjneW7btmmaeZ4vl8s4jqUckDZLj3pVAwHgxzlQUEgpIQ8khBD6vt+MK6Rf7wQIAGBHR5l6SAmg7/v1jfM839zszsQEALCjo4woxBjXpzWmHNB13c2N15USnAwJAM8TDtjR9n0/DENzKwSkdQxd16VBhevNStWW7jvgQahVCL/f3YQ/LMtf724CJ+B9y+NCOGLH+h1HGVFIpmm6XC5N06wXK2w2yD+nZQrDMEzTtF6yUNn/UH18xnE6h3rTHi21UL2jrFFoVilhHMcHlyBY0ggAT3WgoHC5XNq2XZblTve/KZyQ1zY+u20A8DMdJSjk8x3iSrpxmqZ0qmTTNG3bzvOc8kFao5ALKgAAuzvKGoXU91+fD9n8uS4hLUdIMxRNeSkDALCLsy7O3CxgzOpbblqZEH4fal0YnI4/ooOrrxs6ytTDZ1mXAAAvcNagAAC8wFHWKOyoVHOpsrEgAHiBCoOCQAAAezH1AAAUCQoAQJGgAAAUCQoAQJGgAAAUCQoAQJGgAAAUVVhHQcElANhLhUFBIACAvZh6AACKBAUAoEhQAACKBAUAoEhQAACKBAUAoEhQAACKKqyjoOASAOylwqAgEADAXkw9AABFggIAUCQoAABFggIAUCQoAABFggIAUCQoAABFFdZRUHAJAPZSYVAQCABgL6YeAICiUwaFvu9DCCGEGOM0Te9uDgBU63xTDzHGeZ7btm2aZp7ny+UyjmOM8d3tAoAKnW9EIaWEaZqmaUrLEfq+f3ejAKBOJwsKaaJhkwzmeX5LYwCgeiebeogxrk9qSLmh67q3NQgAqhbOezJh3/fDMDR/ng9ZKqJw33kPwoNC+P3uJvzXsvz17ibAiflzPrgQTtyx3nSyEYVkmqbL5dI0TVqssLm3sv+hvfh7hjoc52/5UJGF5znZGoVmlRLGcXRuJAA81flGFC6Xy82BBABgdycLCvl8h3XhhBijMyQB4BlOFhTSQILzIQHgNU4ZFACA1zjfYkYA4GUEBQCg6GRTD48o1VxSXwEAPqvCoCAQAMBeTD0AAEWCAgBQJCgAAEWCAgBQJCgAAEWCAgBQJCgAAEUV1lFQcAkA9lJhUBAIAGAvph4AgCJBAQAoEhQAgCJBAQAoEhQAgCJBAQAoEhQAgKIK6ygouAQAe6kwKAgEALAXUw8AQJGgAAAUCQoAQJGgAAAUCQoAQJGgAAAUCQoAQFGFdRQUXAKAvVQYFAQCANiLqQcAoEhQAACKjhgUQgjTNN25dy3G+LqWAcAPc7g1Cn3fP7JZ27bpB0EBAJ7nQEGh7/thGO5vk0YaxnGUDwDgBQ409RBj7LouDxXclIJCjPHO3AQAsJcDjSjEGFMCuFwu97dcV0pwMiQAPM+BgsIj0kBC13UpUgzDEELYZIVSwaU7npQ2Qvj9jKcFgJc5ZVBI0jKFYRimaVovWTjUGMOy/PXuJgDA1x1ojcIXWNIIAE91sqCwKZyQ1za+qTkAULkTBIVpmkIIqb5C27bzPKd8kNYo3D9LAgD4jhOsUVivS0jLEfJpEW3bOk8SAJ5ne8rAWWwWMGbXJ0G8UQi/LWYEauUj7qZDdUO7OMHUw03WJQDAC5w1KAAAL3CCNQqfVSq4VNlYEAC8QIVBQSAAgL2YegAAigQFAKBIUAAAigQFAKBIUAAAigQFAKBIUAAAiiqso6DgEgDspcKgIBAAwF5MPQAARYICAFAkKAAARYICAFAkKAAARYICAFAkKAAARRXWUVBwCQD2UmFQEAgAYC+mHgCAIkEBACgSFACAIkEBACgSFACAIkEBACgSFACAogrrKCi4BAB7qTAoCAQAsBdTDwBAkaAAABSdPiiEEKZpencrAKBO5w4Kfd+/uwkAULOzLmbs+34Yhne3AgAqd9agEGNsmmaapnme390WAKjWiYNCjHGapsvl8u62AEC1zhoU7igVXLrrX/u3A6B2Ifx+dxP+a1n+encT6lRhUFBwCeAFDtUxHyqyVObcZz0AAE8lKAAARYICAFAkKAAARedezBhjtHQRAJ7HiAIAUCQoAABF5556uKlUcMkkBQB8VoVBQSAAgL2YegAAigQFAKBIUAAAigQFAKBIUAAAigQFAKBIUAAAiiqso6DgEgDspcKgIBAAwF5MPQAARYICAFAkKAAARYICAFAkKAAARYICAFAkKAAARRXWUVBwCQD2UmFQEAgAYC+mHgCAIkEBACgSFACAIkEBACgSFACAIkEBACgSFACAogrrKCi4BAB7qTAoCAQAsBdTDwBAkaAAABQdKyj0fR9CCCHEGEvbhD/d2RIA+KYDrVHo+34YhrZtm6aZ5znGOE1TaeO0WdM0ggIAPM+BgkJKCSkcpNBwvU26dxxH+QAAXuAoUw85H6Rf0w/5181m9wcbAIC9HGhE4VopDawrJTgZEgCe5yhBIQ8VPLJZ13VpUGEYhhDCJiuUCi7dIW0AnF0Iv9/dhORf727Azo4SFJJpmu5nhfUYQ9pyGIbNo/T6AD/Nsvz17ib8RwihaY7SmF0cZY3CzXzwtwMMljQCwFMdKyjkAYPSTMSmcMKDExYAwNccJSg0TdO2bZpHaJrmcrk0q/QQQkhnQLRtO89z2iatUcgFFQCA3R1ojUIKBCkiNE0zjmO+fb1NjDFvk+suAADPsD1l4O0eP/3h5jbXJ0EAwMvU1w1Vtz/V/Q8BcCL1dUMHWqMAABzNgdYo7KVUcKmyiAcAL1BhUBAIAGAvph4AgCJBAQAoEhQAgCJBAQAoEhQAgCJBAQAoEhQAgKIK6ygouAQAe6kwKAgEALAXUw8AQJGgAAAUCQoAQJGgAAAUCQoAQJGgAAAUCQoAQFGFdRQUXAKAvVQYFAQCANiLqQcAoEhQAACKBAUAoEhQAACKBAUAoEhQ+BFKp4z+cA7LTQ7LNcfkJoflhxAUAICiCusoKLgEAHupMCgIBACwF1MPAECRoAAAFJ0yKPR9H0IIIcQY93rOry3f/fKi3xe/3Ne8eO++/MC6D8vr/xde/HIOy16PessDX/lyZ3mP1ed8QaHv+2EY2rZt23ae5x2zAgCwEU639C+E0LbtNE3NR2hY70IIX9yjrz3Qyx3hgV7uCA/0cud9uS8/0Mvt+8DDOtmIQs4H6df0Q/4VANjXyYLCTSk9AAC7O1kdhZQJ7q9LOMuCFy+34wO93BEe6OXO+3JffqCX+wlOFhSSaZpKWaGymSEAeK+TTT3czAdOfACAJzllUMiLEh6ZiQAAvux8Z3HEGOd5HscxxpgmkE63CwBwFicbUWg+RhEul0tKCeM4ptufUa6xJiEEp4dk63eLw5L5I7rDX1CW3yeZI5Ok9XP1/QWdcjHjsiybSYdcrrFpmlSu0Rt3TamJtTQold8tl8slDVC9u11vtjks9RWN+Q6r39fSp2t6q5BN03S5XJqmSVWDq/oLWqrQNE3btunnruuq2a/vS0cjGcfx3c05hPW75frXnymNzHVdl35NbxtvmCT/ETkgiT+Zm9aHZfMHdXbnm3q4plzjHTHGrutk/2zzbknmeX5LY44mD6sYX8mmacqjlWwYuM02HywxxmVZqumGaggKN3kHJzHGvu+reb9+X/oDzh1hep+sx11+pnxYpmnq+z6NoIoLTdNcLpe2bf0FbaSh9bRWzMHJal2jUENQcJIkX5N7RJ902eVyGYahEZ6aprk6H5tmdTTGcRzHsW3bYRgconQE0t9OXqPw5jbtp4agkHin8rhpmkIIaUh5qWbB0R6WZRnHseu6YRh+eH7q+z6dif3uhhxLGnxK40952fgPf6tkXddN0zRNU/pUqebraw1BQblGPiUvTh7HUb5M0qdb+jlNVzU/Pnyvz8ROb5h8VjYbVvmkHmfT71RzWOoJCso18qA067xeqUAOT2R933cf0mLGtm3NyKQiCpsbLfa8OUtVz2F5y7kWu0v/H+nkpZr2ay9p+NTJXcvHqW7tn6o5i+nL0jukbdv0Jln/QbH4C1pZv1XSGgVHJlkfisoOyykLLl1LU875K5FpRUpS5K9mSHAv6TTaYRjyH1HXdUZcuBZjHMfxcrl4q2xsuqGaDktFpaNMOsC3+SPiQd4qN1V5WKoKCgDAvmpYzAgAPImgAAAUCQoAQJGgAAAUCQoAQJGgAAAUCQoAQJGgAAAUCQoAQJGgAAAUCQoAQJGgAAAUCQoAQJGgAAAUCQoAQJGgAAAUCQoAQJGgAAAUCQoAQJGgAAAUCQoAQJGgAAAUCQoAQJGgAAAUCQoAQJGgAAAUCQoAQJGgAAAUCQoAQJGgAAAU/X80m95kUp5W1wAAAABJRU5ErkJggg==
-"
->
 </div>
-
-</div>
-
-</div>
-</div>
-
-</div>
+<div class="verified-output"><pre>input_line_46:3:1: warning: 'count' shadows a declaration with the same name in the 'std' namespace; use '::count' to reference this declaration
+Double_t count[12]={1,1.5,2,2.5,3,3.5,4,3,2.5,2,1,0.5};
+^</pre><img alt="Integration_in_TH1_and_TF1: cell 3, c1" src="figures/Integration_in_TH1_and_TF1/cell_03_c1.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="For-all-histogram-types:-nbins,-xlow,-xup">For all histogram types: nbins, xlow, xup<a class="anchor-link" href="#For-all-histogram-types:-nbins,-xlow,-xup">&#182;</a></h3><div class="highlight"><pre><span></span><span class="n">bin</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">underflow</span> <span class="n">bin</span>
+<h3 id="For-all-histogram-types:-nbins,-xlow,-xup">For all histogram types: nbins, xlow, xup</h3><div class="highlight"><pre><span></span><span class="n">bin</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">underflow</span> <span class="n">bin</span>
 <span class="n">bin</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">first</span> <span class="n">bin</span> <span class="n">with</span> <span class="n">low</span><span class="o">-</span><span class="n">edge</span> <span class="n">xlow</span> <span class="n">INCLUDED</span>
 <span class="n">bin</span> <span class="o">=</span> <span class="n">nbins</span><span class="p">;</span> <span class="n">last</span> <span class="n">bin</span> <span class="n">with</span> <span class="n">upper</span><span class="o">-</span><span class="n">edge</span> <span class="n">xup</span> <span class="n">EXCLUDED</span>
 <span class="n">bin</span> <span class="o">=</span> <span class="n">nbins</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span> <span class="n">overflow</span> <span class="n">bin</span>
 </pre></div>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="n">h</span><span class="o">-&gt;</span><span class="n">Print</span><span class="p">(</span><span class="s">&quot;all&quot;</span><span class="p">);</span>
+<div class="input_area">
+<div class="highlight hl-c++"><pre><span></span><span class="n">h</span><span class="o">-&gt;</span><span class="n">Print</span><span class="p">(</span><span class="s">"all"</span><span class="p">);</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>TH1.Print Name  = h, Entries= 14, Total sum= 26.5
+</div>
+<div class="verified-output"><pre>TH1.Print Name  = h, Entries= 14, Total sum= 26.5
  fSumw[0]=1, x=-0.25, error=1
  fSumw[1]=1, x=0.25, error=1
  fSumw[2]=1.5, x=0.75, error=1.5
@@ -13231,121 +13191,68 @@ div#notebook {
  fSumw[10]=2, x=4.75, error=2
  fSumw[11]=1, x=5.25, error=1
  fSumw[12]=0.5, x=5.75, error=0.5
- fSumw[13]=2, x=6.25, error=2
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
+ fSumw[13]=2, x=6.25, error=2</pre></div></div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="1.-Edge-and-content-of-a-bin-in-TH1">1. Edge and content of a bin in TH1<a class="anchor-link" href="#1.-Edge-and-content-of-a-bin-in-TH1">&#182;</a></h3>
+<h3 id="1.-Edge-and-content-of-a-bin-in-TH1">1. Edge and content of a bin in TH1</h3>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="n">Double_t</span> <span class="n">bin7cen</span><span class="o">=</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinCenter</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
+<div class="input_area">
+<div class="highlight hl-c++"><pre><span></span><span class="n">Double_t</span> <span class="n">bin7cen</span><span class="o">=</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinCenter</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
 <span class="n">Double_t</span> <span class="n">bin7con</span><span class="o">=</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinContent</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
 <span class="n">Double_t</span> <span class="n">bin7low</span><span class="o">=</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinLowEdge</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
 <span class="n">Double_t</span> <span class="n">bin7width</span><span class="o">=</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinWidth</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
-<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;GetBinCenter(7)=&quot;</span><span class="o">&lt;&lt;</span><span class="n">bin7cen</span><span class="o">&lt;&lt;</span><span class="s">&quot;; GetBinContent(7)=&quot;</span><span class="o">&lt;&lt;</span><span class="n">bin7con</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;GetBinLowEdge(7)=&quot;</span><span class="o">&lt;&lt;</span><span class="n">bin7low</span><span class="o">&lt;&lt;</span><span class="s">&quot;; GetBinWidth(7)=&quot;</span><span class="o">&lt;&lt;</span><span class="n">bin7width</span><span class="o">&lt;&lt;</span><span class="s">&quot;; BinUpperEdge(7)=&quot;</span><span class="o">&lt;&lt;</span><span class="n">bin7low</span><span class="o">+</span><span class="n">bin7width</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">"GetBinCenter(7)="</span><span class="o">&lt;&lt;</span><span class="n">bin7cen</span><span class="o">&lt;&lt;</span><span class="s">"; GetBinContent(7)="</span><span class="o">&lt;&lt;</span><span class="n">bin7con</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">"GetBinLowEdge(7)="</span><span class="o">&lt;&lt;</span><span class="n">bin7low</span><span class="o">&lt;&lt;</span><span class="s">"; GetBinWidth(7)="</span><span class="o">&lt;&lt;</span><span class="n">bin7width</span><span class="o">&lt;&lt;</span><span class="s">"; BinUpperEdge(7)="</span><span class="o">&lt;&lt;</span><span class="n">bin7low</span><span class="o">+</span><span class="n">bin7width</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>GetBinCenter(7)=3.25; GetBinContent(7)=4
-GetBinLowEdge(7)=3; GetBinWidth(7)=0.5; BinUpperEdge(7)=3.5
-</pre>
 </div>
-</div>
-
-</div>
-</div>
-
-</div>
+<div class="verified-output"><pre>GetBinCenter(7)=3.25; GetBinContent(7)=4
+GetBinLowEdge(7)=3; GetBinWidth(7)=0.5; BinUpperEdge(7)=3.5</pre></div></div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Create-TF1">Create TF1<a class="anchor-link" href="#Create-TF1">&#182;</a></h4>
+<h4 id="Create-TF1">Create TF1</h4>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="n">TF1</span> <span class="o">*</span> <span class="n">f</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TF1</span><span class="p">(</span><span class="s">&quot;f&quot;</span><span class="p">,</span><span class="s">&quot;pol1&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">);</span>
+<div class="input_area">
+<div class="highlight hl-c++"><pre><span></span><span class="n">TF1</span> <span class="o">*</span> <span class="n">f</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TF1</span><span class="p">(</span><span class="s">"f"</span><span class="p">,</span><span class="s">"pol1"</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">);</span>
 <span class="n">f</span><span class="o">-&gt;</span><span class="n">SetParameters</span><span class="p">(</span><span class="mf">0.75</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
-<span class="n">h</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">&quot;hist&quot;</span><span class="p">);</span>
-<span class="n">f</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">&quot;same&quot;</span><span class="p">);</span>
+<span class="n">h</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"hist"</span><span class="p">);</span>
+<span class="n">f</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"same"</span><span class="p">);</span>
 <span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
-<img src="data:image/png;base64,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
-"
->
 </div>
-
-</div>
-
-</div>
-</div>
-
-</div>
+<div class="verified-output"><img alt="Integration_in_TH1_and_TF1: cell 9, c1" src="figures/Integration_in_TH1_and_TF1/cell_09_c1.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="2.-Integration-in-TH1-&amp;-TF1">2. Integration in TH1 &amp; TF1<a class="anchor-link" href="#2.-Integration-in-TH1-&amp;-TF1">&#182;</a></h3><ol>
+<h3 id="2.-Integration-in-TH1-&amp;-TF1">2. Integration in TH1 &amp; TF1</h3><ol>
 <li>bin(TH1)-&gt;x(TF1)</li>
 </ol>
-
-</div>
+<p>TH1::Integral 累加 bin content；TF1::Integral 积分连续函数。只有当函数表示“每个等宽 bin 的期望计数”时，后者才除以 bin width 来换算计数。若函数本来是计数密度，直接积分；变宽 bin 应逐 bin 处理。此例只比较积分定义，不是从这些点拟合得到 f。</p></div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="kt">int</span> <span class="n">bin1</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+<div class="input_area">
+<div class="highlight hl-c++"><pre><span></span><span class="kt">int</span> <span class="n">bin1</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
 <span class="kt">int</span> <span class="n">bin2</span><span class="o">=</span><span class="mi">7</span><span class="p">;</span>
 <span class="n">Double_t</span> <span class="n">sumH</span><span class="o">=</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="n">bin1</span><span class="p">,</span><span class="n">bin2</span><span class="p">);</span>
 
@@ -13353,34 +13260,14 @@ GetBinLowEdge(7)=3; GetBinWidth(7)=0.5; BinUpperEdge(7)=3.5
 <span class="n">Double_t</span> <span class="n">x2</span><span class="o">=</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinLowEdge</span><span class="p">(</span><span class="n">bin2</span><span class="p">)</span><span class="o">+</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinWidth</span><span class="p">(</span><span class="n">bin2</span><span class="p">);</span>
 <span class="n">Double_t</span> <span class="n">sumF</span><span class="o">=</span><span class="n">f</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">)</span><span class="o">/</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinWidth</span><span class="p">(</span><span class="n">bin2</span><span class="p">);</span><span class="c1">//!!!!!!!!!</span>
 
-<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Integraion in TH1: &quot;</span><span class="o">&lt;&lt;</span><span class="n">bin1</span><span class="o">&lt;&lt;</span><span class="s">&quot;-&quot;</span><span class="o">&lt;&lt;</span><span class="n">bin2</span><span class="o">&lt;&lt;</span><span class="s">&quot;   &quot;</span><span class="o">&lt;&lt;</span><span class="n">sumH</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Integraion in TF1: &quot;</span><span class="o">&lt;&lt;</span><span class="n">x1</span><span class="o">&lt;&lt;</span><span class="s">&quot;-&quot;</span><span class="o">&lt;&lt;</span><span class="n">x2</span><span class="o">&lt;&lt;</span><span class="s">&quot; &quot;</span><span class="o">&lt;&lt;</span><span class="n">sumF</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">"Integraion in TH1: "</span><span class="o">&lt;&lt;</span><span class="n">bin1</span><span class="o">&lt;&lt;</span><span class="s">"-"</span><span class="o">&lt;&lt;</span><span class="n">bin2</span><span class="o">&lt;&lt;</span><span class="s">"   "</span><span class="o">&lt;&lt;</span><span class="n">sumH</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">"Integraion in TF1: "</span><span class="o">&lt;&lt;</span><span class="n">x1</span><span class="o">&lt;&lt;</span><span class="s">"-"</span><span class="o">&lt;&lt;</span><span class="n">x2</span><span class="o">&lt;&lt;</span><span class="s">" "</span><span class="o">&lt;&lt;</span><span class="n">sumF</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Integraion in TH1: 1-7   17.5
-Integraion in TF1: 0-3.5 17.5
-</pre>
 </div>
-</div>
-
-</div>
-</div>
-
-</div>
+<div class="verified-output"><pre>Integraion in TH1: 1-7   17.5
+Integraion in TF1: 0-3.5 17.5</pre></div></div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -13390,16 +13277,15 @@ Integraion in TF1: 0-3.5 17.5
 <ul>
 <li>x-&gt;Bin-&gt;fx</li>
 </ul>
-
-</div>
+<p>这里把任意 x 区间扩展到完整 bin 的外边缘。FindBin 返回包含 x 的 bin；恰在边界时需先决定采用闭区间还是半开区间，不默认取部分 bin 计数。</p></div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="n">Double_t</span> <span class="n">x1</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<div class="input_area">
+<div class="highlight hl-c++"><pre><span></span><span class="n">Double_t</span> <span class="n">x1</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
 <span class="n">Double_t</span> <span class="n">x2</span><span class="o">=</span><span class="mf">3.4</span><span class="p">;</span>
 <span class="kt">int</span> <span class="n">bin1</span><span class="o">=</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">FindBin</span><span class="p">(</span><span class="n">x1</span><span class="p">);</span>
 <span class="kt">int</span> <span class="n">bin2</span><span class="o">=</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">FindBin</span><span class="p">(</span><span class="n">x2</span><span class="p">);</span>
@@ -13407,54 +13293,28 @@ Integraion in TF1: 0-3.5 17.5
 <span class="kt">double</span> <span class="n">fx2</span><span class="o">=</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinLowEdge</span><span class="p">(</span><span class="n">bin2</span><span class="p">)</span><span class="o">+</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinWidth</span><span class="p">(</span><span class="n">bin2</span><span class="p">);</span>
 <span class="n">Double_t</span> <span class="n">sumF</span><span class="o">=</span><span class="n">f</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="n">fx1</span><span class="p">,</span><span class="n">fx2</span><span class="p">)</span><span class="o">/</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinWidth</span><span class="p">(</span><span class="n">bin2</span><span class="p">);</span>
 <span class="n">Double_t</span> <span class="n">sumH</span><span class="o">=</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="n">bin1</span><span class="p">,</span><span class="n">bin2</span><span class="p">);</span>
-<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Original xrange:   &quot;</span><span class="o">&lt;&lt;</span><span class="n">x1</span><span class="o">&lt;&lt;</span><span class="s">&quot;-&quot;</span><span class="o">&lt;&lt;</span><span class="n">x2</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Integraion in TF1: &quot;</span><span class="o">&lt;&lt;</span><span class="n">fx1</span><span class="o">&lt;&lt;</span><span class="s">&quot;-&quot;</span><span class="o">&lt;&lt;</span><span class="n">fx2</span><span class="o">&lt;&lt;</span><span class="s">&quot; &quot;</span><span class="o">&lt;&lt;</span><span class="n">sumF</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Integraion in TH1: &quot;</span><span class="o">&lt;&lt;</span><span class="n">bin1</span><span class="o">&lt;&lt;</span><span class="s">&quot;-&quot;</span><span class="o">&lt;&lt;</span><span class="n">bin2</span><span class="o">&lt;&lt;</span><span class="s">&quot;   &quot;</span><span class="o">&lt;&lt;</span><span class="n">sumH</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">"Original xrange:   "</span><span class="o">&lt;&lt;</span><span class="n">x1</span><span class="o">&lt;&lt;</span><span class="s">"-"</span><span class="o">&lt;&lt;</span><span class="n">x2</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">"Integraion in TF1: "</span><span class="o">&lt;&lt;</span><span class="n">fx1</span><span class="o">&lt;&lt;</span><span class="s">"-"</span><span class="o">&lt;&lt;</span><span class="n">fx2</span><span class="o">&lt;&lt;</span><span class="s">" "</span><span class="o">&lt;&lt;</span><span class="n">sumF</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">"Integraion in TH1: "</span><span class="o">&lt;&lt;</span><span class="n">bin1</span><span class="o">&lt;&lt;</span><span class="s">"-"</span><span class="o">&lt;&lt;</span><span class="n">bin2</span><span class="o">&lt;&lt;</span><span class="s">"   "</span><span class="o">&lt;&lt;</span><span class="n">sumH</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Original xrange:   0-3.4
+</div>
+<div class="verified-output"><pre>Original xrange:   0-3.4
 Integraion in TF1: 0-3.5 17.5
-Integraion in TH1: 1-7   17.5
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
+Integraion in TH1: 1-7   17.5</pre></div></div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span>
+<div class="input_area">
+<div class="highlight hl-c++"><pre><span></span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
 </div>
-    </div>
-  </div>
+</div>
+</div>
+</div>
 </body>
-
- 
-
-
 </html>

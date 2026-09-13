@@ -1,0 +1,14 @@
+.DS_Store
+**/.ipynb_checkpoints/
+/materials/
+/work/
+__pycache__/
+*.so
+*.dylib
+*.pcm
+*.d
+*.root
+*.o
+**/LinkDict.cc
+**/dssd
+**/tracking

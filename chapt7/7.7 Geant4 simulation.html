@@ -7838,8 +7838,15 @@ a.anchor-link {
 .chapter-result img {display:block;max-width:min(100%,820px);height:auto;margin:12px 0}
 .chapter-result pre {white-space:pre-wrap}
 .chapter-result {margin:12px 4%;line-height:1.6}
-</style></head>
-<body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
+</style><link data-course-header="true" href="../assets/css/course-header.css" rel="stylesheet"/></head>
+<body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light"><header class="course-banner"><div class="course-banner-inner">
+<a href="../index.html"><img alt="课程标志" src="../assets/images/course-logo.png"/></a>
+<div class="course-banner-title"><a href="../index.html">核物理实验数据处理</a>
+<span class="course-banner-en">Experimental Data Analysis in Nuclear Physics</span></div></div></header>
+<nav aria-label="课程导航" class="course-nav"><div class="course-nav-inner">
+<a href="../index.html">课程主页</a><a href="../index.html#preparation">课前准备</a>
+<a href="../index.html#lectures">课程讲义</a><a href="https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/">实验方法课程</a></div></nav>
+
 <main>
 <nav class="chapter-nav"><a href="../">课程主页</a> · <a href="7.6 Invariant mass reconstruction.html">上一节：4.6</a></nav><div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a59786dc-7168-49d8-8ff2-d35b85ad9fdc">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -7854,24 +7861,19 @@ a.anchor-link {
 $$\frac{d\sigma}{d\Omega^*}\propto\exp(-\theta^*/\alpha).$$
 下面以 $\alpha=53^\circ$ 为<strong>演示参数</strong>，不将其当作由所引文献确定的实验截面。第二步仍采用各向同性近似，不包含自旋关联。</p>
 <p>几何背景参见 <a href="https://www.nature.com/articles/s42005-023-01342-6#Sec9">Han et al., <em>Communications Physics</em> <strong>6</strong>, 220 (2023), Methods</a>。</p>
-
 <p>这里需要强调，Geant4 内部并不具备本实验所需的专用反应机制。Geant4 可以处理粒子在材料中的输运，但不会自动产生“指定 $^{14}\mathrm C^\ast$ 激发态、指定分支比、指定角分布、再顺序衰变”的信号事件。因此，本节采用如下近似方法：</p>
 <p>首先，在 <code>PrimaryGeneratorAction</code> 中由用户自定义信号反应发生器，生成该事件的真值四动量；然后，将生成的反冲质子、$\alpha$ 和 $^{10}\mathrm{Be}$ 作为 primary 交给 Geant4；最后，由 Geant4 处理这些粒子在靶、死层和探测器中的真实输运与能量沉积。</p>
 <p>可复用 4.4 中“给定初态与各核质量，生成一次级联衰变”的部分。不要把 <code>Simulation()</code> 连同读出展宽一起搬入 <code>PrimaryGeneratorAction</code>：本节的能量沉积已经由 Geant4 产生，读出展宽应只在后续通道整理时施加一次。若改用了经验散射角抽样，就替换第一步各向同性方向，不要再叠加一套互不相容的方向抽样。</p>
-
 <hr/>
 <h2 id="3-%E6%9D%9F%E6%B5%81%E3%80%81%E9%9D%B6%E5%92%8C%E6%8E%A2%E6%B5%8B%E5%99%A8%E5%87%A0%E4%BD%95">3 束流、靶和探测器几何<a class="anchor-link" href="#3-%E6%9D%9F%E6%B5%81%E3%80%81%E9%9D%B6%E5%92%8C%E6%8E%A2%E6%B5%8B%E5%99%A8%E5%87%A0%E4%BD%95">¶</a></h2><p>PPAC 数据提供束流位置与方向的相关分布。若输入树中保存的是已重建的实验轨迹，抽样这些记录已经包含测量分辨，不再额外叠加同一 PPAC 分辨。若从理想束流真值生成 PPAC 读数，才需要加入独立规定的测量误差；例如可用 $\sigma_x=\sigma_y=0.65$ mm 作教学假设，但本节不把它当作已验证的实测参数。</p>
 <p>本例的 <code>x,y</code> 定义在靶中心平面，单位 mm；<code>tx,ty</code> 是无量纲斜率。读取实验文件时先核对其参考平面和单位。保持同一条轨迹的四个量一起抽样，才能保留束斑与发散角的相关性。</p>
-
 <p>实验使用多种靶条件，包括 $(\mathrm{CH}_2)_n$、$(\mathrm{CD}_2)_n$、C 靶和空靶。束流能量按高斯分布处理。若某种靶条件下束流均值为 $E_0$，FWHM 为 $\Delta E$，则高斯标准差应写为
 $$
 \sigma_E=\frac{\Delta E}{2.355} .
 $$
 在程序中，应使用 $\sigma_E$ 进行随机抽样，而不能直接把 FWHM 当作高斯标准差。</p>
 <p>文献中的前向 $T_0$ 包含三层 1000 μm 的 BB7 DSSD、三层 SSD 和 $2\times2$ CsI(Tl)。下面仅示范三层 DSSD 的构造：有效面积取 $64\times64$ mm²、每面 32 条，条带间距 2 mm。层间距、死层及后级 SSD/CsI 的具体尺寸必须从实验几何补齐，不能据这段简化代码计算整套装置的效率。</p>
-
 <p>文献中侧向望远镜中心角约为 $30.8^\circ$ 和 $68.5^\circ$，距靶约 170 mm。$T_{1x}$ 包含 50 μm W1 与 300 μm BB7 两层 DSSD，$T_{2x}$ 的 DSSD 为 65 μm BB7；二者均有后续探测器。这里的 $T_1,T_2$ 只表示两类侧向位置，不应误认为完整实验只有两个侧向模块。</p>
-
 <hr/>
 <h2 id="4-%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84">4 程序结构<a class="anchor-link" href="#4-%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84">¶</a></h2><p>建议程序按如下结构组织：</p>
 <div class="highlight"><pre><span></span>project/
@@ -8005,7 +8007,6 @@ $$
 <span class="n">nBeamEntries</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fBeamTree</span><span class="o">-&gt;</span><span class="n">GetEntries</span><span class="p">();</span>
 </pre></div>
 <p>逐事件读取同一条束流记录，位置乘以单位 mm，能量沿用本练习的 Gaussian 输入：</p>
-
 <div class="highlight"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">PrimaryGeneratorAction::SampleBeam</span><span class="p">(</span><span class="kt">double</span><span class="o">&amp;</span><span class="w"> </span><span class="n">x</span><span class="p">,</span>
 <span class="w">                                        </span><span class="kt">double</span><span class="o">&amp;</span><span class="w"> </span><span class="n">y</span><span class="p">,</span>
 <span class="w">                                        </span><span class="kt">double</span><span class="o">&amp;</span><span class="w"> </span><span class="n">tx</span><span class="p">,</span>
@@ -8038,13 +8039,11 @@ $$
 <span class="n">dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dir</span><span class="p">.</span><span class="n">unit</span><span class="p">();</span>
 </pre></div>
 <h3 id="2.-%E5%8F%8D%E5%BA%94%E7%82%B9%E6%8A%BD%E6%A0%B7">2. 反应点抽样<a class="anchor-link" href="#2.-%E5%8F%8D%E5%BA%94%E7%82%B9%E6%8A%BD%E6%A0%B7">¶</a></h3><p>薄靶、反应概率和束流衰减沿深度变化可忽略时，可在靶厚内均匀抽取 $z$。厚靶反应概率可能随能量改变，不能总作均匀假设。给定一条在 $z=0$ 平面记录的轨迹，反应点应满足 $x_v=x_0+t_xz_v$、$y_v=y_0+t_yz_v$，并检查仍位于靶内。</p>
-
 <p>设入射能量为 $E_{\mathrm{in}}$，入射前在靶中走过的路径长度为 $\ell_{\mathrm{in}}$，则反应点处的能量写为
 $$
 E_{\mathrm{reaction}} = E_{\mathrm{in}} - \left(\frac{dE}{dx}\right)\ell_{\mathrm{in}} .
 $$</p>
 <p>下面用 <code>G4EmCalculator</code> 查询已初始化物理表中的平均阻止本领，作薄靶的一步近似；若沿路径能量变化明显，应分段更新 $dE/dx$ 或实际输运入射束流。这段估计不产生能量歧离。若入射束流已被 Geant4 跟踪到反应点，就直接使用该处动能，不再重复扣除这段能损。</p>
-
 <div class="highlight"><pre><span></span><span class="n">G4EmCalculator</span><span class="w"> </span><span class="n">emCal</span><span class="p">;</span>
 
 <span class="k">auto</span><span class="w"> </span><span class="n">ionTable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">G4IonTable</span><span class="o">::</span><span class="n">GetIonTable</span><span class="p">();</span>
@@ -8169,7 +8168,6 @@ $$
 </pre></div>
 <p>上述分量是实验室系的动量，单位需与 Geant4 一致。若复用 4.4 的 GeV 数值，先乘 <code>GeV</code>；不要将 ROOT 中裸数值的 GeV 当成 Geant4 的 MeV。生成器与输运粒子还应采用一致的核质量。若生成器已让 $^{10}\mathrm{Be}^*$ 退激，则交给 Geant4 的是基态 Be，并按模拟范围决定是否输运同时生成的 γ；不能再让同一 Be 重复退激。</p>
 <p>出射粒子从反应点向外的能损由 Geant4 处理，不再手工重复扣除。完整真值守恒检查仍要包含生成的 γ，即使分析中不测量它。</p>
-
 <hr/>
 <h2 id="7-PhysicsList.cc%EF%BC%9A%E8%BE%93%E8%BF%90%E8%BF%87%E7%A8%8B%E7%9A%84%E9%80%89%E5%8F%96">7 <code>PhysicsList.cc</code>：输运过程的选取<a class="anchor-link" href="#7-PhysicsList.cc%EF%BC%9A%E8%BE%93%E8%BF%90%E8%BF%87%E7%A8%8B%E7%9A%84%E9%80%89%E5%8F%96">¶</a></h2><p>本节的重点不是由 Geant4 自动生成信号反应，而是让 Geant4 正确处理末态粒子在材料中的输运。因此，应尽量使用 Geant4 内部已有、经过验证的电磁与输运机制，避免自行重复实现 ionisation、multiple scattering 或 stopping power。</p>
 <p>推荐采用 <code>G4EmStandardPhysics_option4</code> 作为低能电磁过程的核心配置。若使用 modular physics list，可写为</p>
@@ -8182,14 +8180,12 @@ $$
 </pre></div>
 </div>
 <p>第一种配置用于研究电离能损和多重散射等电磁效应，<strong>不包含完整的强子反应</strong>。若要研究核弹性散射、非弹性反应造成的损失或本底，需要第二类包含强子过程的配置，并核对质子、α、重离子在相应能区的模型。两种配置的物理范围不同，不是可任意互换的写法。过程清单和能区应查阅 <a href="https://geant4.web.cern.ch/documentation/dev/plg_html/index.html">Geant4 Physics List Guide</a>。</p>
-
 <p>质子的 ionisation、multiple scattering 和 elastic scattering；$\alpha$ 与重离子的 ionisation、multiple scattering 以及相应的 nuclear stopping。这样处理之后，粒子在靶、死层、硅和 CsI 中的能量沉积将由 Geant4 自动给出，从而能够自然反映几何厚度与材料结构对实验响应的影响。</p>
 <hr/>
 <h2 id="8-SensitiveDetector.cc%EF%BC%9Astep-%E7%BA%A7-hit-%E7%9A%84%E8%AE%B0%E5%BD%95">8 <code>SensitiveDetector.cc</code>：step 级 hit 的记录<a class="anchor-link" href="#8-SensitiveDetector.cc%EF%BC%9Astep-%E7%BA%A7-hit-%E7%9A%84%E8%AE%B0%E5%BD%95">¶</a></h2><p><code>SensitiveDetector</code> 负责记录 Geant4 的原始 hit 信息，而不直接构造实验事件。对于每个 hit，至少应保留以下量：</p>
 <p>探测器编号 <code>detID</code>，层编号 <code>layerID</code>，能量沉积 <code>edep</code>，粒子编号 <code>trackID</code>，粒子种类 <code>pdg</code>，全局位置 <code>posGlobal</code>，局域位置 <code>posLocal</code>，条带编号 <code>stripX</code>、<code>stripY</code>，以及 step 前后动能 <code>preKinE</code>、<code>postKinE</code>。</p>
 <p>在 <code>ConstructSDandField()</code> 中创建并注册 <code>SiSD</code>，将它关联到硅的 logical volume；在 <code>SiSD::Initialize()</code> 中为每个事件创建并登记 <code>hitsCollection</code>。这样有沉积的 step 才会调用下面的 <code>ProcessHits()</code>，且不同事件不会共用上一事件的 hit。接口见 <a href="https://geant4.web.cern.ch/documentation/dev/bfad_html/ForApplicationDevelopers/Detector/hit.html">Geant4：Hits</a>。</p>
 <p>实现时，先读取该 step 的总能量沉积；若 <code>edep&lt;=0</code> 则返回。下面将沉积位置近似取为 step 中点，并转换到探测器局域坐标：</p>
-
 <div class="highlight"><div class="highlight"><pre><span></span><span class="n">G4bool</span><span class="w"> </span><span class="nf">SiSD::ProcessHits</span><span class="p">(</span><span class="n">G4Step</span><span class="o">*</span><span class="w"> </span><span class="n">step</span><span class="p">,</span>
 <span class="w">                         </span><span class="n">G4TouchableHistory</span><span class="o">*</span><span class="p">)</span>
 <span class="p">{</span>
@@ -8227,10 +8223,8 @@ $$
 </pre></div>
 </div>
 <p>这段条带映射把一个 step 的全部沉积归到中点所在条带。它适用于 step 横向长度远小于条带宽度的近似；跨越多个条带时应细分沉积或使用条带几何，否则会误计多重性。电荷共享属于后续读出模型，不由这个整数编号自动产生。</p>
-
 <hr/>
 <h2 id="9-EventAction.cc%EF%BC%9A%E4%BB%8E-hit-%E5%88%B0%E5%AE%9E%E9%AA%8C%E4%BA%8B%E4%BB%B6">9 <code>EventAction.cc</code>：从 hit 到实验事件<a class="anchor-link" href="#9-EventAction.cc%EF%BC%9A%E4%BB%8E-hit-%E5%88%B0%E5%AE%9E%E9%AA%8C%E4%BA%8B%E4%BB%B6">¶</a></h2><p>EventAction 先把局域位置映射到条带，再合并同一通道的多个 step，最后施加一次读出分辨与阈值。为便于理解，下面先说明通道合并的目标，再给出位置到条带的关系。</p>
-
 <h3 id="1.-%E9%80%9A%E9%81%93%E5%90%88%E5%B9%B6">1. 通道合并<a class="anchor-link" href="#1.-%E9%80%9A%E9%81%93%E5%90%88%E5%B9%B6">¶</a></h3><p>由于同一粒子在同一条带、同一层中可能产生多个 Geant4 step，因此不能把每个 step 都视为一个独立读出。应按探测器、层号和条带号进行聚合。可以定义</p>
 <div class="highlight"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">ChannelID</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">detID</span><span class="p">,</span><span class="w"> </span><span class="n">layerID</span><span class="p">;</span>
@@ -8256,7 +8250,6 @@ $$
 </pre></div>
 </div>
 <p>DSSD 是两面各一组条带读出，不是 <code>stripX,stripY</code> 定义的逐像素读出。上例在两面分别累加同一能量沉积。<code>std::tie</code> 只是按四个编号排序，供 <code>std::map</code> 区分通道；它不做任何物理选择。若还需记录通道时间与位置，可保存：</p>
-
 <div class="highlight"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">ChannelSignal</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">edep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
 <span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1e99</span><span class="p">;</span>
@@ -8294,7 +8287,6 @@ $$</p>
 </pre></div>
 <h3 id="3.-%E8%83%BD%E9%87%8F%E5%88%86%E8%BE%A8%E4%B8%8E-threshold">3. 能量分辨与 threshold<a class="anchor-link" href="#3.-%E8%83%BD%E9%87%8F%E5%88%86%E8%BE%A8%E4%B8%8E-threshold">¶</a></h3><p>实验读出中，DSSD、SSD 和 CsI 的能量测量都具有有限分辨；同时，电子学读出还存在触发阈值。因此，在通道合并之后，应对每个通道施加能量展宽和 threshold。</p>
 <p>下面的 30 keV 和 2% 是读出模型的演示参数，不是实测标定；<code>kDSSD/kSSD/kCsI</code> 是应用程序定义的探测器类型。CsI 的真实光输出可能依赖粒子种类，不能普遍用沉积能量的固定比例描述：</p>
-
 <div class="highlight"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="nf">SmearEnergy</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">E</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">detType</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">sigma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
@@ -8315,7 +8307,6 @@ $$</p>
 <span class="k">if</span><span class="p">(</span><span class="n">E_smeared</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">threshold</span><span class="p">)</span><span class="w"> </span><span class="k">continue</span><span class="p">;</span>
 </pre></div>
 <p>每个通道先累加沉积，再展宽一次并应用读出阈值。不要对每个 step 分别展宽。条带多重性是阈值后有信号的条带数，不是 step 数或 track 数。Geant4 已产生的能损歧离不能作为同一效应再额外叠加一次。</p>
-
 <h3 id="4.-%E6%9C%9B%E8%BF%9C%E9%95%9C%E7%BA%A7%E4%BA%8B%E4%BB%B6%E7%BB%84%E7%BB%87">4. 望远镜级事件组织<a class="anchor-link" href="#4.-%E6%9C%9B%E8%BF%9C%E9%95%9C%E7%BA%A7%E4%BA%8B%E4%BB%B6%E7%BB%84%E7%BB%87">¶</a></h3><p>在完成通道合并、strip 离散化、展宽和 threshold 后，应将信号组织为望远镜级读出。对于 $T_0$，至少需要整理出三层 DSSD、后续 SSD 和 CsI 的能量，以及第一层条带编号和多重性；对于 $T_1$、$T_2$，至少需要整理出 DSSD、SSD 和 CsI 的能量、条带编号和多重性。</p>
 <p>此外，还应在事件级形成基本符合标志，例如：</p>
 <ul>
@@ -8382,7 +8373,6 @@ make<span class="w"> </span>-j4
 <div class="highlight"><pre><span></span>./g4sim<span class="w"> </span>run.mac
 </pre></div>
 <p>上述命令适用于已补齐用户类、数据路径与完整几何的工程。在只有本页片段的情况下不能直接编译运行；这也不代表已经生成了可验证的实验模拟结果。</p>
-
 <h2 id="11-RunAction.cc-%E4%B8%8E-ROOT-%E6%96%87%E4%BB%B6%E8%BE%93%E5%87%BA">11 <code>RunAction.cc</code> 与 ROOT 文件输出<a class="anchor-link" href="#11-RunAction.cc-%E4%B8%8E-ROOT-%E6%96%87%E4%BB%B6%E8%BE%93%E5%87%BA">¶</a></h2><p>Geant4 事件在 <code>EventAction.cc</code> 中已经被整理为实验事件级量。接下来的任务，是将这些量写入 ROOT 文件，供后续离线分析直接读取。这里不输出 step 级原始信息，而输出与实验分析兼容的事件树。</p>
 <p>程序中可将 ROOT 文件的创建、树的建立和分支定义集中在一个单独的类中，例如 <code>RootIO</code>，再由 <code>RunAction</code> 在每一轮运行开始和结束时负责打开、写入和关闭文件。</p>
 <p><code>RunAction.cc</code> 的基本结构可写为</p>
@@ -8400,7 +8390,6 @@ make<span class="w"> </span>-j4
 <p>这里输出文件名取为 <code>g4sim.root</code>。若需要区分不同靶条件、不同激发态方案或不同几何设置，可以在文件名中加入相应标签，例如 <code>g4sim_ch2.root</code>、<code>g4sim_cd2.root</code> 或 <code>g4sim_ex.root</code>。</p>
 <hr/>
 <h2 id="12-ROOT-%E6%A0%91%E7%9A%84%E7%BB%84%E7%BB%87%E6%96%B9%E5%BC%8F">12 ROOT 树的组织方式<a class="anchor-link" href="#12-ROOT-%E6%A0%91%E7%9A%84%E7%BB%84%E7%BB%87%E6%96%B9%E5%BC%8F">¶</a></h2><p>输出同时保留真值、通道读数和选择标志；不必把全部 step 写入分析树。下面先展示标量分支的写法，完整多粒子分析还需要后述的逐通道信息，不能仅用望远镜总能量直接计算 Q 值。能量与动量输出分别统一用 MeV、MeV/$c$，位置用 mm。</p>
-
 <p>第一类是真值信息，用于后续将模拟结果与真实输入反应学进行对照；</p>
 <p>第二类是望远镜级实验读出信息，用于直接构造 $\Delta E-E$、gate、Q 值与 invariant mass reconstruction；</p>
 <p>第三类是符合标志，用于快速筛选事件类型。</p>
@@ -8444,7 +8433,6 @@ make<span class="w"> </span>-j4
 </pre></div>
 <p>这些量主要用于理解模拟输入、检查不同激发态分支的重建效果，以及在需要时和实验分析结果进行对照。</p>
 <h3 id="2.-$T_0$-%E7%9A%84%E5%AE%9E%E9%AA%8C%E8%AF%BB%E5%87%BA%E5%88%86%E6%94%AF">2. $T_0$ 的实验读出分支<a class="anchor-link" href="#2.-$T_0$-%E7%9A%84%E5%AE%9E%E9%AA%8C%E8%AF%BB%E5%87%BA%E5%88%86%E6%94%AF">¶</a></h3><p>$T_0$ 中可能同时有 α 和 Be。下面的每层标量总能量可作监视谱，但不能单独保存两粒子的独立测量。用于实际重建时，还要保存每面、每条被触发条带的能量和编号，再做 front/back 配对、跨层关联与 PID。不要从真值 trackID 直接指定重建的粒子配对。</p>
-
 <p>建议包含：</p>
 <ul>
 <li><code>t0_E_D1</code></li>
@@ -8499,7 +8487,6 @@ make<span class="w"> </span>-j4
 <li><code>flag_triple</code></li>
 </ul>
 <p>这里的三体符合指 <strong>α、$^{10}\mathrm{Be}$ 和反冲质子</strong>均被重建：前两者在 $T_0$，质子通常在某一个侧向模块。它不是要求 $T_0,T_1,T_2$ 三台望远镜都触发。<code>flag_hitT0</code> 也不足以证明其中有两种已鉴别的粒子；应在通道关联和 PID 后定义 <code>hasAlpha &amp;&amp; hasBe10 &amp;&amp; hasProton</code>。</p>
-
 <div class="highlight"><pre><span></span><span class="n">fTree</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">"flag_hitT0"</span><span class="p">,</span><span class="w">  </span><span class="o">&amp;</span><span class="n">flag_hitT0</span><span class="p">,</span><span class="w">  </span><span class="s">"flag_hitT0/I"</span><span class="p">);</span>
 <span class="n">fTree</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">"flag_hitT1"</span><span class="p">,</span><span class="w">  </span><span class="o">&amp;</span><span class="n">flag_hitT1</span><span class="p">,</span><span class="w">  </span><span class="s">"flag_hitT1/I"</span><span class="p">);</span>
 <span class="n">fTree</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">"flag_hitT2"</span><span class="p">,</span><span class="w">  </span><span class="o">&amp;</span><span class="n">flag_hitT2</span><span class="p">,</span><span class="w">  </span><span class="s">"flag_hitT2/I"</span><span class="p">);</span>
@@ -8541,7 +8528,6 @@ make<span class="w"> </span>-j4
 <span class="p">}</span>
 </pre></div>
 <p>每个事件开始时将缓存能量和多重性清零、未命中条带编号设为 −1，事件结束后再统一 Fill()。本例的单一 RootIO 写法用于串行运行；多线程运行需要线程独立输出或 Geant4 的分析合并机制，不能让多个 worker 同时写同一个 TTree。</p>
-
 <hr/>
 <h2 id="4.7.14-ROOT-%E6%96%87%E4%BB%B6%E7%9A%84%E6%89%93%E5%BC%80%E6%96%B9%E5%BC%8F">14 ROOT 文件的打开方式<a class="anchor-link" href="#4.7.14-ROOT-%E6%96%87%E4%BB%B6%E7%9A%84%E6%89%93%E5%BC%80%E6%96%B9%E5%BC%8F">¶</a></h2><p>程序运行结束后，将得到 ROOT 文件，例如</p>
 <div class="highlight"><pre><span></span>g4sim.root

@@ -3,6 +3,7 @@ using namespace std;
 
 void ana::SetBranchInput()
 {
+  ipt->SetBranchAddress("source_entry", &source_entry);
   br_x1v = NULL; //给指针初始化, 这一步必需。
   br_x2v = NULL;
   br_x3v = NULL;
@@ -15,36 +16,37 @@ void ana::SetBranchInput()
   ipt->SetBranchAddress("y1v", &br_y1v);
   ipt->SetBranchAddress("y2v", &br_y2v);
   ipt->SetBranchAddress("y3v", &br_y3v);
-  ipt->SetBranchAddress("sx1e", &sx1e);  
-  ipt->SetBranchAddress("sx2e", &sx2e);  
-  ipt->SetBranchAddress("sx3e", &sx3e);  
-  ipt->SetBranchAddress("sy1e", &sy1e);  
-  ipt->SetBranchAddress("sy2e", &sy2e);  
-  ipt->SetBranchAddress("sy3e", &sy3e);  
+  ipt->SetBranchAddress("sx1e", &sx1e);
+  ipt->SetBranchAddress("sx2e", &sx2e);
+  ipt->SetBranchAddress("sx3e", &sx3e);
+  ipt->SetBranchAddress("sy1e", &sy1e);
+  ipt->SetBranchAddress("sy2e", &sy2e);
+  ipt->SetBranchAddress("sy3e", &sy3e);
 }
 
 void ana::BranchOutput()
-{ 
+{
+  opt->Branch("source_entry", &source_entry, "source_entry/L");
   opt->Branch("d1",&d1);
   opt->Branch("d2",&d2);
   opt->Branch("d3",&d3);
 }
 
-bool SortDS(dssd &a,dssd &b)
+bool SortDS(const dssd &a,const dssd &b)
 {
   return a.e > b.e;
 }
 
 void ana::GetDSSD(vector<dssd> *x, vector<dssd> *y, vector<DSSD> &xy)
 {
- int hit=min(x->size(),y->size());
+ size_t hit=std::min(x->size(),y->size());
  xy.clear();
  DSSD dxy;
- for(int i=0;i<hit;i++) {
-     double xe=(*x)[i].e;//按照下标读取vector内的值 
+ for(size_t i=0;i<hit;i++) {
+     double xe=(*x)[i].e;//按照下标读取vector内的值
      double ye=(*y)[i].e;
      int ix=(*x)[i].id;
-     int iy=(*y)[i].id;     
+     int iy=(*y)[i].id;
      if(abs(xe-ye)<50) {
          dxy.xe=xe;
          dxy.ye=ye;
@@ -52,7 +54,7 @@ void ana::GetDSSD(vector<dssd> *x, vector<dssd> *y, vector<DSSD> &xy)
          dxy.yid=iy;
          xy.push_back(dxy);
      }
- }     
+ }
 }
 
 void ana::Analysis()
@@ -64,7 +66,7 @@ void ana::Analysis()
   for (Long64_t jentry=0; jentry<nentries;jentry++) {
     ipt->GetEntry(jentry);
     sort(br_x1v->begin(),br_x1v->end(),SortDS);
-    sort(br_y1v->begin(),br_y1v->end(),SortDS);  
+    sort(br_y1v->begin(),br_y1v->end(),SortDS);
     sort(br_x2v->begin(),br_x2v->end(),SortDS);
     sort(br_y2v->begin(),br_y2v->end(),SortDS);
     sort(br_x3v->begin(),br_x3v->end(),SortDS);
@@ -72,13 +74,8 @@ void ana::Analysis()
     GetDSSD(br_x1v,br_y1v,d1);
     GetDSSD(br_x2v,br_y2v,d2);
     GetDSSD(br_x3v,br_y3v,d3);
-    if(d1.size()>0 || d2.size()>0 || d3.size()>0)
-        opt->Fill();
-      
-    if((jentry) % 1000 == 0) {
-      printf("Process %.2f %, %dk / %dk\r",Double_t(jentry)/nentries*100.,
-	     int(jentry/1000), int(nentries/1000));
-      fflush(stdout);
-    }
+    opt->Fill(); // 无候选时保存空 vector，不改变事件顺序
+
+
   }
 }

@@ -1,0 +1,146 @@
+[
+  {
+    "source": "materials/chapt1/makeclass/run0005.root",
+    "copy": "chapt1/run0005.root",
+    "bytes": 306133870,
+    "sha256": "cf588804aa6b1d8fc878853f8b527ab5571f2f2031c3e2a883d5ad769bc5a150"
+  },
+  {
+    "source": "materials/chapt1/root-tree/tree_hw.root",
+    "copy": "chapt1/tree_hw.root",
+    "bytes": 30230231,
+    "sha256": "b2a8415c66b562ec6a17b20cfd8effacee5105a900256b79dad7778f8c2abde0"
+  },
+  {
+    "source": "materials/chapt1/root-tree/fig/tdiff.png",
+    "copy": "chapt1/fig/tdiff.png",
+    "bytes": 160871,
+    "sha256": "7909221f047c79c14668cc3a36174a8be13420f24348e3ec7fe9cd8b4fa004c2"
+  },
+  {
+    "source": "materials/chapt2/ppac/f8ppac001.root",
+    "copy": "chapt2/f8ppac001.root",
+    "bytes": 64146892,
+    "sha256": "31f7caabb2228fb1581333877e5ca7b8d3908513a3286051f32dcf2ce3991232"
+  },
+  {
+    "source": "materials/chapt3/vector/cal_16C.root",
+    "copy": "chapt3/data/strip_arrays_16C.root",
+    "bytes": 496972374,
+    "sha256": "25b74831e171f8bf8a889ac7c66890cc1bad7f10d80065a270281270f0a997b9"
+  },
+  {
+    "source": "materials/chapt3/dssd1/s4.root",
+    "copy": "chapt3/s4.root",
+    "bytes": 73997244,
+    "sha256": "53ef03a9b5719a15e803cb70b683ec293b8ad47f9718472453fcfd8297085deb"
+  },
+  {
+    "source": "materials/chapt3/dssd1/s4hit.root",
+    "copy": "chapt3/s4hit.root",
+    "bytes": 189054586,
+    "sha256": "aad6acba866ef18aef49ed240b760ac58911c7c90fcb3cd2e4abb01b24ed0efc"
+  },
+  {
+    "source": "materials/chapt3/dssd1/gamma.root",
+    "copy": "chapt3/gamma.root",
+    "bytes": 27619,
+    "sha256": "325abf060662377c41ad610699b7786d171c13aa9979cbb95dac9e3220d68fa9"
+  },
+  {
+    "source": "materials/chapt3/dssd1/cut1.C",
+    "copy": "chapt3/cut1.C",
+    "bytes": 746,
+    "sha256": "9c8116127892da8dd268c18ae2684b414ea0a9b2777ddf051b9d5ceaaa70b14e"
+  },
+  {
+    "source": "materials/chapt3/dssd1/cut2.C",
+    "copy": "chapt3/cut2.C",
+    "bytes": 520,
+    "sha256": "5fa1ae27e814cc835569fc99dff3474d37344982fbf3e4b06e51ae96ff949fd3"
+  },
+  {
+    "source": "materials/chapt3/dssd1/Pies.cal",
+    "copy": "chapt3/Pies.cal",
+    "bytes": 4736,
+    "sha256": "49a6fb3fd6996b3ebbee2bf86405e9336b831abe6f0c50c9247d815f5b0e50d5"
+  },
+  {
+    "source": "materials/chapt3/dssd1/Rings.cal",
+    "copy": "chapt3/Rings.cal",
+    "bytes": 4736,
+    "sha256": "1d9baca6dc7c3c9352095cf32c056699d8cd1877934ba60752b5a0b6db98e09b"
+  },
+  {
+    "source": "materials/chapt3/newDSSD/data/data_16C.root",
+    "copy": "chapt3/data/data_16C.root",
+    "bytes": 380368058,
+    "sha256": "41e099eb7a96d469ef57fd422bf179b8c684596129aef6859d133217278133ca"
+  },
+  {
+    "source": "materials/chapt3/newDSSD/data/d1xy.root",
+    "copy": "chapt3/data/d1xy.root",
+    "bytes": 1266202,
+    "sha256": "9744b0a3851839d9e7cfd64d40267e97e56744fac7198bca62323b5125bd8c8e"
+  },
+  {
+    "source": "materials/chapt3/newDSSD/data/d2xy.root",
+    "copy": "chapt3/data/d2xy.root",
+    "bytes": 11470459,
+    "sha256": "f820de15ddbde65e94274ecf52b007787678d289399bab6a4e01db5076eee975"
+  },
+  {
+    "source": "materials/chapt3/newDSSD/data/d3xy.root",
+    "copy": "chapt3/data/d3xy.root",
+    "bytes": 11624963,
+    "sha256": "5a98c61fd7b13dfa75579d74a68bac925ce404d4dbd0f6714698f65c4a2da79b"
+  },
+  {
+    "source": "materials/chapt3/newDSSD/data/cal_16C.root",
+    "copy": "chapt3/data/cal_16C.root",
+    "bytes": 300420406,
+    "sha256": "0954e47389893ff3c758ef368a238d0829dfc9fd5d072961173127e734dd65d7"
+  },
+  {
+    "source": "materials/chapt3/newDSSD/data/evt_16C.root",
+    "copy": "chapt3/data/evt_16C.root",
+    "bytes": 51820605,
+    "sha256": "40719455ac40264eb8dac3978beca78ba74597907c2ef9468798627c04d16e24"
+  },
+  {
+    "source": "materials/chapt3/newDSSD/data/cut1.C",
+    "copy": "chapt3/data/cut1.C",
+    "bytes": 580,
+    "sha256": "19712e28cce4c4e04ed0858972bc283d1a446b7e6f42021bd0cea384130c1aae"
+  },
+  {
+    "source": "materials/chapt3/newDSSD/data/cut2.C",
+    "copy": "chapt3/data/cut2.C",
+    "bytes": 529,
+    "sha256": "9dc05a7b4e78306b15f935916b37877f504d7f115ce31fe29e6a146903b611cc"
+  },
+  {
+    "source": "materials/chapt3/newDSSD/data/cut3.C",
+    "copy": "chapt3/data/cut3.C",
+    "bytes": 523,
+    "sha256": "cd99a8844ae7cd4c1604328ffdbd939ef672306ccc37d7e778589237fd7fbf6b"
+  },
+  {
+    "source": "materials/chapt3/newDSSD/cutd1esc.cut",
+    "copy": "chapt3/cutd1esc.cut",
+    "bytes": 855,
+    "sha256": "7ff5bac240215ac9616b8df9b47cd32509e30265fb6a7c8511212536c1ce0961"
+  },
+  {
+    "source": "materials/chapt3/newDSSD/cutd2esc.cut",
+    "copy": "chapt3/cutd2esc.cut",
+    "bytes": 772,
+    "sha256": "ab4ec5ea2c2289eb738a69a73d48b3e44bf83e981d48aec6a1a8fb164514f4cc"
+  },
+  {
+    "source": "materials/chapt3/newDSSD/cutd3esc.cut",
+    "copy": "chapt3/cutd3esc.cut",
+    "bytes": 811,
+    "sha256": "629ed68fbffca96fe1fd7f8e814926340403cc66f293214ddae0282f80971d3a"
+  }
+]

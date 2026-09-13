@@ -1,0 +1,87 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>核物理实验数据处理</title><link rel="stylesheet" href="assets/css/course-header.css"></head><body class="course-home-body"><header class="course-banner"><div class="course-banner-inner">
+<a href="index.html"><img src="assets/images/course-logo.png" alt="课程标志"></a>
+<div class="course-banner-title"><a href="index.html">核物理实验数据处理</a>
+<span class="course-banner-en">Experimental Data Analysis in Nuclear Physics</span></div></div></header>
+<nav class="course-nav" aria-label="课程导航"><div class="course-nav-inner">
+<a href="index.html">课程主页</a><a href="index.html#preparation">课前准备</a>
+<a href="index.html#lectures">课程讲义</a><a href="https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/">实验方法课程</a></div></nav><main class="course-home"><h1>核物理实验数据处理</h1>
+<p><em>Experimental Data Analysis in Nuclear Physics</em></p>
+<h2>课程目标</h2>
+<ul>
+<li>通过若干典型探测器和典型实验场景，理解核物理实验数据从原始信号到物理量重建的基本逻辑，建立实验数据分析的直观认识，掌握常见的数据处理流程。</li>
+</ul>
+<h3>开课记录</h3>
+<ul>
+<li>PKU: 2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026</li>
+<li>Online: 2020,2021,2022,2023</li>
+</ul>
+<h2 id="preparation">课前准备</h2>
+<p>本课程承接核物理实验方法，围绕实际数据组织与分析展开。各章保留所需的探测器背景和分析方法，未修读前一课程也可结合讲义学习。作业随相应讲义给出。</p>
+<p>编程和 ROOT 入门使用两门课程的共用资料：</p>
+<ul>
+<li><a href="https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/setup/ROOT_Jupyter_Installation.html">ROOT 与 Jupyter 安装</a></li>
+<li><a href="https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/cpp/introduction_basic.html">C++ 基础</a> · <a href="https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/cpp/introduction_advanced.html">数组、函数与类</a></li>
+<li><a href="https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/ROOT/ROOT_Tutorial_I_CPP.html">ROOT Tutorial I：直方图、绘图与拟合</a></li>
+<li><a href="https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/ROOT/ROOT_Tutorial_II_CPP.html">ROOT Tutorial II：TTree、关联分析与 Cut</a></li>
+<li><a href="https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/programming.html">PyROOT 与其他编程准备</a></li>
+</ul>
+<h2 id="lectures">chapter 1. ROOT TTree 初阶</h2>
+<ul>
+<li>1.1 <a href="chapt1/1.1_create_tree.html">用TTree 结构存储事件数据</a></li>
+<li>1.2 <a href="chapt1/1.2_read_tree.html">读取TTree数据，进行逐事件分析</a></li>
+<li>1.3 <a href="chapt1/1.3_adc_analysis.html">ADC,TDC信号处理</a></li>
+<li>1.4 <a href="chapt1/1.4_root_tree_makeclass.html">TTree的MakeClass方法</a></li>
+</ul>
+<p>补充：<a href="chapt1/ROOT_tips.html">ROOT tips</a> · <a href="chapt1/Integration_in_TH1_and_TF1.html">TH1 与 TF1 的积分</a> · <a href="chapt1/Example_of_Integration_in_TH1_and_TF1.html">积分实例</a></p>
+<h2>chapter 2. 位置探测器(PPAC)数据处理</h2>
+<ul>
+<li>2.1 <a href="chapt2/2.1_PPAC_analysis.html">PPAC 信号处理</a></li>
+<li>2.2 <a href="chapt2/2.2_PPAC_tracking.html">PPAC Tracking</a></li>
+<li>2.3 <a href="chapt2/2.3_comiling_1.html">编译执行分析程序(1)</a></li>
+<li>2.4 <a href="chapt2/2.4_compiling_2.html">编译执行分析程序(2)</a></li>
+<li>2.5 <a href="chapt2/2.5_data_analysis_process.html">实验数据处理过程</a></li>
+</ul>
+<h2>chapter 3. DSSD 数据处理</h2>
+<ul>
+<li>3.1 <a href="chapt3/3.1_DSSD_energy_calibration_1.html">DSSD Energy Calibration</a></li>
+<li>3.2 <a href="chapt3/3.2_TTree_Branch_with_Dynamic_Array.html">利用可变长数组存储数据- Hit结构</a></li>
+<li>3.3 <a href="chapt3/3.3_DSSD_interstrip_correlation.html">DSSD Inter-strip correlation</a></li>
+<li>3.4 <a href="chapt3/3.4_DSSD_FB_correlation_I_DSSD1-new.html">DSSD front-back correlation (I)</a></li>
+<li>3.5 <a href="chapt3/3.5_DSSD_FB_correlation_II_DSSD1-new.html">DSSD front-back correlation (II)</a><ul>
+<li><a href="chapt3/3.5_DSSD_FB_correlation_II_DSSD1_multi-path.html">Supplementary Note: Multi-path Calibration with Error Propagation</a></li>
+</ul>
+</li>
+<li>3.6 <a href="chapt3/3.6_DSSD_Multiplicity_Analysis.html">DSSD Multiplicity Event Analysis</a></li>
+<li>3.7 <a href="chapt3/3.7_DSSD_data_analysis.html">DSSD数据分析</a></li>
+<li>3.8* <a href="chapt3/3.8_TTree_Branch_with_vector.html">用vector存储TTree数据</a></li>
+</ul>
+<h2>chapter 4. 核反应数据处理(不变质量谱)</h2>
+<ul>
+<li>4.1 <a href="chapt7/Relativistic_Kinematics.html">Relativistic Kinematics</a></li>
+<li>4.2 <a href="chapt7/phasespace.html">Phase Space</a></li>
+<li>4.3 <a href="chapt7/invariant_mass.html">Invariant mass and missing mass</a></li>
+<li>4.4 <a href="chapt7/7.4%2014C_reaction_sim.html">14C*→4He+10Be* reaction simulation</a><ul>
+<li><a href="chapt7/mass.txt">mass.txt</a></li>
+</ul>
+</li>
+<li>4.5 <a href="chapt7/7.5%20Reaction%20Q-Reconstruction.html">Q-Reconstruction</a></li>
+<li>4.6 <a href="chapt7/7.6%20Invariant%20mass%20reconstruction.html">Invariant mass reconstruction</a></li>
+<li>4.7 <a href="chapt7/7.7%20Geant4%20simulation.html">Geant4 simulation</a></li>
+</ul>
+<h2>chapter 5. γ-γ 符合分析</h2>
+<ul>
+<li>5.0 <a href="chapt4/4.0_gamma-gamma_coincidence.html">time walk,event building and addback</a></li>
+<li>5.1 <a href="chapt4/4.1_gamma-gamma_coincidence_matrix.html">γ-γ coincidence matrix</a></li>
+<li>5.2 <a href="chapt4/4.2_gamma-gamma_background_matrix.html">Background matrix</a></li>
+<li>参考文献 <a href="./chapt4/Radford.pdf">D.C.Radford, Nucl.Instr.Meth.A361(1995)306</a></li>
+</ul>
+<h2>chapter 6. 衰变实验的数据分析</h2>
+<ul>
+<li>6.1 <a href="chapt5/5.1_Decay_analysis_I.html">基于timestamp的事件重构</a></li>
+<li>6.2 <a href="chapt5/5.2_Decay_analysis_II.html">重离子和衰变事件的关联</a><ul>
+<li><a href="chapt5/fitting_LS_LH.html">Least Square 和 Likelihood fitting</a></li>
+</ul>
+</li>
+<li>参考文献 <a href="./chapt5/SHANS.pdf">gas-filled recoil separator, SHANS</a></li>
+</ul>
+</main></body></html>

@@ -2,18 +2,19 @@
 using namespace std;
 void ana::SetOutBranch()
 {
+  opt->Branch("source_entry", &source_entry, "source_entry/L");
   opt->Branch("x1v",&x1v);
   opt->Branch("x2v",&x2v);
   opt->Branch("x3v",&x3v);
   opt->Branch("y1v",&y1v);
   opt->Branch("y2v",&y2v);
   opt->Branch("y3v",&y3v);
-  opt->Branch("sx1e",&sx1e,"sx1e");
-  opt->Branch("sx2e",&sx2e,"sx2e");
-  opt->Branch("sx3e",&sx3e,"sx3e");
-  opt->Branch("sy1e",&sy1e,"sy1e");
-  opt->Branch("sy2e",&sy2e,"sy2e");
-  opt->Branch("sy3e",&sy3e,"sy3e");
+  opt->Branch("sx1e",&sx1e,"sx1e/D");
+  opt->Branch("sx2e",&sx2e,"sx2e/D");
+  opt->Branch("sx3e",&sx3e,"sx3e/D");
+  opt->Branch("sy1e",&sy1e,"sy1e/D");
+  opt->Branch("sy2e",&sy2e,"sy2e/D");
+  opt->Branch("sy3e",&sy3e,"sy3e/D");
 
 }
 
@@ -44,15 +45,9 @@ void ana::Analysis()
     ProcessDS(d2y,y2v);
     ProcessDS(d3x,x3v);
     ProcessDS(d3y,y3v);
-    bool b1=x1v.size()>0 || y1v.size()>0;
-    bool b2=x2v.size()>0 || y2v.size()>0;
-    bool b3=x3v.size()>0 || x3v.size()>0;
-    if(b1||b2||b3) opt->Fill();
+    source_entry = jentry;
+    opt->Fill(); // 保留空事件及事件对应关系
 
-    if((jentry) % 1000 == 0) {
-      printf("Process %.2f % %dk / %dk\r",Double_t(jentry)/nentries*100.,
-	     int(jentry/1000), int(nentries/1000));
-      fflush(stdout);
-    }
+
   }
 }

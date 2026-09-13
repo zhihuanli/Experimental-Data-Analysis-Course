@@ -1,14 +1,10 @@
 <!DOCTYPE html>
+
 <html>
-<head><meta charset="utf-8" />
-
+<head><meta charset="utf-8"/>
 <title>Example_of_Integration_in_TH1_and_TF1</title>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-
-
-
 <style type="text/css">
     /*!
 *
@@ -9129,15 +9125,15 @@ label {
 }
 /* Flexible box model classes */
 /* Taken from Alex Russell http://infrequently.org/2009/08/css-3-progress/ */
-/* This file is a compatability layer.  It allows the usage of flexible box 
+/* This file is a compatability layer.  It allows the usage of flexible box
 model layouts accross multiple browsers, including older browsers.  The newest,
 universal implementation of the flexible box model is used when available (see
-`Modern browsers` comments below).  Browsers that are known to implement this 
+`Modern browsers` comments below).  Browsers that are known to implement this
 new spec completely include:
 
     Firefox 28.0+
     Chrome 29.0+
-    Internet Explorer 11+ 
+    Internet Explorer 11+
     Opera 17.0+
 
 Browsers not listed, including Safari, are supported via the styling under the
@@ -12519,7 +12515,7 @@ div#pager .ui-resizable-handle {
   background: #f7f7f7;
   border-top: 1px solid #cfcfcf;
   border-bottom: 1px solid #cfcfcf;
-  /* This injects handle bars (a short, wide = symbol) for 
+  /* This injects handle bars (a short, wide = symbol) for
         the resize handle. */
 }
 div#pager .ui-resizable-handle::after {
@@ -13056,8 +13052,6 @@ margin: 0 auto;
 
 
     </style>
-
-
 <style type="text/css">
 /* Overrides of notebook CSS for static HTML export */
 body {
@@ -13072,26 +13066,23 @@ div#notebook {
   div.cell {
     display: block;
     page-break-inside: avoid;
-  } 
-  div.output_wrapper { 
-    display: block;
-    page-break-inside: avoid; 
   }
-  div.output { 
+  div.output_wrapper {
     display: block;
-    page-break-inside: avoid; 
+    page-break-inside: avoid;
+  }
+  div.output {
+    display: block;
+    page-break-inside: avoid;
   }
 }
 </style>
-
 <!-- Custom stylesheet, it must be in the same directory as the html file -->
-<link rel="stylesheet" href="custom.css">
-
 <!-- Loading mathjax macro -->
 <!-- Load mathjax -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_HTML"></script>
-    <!-- MathJax configuration -->
-    <script type="text/x-mathjax-config">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_HTML"></script>
+<!-- MathJax configuration -->
+<script type="text/x-mathjax-config">
     MathJax.Hub.Config({
         tex2jax: {
             inlineMath: [ ['$','$'], ["\\(","\\)"] ],
@@ -13108,259 +13099,178 @@ div#notebook {
         }
     });
     </script>
-    <!-- End of mathjax configuration --></head>
-<body>
-  <div tabindex="-1" id="notebook" class="border-box-sizing">
-    <div class="container" id="notebook-container">
+<!-- End of mathjax configuration --><link data-course-header="true" href="../assets/css/course-header.css" rel="stylesheet"/></head>
+<body><header class="course-banner"><div class="course-banner-inner">
+<a href="../index.html"><img alt="课程标志" src="../assets/images/course-logo.png"/></a>
+<div class="course-banner-title"><a href="../index.html">核物理实验数据处理</a>
+<span class="course-banner-en">Experimental Data Analysis in Nuclear Physics</span></div></div></header>
+<nav aria-label="课程导航" class="course-nav"><div class="course-nav-inner">
+<a href="../index.html">课程主页</a><a href="../index.html#preparation">课前准备</a>
+<a href="../index.html#lectures">课程讲义</a><a href="https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/">实验方法课程</a></div></nav>
 
+<div class="border-box-sizing" id="notebook" tabindex="-1">
+<div class="container" id="notebook-container">
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Example-of-Integration-in-TH1-&amp;-TF1">Example of Integration in TH1 &amp; TF1<a class="anchor-link" href="#Example-of-Integration-in-TH1-&amp;-TF1">&#182;</a></h2>
+<h2 id="Example-of-Integration-in-TH1-&amp;-TF1">Example of Integration in TH1 &amp; TF1</h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="c1">//%jsroot on</span>
+<div class="input_area">
+<div class="highlight hl-c++"><pre><span></span><span class="c1">//%jsroot on</span>
 <span class="k">auto</span> <span class="n">c1</span><span class="o">=</span><span class="k">new</span> <span class="n">TCanvas</span><span class="p">;</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="1.Create-Backgrond-and-Signal-Function">1.Create Backgrond and Signal Function<a class="anchor-link" href="#1.Create-Backgrond-and-Signal-Function">&#182;</a></h3>
-</div>
+<h3 id="1.Create-Backgrond-and-Signal-Function">1.Create Backgrond and Signal Function</h3>
+<p>先画出设定的 signal、本底及总函数。随后 FillRandom 分别按函数形状抽样指定数量的事件；抽样数量由 FillRandom 的第二个参数决定，不等于初始函数的积分。</p></div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="n">TF1</span> <span class="o">*</span><span class="n">fB</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TF1</span><span class="p">(</span><span class="s">&quot;fB&quot;</span><span class="p">,</span><span class="s">&quot;pol1&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
-<span class="n">TF1</span> <span class="o">*</span><span class="n">fS</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TF1</span><span class="p">(</span><span class="s">&quot;fS&quot;</span><span class="p">,</span><span class="s">&quot;gaus&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
-<span class="n">TF1</span> <span class="o">*</span><span class="n">fSB</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TF1</span><span class="p">(</span><span class="s">&quot;fSB&quot;</span><span class="p">,</span><span class="s">&quot;pol1+gaus(2)&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
+<div class="input_area">
+<div class="highlight hl-c++"><pre><span></span><span class="n">TF1</span> <span class="o">*</span><span class="n">fB</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TF1</span><span class="p">(</span><span class="s">"fB"</span><span class="p">,</span><span class="s">"pol1"</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
+<span class="n">TF1</span> <span class="o">*</span><span class="n">fS</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TF1</span><span class="p">(</span><span class="s">"fS"</span><span class="p">,</span><span class="s">"gaus"</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
+<span class="n">TF1</span> <span class="o">*</span><span class="n">fSB</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TF1</span><span class="p">(</span><span class="s">"fSB"</span><span class="p">,</span><span class="s">"pol1+gaus(2)"</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
 <span class="n">fB</span><span class="o">-&gt;</span><span class="n">SetParameters</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span><span class="mi">70</span><span class="p">);</span>
 <span class="n">fS</span><span class="o">-&gt;</span><span class="n">SetParameters</span><span class="p">(</span><span class="mi">340</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mf">0.2</span><span class="p">);</span>
 <span class="n">fSB</span><span class="o">-&gt;</span><span class="n">SetParameters</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span><span class="mi">70</span><span class="p">,</span><span class="mi">340</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mf">0.2</span><span class="p">);</span>
 <span class="n">fSB</span><span class="o">-&gt;</span><span class="n">SetMinimum</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
 <span class="n">fSB</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 <span class="n">fSB</span><span class="o">-&gt;</span><span class="n">SetLineColor</span><span class="p">(</span><span class="n">kBlue</span><span class="p">);</span>
-<span class="n">fS</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">&quot;same&quot;</span><span class="p">);</span>
-<span class="n">fB</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">&quot;same&quot;</span><span class="p">);</span>
+<span class="n">fS</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"same"</span><span class="p">);</span>
+<span class="n">fB</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"same"</span><span class="p">);</span>
 <span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
-<img src="data:image/png;base64,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
-"
->
 </div>
-
-</div>
-
-</div>
-</div>
-
-</div>
+<div class="verified-output"><img alt="Example_of_Integration_in_TH1_and_TF1: cell 3, c1" src="figures/Example_of_Integration_in_TH1_and_TF1/cell_03_c1.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="2.Create-Histograms">2.Create Histograms<a class="anchor-link" href="#2.Create-Histograms">&#182;</a></h3>
+<h3 id="2.Create-Histograms">2.Create Histograms</h3>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="n">TH1D</span> <span class="o">*</span><span class="n">hB</span><span class="o">=</span><span class="k">new</span> <span class="n">TH1D</span><span class="p">(</span><span class="s">&quot;hB&quot;</span><span class="p">,</span><span class="s">&quot;hB&quot;</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
-<span class="n">TH1D</span> <span class="o">*</span><span class="n">hS</span><span class="o">=</span><span class="k">new</span> <span class="n">TH1D</span><span class="p">(</span><span class="s">&quot;hS&quot;</span><span class="p">,</span><span class="s">&quot;hS&quot;</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
-<span class="n">TH1D</span> <span class="o">*</span><span class="n">hSB</span><span class="o">=</span><span class="k">new</span> <span class="n">TH1D</span><span class="p">(</span><span class="s">&quot;hSB&quot;</span><span class="p">,</span><span class="s">&quot;hSB&quot;</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
-<span class="n">hB</span><span class="o">-&gt;</span><span class="n">FillRandom</span><span class="p">(</span><span class="s">&quot;fB&quot;</span><span class="p">,</span><span class="mi">50000</span><span class="p">);</span>
-<span class="n">hS</span><span class="o">-&gt;</span><span class="n">FillRandom</span><span class="p">(</span><span class="s">&quot;fS&quot;</span><span class="p">,</span><span class="mi">2000</span><span class="p">);</span>
-<span class="n">hB</span><span class="o">-&gt;</span><span class="n">FillRandom</span><span class="p">(</span><span class="s">&quot;fB&quot;</span><span class="p">,</span><span class="mi">50000</span><span class="p">);</span>
+<div class="input_area"><div class="highlight"><pre><span></span><span class="n">TH1D</span><span class="w"> </span><span class="o">*</span><span class="n">hB</span><span class="o">=</span><span class="k">new</span><span class="w"> </span><span class="n">TH1D</span><span class="p">(</span><span class="s">"hB"</span><span class="p">,</span><span class="s">"hB"</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
+<span class="n">TH1D</span><span class="w"> </span><span class="o">*</span><span class="n">hS</span><span class="o">=</span><span class="k">new</span><span class="w"> </span><span class="n">TH1D</span><span class="p">(</span><span class="s">"hS"</span><span class="p">,</span><span class="s">"hS"</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
+<span class="n">TH1D</span><span class="w"> </span><span class="o">*</span><span class="n">hSB</span><span class="o">=</span><span class="k">new</span><span class="w"> </span><span class="n">TH1D</span><span class="p">(</span><span class="s">"hSB"</span><span class="p">,</span><span class="s">"hSB"</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
+<span class="n">gRandom</span><span class="o">-&gt;</span><span class="n">SetSeed</span><span class="p">(</span><span class="mi">1901</span><span class="p">);</span>
+<span class="n">hB</span><span class="o">-&gt;</span><span class="n">FillRandom</span><span class="p">(</span><span class="s">"fB"</span><span class="p">,</span><span class="mi">100000</span><span class="p">);</span>
+<span class="n">hS</span><span class="o">-&gt;</span><span class="n">FillRandom</span><span class="p">(</span><span class="s">"fS"</span><span class="p">,</span><span class="mi">2000</span><span class="p">);</span>
 <span class="n">hSB</span><span class="o">-&gt;</span><span class="n">Add</span><span class="p">(</span><span class="n">hB</span><span class="p">,</span><span class="n">hS</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="3.Separate-Background-&amp;-Signals-by-fitting-Background+Signal-histogram">3.Separate Background &amp; Signals by fitting Background+Signal histogram<a class="anchor-link" href="#3.Separate-Background-&amp;-Signals-by-fitting-Background+Signal-histogram">&#182;</a></h3>
+<h3 id="3.Separate-Background-&amp;-Signals-by-fitting-Background+Signal-histogram">3.Separate Background &amp; Signals by fitting Background+Signal histogram</h3>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="kt">double</span> <span class="n">par</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
-<span class="n">hSB</span><span class="o">-&gt;</span><span class="n">Fit</span><span class="p">(</span><span class="s">&quot;fSB&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="mf">3.5</span><span class="p">,</span><span class="mf">6.5</span><span class="p">);</span>
+<div class="input_area"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="n">par</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
+<span class="n">hSB</span><span class="o">-&gt;</span><span class="n">Fit</span><span class="p">(</span><span class="s">"fSB"</span><span class="p">,</span><span class="s">""</span><span class="p">,</span><span class="s">""</span><span class="p">,</span><span class="mf">3.5</span><span class="p">,</span><span class="mf">6.5</span><span class="p">);</span>
 <span class="n">fSB</span><span class="o">-&gt;</span><span class="n">GetParameters</span><span class="p">(</span><span class="o">&amp;</span><span class="n">par</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
 <span class="n">fB</span><span class="o">-&gt;</span><span class="n">SetParameters</span><span class="p">(</span><span class="o">&amp;</span><span class="n">par</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
 <span class="n">fS</span><span class="o">-&gt;</span><span class="n">SetParameters</span><span class="p">(</span><span class="o">&amp;</span><span class="n">par</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
 <span class="n">hSB</span><span class="o">-&gt;</span><span class="n">SetMinimum</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
 <span class="n">hSB</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 <span class="n">hSB</span><span class="o">-&gt;</span><span class="n">SetLineColor</span><span class="p">(</span><span class="n">kRed</span><span class="p">);</span>
-<span class="n">hS</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">&quot;same&quot;</span><span class="p">);</span>
-<span class="n">fS</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">&quot;same&quot;</span><span class="p">);</span>
-<span class="n">hB</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">&quot;same&quot;</span><span class="p">);</span>
+<span class="n">hS</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"same"</span><span class="p">);</span>
+<span class="n">fS</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"same"</span><span class="p">);</span>
+<span class="n">hB</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"same"</span><span class="p">);</span>
+<span class="n">fSB</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"same"</span><span class="p">);</span><span class="w"> </span><span class="c1">// 联合拟合的总函数</span>
+<span class="n">fB</span><span class="o">-&gt;</span><span class="n">SetLineStyle</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">fB</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"same"</span><span class="p">);</span>
 <span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-
-
-<div class="output_png output_subarea ">
-<img src="data:image/png;base64,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
-"
->
 </div>
-
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre> FCN=26.9453 FROM MIGRAD    STATUS=CONVERGED     148 CALLS         149 TOTAL
-                     EDM=7.57716e-08    STRATEGY= 1      ERROR MATRIX ACCURATE 
-  EXT PARAMETER                                   STEP         FIRST   
-  NO.   NAME      VALUE            ERROR          SIZE      DERIVATIVE 
-   1  p0           6.53111e+02   3.40335e+01   1.53251e-02  -4.63201e-05
-   2  p1           7.13021e+01   6.78329e+00   3.05147e-03  -2.41271e-04
-   3  p2           3.91895e+02   2.46912e+01   5.09922e-02  -7.46021e-06
-   4  p3           5.02095e+00   1.33812e-02   3.38312e-05  -2.04568e-02
-   5  p4           1.91622e-01   1.35505e-02   2.63566e-05  -1.32757e-02
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
+<div class="verified-output"><pre>****************************************
+Minimizer is Minuit2 / Migrad
+Chi2                      =      26.3039
+NDf                       =           25
+Edm                       =  3.58116e-06
+NCalls                    =          138
+p0                        =      550.657   +/-   34.0768
+p1                        =      90.4691   +/-   6.79291
+p2                        =      374.452   +/-   23.3096
+p3                        =      4.99208   +/-   0.0146411
+p4                        =     0.214643   +/-   0.0153591</pre><img alt="Example_of_Integration_in_TH1_and_TF1: cell 7, c1" src="figures/Example_of_Integration_in_TH1_and_TF1/cell_07_c1.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="3.-Calculate-Signal-counts-from-TH1-&amp;-TF1">3. Calculate Signal counts from TH1 &amp; TF1<a class="anchor-link" href="#3.-Calculate-Signal-counts-from-TH1-&amp;-TF1">&#182;</a></h3>
-</div>
+<h3 id="3.-Calculate-Signal-counts-from-TH1-&amp;-TF1">3. Calculate Signal counts from TH1 &amp; TF1</h3>
+<p>下面比较模拟中已知的 signal 计数、拟合 signal 的积分，以及总计数减去拟合本底。后两者是同一数据上的估计，并非独立测量。积分保留 double，避免把拟合值截断为整数。峰面积的误差传播见共用的 <a href="https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/ROOT/ROOT_Tutorial_I_CPP.html">ROOT Tutorial I</a>。</p></div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span><span class="kt">double</span> <span class="n">x1</span><span class="o">=</span><span class="mf">3.6</span><span class="p">;</span><span class="c1">//x1,x2：Both values must be within the fitting range</span>
-<span class="kt">double</span> <span class="n">x2</span><span class="o">=</span><span class="mf">6.3</span><span class="p">;</span>
-<span class="kt">int</span> <span class="n">bin1</span><span class="o">=</span><span class="n">hSB</span><span class="o">-&gt;</span><span class="n">FindBin</span><span class="p">(</span><span class="n">x1</span><span class="p">);</span>
-<span class="kt">int</span> <span class="n">bin2</span><span class="o">=</span><span class="n">hSB</span><span class="o">-&gt;</span><span class="n">FindBin</span><span class="p">(</span><span class="n">x2</span><span class="p">);</span>
-<span class="kt">int</span> <span class="n">nhSB</span><span class="o">=</span><span class="n">hSB</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="n">bin1</span><span class="p">,</span><span class="n">bin2</span><span class="p">);</span>
-<span class="kt">int</span> <span class="n">nhB</span><span class="o">=</span><span class="n">hB</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="n">bin1</span><span class="p">,</span><span class="n">bin2</span><span class="p">);</span>
-<span class="kt">int</span> <span class="n">nhS</span><span class="o">=</span><span class="n">hS</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="n">bin1</span><span class="p">,</span><span class="n">bin2</span><span class="p">);</span>
-<span class="kt">double</span> <span class="n">fx1</span><span class="o">=</span><span class="n">hSB</span><span class="o">-&gt;</span><span class="n">GetBinLowEdge</span><span class="p">(</span><span class="n">bin1</span><span class="p">);</span>
-<span class="kt">double</span> <span class="n">fx2</span><span class="o">=</span><span class="n">hSB</span><span class="o">-&gt;</span><span class="n">GetBinLowEdge</span><span class="p">(</span><span class="n">bin2</span><span class="p">)</span><span class="o">+</span><span class="n">hSB</span><span class="o">-&gt;</span><span class="n">GetBinWidth</span><span class="p">(</span><span class="n">bin2</span><span class="p">);</span>
-<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">bin1</span><span class="o">&lt;&lt;</span><span class="s">&quot; &quot;</span><span class="o">&lt;&lt;</span><span class="n">bin2</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-<span class="kt">int</span> <span class="n">nfB</span><span class="o">=</span><span class="n">fB</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="n">fx1</span><span class="p">,</span><span class="n">fx2</span><span class="p">)</span><span class="o">/</span><span class="n">hSB</span><span class="o">-&gt;</span><span class="n">GetBinWidth</span><span class="p">(</span><span class="n">bin2</span><span class="p">);</span>
-<span class="kt">int</span> <span class="n">nfS</span><span class="o">=</span><span class="n">fS</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="n">fx1</span><span class="p">,</span><span class="n">fx2</span><span class="p">)</span><span class="o">/</span><span class="n">hSB</span><span class="o">-&gt;</span><span class="n">GetBinWidth</span><span class="p">(</span><span class="n">bin2</span><span class="p">);</span>
-<span class="kt">int</span> <span class="n">nfSB</span><span class="o">=</span><span class="n">fSB</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="n">fx1</span><span class="p">,</span><span class="n">fx2</span><span class="p">)</span><span class="o">/</span><span class="n">hSB</span><span class="o">-&gt;</span><span class="n">GetBinWidth</span><span class="p">(</span><span class="n">bin2</span><span class="p">);</span>
-<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">fx1</span><span class="o">&lt;&lt;</span><span class="s">&quot;,&quot;</span><span class="o">&lt;&lt;</span><span class="n">fx2</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;TH1: hB=&quot;</span><span class="o">&lt;&lt;</span><span class="n">nhB</span><span class="o">&lt;&lt;</span><span class="s">&quot;, hS=&quot;</span><span class="o">&lt;&lt;</span><span class="n">nhS</span><span class="o">&lt;&lt;</span><span class="s">&quot;, hSB=&quot;</span><span class="o">&lt;&lt;</span><span class="n">nhSB</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;TF1: fB=&quot;</span><span class="o">&lt;&lt;</span><span class="n">nfB</span><span class="o">&lt;&lt;</span><span class="s">&quot;, fS=&quot;</span><span class="o">&lt;&lt;</span><span class="n">nfS</span><span class="o">&lt;&lt;</span><span class="s">&quot;, fSB=&quot;</span><span class="o">&lt;&lt;</span><span class="n">nfSB</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;hS=&quot;</span><span class="o">&lt;&lt;</span><span class="n">nhS</span><span class="o">&lt;&lt;</span><span class="s">&quot;, hSB-fB=&quot;</span><span class="o">&lt;&lt;</span><span class="n">nhSB</span><span class="o">-</span><span class="n">nfB</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+<div class="input_area"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="n">x1</span><span class="o">=</span><span class="mf">3.6</span><span class="p">;</span><span class="c1">//x1,x2：Both values must be within the fitting range</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">x2</span><span class="o">=</span><span class="mf">6.3</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">bin1</span><span class="o">=</span><span class="n">hSB</span><span class="o">-&gt;</span><span class="n">FindBin</span><span class="p">(</span><span class="n">x1</span><span class="p">);</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">bin2</span><span class="o">=</span><span class="n">hSB</span><span class="o">-&gt;</span><span class="n">FindBin</span><span class="p">(</span><span class="n">x2</span><span class="p">);</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">nhSB</span><span class="o">=</span><span class="n">hSB</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="n">bin1</span><span class="p">,</span><span class="n">bin2</span><span class="p">);</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">nhB</span><span class="o">=</span><span class="n">hB</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="n">bin1</span><span class="p">,</span><span class="n">bin2</span><span class="p">);</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">nhS</span><span class="o">=</span><span class="n">hS</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="n">bin1</span><span class="p">,</span><span class="n">bin2</span><span class="p">);</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">fx1</span><span class="o">=</span><span class="n">hSB</span><span class="o">-&gt;</span><span class="n">GetBinLowEdge</span><span class="p">(</span><span class="n">bin1</span><span class="p">);</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">fx2</span><span class="o">=</span><span class="n">hSB</span><span class="o">-&gt;</span><span class="n">GetBinLowEdge</span><span class="p">(</span><span class="n">bin2</span><span class="p">)</span><span class="o">+</span><span class="n">hSB</span><span class="o">-&gt;</span><span class="n">GetBinWidth</span><span class="p">(</span><span class="n">bin2</span><span class="p">);</span>
+<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">bin1</span><span class="o">&lt;&lt;</span><span class="s">" "</span><span class="o">&lt;&lt;</span><span class="n">bin2</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">nfB</span><span class="o">=</span><span class="n">fB</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="n">fx1</span><span class="p">,</span><span class="n">fx2</span><span class="p">)</span><span class="o">/</span><span class="n">hSB</span><span class="o">-&gt;</span><span class="n">GetBinWidth</span><span class="p">(</span><span class="n">bin2</span><span class="p">);</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">nfS</span><span class="o">=</span><span class="n">fS</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="n">fx1</span><span class="p">,</span><span class="n">fx2</span><span class="p">)</span><span class="o">/</span><span class="n">hSB</span><span class="o">-&gt;</span><span class="n">GetBinWidth</span><span class="p">(</span><span class="n">bin2</span><span class="p">);</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">nfSB</span><span class="o">=</span><span class="n">fSB</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="n">fx1</span><span class="p">,</span><span class="n">fx2</span><span class="p">)</span><span class="o">/</span><span class="n">hSB</span><span class="o">-&gt;</span><span class="n">GetBinWidth</span><span class="p">(</span><span class="n">bin2</span><span class="p">);</span>
+<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">fx1</span><span class="o">&lt;&lt;</span><span class="s">","</span><span class="o">&lt;&lt;</span><span class="n">fx2</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">"TH1: hB="</span><span class="o">&lt;&lt;</span><span class="n">nhB</span><span class="o">&lt;&lt;</span><span class="s">", hS="</span><span class="o">&lt;&lt;</span><span class="n">nhS</span><span class="o">&lt;&lt;</span><span class="s">", hSB="</span><span class="o">&lt;&lt;</span><span class="n">nhSB</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">"TF1: fB="</span><span class="o">&lt;&lt;</span><span class="n">nfB</span><span class="o">&lt;&lt;</span><span class="s">", fS="</span><span class="o">&lt;&lt;</span><span class="n">nfS</span><span class="o">&lt;&lt;</span><span class="s">", fSB="</span><span class="o">&lt;&lt;</span><span class="n">nfSB</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">"hS="</span><span class="o">&lt;&lt;</span><span class="n">nhS</span><span class="o">&lt;&lt;</span><span class="s">", hSB-fB="</span><span class="o">&lt;&lt;</span><span class="n">nhSB</span><span class="o">-</span><span class="n">nfB</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>37 64
-3.6,6.4
-TH1: hB=28236, hS=2000, hSB=30236
-TF1: fB=28269, fS=1882, fSB=30151
-hS=2000, hSB-fB=1967
-</pre>
 </div>
-</div>
-
-</div>
-</div>
-
-</div>
+<div class="verified-output"><pre>37 63
+3.6,6.3
+TH1: hB=27001, hS=2000, hSB=29001
+TF1: fB=26959, fS=2014.66, fSB=28973.6
+hS=2000, hSB-fB=2042.05</pre></div></div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-c++"><pre><span></span>
+<div class="input_area">
+<div class="highlight hl-c++"><pre><span></span>
 </pre></div>
-
-    </div>
 </div>
 </div>
-
 </div>
-    </div>
-  </div>
+</div>
+</div>
+</div>
 </body>
-
- 
-
-
 </html>

@@ -1,0 +1,24 @@
+{
+//========= Macro generated from object: cutd2esc/Graph
+//========= by ROOT version6.26/02
+   
+   cutg = new TCutG("cutd2esc",13);
+   cutg->SetVarX("x2esc-y2esc");
+   cutg->SetVarY("x2esc");
+   cutg->SetTitle("Graph");
+   cutg->SetFillStyle(1000);
+   cutg->SetPoint(0,-8.63272,102.708);
+   cutg->SetPoint(1,-12.8183,1205.85);
+   cutg->SetPoint(2,-14.3879,3179.9);
+   cutg->SetPoint(3,-17.0038,4994.28);
+   cutg->SetPoint(4,-23.2822,7418.29);
+   cutg->SetPoint(5,3.40077,7926.32);
+   cutg->SetPoint(6,54.6739,7679.57);
+   cutg->SetPoint(7,43.6868,5400.7);
+   cutg->SetPoint(8,31.1301,4355.62);
+   cutg->SetPoint(9,21.1894,1917.09);
+   cutg->SetPoint(10,13.3415,494.615);
+   cutg->SetPoint(11,7.58633,102.708);
+   cutg->SetPoint(12,-8.63272,102.708);
+   cutg->Draw("");
+}

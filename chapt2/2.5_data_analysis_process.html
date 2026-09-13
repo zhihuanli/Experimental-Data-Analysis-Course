@@ -7832,8 +7832,15 @@ a.anchor-link {
     white-space: normal;
   }
 </style>
-<!-- End of mermaid configuration --></head>
-<body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
+<!-- End of mermaid configuration --><link data-course-header="true" href="../assets/css/course-header.css" rel="stylesheet"/></head>
+<body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light"><header class="course-banner"><div class="course-banner-inner">
+<a href="../index.html"><img alt="课程标志" src="../assets/images/course-logo.png"/></a>
+<div class="course-banner-title"><a href="../index.html">核物理实验数据处理</a>
+<span class="course-banner-en">Experimental Data Analysis in Nuclear Physics</span></div></div></header>
+<nav aria-label="课程导航" class="course-nav"><div class="course-nav-inner">
+<a href="../index.html">课程主页</a><a href="../index.html#preparation">课前准备</a>
+<a href="../index.html#lectures">课程讲义</a><a href="https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/">实验方法课程</a></div></nav>
+
 <main>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -7841,7 +7848,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="2.5-%E5%AE%9E%E9%AA%8C%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B">2.5 实验数据处理过程<a class="anchor-link" href="#2.5-%E5%AE%9E%E9%AA%8C%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B">¶</a></h1>
+<h1 id="2.5-%E5%AE%9E%E9%AA%8C%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B">2.5 实验数据处理过程</h1>
 </div>
 </div>
 </div>
@@ -7853,14 +7860,14 @@ a.anchor-link {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p>基于 ROOT 的核物理实验数据处理通常可分为两个主要阶段。第一阶段侧重于底层数据的解码、格式转换与初步整理；第二阶段则侧重于物理量的提取与高级物理分析。</p>
-<h3 id="%F0%9F%92%A1-%E6%A0%B8%E5%BF%83%E5%8E%9F%E5%88%99%EF%BC%9A%E6%A8%A1%E5%9D%97%E5%8C%96%E8%A7%A3%E8%80%A6%E4%B8%8E%E9%98%B6%E6%AE%B5%E6%80%A7%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8">💡 核心原则：模块化解耦与阶段性数据存储<a class="anchor-link" href="#%F0%9F%92%A1-%E6%A0%B8%E5%BF%83%E5%8E%9F%E5%88%99%EF%BC%9A%E6%A8%A1%E5%9D%97%E5%8C%96%E8%A7%A3%E8%80%A6%E4%B8%8E%E9%98%B6%E6%AE%B5%E6%80%A7%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8">¶</a></h3><p>整个分析流程应当拆分为若干个功能单一、职责明确的独立程序模块（如：<code>1_unpack.cpp</code>, <code>2_calibrate.cpp</code>, <code>3_pid_cut.cpp</code>, <code>4_physics.cpp</code>）。<strong>在每完成一个关键逻辑步骤后，必须将处理结果保存为一个全新的 ROOT 文件（包含更新后的 TTree），并将其作为下一个环节的输入。</strong></p>
+<h3 id="%F0%9F%92%A1-%E6%A0%B8%E5%BF%83%E5%8E%9F%E5%88%99%EF%BC%9A%E6%A8%A1%E5%9D%97%E5%8C%96%E8%A7%A3%E8%80%A6%E4%B8%8E%E9%98%B6%E6%AE%B5%E6%80%A7%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8">💡 核心原则：模块化解耦与阶段性数据存储</h3><p>可将分析分为解码、刻度、事件重建和物理分析几个阶段。在计算耗时或需要重复使用的阶段保存中间 ROOT 文件；无需每做一步都另存一个文件。保留原事件编号、输入来源、刻度参数和选择条件，便于复查。</p>
 <ul>
-<li><strong>避免重复计算，大幅节省时间</strong>：物理分析是一个不断试错和迭代的过程（例如反复微调 Cut 边界、更改拟合区间）。如果每次调整末端参数，都从最原始的海量二进制文件开始重新运行程序，将消耗极大的时间成本。通过读取上一阶段生成的精简版 ROOT 文件作为当前阶段的输入，可以实现分析过程的秒级快速迭代。</li>
+<li>避免重复计算：改变末端的 Cut 或拟合区间时，读取已保存的刻度结果，不必重复解码和刻度。</li>
 <li><strong>降低代码耦合，提升容错率</strong>：不同层级的分析如果高度耦合，一旦某处逻辑（如某个探测器的刻度参数）发生更改，极易引发连锁错误，且排查困难（Debug 成本极高）。采用分步生成独立文件的方式，使得每个阶段的输入输出清晰明确，不仅便于逐级检查数据质量，也极大提高了代码的可维护性。</li>
 </ul>
-<h3 id="%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5%EF%BC%9A%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2%E4%B8%8E%E5%88%9D%E6%AD%A5%E6%95%B4%E7%90%86">第一阶段：数据格式转换与初步整理<a class="anchor-link" href="#%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5%EF%BC%9A%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2%E4%B8%8E%E5%88%9D%E6%AD%A5%E6%95%B4%E7%90%86">¶</a></h3><p>此阶段的目标是将探测器获取的信号读数转换为结构化的 ROOT 数据，并进行基础的清洗和校验。
+<h3 id="%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5%EF%BC%9A%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2%E4%B8%8E%E5%88%9D%E6%AD%A5%E6%95%B4%E7%90%86">第一阶段：数据格式转换与初步整理</h3><p>此阶段的目标是将探测器获取的信号读数转换为结构化的 ROOT 数据，并进行基础的清洗和校验。
 <img alt="1" src="fig/phase1.png"/></p>
-<h4 id="%E5%8E%9F%E5%A7%8B%E6%95%B0%E6%8D%AE(raw-data)"><font color="Blue">原始数据(raw data)</font><a class="anchor-link" href="#%E5%8E%9F%E5%A7%8B%E6%95%B0%E6%8D%AE(raw-data)">¶</a></h4><ul>
+<h4 id="%E5%8E%9F%E5%A7%8B%E6%95%B0%E6%8D%AE(raw-data)"><font color="Blue">原始数据(raw data)</font></h4><ul>
 <li>实验过程中由前端数据获取系统（DAQ）产生的二进制数据流保存到硬盘形成原始文件。原始数据通常由一系列的“数据块 (Data Block)”组成。每个数据块内包含来自不同电子学插件的数据，每个数据单元除了包含各个通道记录的探测器幅度值（如 ADC/TDC 读数）外，还包含通道地址、是否超界等状态描述字。</li>
 </ul>
 </div>
@@ -7873,7 +7880,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="%E8%A7%A3%E7%A0%81(decoding-or-mapping)%EF%BC%9A"><font color="Blue">解码(decoding or mapping)</font>：<a class="anchor-link" href="#%E8%A7%A3%E7%A0%81(decoding-or-mapping)%EF%BC%9A">¶</a></h4><ul>
+<h4 id="%E8%A7%A3%E7%A0%81(decoding-or-mapping)%EF%BC%9A"><font color="Blue">解码(decoding or mapping)</font>：</h4><ul>
 <li>解码程序通过读取数据中每个插件的特定标识，按对应协议进行解码。随后，根据实验设定的“探测器信号-插件通道”对应表（Mapping Map），将上述硬件数据转换成每个物理事件中具体探测器的测量值。经过此步骤生成的文件通常称为<strong>原始 ROOT 文件 (Raw ROOT File)</strong>。</li>
 </ul>
 </div>
@@ -7886,7 +7893,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="%E4%BA%8B%E4%BB%B6%E9%87%8D%E6%9E%84(event-building)%EF%BC%9A"><font color="Blue">事件重构(event building)</font>：<a class="anchor-link" href="#%E4%BA%8B%E4%BB%B6%E9%87%8D%E6%9E%84(event-building)%EF%BC%9A">¶</a></h4><ul>
+<h4 id="%E4%BA%8B%E4%BB%B6%E9%87%8D%E6%9E%84(event-building)%EF%BC%9A"><font color="Blue">事件重构(event building)</font>：</h4><ul>
 <li>根据探测器信号之间的时间逻辑关系，重新组织和对齐事件结构（具体算法机制见第 5 章）。</li>
 </ul>
 </div>
@@ -7898,13 +7905,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="%E5%8E%9F%E5%A7%8BROOT%E6%96%87%E4%BB%B6%E5%90%8E%E7%BB%AD%E5%A4%84%E7%90%86%E6%AD%A5%E9%AA%A4">原始ROOT文件后续处理步骤<a class="anchor-link" href="#%E5%8E%9F%E5%A7%8BROOT%E6%96%87%E4%BB%B6%E5%90%8E%E7%BB%AD%E5%A4%84%E7%90%86%E6%AD%A5%E9%AA%A4">¶</a></h3><p>在得到原始 ROOT 文件后，必须进行以下标准化处理，以为后续的物理刻度做好准备：</p>
-<h4 id="%E6%AD%A5%E9%AA%A4%E4%B8%80%EF%BC%9A%E5%8E%9F%E5%A7%8B%E5%8F%98%E9%87%8F%E8%BF%9E%E7%BB%AD%E5%8C%96-(Dithering)">步骤一：原始变量连续化 (Dithering)<a class="anchor-link" href="#%E6%AD%A5%E9%AA%A4%E4%B8%80%EF%BC%9A%E5%8E%9F%E5%A7%8B%E5%8F%98%E9%87%8F%E8%BF%9E%E7%BB%AD%E5%8C%96-(Dithering)">¶</a></h4><p>ADC、TDC 等电子学插件记录的原始道值（Channels）为离散的整数值。<strong>正如前面讲义中所介绍的，在进行参数刻度之前，必须采用 Dithering 技术对离散值进行连续化处理</strong>（即在每次测量值上加入 $[0, 1)$ 之间的均匀分布随机数）。</p>
-<ul>
-<li><em>流程强调</em>：这一步是消除刻度后能谱“锯齿状结构”的必要前置操作。该操作不会破坏原有物理信息（通过向下取整即可恢复原始整数道值）。</li>
-</ul>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>步骤一：检查原始道值与量化</h3><p>保留 ADC/TDC 的整数码及无效、overflow 等状态，检查其有效区间。刻度可以直接作用于原始码或 bin 中心。1.3 的 dithering 是基于 bin 内均匀近似的可选处理，不是刻度的必需步骤，也不恢复丢失的精度。</p></div>
 </div>
 </div>
 </div>
@@ -7914,7 +7915,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="%E6%AD%A5%E9%AA%A4%E4%BA%8C%EF%BC%9A%E5%8F%82%E6%95%B0%E5%AE%8C%E6%95%B4%E6%80%A7%E4%BB%A5%E5%8F%8A%E5%8F%98%E9%87%8F%E6%9C%89%E6%95%88%E5%80%BC%E5%8C%BA%E9%97%B4">步骤二：参数完整性以及变量有效值区间<a class="anchor-link" href="#%E6%AD%A5%E9%AA%A4%E4%BA%8C%EF%BC%9A%E5%8F%82%E6%95%B0%E5%AE%8C%E6%95%B4%E6%80%A7%E4%BB%A5%E5%8F%8A%E5%8F%98%E9%87%8F%E6%9C%89%E6%95%88%E5%80%BC%E5%8C%BA%E9%97%B4">¶</a></h4><p>检查每一个实验参数的完整性，并根据数据实际情况选择合适的物理量计算方法：</p>
+<h4 id="%E6%AD%A5%E9%AA%A4%E4%BA%8C%EF%BC%9A%E5%8F%82%E6%95%B0%E5%AE%8C%E6%95%B4%E6%80%A7%E4%BB%A5%E5%8F%8A%E5%8F%98%E9%87%8F%E6%9C%89%E6%95%88%E5%80%BC%E5%8C%BA%E9%97%B4">步骤二：参数完整性以及变量有效值区间</h4><p>检查每一个实验参数的完整性，并根据数据实际情况选择合适的物理量计算方法：</p>
 <ul>
 <li><strong>Case 1</strong>：在 PPAC 探测器实验中，若四个位置的时间信号正常，但阳极 (Anode) 信号异常（如接触不良或后端电子学故障），为了最大化利用有效数据，在位置信号的重建算法中，可放宽条件，不强制要求阳极信号的存在。</li>
 <li><strong>Case 2</strong>：在中子探测器实验中，如果左侧的电荷量 $q_L$ 记录缺失，可通过时间信号 $t_L, t_R$ 以及右侧电荷量 $q_R$，利用经验公式重建总沉积能量 $Q$。</li>
@@ -7930,7 +7931,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="%E6%AD%A5%E9%AA%A4%E4%B8%89%EF%BC%9A%E5%85%B3%E9%94%AE%E4%BF%A1%E6%81%AF%E7%9A%84%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%8C%96%E5%AD%98%E5%82%A8-(Histograms)">步骤三：关键信息的直方图化存储 (Histograms)<a class="anchor-link" href="#%E6%AD%A5%E9%AA%A4%E4%B8%89%EF%BC%9A%E5%85%B3%E9%94%AE%E4%BF%A1%E6%81%AF%E7%9A%84%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%8C%96%E5%AD%98%E5%82%A8-(Histograms)">¶</a></h4><p>在后续分析中，直接在 TTree 结构中通过 <code>tree-&gt;Draw()</code> 实时查看每个参数的分布极其耗时。因此，标准流程中除了生成包含 TTree 的 ROOT 文件（如 <code>run001.root</code>）外，还需将常用信息提取并以直方图（Histogram）的格式独立存储在另一个 ROOT 文件中（如 <code>hist001.root</code>）。</p>
+<h4 id="%E6%AD%A5%E9%AA%A4%E4%B8%89%EF%BC%9A%E5%85%B3%E9%94%AE%E4%BF%A1%E6%81%AF%E7%9A%84%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%8C%96%E5%AD%98%E5%82%A8-(Histograms)">步骤三：关键信息的直方图化存储 (Histograms)</h4><p>反复查看大型 TTree 的同一分布会重复读取数据。可把常用直方图与树一起保存，或另存为 hist001.root，供日常检查；按具体数据量决定是否缓存。</p>
 <ul>
 <li><strong>常用信息包括</strong>：ADC/TDC 各通道的原始能谱和时间谱、同类型探测器的 Hit 分布图、探测器间的二维关联谱（如 $\Delta E-E$, $TOF-\Delta E$）等。</li>
 </ul>
@@ -7946,13 +7947,8 @@ a.anchor-link {
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B%EF%BC%9A%E5%9C%A8-ROOT-%E6%96%87%E4%BB%B6%E4%B8%AD%E5%88%9B%E5%BB%BA%E7%9B%AE%E5%BD%95%E5%B9%B6%E5%88%86%E7%B1%BB%E5%AD%98%E5%82%A8%E7%9B%B4%E6%96%B9%E5%9B%BE">代码示例：在 ROOT 文件中创建目录并分类存储直方图<a class="anchor-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B%EF%BC%9A%E5%9C%A8-ROOT-%E6%96%87%E4%BB%B6%E4%B8%AD%E5%88%9B%E5%BB%BA%E7%9B%AE%E5%BD%95%E5%B9%B6%E5%88%86%E7%B1%BB%E5%AD%98%E5%82%A8%E7%9B%B4%E6%96%B9%E5%9B%BE">¶</a></h4><div class="highlight"><pre><span></span><span class="c1">// 1. 创建用于存储直方图的 ROOT 文件</span>
+<div class="jp-Cell jp-CodeCell"><div class="jp-Cell-inputWrapper"><div class="jp-InputArea"><div class="jp-InputArea-editor"><div class="highlight"><pre><span></span><span class="n">gRandom</span><span class="o">-&gt;</span><span class="n">SetSeed</span><span class="p">(</span><span class="mi">2501</span><span class="p">);</span><span class="w"> </span><span class="c1">// 固定示例的随机数种子</span>
+<span class="c1">// 1. 创建用于存储直方图的 ROOT 文件</span>
 <span class="n">TFile</span><span class="w"> </span><span class="o">*</span><span class="n">fout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TFile</span><span class="p">(</span><span class="s">"hist_test.root"</span><span class="p">,</span><span class="w"> </span><span class="s">"RECREATE"</span><span class="p">);</span>
 
 <span class="c1">// 2. 在根目录下创建一级目录 dir1 和 dir2</span>
@@ -7988,21 +7984,14 @@ a.anchor-link {
 <span class="n">fout</span><span class="o">-&gt;</span><span class="n">Write</span><span class="p">();</span>
 <span class="n">fout</span><span class="o">-&gt;</span><span class="n">Close</span><span class="p">();</span>
 </pre></div>
-<ul>
-<li>形成如下目录结构</li>
-</ul>
-<p><img alt="1" src="fig/dir.png"/></p>
-</div>
-</div>
-</div>
-</div>
+</div></div></div></div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="Read-hist-from-the-file">Read hist from the file<a class="anchor-link" href="#Read-hist-from-the-file">¶</a></h4><ul>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><p>写入后的目录结构：</p><img alt="1" src="fig/dir.png"/>
+<h4 id="Read-hist-from-the-file">Read hist from the file</h4><ul>
 <li>root环境直接读取(见上图)</li>
 </ul>
 <div class="highlight"><pre><span></span><span class="n">root</span><span class="w"> </span><span class="o">-</span><span class="n">l</span><span class="w"> </span><span class="n">hist_test</span><span class="p">.</span><span class="n">root</span>
@@ -8043,24 +8032,11 @@ a.anchor-link {
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>TFile**		hist_test.root	
- TFile*		hist_test.root	
+<div class="verified-output"><pre>TFile**		hist_test.root
+ TFile*		hist_test.root
   KEY: TDirectoryFile	dir1;1	ADC Spectra
   KEY: TDirectoryFile	dir2;1	TDC Spectra
-  KEY: TH1I	h0;1	Global Hist
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+  KEY: TH1I	h0;1	Global Hist</pre></div></div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8083,94 +8059,22 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-c++"><pre><span></span><span class="n">h1suba</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">TCanvas</span><span class="w"> </span><span class="o">*</span><span class="n">c1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TCanvas</span><span class="p">(</span><span class="s">"c1"</span><span class="p">,</span><span class="s">"Directory example"</span><span class="p">);</span>
+<span class="n">h1suba</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 <span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<div id="root_plot_1774783831981" style="width: 700px; height: 500px; position: relative">
-</div>
-<script>
-
-function display_root_plot_1774783831981(Core) {
-   let obj = Core.parse({"_typename":"TCanvasWebSnapshot","fUniqueID":0,"fBits":0,"fObjectID":"","fOption":"","fKind":3,"fSnapshot":{"_typename":"TCanvas","fUniqueID":0,"fBits":3342344,"fLineColor":1,"fLineStyle":1,"fLineWidth":1,"fFillColor":0,"fFillStyle":1001,"fLeftMargin":0.1,"fRightMargin":0.1,"fBottomMargin":0.1,"fTopMargin":0.1,"fXfile":2,"fYfile":2,"fAfile":1,"fXstat":0.99,"fYstat":0.99,"fAstat":2,"fFrameFillColor":0,"fFrameLineColor":1,"fFrameFillStyle":1001,"fFrameLineStyle":1,"fFrameLineWidth":1,"fFrameBorderSize":1,"fFrameBorderMode":0,"fX1":-3.75000005587936,"fY1":-32.681252434943,"fX2":3.75000005587936,"fY2":294.131252434943,"fXtoAbsPixelk":348,"fXtoPixelk":348,"fXtoPixel":92.7999986171722,"fYtoAbsPixelk":424.799997186661,"fYtoPixelk":424.799997186661,"fYtoPixel":-1.4442531817683,"fUtoAbsPixelk":0,"fUtoPixelk":0,"fUtoPixel":696,"fVtoAbsPixelk":472,"fVtoPixelk":472,"fVtoPixel":-472,"fAbsPixeltoXk":-3.75000005587936,"fPixeltoXk":-3.75000005587936,"fPixeltoX":0.0107758622295384,"fAbsPixeltoYk":294.131252434943,"fPixeltoYk":-32.681252434943,"fPixeltoY":-0.692399374724335,"fXlowNDC":0,"fYlowNDC":0,"fXUpNDC":1,"fYUpNDC":1,"fWNDC":1,"fHNDC":1,"fAbsXlowNDC":0,"fAbsYlowNDC":0,"fAbsWNDC":1,"fAbsHNDC":1,"fUxmin":-3,"fUymin":0,"fUxmax":3,"fUymax":261.45,"fTheta":30,"fPhi":30,"fAspectRatio":0,"fNumber":0,"fTickx":0,"fTicky":0,"fLogx":0,"fLogy":0,"fLogz":0,"fPadPaint":0,"fCrosshair":0,"fCrosshairPos":0,"fBorderSize":2,"fBorderMode":0,"fModified":false,"fGridx":false,"fGridy":false,"fAbsCoord":false,"fEditable":true,"fFixedAspectRatio":false,"fPrimitives":{"_typename":"TList","name":"TList","arr":[],"opt":[]},"fExecs":null,"fName":"c1","fTitle":"c1","fNumPaletteColor":0,"fNextPaletteColor":0,"fDISPLAY":"$DISPLAY","fDoubleBuffer":0,"fRetained":true,"fXsizeUser":0,"fYsizeUser":0,"fXsizeReal":20,"fYsizeReal":14.28571,"fWindowTopX":0,"fWindowTopY":0,"fWindowWidth":0,"fWindowHeight":0,"fCw":696,"fCh":472,"fCatt":{"_typename":"TAttCanvas","fXBetween":2,"fYBetween":2,"fTitleFromTop":1.2,"fXdate":0.2,"fYdate":0.3,"fAdate":1},"kMoveOpaque":true,"kResizeOpaque":true,"fHighLightColor":2,"fBatch":true,"kShowEventStatus":false,"kAutoExec":true,"kMenuBar":true},"fActive":false,"fReadOnly":true,"fWithoutPrimitives":false,"fHasExecs":false,"fPrimitives":[{"_typename":"TWebSnapshot","fUniqueID":0,"fBits":0,"fObjectID":"","fOption":"","fKind":4,"fSnapshot":{"_typename":"TWebPainting","fUniqueID":0,"fBits":0,"fOper":"0:255,255,255;1:0,0,0;2:255,0,0;3:0,255,0;4:0,0,255;5:255,255,0;6:255,0,255;7:0,255,255;8:89,211,84;9:89,84,216;10:254,254,254;11:192,182,172;12:76,76,76;13:102,102,102;14:127,127,127;15:153,153,153;16:178,178,178;17:204,204,204;18:229,229,229;19:242,242,242;20:204,198,170;21:204,198,170;22:193,191,168;23:186,181,163;24:178,165,150;25:183,163,155;26:173,153,140;27:155,142,130;28:135,102,86;29:175,206,198;30:132,193,163;31:137,168,160;32:130,158,140;33:173,188,198;34:122,142,153;35:117,137,145;36:104,130,150;37:109,122,132;38:124,153,209;39:127,127,155;40:170,165,191;41:211,206,135;42:221,186,135;43:188,158,130;44:198,153,124;45:191,130,119;46:206,94,96;47:170,142,147;48:165,119,122;49:147,104,112;50:211,89,84;51:146,0,255;52:122,0,255;53:98,0,255;54:74,0,255;55:51,0,255;56:27,0,255;57:3,0,255;58:0,20,255;59:0,44,255;60:0,68,255;61:0,91,255;62:0,115,255;63:0,139,255;64:0,163,255;65:0,187,255;66:0,210,255;67:0,234,255;68:0,255,251;69:0,255,227;70:0,255,204;71:0,255,180;72:0,255,156;73:0,255,132;74:0,255,108;75:0,255,85;76:0,255,61;77:0,255,37;78:0,255,13;79:10,255,0;80:34,255,0;81:57,255,0;82:81,255,0;83:105,255,0;84:129,255,0;85:153,255,0;86:176,255,0;87:200,255,0;88:224,255,0;89:248,255,0;90:255,238,0;91:255,214,0;92:255,190,0;93:255,166,0;94:255,142,0;95:255,119,0;96:255,95,0;97:255,71,0;98:255,47,0;99:255,23,0;100:111,45,168;101:165,42,42;102:178,190,181;103:87,144,252;104:248,156,32;105:228,37,54;106:150,74,139;107:156,156,161;108:122,33,221;109:24,69,251;110:255,94,2;111:201,31,22;112:200,73,169;113:173,173,125;114:134,200,221;115:87,141,255;116:101,99,100;117:63,144,218;118:255,169,14;119:189,31,1;120:148,164,162;121:131,45,182;122:169,107,89;123:231,99,0;124:185,172,112;125:113,117,129;126:146,218,221;127:178,178,178;201:91,91,91;202:122,122,122;203:183,183,183;204:214,214,214;205:137,15,15;206:183,20,20;207:234,71,71;208:239,117,117;209:15,137,15;210:20,183,20;211:71,234,71;212:117,239,117;213:15,15,137;214:20,20,183;215:71,71,234;216:117,117,239;217:137,137,15;218:183,183,20;219:234,234,71;220:239,239,117;221:137,15,137;222:183,20,183;223:234,71,234;224:239,117,239;225:15,137,137;226:20,183,183;227:71,234,234;228:117,239,239;390:255,255,204;391:255,255,153;392:204,204,153;393:255,255,102;394:204,204,102;395:153,153,102;396:255,255,51;397:204,204,51;398:153,153,51;399:102,102,51;400:255,255,0;401:204,204,0;402:153,153,0;403:102,102,0;404:51,51,0;406:204,255,204;407:153,255,153;408:153,204,153;409:102,255,102;410:102,204,102;411:102,153,102;412:51,255,51;413:51,204,51;414:51,153,51;415:51,102,51;416:0,255,0;417:0,204,0;418:0,153,0;419:0,102,0;420:0,51,0;422:204,255,255;423:153,255,255;424:153,204,204;425:102,255,255;426:102,204,204;427:102,153,153;428:51,255,255;429:51,204,204;430:51,153,153;431:51,102,102;432:0,255,255;433:0,204,204;434:0,153,153;435:0,102,102;436:0,51,51;590:204,204,255;591:153,153,255;592:153,153,204;593:102,102,255;594:102,102,204;595:102,102,153;596:51,51,255;597:51,51,204;598:51,51,153;599:51,51,102;600:0,0,255;601:0,0,204;602:0,0,153;603:0,0,102;604:0,0,51;606:255,204,255;607:255,153,255;608:204,153,204;609:255,102,255;610:204,102,204;611:153,102,153;612:255,51,255;613:204,51,204;614:153,51,153;615:102,51,102;616:255,0,255;617:204,0,204;618:153,0,153;619:102,0,102;620:51,0,51;622:255,204,204;623:255,153,153;624:204,153,153;625:255,102,102;626:204,102,102;627:153,102,102;628:255,51,51;629:204,51,51;630:153,51,51;631:102,51,51;632:255,0,0;633:204,0,0;634:153,0,0;635:102,0,0;636:51,0,0;791:255,204,153;792:204,153,102;793:153,102,51;794:153,102,0;795:204,153,51;796:255,204,102;797:255,153,0;798:255,204,51;799:204,153,0;800:255,204,0;801:255,153,51;802:204,102,0;803:102,51,0;804:153,51,0;805:204,102,51;806:255,153,102;807:255,102,0;808:255,102,51;809:204,51,0;810:255,51,0;811:153,255,51;812:102,204,0;813:51,102,0;814:51,153,0;815:102,204,51;816:153,255,102;817:102,255,0;818:102,255,51;819:51,204,0;820:51,255,0;821:204,255,153;822:153,204,102;823:102,153,51;824:102,153,0;825:153,204,51;826:204,255,102;827:153,255,0;828:204,255,51;829:153,204,0;830:204,255,0;831:153,255,204;832:102,204,153;833:51,153,102;834:0,153,102;835:51,204,153;836:102,255,204;837:0,255,102;838:51,255,204;839:0,204,153;840:0,255,204;841:51,255,153;842:0,204,102;843:0,102,51;844:0,153,51;845:51,204,102;846:102,255,153;847:0,255,153;848:51,255,102;849:0,204,51;850:0,255,51;851:153,204,255;852:102,153,204;853:51,102,153;854:0,51,153;855:51,102,204;856:102,153,255;857:0,102,255;858:51,102,255;859:0,51,204;860:0,51,255;861:51,153,255;862:0,102,204;863:0,51,102;864:0,102,153;865:51,153,204;866:102,204,255;867:0,153,255;868:51,204,255;869:0,153,204;870:0,204,255;871:204,153,255;872:153,102,204;873:102,51,153;874:102,0,153;875:153,51,204;876:204,102,255;877:153,0,255;878:204,51,255;879:153,0,204;880:204,0,255;881:153,51,255;882:102,0,204;883:51,0,102;884:51,0,153;885:102,51,204;886:153,102,255;887:102,0,255;888:102,51,255;889:51,0,204;890:51,0,255;891:255,51,153;892:204,0,102;893:102,0,51;894:153,0,51;895:204,51,102;896:255,102,153;897:255,0,102;898:255,51,102;899:204,0,51;900:255,0,51;901:255,153,204;902:204,102,153;903:153,51,102;904:153,0,102;905:204,51,153;906:255,102,204;907:255,0,153;908:204,0,153;909:255,51,204;910:255,0,153;920:204,204,204;921:153,153,153;922:102,102,102;923:51,51,51;924:53,42,134;925:51,44,137;926:50,45,140;927:49,47,143;928:48,48,146;929:46,50,148;930:45,51,151;931:44,53,154;932:43,55,157;933:42,56,160;934:40,58,162;935:39,59,165;936:38,61,168;937:37,63,171;938:35,64,174;939:34,66,176;940:33,67,179;941:32,69,182;942:31,71,185;943:29,72,187;944:28,74,190;945:27,75,193;946:26,77,196;947:24,79,199;948:23,80,201;949:22,82,204;950:21,83,207;951:19,85,210;952:18,86,213;953:17,88,215;954:16,90,218;955:15,91,221;956:15,92,221;957:15,94,220;958:15,95,220;959:15,96,220;960:15,97,220;961:15,98,220;962:16,99,219;963:16,100,219;964:16,102,219;965:16,103,219;966:16,104,218;967:16,105,218;968:17,106,218;969:17,107,218;970:17,109,217;971:17,110,217;972:17,111,217;973:17,112,217;974:17,113,216;975:18,114,216;976:18,115,216;977:18,117,216;978:18,118,215;979:18,119,215;980:18,120,215;981:18,121,215;982:19,122,215;983:19,123,214;984:19,125,214;985:19,126,214;986:19,127,214;987:19,128,213;988:19,129,213;989:19,130,213;990:18,131,212;991:18,132,212;992:17,134,211;993:17,135,211;994:16,136,211;995:16,137,210;996:15,138,210;997:15,139,210;998:15,140,209;999:14,141,209;1000:14,142,208;1001:13,143,208;1002:13,145,208;1003:12,146,207;1004:12,147,207;1005:12,148,207;1006:11,149,206;1007:11,150,206;1008:10,151,205;1009:10,152,205;1010:9,153,205;1011:9,154,204;1012:8,155,204;1013:8,157,204;1014:8,158,203;1015:7,159,203;1016:7,160,202;1017:6,161,202;1018:6,162,202;1019:5,163,201;1020:7,164,200;1021:8,164,199;1022:9,165,198;1023:10,166,197;1024:12,166,195;1025:13,167,194;1026:14,167,193;1027:15,168,192;1028:17,169,191;1029:18,169,189;1030:19,170,188;1031:20,170,187;1032:22,171,186;1033:23,172,185;1034:24,172,184;1035:25,173,182;1036:27,173,181;1037:28,174,180;1038:29,175,179;1039:30,175,178;1040:32,176,176;1041:33,176,175;1042:34,177,174;1043:35,178,173;1044:37,178,172;1045:38,179,170;1046:39,180,169;1047:40,180,168;1048:42,181,167;1049:43,181,166;1050:44,182,165;1051:45,183,163;1052:48,183,162;1053:51,183,161;1054:54,183,159;1055:57,184,158;1056:59,184,156;1057:62,184,155;1058:65,184,154;1059:68,185,152;1060:71,185,151;1061:73,185,149;1062:76,185,148;1063:79,186,146;1064:82,186,145;1065:84,186,144;1066:87,186,142;1067:90,187,141;1068:93,187,139;1069:96,187,138;1070:98,187,137;1071:101,188,135;1072:104,188,134;1073:107,188,132;1074:110,188,131;1075:112,189,130;1076:115,189,128;1077:118,189,127;1078:121,189,125;1079:124,190,124;1080:126,190,123;1081:129,190,121;1082:132,190,120;1083:135,191,118;1084:137,190,117;1085:139,190,117;1086:142,190,116;1087:144,190,115;1088:146,190,114;1089:148,190,113;1090:151,190,112;1091:153,190,111;1092:155,189,110;1093:158,189,109;1094:160,189,108;1095:162,189,107;1096:165,189,106;1097:167,189,105;1098:169,189,104;1099:171,188,104;1100:174,188,103;1101:176,188,102;1102:178,188,101;1103:181,188,100;1104:183,188,99;1105:185,188,98;1106:188,188,97;1107:190,187,96;1108:192,187,95;1109:194,187,94;1110:197,187,93;1111:199,187,92;1112:201,187,92;1113:204,187,91;1114:206,186,90;1115:208,186,89;1116:210,187,88;1117:211,187,86;1118:212,188,85;1119:214,188,84;1120:215,188,83;1121:217,189,81;1122:218,189,80;1123:220,190,79;1124:221,190,78;1125:222,191,77;1126:224,191,75;1127:225,191,74;1128:227,192,73;1129:228,192,72;1130:229,193,70;1131:231,193,69;1132:232,194,68;1133:234,194,67;1134:235,194,66;1135:236,195,64;1136:238,195,63;1137:239,196,62;1138:241,196,61;1139:242,197,59;1140:244,197,58;1141:245,197,57;1142:246,198,56;1143:248,198,55;1144:249,199,53;1145:251,199,52;1146:252,200,51;1147:253,200,50;1148:253,202,49;1149:253,203,47;1150:253,205,46;1151:253,206,45;1152:253,208,44;1153:252,209,43;1154:252,211,42;1155:252,213,41;1156:252,214,39;1157:252,216,38;1158:252,217,37;1159:252,219,36;1160:251,220,35;1161:251,222,34;1162:251,224,33;1163:251,225,31;1164:251,227,30;1165:251,228,29;1166:250,230,28;1167:250,231,27;1168:250,233,26;1169:250,235,25;1170:250,236,23;1171:250,238,22;1172:250,239,21;1173:249,241,20;1174:249,242,19;1175:249,244,18;1176:249,246,17;1177:249,247,16;1178:249,249,14","fBuf":{"$arr":"Float32","len":255,"v":[924,925,926,927,928,929,930,931,932,933,934,935,936,937,938,939,940,941,942,943,944,945,946,947,948,949,950,951,952,953,954,955,956,957,958,959,960,961,962,963,964,965,966,967,968,969,970,971,972,973,974,975,976,977,978,979,980,981,982,983,984,985,986,987,988,989,990,991,992,993,994,995,996,997,998,999,1000,1001,1002,1003,1004,1005,1006,1007,1008,1009,1010,1011,1012,1013,1014,1015,1016,1017,1018,1019,1020,1021,1022,1023,1024,1025,1026,1027,1028,1029,1030,1031,1032,1033,1034,1035,1036,1037,1038,1039,1040,1041,1042,1043,1044,1045,1046,1047,1048,1049,1050,1051,1052,1053,1054,1055,1056,1057,1058,1059,1060,1061,1062,1063,1064,1065,1066,1067,1068,1069,1070,1071,1072,1073,1074,1075,1076,1077,1078,1079,1080,1081,1082,1083,1084,1085,1086,1087,1088,1089,1090,1091,1092,1093,1094,1095,1096,1097,1098,1099,1100,1101,1102,1103,1104,1105,1106,1107,1108,1109,1110,1111,1112,1113,1114,1115,1116,1117,1118,1119,1120,1121,1122,1123,1124,1125,1126,1127,1128,1129,1130,1131,1132,1133,1134,1135,1136,1137,1138,1139,1140,1141,1142,1143,1144,1145,1146,1147,1148,1149,1150,1151,1152,1153,1154,1155,1156,1157,1158,1159,1160,1161,1162,1163,1164,1165,1166,1167,1168,1169,1170,1171,1172,1173,1174,1175,1176,1177,1178]}}},{"_typename":"TWebSnapshot","fUniqueID":0,"fBits":0,"fObjectID":"","fOption":"","fKind":5,"fSnapshot":{"_typename":"TStyle","fUniqueID":0,"fBits":0,"fName":"Modern","fTitle":"Modern Style","fLineColor":1,"fLineStyle":1,"fLineWidth":1,"fFillColor":19,"fFillStyle":1001,"fMarkerColor":1,"fMarkerStyle":1,"fMarkerSize":1,"fTextAngle":0,"fTextSize":0.05,"fTextAlign":11,"fTextColor":1,"fTextFont":62,"fXaxis":{"_typename":"TAttAxis","fNdivisions":510,"fAxisColor":1,"fLabelColor":1,"fLabelFont":42,"fLabelOffset":0.005,"fLabelSize":0.035,"fTickLength":0.03,"fTitleOffset":1,"fTitleSize":0.035,"fTitleColor":1,"fTitleFont":42},"fYaxis":{"_typename":"TAttAxis","fNdivisions":510,"fAxisColor":1,"fLabelColor":1,"fLabelFont":42,"fLabelOffset":0.005,"fLabelSize":0.035,"fTickLength":0.03,"fTitleOffset":0,"fTitleSize":0.035,"fTitleColor":1,"fTitleFont":42},"fZaxis":{"_typename":"TAttAxis","fNdivisions":510,"fAxisColor":1,"fLabelColor":1,"fLabelFont":42,"fLabelOffset":0.005,"fLabelSize":0.035,"fTickLength":0.03,"fTitleOffset":1,"fTitleSize":0.035,"fTitleColor":1,"fTitleFont":42},"fBarWidth":1,"fBarOffset":0,"fColorModelPS":0,"fDrawBorder":0,"fOptLogx":0,"fOptLogy":0,"fOptLogz":0,"fOptDate":0,"fOptStat":1111,"fOptTitle":1,"fOptFile":0,"fOptFit":0,"fShowEventStatus":0,"fShowEditor":0,"fShowToolBar":0,"fNumberContours":20,"fAttDate":{"_typename":"TAttText","fTextAngle":0,"fTextSize":0.025,"fTextAlign":11,"fTextColor":1,"fTextFont":62},"fDateX":0.01,"fDateY":0.01,"fEndErrorSize":2,"fErrorX":0.5,"fFuncColor":2,"fFuncStyle":1,"fFuncWidth":2,"fGridColor":0,"fGridStyle":3,"fGridWidth":1,"fLegendBorderSize":1,"fLegendFillColor":0,"fLegendFillStyle":1001,"fLegendFont":42,"fLegendTextSize":0,"fHatchesLineWidth":1,"fHatchesSpacing":1,"fFrameFillColor":0,"fFrameLineColor":1,"fFrameFillStyle":1001,"fFrameLineStyle":1,"fFrameLineWidth":1,"fFrameBorderSize":1,"fFrameBorderMode":0,"fHistFillColor":0,"fHistLineColor":602,"fHistFillStyle":1001,"fHistLineStyle":1,"fHistLineWidth":1,"fHistMinimumZero":false,"fHistTopMargin":0.05,"fCanvasPreferGL":false,"fCanvasColor":0,"fCanvasBorderSize":2,"fCanvasBorderMode":0,"fCanvasDefH":500,"fCanvasDefW":700,"fCanvasDefX":10,"fCanvasDefY":10,"fPadColor":0,"fPadBorderSize":2,"fPadBorderMode":0,"fPadBottomMargin":0.1,"fPadTopMargin":0.1,"fPadLeftMargin":0.1,"fPadRightMargin":0.1,"fPadGridX":false,"fPadGridY":false,"fPadTickX":0,"fPadTickY":0,"fPaperSizeX":20,"fPaperSizeY":26,"fScreenFactor":1,"fStatColor":0,"fStatTextColor":1,"fStatBorderSize":1,"fStatFont":42,"fStatFontSize":0,"fStatStyle":1001,"fStatFormat":"6.4g","fStatX":0.98,"fStatY":0.935,"fStatW":0.2,"fStatH":0.16,"fStripDecimals":true,"fTitleAlign":23,"fTitleColor":0,"fTitleTextColor":1,"fTitleBorderSize":0,"fTitleFont":42,"fTitleFontSize":0.05,"fTitleStyle":0,"fTitleX":0.5,"fTitleY":0.995,"fTitleW":0,"fTitleH":0,"fLegoInnerR":0.5,"fLineStyles":["","  "," 12 12"," 4 8"," 12 16 4 16"," 20 12 4 12"," 20 12 4 12 4 12 4 12"," 20 20"," 20 12 4 12 4 12"," 80 20"," 80 40 4 40","  ","  ","  ","  ","  ","  ","  ","  ","  ","  ","  ","  ","  ","  ","  ","  ","  ","  ","  "],"fHeaderPS":"","fTitlePS":"","fFitFormat":"5.4g","fPaintTextFormat":"g","fLineScalePS":3,"fJoinLinePS":0,"fCapLinePS":0,"fTimeOffset":788918400,"fImageScaling":1,"fCandleWhiskerRange":1,"fCandleBoxRange":0.5,"fCandleScaled":false,"fViolinScaled":true,"fXAxisExpXOffset":0,"fXAxisExpYOffset":0,"fYAxisExpXOffset":0,"fYAxisExpYOffset":0,"fAxisMaxDigits":5,"fOrthoCamera":false}},{"_typename":"TWebSnapshot","fUniqueID":0,"fBits":0,"fObjectID":"","fOption":"","fKind":1,"fSnapshot":{"_typename":"TFrame","fUniqueID":0,"fBits":8,"fLineColor":1,"fLineStyle":1,"fLineWidth":1,"fFillColor":0,"fFillStyle":1001,"fX1":-3,"fY1":0,"fX2":3,"fY2":261.45,"fBorderSize":1,"fBorderMode":0}},{"_typename":"TWebSnapshot","fUniqueID":0,"fBits":0,"fObjectID":"","fOption":"","fKind":1,"fSnapshot":{"_typename":"TH1I","fUniqueID":0,"fBits":8,"fName":"h1sub","fTitle":"PPAC X pos","fLineColor":602,"fLineStyle":1,"fLineWidth":1,"fFillColor":0,"fFillStyle":1001,"fMarkerColor":1,"fMarkerStyle":1,"fMarkerSize":1,"fNcells":102,"fXaxis":{"_typename":"TAxis","fUniqueID":0,"fBits":0,"fName":"xaxis","fTitle":"","fNdivisions":510,"fAxisColor":1,"fLabelColor":1,"fLabelFont":42,"fLabelOffset":0.005,"fLabelSize":0.035,"fTickLength":0.03,"fTitleOffset":1,"fTitleSize":0.035,"fTitleColor":1,"fTitleFont":42,"fNbins":100,"fXmin":-3,"fXmax":3,"fXbins":[],"fFirst":0,"fLast":0,"fBits2":0,"fTimeDisplay":false,"fTimeFormat":"","fLabels":null,"fModLabs":null},"fYaxis":{"_typename":"TAxis","fUniqueID":0,"fBits":0,"fName":"yaxis","fTitle":"","fNdivisions":510,"fAxisColor":1,"fLabelColor":1,"fLabelFont":42,"fLabelOffset":0.005,"fLabelSize":0.035,"fTickLength":0.03,"fTitleOffset":0,"fTitleSize":0.035,"fTitleColor":1,"fTitleFont":42,"fNbins":1,"fXmin":0,"fXmax":1,"fXbins":[],"fFirst":0,"fLast":0,"fBits2":0,"fTimeDisplay":false,"fTimeFormat":"","fLabels":null,"fModLabs":null},"fZaxis":{"_typename":"TAxis","fUniqueID":0,"fBits":0,"fName":"zaxis","fTitle":"","fNdivisions":510,"fAxisColor":1,"fLabelColor":1,"fLabelFont":42,"fLabelOffset":0.005,"fLabelSize":0.035,"fTickLength":0.03,"fTitleOffset":1,"fTitleSize":0.035,"fTitleColor":1,"fTitleFont":42,"fNbins":1,"fXmin":0,"fXmax":1,"fXbins":[],"fFirst":0,"fLast":0,"fBits2":0,"fTimeDisplay":false,"fTimeFormat":"","fLabels":null,"fModLabs":null},"fBarOffset":0,"fBarWidth":1000,"fEntries":10000,"fTsumw":10000,"fTsumw2":10000,"fTsumwx":-38.4037436864603,"fTsumwx2":9719.1948768532,"fMaximum":-1111,"fMinimum":-1111,"fNormFactor":0,"fContour":[],"fSumw2":[],"fOption":"","fFunctions":{"_typename":"TList","name":"TList","arr":[{"_typename":"TPaveStats","fUniqueID":0,"fBits":9,"fLineColor":1,"fLineStyle":1,"fLineWidth":1,"fFillColor":0,"fFillStyle":1001,"fX1":2.10000015199185,"fY1":220.598440787173,"fX2":3.60000019669533,"fY2":272.888440397582,"fX1NDC":0.780000016093254,"fY1NDC":0.775000005960464,"fX2NDC":0.980000019073486,"fY2NDC":0.935000002384186,"fBorderSize":1,"fInit":1,"fShadowColor":1,"fCornerRadius":0,"fOption":"brNDC","fName":"stats","fTextAngle":0,"fTextSize":0,"fTextAlign":12,"fTextColor":1,"fTextFont":42,"fLabel":"","fLongest":18,"fMargin":0.05,"fLines":{"_typename":"TList","name":"TList","arr":[{"_typename":"TLatex","fUniqueID":0,"fBits":0,"fName":"","fTitle":"h1sub","fTextAngle":0,"fTextSize":0.0368,"fTextAlign":0,"fTextColor":0,"fTextFont":0,"fX":0,"fY":0,"fLineColor":1,"fLineStyle":1,"fLineWidth":2,"fLimitFactorSize":3,"fOriginSize":0.0368000008165836},{"_typename":"TLatex","fUniqueID":0,"fBits":0,"fName":"","fTitle":"Entries = 10000  ","fTextAngle":0,"fTextSize":0,"fTextAlign":0,"fTextColor":0,"fTextFont":0,"fX":0,"fY":0,"fLineColor":1,"fLineStyle":1,"fLineWidth":2,"fLimitFactorSize":3,"fOriginSize":0.04},{"_typename":"TLatex","fUniqueID":0,"fBits":0,"fName":"","fTitle":"Mean  = -0.00384","fTextAngle":0,"fTextSize":0,"fTextAlign":0,"fTextColor":0,"fTextFont":0,"fX":0,"fY":0,"fLineColor":1,"fLineStyle":1,"fLineWidth":2,"fLimitFactorSize":3,"fOriginSize":0.04},{"_typename":"TLatex","fUniqueID":0,"fBits":0,"fName":"","fTitle":"Std Dev   = 0.9859","fTextAngle":0,"fTextSize":0,"fTextAlign":0,"fTextColor":0,"fTextFont":0,"fX":0,"fY":0,"fLineColor":1,"fLineStyle":1,"fLineWidth":2,"fLimitFactorSize":3,"fOriginSize":0.04}],"opt":["","","",""]},"fOptFit":0,"fOptStat":1111,"fFitFormat":"5.4g","fStatFormat":"6.4g","fParent":{"$ref":15}}],"opt":["brNDC"]},"fBufferSize":0,"fBuffer":[],"fBinStatErrOpt":0,"fStatOverflows":2,"fArray":{"$arr":"Int32","len":102,"p":1,"v":[1,3,2,3,5,8,5,7,11,18,19,14,17,20,18,32,26,37,38,50,45,56,51,81,65,102,98,95,105,123,125,138,154,145,160,168,176,181,194,194,224,203,217,187,227,208,226,232,249,247,242,238,226,247,228,225,226,216,221,210,194,160,183,161,148,168,163,152,120,135,129,96,108,93,67,72,84,46,47,41,45,33,29,25,36,19,22,28,19,11,13,14,10,9,13,3,4,2,5,4]}}},{"_typename":"TWebSnapshot","fUniqueID":0,"fBits":0,"fObjectID":"","fOption":"blNDC","fKind":1,"fSnapshot":{"_typename":"TPaveText","fUniqueID":0,"fBits":9,"fLineColor":1,"fLineStyle":1,"fLineWidth":1,"fFillColor":0,"fFillStyle":0,"fX1":-0.818534494955736,"fY1":272.556089476896,"fX2":0.818534494955735,"fY2":292.497191468957,"fX1NDC":0.390862068965517,"fY1NDC":0.933983055615829,"fX2NDC":0.609137931034483,"fY2NDC":0.995000004768372,"fBorderSize":0,"fInit":1,"fShadowColor":1,"fCornerRadius":0,"fOption":"blNDC","fName":"title","fTextAngle":0,"fTextSize":0,"fTextAlign":22,"fTextColor":1,"fTextFont":42,"fLabel":"","fLongest":10,"fMargin":0.05,"fLines":{"_typename":"TList","name":"TList","arr":[{"_typename":"TLatex","fUniqueID":0,"fBits":0,"fName":"","fTitle":"PPAC X pos","fTextAngle":0,"fTextSize":0,"fTextAlign":0,"fTextColor":0,"fTextFont":0,"fX":0,"fY":0,"fLineColor":1,"fLineStyle":1,"fLineWidth":2,"fLimitFactorSize":3,"fOriginSize":0.0518644079566002}],"opt":[""]}}}],"fScripts":"","fHighlightConnect":false,"fFixedSize":false});
-   Core.settings.HandleKeys = false;
-   Core.draw("root_plot_1774783831981", obj, "");
-}
-
-function script_load_root_plot_1774783831981(src, on_error) {
-    let script = document.createElement('script');
-    script.src = src;
-    script.onload = function() { display_root_plot_1774783831981(JSROOT); };
-    script.onerror = function() { script.remove(); on_error(); };
-    document.head.appendChild(script);
-}
-
-if (typeof requirejs !== 'undefined') {
-
-    // We are in jupyter notebooks, use require.js which should be configured already
-    requirejs.config({
-       paths: { 'JSRootCore' : [ 'build/jsroot', 'https://root.cern/js/7.8.2/build/jsroot', 'https://jsroot.gsi.de/7.8.2/build/jsroot' ] }
-    })(['JSRootCore'],  function(Core) {
-       display_root_plot_1774783831981(Core);
-    });
-
-} else if (typeof JSROOT !== 'undefined') {
-
-   // JSROOT already loaded, just use it
-   display_root_plot_1774783831981(JSROOT);
-
-} else {
-
-    // We are in jupyterlab without require.js, directly loading jsroot
-    // Jupyterlab might be installed in a different base_url so we need to know it.
-    try {
-        var base_url = JSON.parse(document.getElementById('jupyter-config-data').innerHTML).baseUrl;
-    } catch(_) {
-        var base_url = '/';
-    }
-
-    // Try loading a local version of requirejs and fallback to cdn if not possible.
-    script_load_root_plot_1774783831981(base_url + 'static/build/jsroot.js', function(){
-        console.error('Fail to load JSROOT locally, please check your jupyter_notebook_config.py file');
-        script_load_root_plot_1774783831981('https://root.cern/js/7.8.2/build/jsroot.js', function(){
-            document.getElementById("root_plot_1774783831981").innerHTML = "Failed to load JSROOT";
-        });
-    });
-}
-
-</script>
-</div>
-</div>
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>Info in &lt;TCanvas::MakeDefCanvas&gt;:  created default TCanvas with name c1
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
+<div class="verified-output"><img alt="2.5_data_analysis_process: cell 12, c1" src="figures/2.5_data_analysis_process/cell_12_c1.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="%E6%AD%A5%E9%AA%A4%E5%9B%9B%EF%BC%9A%E5%AE%9E%E9%AA%8C%E5%8F%82%E6%95%B0%E4%B8%80%E8%87%B4%E6%80%A7%E6%A3%80%E9%AA%8C-(Drift-Check)">步骤四：实验参数一致性检验 (Drift Check)<a class="anchor-link" href="#%E6%AD%A5%E9%AA%A4%E5%9B%9B%EF%BC%9A%E5%AE%9E%E9%AA%8C%E5%8F%82%E6%95%B0%E4%B8%80%E8%87%B4%E6%80%A7%E6%A3%80%E9%AA%8C-(Drift-Check)">¶</a></h4><p>由于探测器工作条件的变化（温度波动、噪声引入等）以及电子学参数的长期漂移，实验设备的增益或基线可能会随时间发生改变。
-<strong>在进入正式物理刻度和设定数据切割条件（Cut）之前，必须确认基础参数的时间稳定性，并进行必要的动态修正。</strong></p>
+<h4 id="%E6%AD%A5%E9%AA%A4%E5%9B%9B%EF%BC%9A%E5%AE%9E%E9%AA%8C%E5%8F%82%E6%95%B0%E4%B8%80%E8%87%B4%E6%80%A7%E6%A3%80%E9%AA%8C-(Drift-Check)">步骤四：实验参数一致性检验 (Drift Check)</h4><p>由于探测器工作条件的变化（温度波动、噪声引入等）以及电子学参数的长期漂移，实验设备的增益或基线可能会随时间发生改变。
+<strong>在进入正式物理刻度和设定数据切割条件（Cut）之前，先检查基础参数的时间稳定性，并进行必要的动态修正。</strong></p>
 <ul>
 <li><strong>文件内变化</strong>：观察参数值随事件编号（Event Number）或绝对时间戳（Timestamp）的变化趋势。</li>
 <li><strong>全局变化</strong>：观察参数的统计平均值（如某特征峰的位置、探测器效率、时间分辨）随 Run Number（文件编号）的宏观漂移情况。</li>
@@ -8187,26 +8091,26 @@ if (typeof requirejs !== 'undefined') {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%E7%AC%AC%E4%BA%8C%E9%98%B6%E6%AE%B5%EF%BC%9A%E7%89%A9%E7%90%86%E9%87%8F%E6%8F%90%E5%8F%96%E4%B8%8E%E9%AB%98%E7%BA%A7%E5%88%86%E6%9E%90">第二阶段：物理量提取与高级分析<a class="anchor-link" href="#%E7%AC%AC%E4%BA%8C%E9%98%B6%E6%AE%B5%EF%BC%9A%E7%89%A9%E7%90%86%E9%87%8F%E6%8F%90%E5%8F%96%E4%B8%8E%E9%AB%98%E7%BA%A7%E5%88%86%E6%9E%90">¶</a></h2><p>第二阶段建立在第一阶段清洗和校准好的数据之上，主要包括物理量（如散射角、激发能、反应截面）的严格提取、物理条件的选取（Cut 应用）以及最终物理图谱的拟合等过程。</p>
-<p>在此阶段，每个处理步骤都伴随着信息的深度提纯与压缩，无效本底被逐步剔除，数据文件的大小显著减小，程序在内存中的读取与分析速度大幅提升。完整的第二阶段通常包含以下几个核心环节：</p>
-<h3 id="1.-%E7%89%A9%E7%90%86%E6%9D%A1%E4%BB%B6%E7%9A%84%E9%80%89%E5%8F%96%EF%BC%88Cut-%E5%BA%94%E7%94%A8%EF%BC%89">1. 物理条件的选取（Cut 应用）<a class="anchor-link" href="#1.-%E7%89%A9%E7%90%86%E6%9D%A1%E4%BB%B6%E7%9A%84%E9%80%89%E5%8F%96%EF%BC%88Cut-%E5%BA%94%E7%94%A8%EF%BC%89">¶</a></h3><p>在提取最终物理观测量之前，必须从混杂的实验数据中精准筛选出目标反应事件，并最大程度压低本底。该过程通常通过在 ROOT 中施加多维度的条件切割（Cuts）来实现：</p>
+<h2 id="%E7%AC%AC%E4%BA%8C%E9%98%B6%E6%AE%B5%EF%BC%9A%E7%89%A9%E7%90%86%E9%87%8F%E6%8F%90%E5%8F%96%E4%B8%8E%E9%AB%98%E7%BA%A7%E5%88%86%E6%9E%90">第二阶段：物理量提取与高级分析</h2><p>第二阶段建立在第一阶段清洗和校准好的数据之上，主要包括物理量（如散射角、激发能、反应截面）的严格提取、物理条件的选取（Cut 应用）以及最终物理图谱的拟合等过程。</p>
+<p>本阶段用刻度后的信号重建物理量。选择条件会改变样本及其接受度，应与重建结果一起记录，供后续效率修正使用。</p>
+<h3 id="1.-%E7%89%A9%E7%90%86%E6%9D%A1%E4%BB%B6%E7%9A%84%E9%80%89%E5%8F%96%EF%BC%88Cut-%E5%BA%94%E7%94%A8%EF%BC%89">1. 物理条件的选取（Cut 应用）</h3><p>在提取最终物理观测量之前，必须从混杂的实验数据中精准筛选出目标反应事件，并最大程度压低本底。该过程通常通过在 ROOT 中施加多维度的条件切割（Cuts）来实现：</p>
 <ul>
 <li><strong>粒子鉴别（Particle Identification, PID）</strong>：利用探测器组（如 $\Delta E-E$ 望远镜探测器或 $TOF-\Delta E$ 飞行时间系统），绘制二维关联散点图。不同电荷 $Z$ 和质量 $M$ 的同位素会在二维图上呈现清晰的“带状”分布。通过在 ROOT 中运用 <code>TCutG</code> 类，沿着目标粒子的分布带绘制闭合多边形，生成 PID 筛选条件。</li>
-<li><strong>符合时间窗口选取（Time Window Cut）</strong>：利用探测器之间的时间差（Time-of-Flight）设定严格的符合窗口（Prompt Window），从而甄别出真实的级联反应事件，并剔除由于高计数率导致的偶然符合本底（Random Coincidence）。</li>
+<li>符合时间窗口选取（Time Window Cut）：围绕探测器时间差的 prompt 峰选择事件，以降低 random coincidence。本底仍可能落在窗口内，必要时用旁侧时间区间估计。</li>
 <li><strong>几何与运动学约束</strong>：排除打在探测器边缘死区或准直器上的无效事例，或利用反应前后的动量守恒逻辑，剔除不符合特定运动学规律的发散事件。</li>
 </ul>
-<h3 id="2.-%E7%89%A9%E7%90%86%E9%87%8F%E7%9A%84%E4%B8%A5%E6%A0%BC%E6%8F%90%E5%8F%96%EF%BC%88Kinematic-Reconstruction%EF%BC%89">2. 物理量的严格提取（Kinematic Reconstruction）<a class="anchor-link" href="#2.-%E7%89%A9%E7%90%86%E9%87%8F%E7%9A%84%E4%B8%A5%E6%A0%BC%E6%8F%90%E5%8F%96%EF%BC%88Kinematic-Reconstruction%EF%BC%89">¶</a></h3><p>经过 Cut 筛选后的纯净事件，其包含的变量仍是探测器坐标（$X, Y, Z$）和校准后的能量（MeV）、时间（ns）。在此步骤中，需要利用相对论或经典运动学公式，将这些基础观测量转化为表征原子核性质的物理参量：</p>
+<h3 id="2.-%E7%89%A9%E7%90%86%E9%87%8F%E7%9A%84%E4%B8%A5%E6%A0%BC%E6%8F%90%E5%8F%96%EF%BC%88Kinematic-Reconstruction%EF%BC%89">2. 物理量的严格提取（Kinematic Reconstruction）</h3><p>经过 Cut 选择后的候选事件，其中使用的量包括探测器坐标（$X, Y, Z$）和校准后的能量（MeV）、时间（ns）。在此步骤中，需要利用相对论或经典运动学公式，将这些基础观测量转化为表征原子核性质的物理参量：</p>
 <ul>
 <li><strong>散射角提取（Scattering Angle）</strong>：结合靶点位置与粒子在位置敏感探测器（如 PPAC、硅微条）上的击中坐标，利用空间几何关系计算出粒子出射的极角 $\theta$ 和方位角 $\phi$。</li>
 <li><strong>激发能与 Q 值重构（Excitation Energy）</strong>：利用入射束流能量、出射粒子的动能与散射角 $\theta$，通过两体或多体运动学公式（Kinematics），逐事件（Event-by-Event）计算出反应体系的 $Q$ 值或剩余核的激发能 $E_x$。</li>
 </ul>
-<h3 id="3.-%E6%9C%80%E7%BB%88%E7%89%A9%E7%90%86%E5%9B%BE%E8%B0%B1%E7%9A%84%E6%8B%9F%E5%90%88%E4%B8%8E%E6%88%AA%E9%9D%A2%E8%AE%A1%E7%AE%97%EF%BC%88Spectrum-Fitting%EF%BC%89">3. 最终物理图谱的拟合与截面计算（Spectrum Fitting）<a class="anchor-link" href="#3.-%E6%9C%80%E7%BB%88%E7%89%A9%E7%90%86%E5%9B%BE%E8%B0%B1%E7%9A%84%E6%8B%9F%E5%90%88%E4%B8%8E%E6%88%AA%E9%9D%A2%E8%AE%A1%E7%AE%97%EF%BC%88Spectrum-Fitting%EF%BC%89">¶</a></h3><p>将提取出的物理量（如 $E_x$）投影为一维直方图后，即得到最终的物理图谱。后续的物理分析主要围绕图谱的解析展开：</p>
+<h3 id="3.-%E6%9C%80%E7%BB%88%E7%89%A9%E7%90%86%E5%9B%BE%E8%B0%B1%E7%9A%84%E6%8B%9F%E5%90%88%E4%B8%8E%E6%88%AA%E9%9D%A2%E8%AE%A1%E7%AE%97%EF%BC%88Spectrum-Fitting%EF%BC%89">3. 最终物理图谱的拟合与截面计算（Spectrum Fitting）</h3><p>将提取出的物理量（如 $E_x$）投影为一维直方图后，即得到最终的物理图谱。后续的物理分析主要围绕图谱的解析展开：</p>
 <ul>
-<li><strong>信号拟合与本底扣除</strong>：利用 ROOT 中的 <code>TF1</code> 类定义拟合函数。针对目标物理峰（如基态、激发态谱线），通常采用高斯函数（Gaussian）或布雷特-维格纳函数（Breit-Wigner）进行拟合；针对连续分布的物理本底，通常采用多项式或指数函数进行背景建模。通过拟合，可精确提取特定物理态的中心位置（对应能级）、展宽（对应寿命）以及净计数（Yield）。</li>
+<li><strong>信号拟合与本底扣除</strong>：利用 ROOT 中的 <code>TF1</code> 类定义拟合函数。针对目标物理峰（如基态、激发态谱线），通常采用高斯函数（Gaussian）或布雷特-维格纳函数（Breit-Wigner）进行拟合；针对连续分布的物理本底，通常采用多项式或指数函数进行背景建模。通过拟合，可在给定模型下估计特定物理态的中心位置（对应能级）、峰宽（需分离自然宽度与仪器分辨后才可能关联寿命）以及净计数（Yield）。</li>
 <li><strong>反应截面提取（Cross Section）</strong>：物理图谱中提取的净计数 $N$ 仅代表探测到的事例数。要获得具有普适物理意义的反应截面 $\sigma$，需结合实验中的束流积分流强、靶原子面密度，并引入探测器本征效率与几何接受度（通常由 Geant4 等蒙特卡罗软件模拟给出）进行严格的归一化修正。</li>
 </ul>
 <p><img alt="2" src="fig/phase2.png"/></p>
-<p>该阶段的一个显著特征是信息的高度浓缩：随着无效数据被剔除、多通道原始信号被重构为单一物理量，数据文件的大小会逐级显著减小，程序在内存中的读取和分析速度也会大幅提升。</p>
+<p>重建后可只保留后续分析需要的量以减少重复读取，同时保留能追溯到原事件的编号。</p>
 </div>
 </div>
 </div>
@@ -8217,10 +8121,8 @@ if (typeof requirejs !== 'undefined') {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>以下是为你整理的、可直接作为讲义后续章节（例如 <strong>2.6 自动化数据处理：Bash 脚本实战教程</strong>）的完整 Tutorial 内容。</p>
-<p>该教程紧密衔接前面的 C++ 编译程序，按由浅入深的逻辑，将真实实验中可预见的需求转化为标准化的 Bash 工作流。</p>
 <hr/>
-<h1 id="Bash-shell-script-tutorial">Bash shell script tutorial<a class="anchor-link" href="#Bash-shell-script-tutorial">¶</a></h1><p>在核物理实验数据分析中，<strong>Bash 脚本则负责上层工作流的“自动化统筹”</strong>。</p>
+<h1 id="Bash-shell-script-tutorial">Bash shell script tutorial</h1><p>在核物理实验数据分析中，<strong>Bash 脚本则负责上层工作流的“自动化统筹”</strong>。</p>
 <p>当我们将核心物理算法（如 2.4 节中的 <code>./tracking</code>）编译为独立的可执行文件后，面对实验中产生的几十甚至上百个数据文件（Run），手动逐一输入命令显然是不切实际的。在真实的分析场景中，我们通常面临以下核心需求：</p>
 <ol>
 <li><strong>批量处理 (Batch Processing)</strong>：能够一键循环处理连续的 Run。</li>
@@ -8229,9 +8131,8 @@ if (typeof requirejs !== 'undefined') {
 <li><strong>后台挂机与日志 (Background &amp; Logging)</strong>：对于耗时数小时的分析任务，需支持断开终端连接后继续运行，并记录终端输出。</li>
 </ol>
 <p>以下教程将分为 4 个层级，逐步建立数据分析自动化脚本。</p>
-<h3 id="Level-1%EF%BC%9A%E6%9C%80%E5%9F%BA%E7%A1%80%E7%9A%84%E7%BB%88%E7%AB%AF%E5%BE%AA%E7%8E%AF-(One-Liner)">Level 1：最基础的终端循环 (One-Liner)<a class="anchor-link" href="#Level-1%EF%BC%9A%E6%9C%80%E5%9F%BA%E7%A1%80%E7%9A%84%E7%BB%88%E7%AB%AF%E5%BE%AA%E7%8E%AF-(One-Liner)">¶</a></h3><p>如果你只需临时快速跑完 Run 1 到 Run 10，甚至不需要专门编写脚本文件，直接在 Linux 终端中输入一行命令即可完成批量提交：</p>
-<div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span>run<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">{</span><span class="m">1</span>..10<span class="o">}</span><span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>./tracking<span class="w"> </span><span class="nv">$run</span><span class="p">;</span><span class="w"> </span><span class="k">done</span>
-</pre></div>
+<h3 id="Level-1%EF%BC%9A%E6%9C%80%E5%9F%BA%E7%A1%80%E7%9A%84%E7%BB%88%E7%AB%AF%E5%BE%AA%E7%8E%AF-(One-Liner)">Level 1：最基础的终端循环 (One-Liner)</h3><p>如果你只需临时快速跑完 Run 1 到 Run 10，甚至不需要专门编写脚本文件，直接在 Linux 终端中输入一行命令即可完成批量提交：</p>
+<div class="highlight"><pre><code class="language-cpp">for run in {1..10}; do ./tracking $run; done</code></pre></div>
 <ul>
 <li><strong>语法解析</strong>：<ul>
 <li><code>for run in {1..10}</code>：定义变量 <code>run</code>，使其取值从 1 递增到 10。</li>
@@ -8241,25 +8142,24 @@ if (typeof requirejs !== 'undefined') {
 </li>
 </ul>
 <hr/>
-<h3 id="Level-2%EF%BC%9A%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E5%9F%BA%E7%A1%80%E8%84%9A%E6%9C%AC-(%E5%8F%98%E9%87%8F%E4%B8%8E%E4%BC%A0%E5%8F%82)">Level 2：带参数的基础脚本 (变量与传参)<a class="anchor-link" href="#Level-2%EF%BC%9A%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E5%9F%BA%E7%A1%80%E8%84%9A%E6%9C%AC-(%E5%8F%98%E9%87%8F%E4%B8%8E%E4%BC%A0%E5%8F%82)">¶</a></h3><p>为了将执行逻辑固化并方便复用，通常创建一个 Shell 脚本文件（如 <code>run_batch.sh</code>）。为了避免每次修改代码内部的数字，我们需要引入<strong>命令行传参</strong>功能。</p>
+<h3 id="Level-2%EF%BC%9A%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E5%9F%BA%E7%A1%80%E8%84%9A%E6%9C%AC-(%E5%8F%98%E9%87%8F%E4%B8%8E%E4%BC%A0%E5%8F%82)">Level 2：带参数的基础脚本 (变量与传参)</h3><p>为了将执行逻辑固化并方便复用，通常创建一个 Shell 脚本文件（如 <code>run_batch.sh</code>）。为了避免每次修改代码内部的数字，我们需要引入<strong>命令行传参</strong>功能。</p>
 <p>新建文件 <code>run_batch.sh</code>，写入以下内容：</p>
-<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
-<span class="c1"># 第一行称为 Shebang，告知系统使用 bash 解释器来运行此脚本</span>
+<div class="highlight"><pre><code class="language-cpp">#!/bin/bash
+# 第一行称为 Shebang，告知系统使用 bash 解释器来运行此脚本
 
-<span class="c1"># $1 表示用户输入的第一个参数（起始Run），$2 表示第二个参数（结束Run）</span>
-<span class="nv">START</span><span class="o">=</span><span class="nv">$1</span>
-<span class="nv">END</span><span class="o">=</span><span class="nv">$2</span>
+# $1 表示用户输入的第一个参数（起始Run），$2 表示第二个参数（结束Run）
+START=$1
+END=$2
 
-<span class="nb">echo</span><span class="w"> </span><span class="s2">"&gt;&gt;&gt; 准备分析从 Run </span><span class="nv">$START</span><span class="s2"> 到 Run </span><span class="nv">$END</span><span class="s2"> 的数据..."</span>
+echo "&gt;&gt;&gt; 准备分析从 Run $START 到 Run $END 的数据..."
 
-<span class="c1"># 使用 seq 命令生成从 START 到 END 的连续数字序列</span>
-<span class="k">for</span><span class="w"> </span>run<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>seq<span class="w"> </span><span class="nv">$START</span><span class="w"> </span><span class="nv">$END</span><span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
-<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"--- 正在处理 Run </span><span class="nv">$run</span><span class="s2"> ---"</span>
-<span class="w">    </span>./tracking<span class="w"> </span><span class="nv">$run</span>
-<span class="k">done</span>
+# 使用 seq 命令生成从 START 到 END 的连续数字序列
+for run in $(seq "$START" "$END"); do
+    echo "--- 正在处理 Run $run ---"
+    ./tracking $run
+done
 
-<span class="nb">echo</span><span class="w"> </span><span class="s2">"&gt;&gt;&gt; 所有任务执行完毕！"</span>
-</pre></div>
+echo "&gt;&gt;&gt; 所有任务执行完毕！"</code></pre></div>
 <ul>
 <li><strong>使用方法</strong>：<ol>
 <li>赋予脚本可执行权限：<code>chmod +x run_batch.sh</code></li>
@@ -8268,53 +8168,48 @@ if (typeof requirejs !== 'undefined') {
 </li>
 </ul>
 <hr/>
-<h3 id="Level-3%EF%BC%9A%E5%A4%8D%E6%9D%82%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E8%84%9A%E6%9C%AC-(%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%B8%8E%E5%AE%B9%E9%94%99%E5%A4%84%E7%90%86)">Level 3：复杂数据分析脚本 (格式化与容错处理)<a class="anchor-link" href="#Level-3%EF%BC%9A%E5%A4%8D%E6%9D%82%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E8%84%9A%E6%9C%AC-(%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%B8%8E%E5%AE%B9%E9%94%99%E5%A4%84%E7%90%86)">¶</a></h3><p>在真实实验中，数据文件通常带有补零格式（如 <code>run001.root</code> 而非 <code>run1.root</code>），且常常会因为各种原因跳过某些 Run。此时，我们需要在脚本中加入<strong>字符串格式化</strong>与<strong>文件存在性检测</strong>。</p>
+<h3 id="Level-3%EF%BC%9A%E5%A4%8D%E6%9D%82%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E8%84%9A%E6%9C%AC-(%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%B8%8E%E5%AE%B9%E9%94%99%E5%A4%84%E7%90%86)">Level 3：复杂数据分析脚本 (格式化与容错处理)</h3><p>在真实实验中，数据文件通常带有补零格式（如 <code>run001.root</code> 而非 <code>run1.root</code>），且常常会因为各种原因跳过某些 Run。此时，我们需要在脚本中加入<strong>字符串格式化</strong>与<strong>文件存在性检测</strong>。</p>
 <p>更新 <code>run_batch.sh</code>，加入容错逻辑与目录管理：</p>
-<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<div class="highlight"><pre><code class="language-cpp">#!/bin/bash
 
-<span class="c1"># 1. 参数数量安全校验</span>
-<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">"</span><span class="nv">$#</span><span class="s2">"</span><span class="w"> </span>-ne<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
-<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"用法错误! 正确格式: ./run_batch.sh &lt;开始Run号&gt; &lt;结束Run号&gt;"</span>
-<span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
-<span class="k">fi</span>
+# 1. 参数数量安全校验
+if [ "$#" -ne 2 ]; then
+    echo "用法错误! 正确格式: ./run_batch.sh &lt;开始Run号&gt; &lt;结束Run号&gt;"
+    exit 1
+fi
 
-<span class="nv">START</span><span class="o">=</span><span class="nv">$1</span>
-<span class="nv">END</span><span class="o">=</span><span class="nv">$2</span>
-<span class="nv">IN_DIR</span><span class="o">=</span><span class="s2">"./data"</span><span class="w">       </span><span class="c1"># 假设原始数据存放在 data 目录下</span>
-<span class="nv">OUT_DIR</span><span class="o">=</span><span class="s2">"./output"</span><span class="w">    </span><span class="c1"># 定义输出归档目录</span>
+START=$1
+END=$2
+IN_DIR="./data"       # 假设原始数据存放在 data 目录下
+OUT_DIR="./output"    # 定义输出归档目录
 
-<span class="c1"># 2. 创建输出目录（-p 表示如果目录已存在则不报错）</span>
-mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$OUT_DIR</span>
+# 2. 创建输出目录（-p 表示如果目录已存在则不报错）
+mkdir -p "$OUT_DIR"
 
-<span class="k">for</span><span class="w"> </span>run<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>seq<span class="w"> </span><span class="nv">$START</span><span class="w"> </span><span class="nv">$END</span><span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
-<span class="w">    </span><span class="c1"># 3. 核心技巧：使用 printf 将数字 1 格式化为 001</span>
-<span class="w">    </span><span class="nv">RUN_FMT</span><span class="o">=</span><span class="k">$(</span><span class="nb">printf</span><span class="w"> </span><span class="s2">"%03d"</span><span class="w"> </span><span class="nv">$run</span><span class="k">)</span>
-<span class="w">    </span><span class="nv">FILE_NAME</span><span class="o">=</span><span class="s2">"f8ppac</span><span class="si">${</span><span class="nv">RUN_FMT</span><span class="si">}</span><span class="s2">.root"</span>
-<span class="w">    </span>
-<span class="w">    </span><span class="c1"># 4. 容错检测：-f 判断原始文件是否存在</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>!<span class="w"> </span>-f<span class="w"> </span><span class="s2">"</span><span class="si">${</span><span class="nv">IN_DIR</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">FILE_NAME</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
-<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"警告: 找不到文件 </span><span class="si">${</span><span class="nv">IN_DIR</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">FILE_NAME</span><span class="si">}</span><span class="s2">，自动跳过..."</span>
-<span class="w">        </span><span class="k">continue</span><span class="w"> </span><span class="c1"># 跳过本次循环，直接进入下一个 Run</span>
-<span class="w">    </span><span class="k">fi</span>
+for run in $(seq "$START" "$END"); do
+    # 3. 核心技巧：使用 printf 将数字 1 格式化为 001
+    RUN_FMT=$(printf "%03d" $run)
+    FILE_NAME="f8ppac${RUN_FMT}.root"
 
-<span class="w">    </span><span class="c1"># 5. 执行核心 C++ 分析程序</span>
-<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"&gt;&gt;&gt; 开始处理 Run </span><span class="si">${</span><span class="nv">RUN_FMT</span><span class="si">}</span><span class="s2"> ..."</span>
-<span class="w">    </span>./tracking<span class="w"> </span><span class="nv">$run</span>
-<span class="w">    </span>
-<span class="w">    </span><span class="c1"># 6. 分析完成后，将生成的结果文件移动到统一的输出目录</span>
-<span class="w">    </span><span class="c1"># 注意：需确保 main.cpp 中生成的输出文件名规律为 out001.root</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span><span class="s2">"out</span><span class="si">${</span><span class="nv">RUN_FMT</span><span class="si">}</span><span class="s2">.root"</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
-<span class="w">        </span>mv<span class="w"> </span><span class="s2">"out</span><span class="si">${</span><span class="nv">RUN_FMT</span><span class="si">}</span><span class="s2">.root"</span><span class="w"> </span><span class="nv">$OUT_DIR</span>/
-<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"    已将结果归档至 </span><span class="si">${</span><span class="nv">OUT_DIR</span><span class="si">}</span><span class="s2">/out</span><span class="si">${</span><span class="nv">RUN_FMT</span><span class="si">}</span><span class="s2">.root"</span>
-<span class="w">    </span><span class="k">fi</span>
-<span class="k">done</span>
-</pre></div>
+    # 4. 容错检测：-f 判断原始文件是否存在
+    if [ ! -f "${IN_DIR}/${FILE_NAME}" ]; then
+        echo "警告: 找不到文件 ${IN_DIR}/${FILE_NAME}，自动跳过..."
+        continue # 跳过本次循环，直接进入下一个 Run
+    fi
+
+    # 5. 执行核心 C++ 分析程序
+    echo "&gt;&gt;&gt; 开始处理 Run ${RUN_FMT} ..."
+    if ! ./tracking "$run" "$IN_DIR" "$OUT_DIR"; then
+        echo "Run $run failed" &gt;&amp;2
+        continue
+    fi
+
+done</code></pre></div>
 <hr/>
-<h3 id="Level-4%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84%E5%90%8E%E5%8F%B0%E6%8C%82%E6%9C%BA%E4%B8%8E%E6%97%A5%E5%BF%97%E7%9B%91%E6%8E%A7-(nohup)">Level 4：服务器上的后台挂机与日志监控 (nohup)<a class="anchor-link" href="#Level-4%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84%E5%90%8E%E5%8F%B0%E6%8C%82%E6%9C%BA%E4%B8%8E%E6%97%A5%E5%BF%97%E7%9B%91%E6%8E%A7-(nohup)">¶</a></h3><p>处理海量实验数据通常需要运行数小时。如果直接在终端运行 <code>./run_batch.sh 1 100</code>，一旦电脑休眠、断网或 SSH 终端连接断开，正在运行的程序会被 Linux 系统强制终止（Kill）。</p>
-<p><strong>终极解决方案：使用 <code>nohup</code> (No Hang Up) 与后台符 <code>&amp;</code>。</strong></p>
+<h3 id="Level-4%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84%E5%90%8E%E5%8F%B0%E6%8C%82%E6%9C%BA%E4%B8%8E%E6%97%A5%E5%BF%97%E7%9B%91%E6%8E%A7-(nohup)">Level 4：服务器上的后台挂机与日志监控 (nohup)</h3><p>处理海量实验数据通常需要运行数小时。如果直接在终端运行 <code>./run_batch.sh 1 100</code>，关闭终端或 SSH 连接可能发送 SIGHUP；电脑休眠会暂停本机任务。nohup 不能防止休眠、重启或资源限制导致的终止。</p>
+<p><strong>后台运行可使用 <code>nohup</code> (No Hang Up) 与后台符 <code>&amp;</code>。</strong></p>
 <p>在终端输入以下完整命令：</p>
-<div class="highlight"><pre><span></span>nohup<span class="w"> </span>./run_batch.sh<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">100</span><span class="w"> </span>&gt;<span class="w"> </span>analysis.log<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">&amp;</span>
-</pre></div>
+<div class="highlight"><pre><code class="language-cpp">nohup ./run_batch.sh 1 100 &gt; analysis.log 2&gt;&amp;1 &amp;</code></pre></div>
 <ul>
 <li><strong>语法解析</strong>：<ul>
 <li><code>nohup</code>：忽略系统的挂断信号，即使关闭终端窗口，程序也会继续在服务器上运行。</li>
@@ -8326,9 +8221,8 @@ mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$OUT_DIR
 </ul>
 <p><strong>如何实时监控后台进度？</strong>
 虽然程序在后台静默运行，但你可以随时查看日志文件的最新动态以监控进度：</p>
-<div class="highlight"><pre><span></span><span class="c1"># -f (follow) 选项会实时追踪并刷新日志文件的末尾输出</span>
-tail<span class="w"> </span>-f<span class="w"> </span>analysis.log
-</pre></div>
+<div class="highlight"><pre><code class="language-cpp"># -f (follow) 选项会实时追踪并刷新日志文件的末尾输出
+tail -f analysis.log</code></pre></div>
 <p><em>(查看完毕后，按 <code>Ctrl + C</code> 即可退出日志监控，这不会影响后台程序的运行。)</em></p>
 </div>
 </div>

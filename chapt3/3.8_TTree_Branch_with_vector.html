@@ -7832,8 +7832,15 @@ a.anchor-link {
     white-space: normal;
   }
 </style>
-<!-- End of mermaid configuration --></head>
-<body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
+<!-- End of mermaid configuration --><link data-course-header="true" href="../assets/css/course-header.css" rel="stylesheet"/></head>
+<body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light"><header class="course-banner"><div class="course-banner-inner">
+<a href="../index.html"><img alt="课程标志" src="../assets/images/course-logo.png"/></a>
+<div class="course-banner-title"><a href="../index.html">核物理实验数据处理</a>
+<span class="course-banner-en">Experimental Data Analysis in Nuclear Physics</span></div></div></header>
+<nav aria-label="课程导航" class="course-nav"><div class="course-nav-inner">
+<a href="../index.html">课程主页</a><a href="../index.html#preparation">课前准备</a>
+<a href="../index.html#lectures">课程讲义</a><a href="https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/">实验方法课程</a></div></nav>
+
 <main>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -7841,39 +7848,36 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="TTree-%E4%B8%AD%E4%BD%BF%E7%94%A8-vector-%E7%B1%BB%E5%9E%8B%E7%9A%84-Branch">TTree 中使用 <code>vector</code> 类型的 Branch<a class="anchor-link" href="#TTree-%E4%B8%AD%E4%BD%BF%E7%94%A8-vector-%E7%B1%BB%E5%9E%8B%E7%9A%84-Branch">¶</a></h1><p>在探测器数据分析中，一个事件中往往会出现多个 hit。若直接使用固定长度数组，或依赖 hit 数目的动态数组保存这些信息，虽然能够完成数据存储，但在后续分析中往往不便于按单个 hit 进行排序、筛选和配对。利用 <code>vector</code>，可以把同一个 hit 的条带编号、能量和时间统一组织起来，再将一个事件中的全部 hit 保存在同一个容器中，从而使数据结构更加清晰，也更便于后续分析处理。</p>
+<h1 id="TTree-%E4%B8%AD%E4%BD%BF%E7%94%A8-vector-%E7%B1%BB%E5%9E%8B%E7%9A%84-Branch">TTree 中使用 <code>vector</code> 类型的 Branch</h1><p>在探测器数据分析中，一个事件中往往会出现多个 hit。若直接使用固定长度数组，或依赖 hit 数目的动态数组保存这些信息，虽然能够完成数据存储，但在后续分析中往往不便于按单个 hit 进行排序、筛选和配对。利用 <code>vector</code>，可以把同一个 hit 的条带编号、能量和时间统一组织起来，再将一个事件中的全部 hit 保存在同一个容器中，从而使数据结构更加清晰，也更便于后续分析处理。</p>
 <p>以 <code>data_16C.root</code> 为例，原始 ROOT 文件中既包含固定长度数组，也包含由 hit 数目决定长度的动态数组。固定数组通常按探测器通道展开保存，动态数组则先记录 hit 数目，再分别保存条带编号、能量等信息。对于这类数据，可以进一步整理为结构体与 <code>vector</code> 的组合形式。</p>
-<h3 id="%E5%8E%9F%E5%A7%8B%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84">原始数据结构<a class="anchor-link" href="#%E5%8E%9F%E5%A7%8B%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84">¶</a></h3><p>固定数组常写成：</p>
-<div class="highlight"><pre><span></span><span class="n">Double_t</span><span class="w"> </span><span class="n">d1x</span><span class="p">[</span><span class="mi">32</span><span class="p">],</span><span class="w"> </span><span class="n">d2x</span><span class="p">[</span><span class="mi">32</span><span class="p">],</span><span class="w"> </span><span class="n">d3x</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span><span class="w"> </span><span class="c1">// xe</span>
-<span class="n">Double_t</span><span class="w"> </span><span class="n">d1y</span><span class="p">[</span><span class="mi">32</span><span class="p">],</span><span class="w"> </span><span class="n">d2y</span><span class="p">[</span><span class="mi">32</span><span class="p">],</span><span class="w"> </span><span class="n">d3y</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span><span class="w"> </span><span class="c1">// ye</span>
-<span class="n">Double_t</span><span class="w"> </span><span class="n">d1t</span><span class="p">[</span><span class="mi">32</span><span class="p">],</span><span class="w"> </span><span class="n">d2t</span><span class="p">[</span><span class="mi">32</span><span class="p">],</span><span class="w"> </span><span class="n">d3t</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span><span class="w"> </span><span class="c1">// xt</span>
-<span class="n">动态数组则常写成</span><span class="err">：</span>
+<h3 id="%E5%8E%9F%E5%A7%8B%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84">原始数据结构</h3><p>固定数组常写成：</p>
+<div class="highlight"><pre><code class="language-cpp">Double_t d1x[32], d2x[32], d3x[32]; // xe
+Double_t d1y[32], d2y[32], d3y[32]; // ye
+// 本节参考文件没有时间分支。
+动态数组则常写成：
 
-<span class="err">```</span><span class="n">cpp</span>
-<span class="n">Int_t</span><span class="w"> </span><span class="n">d1xhit</span><span class="p">,</span><span class="w"> </span><span class="n">d2xhit</span><span class="p">,</span><span class="w"> </span><span class="n">d3xhit</span><span class="p">;</span><span class="w"> </span><span class="c1">// hit</span>
-<span class="n">Int_t</span><span class="w"> </span><span class="n">d1yhit</span><span class="p">,</span><span class="w"> </span><span class="n">d2yhit</span><span class="p">,</span><span class="w"> </span><span class="n">d3yhit</span><span class="p">;</span>
 
-<span class="n">Int_t</span><span class="w">    </span><span class="n">d1xs</span><span class="p">[</span><span class="n">d1xhit</span><span class="p">],</span><span class="w"> </span><span class="n">d2xs</span><span class="p">[</span><span class="n">d2xhit</span><span class="p">],</span><span class="w"> </span><span class="n">d3xs</span><span class="p">[</span><span class="n">d3xhit</span><span class="p">];</span><span class="w"> </span><span class="c1">// strip</span>
-<span class="n">Double_t</span><span class="w"> </span><span class="n">d1xe</span><span class="p">[</span><span class="n">d1xhit</span><span class="p">],</span><span class="w"> </span><span class="n">d2xe</span><span class="p">[</span><span class="n">d2xhit</span><span class="p">],</span><span class="w"> </span><span class="n">d3xe</span><span class="p">[</span><span class="n">d3xhit</span><span class="p">];</span><span class="w"> </span><span class="c1">// energy</span>
+Int_t d1xhit, d2xhit, d3xhit; // hit
+Int_t d1yhit, d2yhit, d3yhit;
 
-<span class="n">Int_t</span><span class="w">    </span><span class="n">d1ys</span><span class="p">[</span><span class="n">d1yhit</span><span class="p">],</span><span class="w"> </span><span class="n">d2ys</span><span class="p">[</span><span class="n">d2yhit</span><span class="p">],</span><span class="w"> </span><span class="n">d3ys</span><span class="p">[</span><span class="n">d3yhit</span><span class="p">];</span>
-<span class="n">Double_t</span><span class="w"> </span><span class="n">d1ye</span><span class="p">[</span><span class="n">d1yhit</span><span class="p">],</span><span class="w"> </span><span class="n">d2ye</span><span class="p">[</span><span class="n">d2yhit</span><span class="p">],</span><span class="w"> </span><span class="n">d3ye</span><span class="p">[</span><span class="n">d3yhit</span><span class="p">];</span>
-</pre></div>
+Int_t    d1xs[d1xhit], d2xs[d2xhit], d3xs[d3xhit]; // strip
+Double_t d1xe[d1xhit], d2xe[d2xhit], d3xe[d3xhit]; // energy
+
+Int_t    d1ys[d1yhit], d2ys[d2yhit], d3ys[d3yhit];
+Double_t d1ye[d1yhit], d2ye[d2yhit], d3ye[d3yhit];</code></pre></div>
 <p>如果改用 <code>vector</code> 来组织 hit 信息，可以先定义表示单个 hit 的结构体：</p>
-<div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">dssd</span>
-<span class="p">{</span>
-<span class="w">  </span><span class="n">Int_t</span><span class="w"> </span><span class="n">id</span><span class="p">;</span>
-<span class="w">  </span><span class="n">Double_t</span><span class="w"> </span><span class="n">e</span><span class="p">;</span>
-<span class="w">  </span><span class="n">Double_t</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
-<span class="p">};</span>
-</pre></div>
+<div class="highlight"><pre><code class="language-cpp">struct dssd
+{
+  Int_t id;
+  Double_t e;
+  Double_t t = std::numeric_limits&lt;double&gt;::quiet_NaN();
+};</code></pre></div>
 <p>再分别用 <code>vector&lt;dssd&gt;</code> 保存三层 DSSD 在 x、y 两侧的 hit：</p>
-<div class="highlight"><pre><span></span><span class="n">vector</span><span class="o">&lt;</span><span class="n">dssd</span><span class="o">&gt;</span><span class="w"> </span><span class="n">x1v</span><span class="p">,</span><span class="w"> </span><span class="n">x2v</span><span class="p">,</span><span class="w"> </span><span class="n">x3v</span><span class="p">;</span>
-<span class="n">vector</span><span class="o">&lt;</span><span class="n">dssd</span><span class="o">&gt;</span><span class="w"> </span><span class="n">y1v</span><span class="p">,</span><span class="w"> </span><span class="n">y2v</span><span class="p">,</span><span class="w"> </span><span class="n">y3v</span><span class="p">;</span>
-</pre></div>
+<div class="highlight"><pre><code class="language-cpp">vector&lt;dssd&gt; x1v, x2v, x3v;
+vector&lt;dssd&gt; y1v, y2v, y3v;</code></pre></div>
 <p>这样，一个事件中某一侧探测器的全部 hit 就被统一保存在一个 <code>vector</code> 中。相比于将条带编号、能量、时间分别放在不同数组中，这种写法更加紧凑，也更符合后续分析的逻辑。</p>
 <hr/>
-<h3 id="%E4%BB%8E%E6%99%AE%E9%80%9A-ROOT-%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%90%AB-vector-%E7%B1%BB%E5%9E%8B-Branch-%E7%9A%84%E6%96%B0%E6%96%87%E4%BB%B6">从普通 ROOT 文件生成含 <code>vector</code> 类型 Branch 的新文件<a class="anchor-link" href="#%E4%BB%8E%E6%99%AE%E9%80%9A-ROOT-%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%90%AB-vector-%E7%B1%BB%E5%9E%8B-Branch-%E7%9A%84%E6%96%B0%E6%96%87%E4%BB%B6">¶</a></h3><p>这一部分的目标，是将原始 ROOT 文件中以数组形式保存的 hit 信息，转换为以 <code>vector</code> 类型 Branch 保存的新 ROOT 文件。</p>
+<h3 id="%E4%BB%8E%E6%99%AE%E9%80%9A-ROOT-%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90%E5%90%AB-vector-%E7%B1%BB%E5%9E%8B-Branch-%E7%9A%84%E6%96%B0%E6%96%87%E4%BB%B6">从普通 ROOT 文件生成含 <code>vector</code> 类型 Branch 的新文件</h3><p>这一部分的目标，是将原始 ROOT 文件中以数组形式保存的 hit 信息，转换为以 <code>vector</code> 类型 Branch 保存的新 ROOT 文件。</p>
 <p>通常的流程是：</p>
 <ul>
 <li>先利用 <code>MakeClass</code> 为原始树生成基础分析框架；</li>
@@ -7889,216 +7893,160 @@ a.anchor-link {
 <li><code>Linkdef.h</code></li>
 </ul>
 <p>其中，<code>main.cpp</code> 负责输入输出文件和树的管理；<code>ana.h</code> 与 <code>ana.cpp</code> 负责具体的数据处理；<code>Linkdef.h</code> 和 <code>makefile</code> 用于生成并编译 ROOT 字典。</p>
-<h4 id="main.cpp"><code>main.cpp</code><a class="anchor-link" href="#main.cpp">¶</a></h4><p><code>main.cpp</code> 负责打开输入文件 <code>cal_16C.root</code>，读取其中的树，创建输出文件 <code>vec_16C.root</code> 和新的输出树，然后调用分析类中的 <code>Analysis()</code> 完成逐事件处理，最后将输出树写入文件。</p>
-<div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;TFile.h&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;TTree.h&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;TString.h&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"ana.h"</span>
-<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="p">;</span>
+<h4 id="main.cpp"><code>main.cpp</code></h4><p><code>main.cpp</code> 负责打开输入文件 <code>strip_arrays_16C.root</code>，读取其中的树，创建输出文件 <code>vec_16C.root</code> 和新的输出树，然后调用分析类中的 <code>Analysis()</code> 完成逐事件处理，最后将输出树写入文件。</p>
+<div class="highlight"><pre><code class="language-cpp">#include &lt;TFile.h&gt;
+#include &lt;TTree.h&gt;
+#include &lt;iostream&gt;
+#include "ana.h"
+int main(int argc, char** argv) {
+    const char* inputName = argc&gt;1 ? argv[1] : "../../data/strip_arrays_16C.root";
+    const char* outputName = argc&gt;2 ? argv[2] : "../../vec_16C.root";
+    TFile* input = TFile::Open(inputName);
+    if (!input || input-&gt;IsZombie()) return 1;
+    TTree* tin = input-&gt;Get&lt;TTree&gt;("tree");
+    if (!tin) return 1;
+    TFile output(outputName,"RECREATE");
+    TTree* tout = new TTree("tree","vector branch");
+    {
+        ana analysis(tin,tout);
+        analysis.Analysis();
+        std::cout &lt;&lt; "Input=" &lt;&lt; tin-&gt;GetEntries() &lt;&lt; ", output=" &lt;&lt; tout-&gt;GetEntries() &lt;&lt; '\n';
+        output.cd();
+        tout-&gt;Write();
+    }
+    // MakeClass 基类的析构函数已释放 input。
+    return 0;
+}</code></pre></div>
+<h4 id="ana.h"><code>ana.h</code></h4><p>在 <code>ana.h</code> 中，可以定义分析类 <code>ana</code>。它继承自 <code>MakeClass</code> 生成的基类，并声明六个 <code>vector&lt;dssd&gt;</code> 变量，用于分别保存三层 DSSD 在 x、y 两个方向上的 hit。同时，还定义设置输出树、处理单侧探测器数据以及主分析循环所需的成员函数。</p>
+<div class="highlight"><pre><code class="language-cpp">#ifndef ana_h
+#define ana_h
 
-<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">**</span><span class="w"> </span><span class="n">argv</span><span class="p">)</span>
-<span class="p">{</span>
-<span class="w">   </span><span class="n">TString</span><span class="w"> </span><span class="n">InputPath</span><span class="p">,</span><span class="w"> </span><span class="n">OutputPath</span><span class="p">,</span><span class="w"> </span><span class="n">infile</span><span class="p">,</span><span class="w"> </span><span class="n">outfile</span><span class="p">;</span>
-<span class="w">   </span><span class="n">InputPath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"./"</span><span class="p">;</span>
-<span class="w">   </span><span class="n">OutputPath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"./"</span><span class="p">;</span>
-<span class="w">   </span><span class="n">infile</span><span class="p">.</span><span class="n">Form</span><span class="p">(</span><span class="s">"%scal_16C.root"</span><span class="p">,</span><span class="w"> </span><span class="n">InputPath</span><span class="p">.</span><span class="n">Data</span><span class="p">());</span>
-<span class="w">   </span><span class="n">outfile</span><span class="p">.</span><span class="n">Form</span><span class="p">(</span><span class="s">"%svec_16C.root"</span><span class="p">,</span><span class="w"> </span><span class="n">OutputPath</span><span class="p">.</span><span class="n">Data</span><span class="p">());</span>
+#include &lt;vector&gt;
+#include &lt;limits&gt;
+#include &lt;iostream&gt;
+#include "test.h"  //包含基类头文件
 
-<span class="w">   </span><span class="c1">// input</span>
-<span class="w">   </span><span class="n">TFile</span><span class="w"> </span><span class="o">*</span><span class="n">ipf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TFile</span><span class="p">(</span><span class="n">infile</span><span class="p">);</span>
-<span class="w">   </span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">ipf</span><span class="o">-&gt;</span><span class="n">IsOpen</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-<span class="w">       </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Cannot open input file: "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">infile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
-<span class="w">       </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
-<span class="w">   </span><span class="p">}</span>
-<span class="w">   </span><span class="n">TTree</span><span class="w"> </span><span class="o">*</span><span class="n">ipt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">TTree</span><span class="o">*</span><span class="p">)</span><span class="n">ipf</span><span class="o">-&gt;</span><span class="n">Get</span><span class="p">(</span><span class="s">"tree"</span><span class="p">);</span>
+using namespace std;
 
-<span class="w">   </span><span class="c1">// output</span>
-<span class="w">   </span><span class="n">TFile</span><span class="w"> </span><span class="o">*</span><span class="n">opf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TFile</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span><span class="w"> </span><span class="s">"RECREATE"</span><span class="p">);</span>
-<span class="w">   </span><span class="n">TTree</span><span class="w"> </span><span class="o">*</span><span class="n">opt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TTree</span><span class="p">(</span><span class="s">"tree"</span><span class="p">,</span><span class="w"> </span><span class="s">"vector branch"</span><span class="p">);</span>
+struct dssd
+{
+  Int_t id;
+  Double_t e;
+  Double_t t = std::numeric_limits&lt;double&gt;::quiet_NaN();
+};
 
-<span class="w">   </span><span class="n">ana</span><span class="w"> </span><span class="o">*</span><span class="n">tk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ana</span><span class="p">(</span><span class="n">ipt</span><span class="p">,</span><span class="w"> </span><span class="n">opt</span><span class="p">);</span>
-<span class="w">   </span><span class="n">tk</span><span class="o">-&gt;</span><span class="n">Analysis</span><span class="p">();</span>
+class ana : public test //从test类中继承其成员变量和成员函数
+{
+ public:
+  vector&lt;dssd&gt; x1v,x2v,x3v;
+  vector&lt;dssd&gt; y1v,y2v,y3v;
+  Long64_t source_entry = 0;
+  TTree *opt;
 
-<span class="w">   </span><span class="n">opt</span><span class="o">-&gt;</span><span class="n">Write</span><span class="p">();</span>
-<span class="w">   </span><span class="n">ipf</span><span class="o">-&gt;</span><span class="n">Close</span><span class="p">();</span>
-<span class="w">   </span><span class="n">opf</span><span class="o">-&gt;</span><span class="n">Close</span><span class="p">();</span>
-<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-<h4 id="ana.h"><code>ana.h</code><a class="anchor-link" href="#ana.h">¶</a></h4><p>在 <code>ana.h</code> 中，可以定义分析类 <code>ana</code>。它继承自 <code>MakeClass</code> 生成的基类，并声明六个 <code>vector&lt;dssd&gt;</code> 变量，用于分别保存三层 DSSD 在 x、y 两个方向上的 hit。同时，还定义设置输出树、处理单侧探测器数据以及主分析循环所需的成员函数。</p>
-<div class="highlight"><pre><span></span><span class="cp">#ifndef ana_h</span>
-<span class="cp">#define ana_h</span>
 
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;TRandom3.h&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"test.h"</span>
+ ana(TTree* ipt_,TTree *opt_): test(ipt_),opt(opt_) {}
+  virtual ~ana() {};
+  virtual void     Analysis();//分析函数，作用等价于原Loop函数
+  virtual void     SetOutBranch();
+  virtual void     ProcessDS(Double_t ee[32], vector&lt;dssd&gt; &amp;vec);
 
-<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="p">;</span>
-
-<span class="k">struct</span><span class="w"> </span><span class="nc">dssd</span>
-<span class="p">{</span>
-<span class="w">  </span><span class="n">Int_t</span><span class="w"> </span><span class="n">id</span><span class="p">;</span>
-<span class="w">  </span><span class="n">Double_t</span><span class="w"> </span><span class="n">e</span><span class="p">;</span>
-<span class="w">  </span><span class="n">Double_t</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
-<span class="p">};</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">ana</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">test</span>
-<span class="p">{</span>
-<span class="w"> </span><span class="k">public</span><span class="o">:</span>
-<span class="w">  </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">dssd</span><span class="o">&gt;</span><span class="w"> </span><span class="n">x1v</span><span class="p">,</span><span class="w"> </span><span class="n">x2v</span><span class="p">,</span><span class="w"> </span><span class="n">x3v</span><span class="p">;</span>
-<span class="w">  </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">dssd</span><span class="o">&gt;</span><span class="w"> </span><span class="n">y1v</span><span class="p">,</span><span class="w"> </span><span class="n">y2v</span><span class="p">,</span><span class="w"> </span><span class="n">y3v</span><span class="p">;</span>
-<span class="w">  </span><span class="n">TTree</span><span class="w"> </span><span class="o">*</span><span class="n">opt</span><span class="p">;</span>
-<span class="w">  </span><span class="n">TRandom3</span><span class="w"> </span><span class="o">*</span><span class="n">gr</span><span class="p">;</span>
-
-<span class="w">  </span><span class="n">ana</span><span class="p">(</span><span class="n">TTree</span><span class="o">*</span><span class="w"> </span><span class="n">ipt_</span><span class="p">,</span><span class="w"> </span><span class="n">TTree</span><span class="w"> </span><span class="o">*</span><span class="n">opt_</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">test</span><span class="p">(</span><span class="n">ipt_</span><span class="p">),</span><span class="w"> </span><span class="n">opt</span><span class="p">(</span><span class="n">opt_</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
-<span class="w">  </span><span class="k">virtual</span><span class="w"> </span><span class="o">~</span><span class="n">ana</span><span class="p">()</span><span class="w"> </span><span class="p">{};</span>
-
-<span class="w">  </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">Analysis</span><span class="p">();</span>
-<span class="w">  </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">SetOutBranch</span><span class="p">();</span>
-<span class="w">  </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">ProcessDS</span><span class="p">(</span><span class="n">Double_t</span><span class="w"> </span><span class="n">ee</span><span class="p">[</span><span class="mi">32</span><span class="p">],</span><span class="w"> </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">dssd</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">vec</span><span class="p">);</span>
-<span class="p">};</span>
-
-<span class="cp">#endif</span>
-</pre></div>
-<h4 id="ana.cpp"><code>ana.cpp</code><a class="anchor-link" href="#ana.cpp">¶</a></h4><p><code>ana.cpp</code> 中主要包括三个部分：</p>
+};
+#endif</code></pre></div>
+<h4 id="ana.cpp"><code>ana.cpp</code></h4><p><code>ana.cpp</code> 中主要包括三个部分：</p>
 <ul>
 <li><code>SetOutBranch()</code>：设置输出树中的 Branch；</li>
 <li><code>ProcessDS()</code>：将数组形式的数据整理为 <code>vector</code>；</li>
 <li><code>Analysis()</code>：逐事件读取输入树，并完成转换后写入输出树。</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">"ana.h"</span>
-<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-cpp">#include "ana.h"
+using namespace std;
+void ana::SetOutBranch()
+{
+  opt-&gt;Branch("source_entry", &amp;source_entry, "source_entry/L");
+  opt-&gt;Branch("x1v",&amp;x1v);
+  opt-&gt;Branch("x2v",&amp;x2v);
+  opt-&gt;Branch("x3v",&amp;x3v);
+  opt-&gt;Branch("y1v",&amp;y1v);
+  opt-&gt;Branch("y2v",&amp;y2v);
+  opt-&gt;Branch("y3v",&amp;y3v);
+  opt-&gt;Branch("sx1e",&amp;sx1e,"sx1e/D");
+  opt-&gt;Branch("sx2e",&amp;sx2e,"sx2e/D");
+  opt-&gt;Branch("sx3e",&amp;sx3e,"sx3e/D");
+  opt-&gt;Branch("sy1e",&amp;sy1e,"sy1e/D");
+  opt-&gt;Branch("sy2e",&amp;sy2e,"sy2e/D");
+  opt-&gt;Branch("sy3e",&amp;sy3e,"sy3e/D");
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">ana::SetOutBranch</span><span class="p">()</span>
-<span class="p">{</span>
-<span class="w">  </span><span class="n">opt</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">"x1v"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">x1v</span><span class="p">);</span>
-<span class="w">  </span><span class="n">opt</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">"x2v"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">x2v</span><span class="p">);</span>
-<span class="w">  </span><span class="n">opt</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">"x3v"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">x3v</span><span class="p">);</span>
-<span class="w">  </span><span class="n">opt</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">"y1v"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">y1v</span><span class="p">);</span>
-<span class="w">  </span><span class="n">opt</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">"y2v"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">y2v</span><span class="p">);</span>
-<span class="w">  </span><span class="n">opt</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">"y3v"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">y3v</span><span class="p">);</span>
+}
 
-<span class="w">  </span><span class="n">opt</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">"sx1e"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">sx1e</span><span class="p">,</span><span class="w"> </span><span class="s">"sx1e"</span><span class="p">);</span>
-<span class="w">  </span><span class="n">opt</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">"sx2e"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">sx2e</span><span class="p">,</span><span class="w"> </span><span class="s">"sx2e"</span><span class="p">);</span>
-<span class="w">  </span><span class="n">opt</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">"sx3e"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">sx3e</span><span class="p">,</span><span class="w"> </span><span class="s">"sx3e"</span><span class="p">);</span>
-<span class="w">  </span><span class="n">opt</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">"sy1e"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">sy1e</span><span class="p">,</span><span class="w"> </span><span class="s">"sy1e"</span><span class="p">);</span>
-<span class="w">  </span><span class="n">opt</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">"sy2e"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">sy2e</span><span class="p">,</span><span class="w"> </span><span class="s">"sy2e"</span><span class="p">);</span>
-<span class="w">  </span><span class="n">opt</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">"sy3e"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">sy3e</span><span class="p">,</span><span class="w"> </span><span class="s">"sy3e"</span><span class="p">);</span>
-<span class="p">}</span>
+void ana::ProcessDS(Double_t ee[32], vector&lt;dssd&gt; &amp;vec)
+{
+   vec.clear();
+    dssd ds;
+    for(int i=0;i&lt;32;i++) {
+      if(ee[i]&lt;1) continue;
+	ds.id=i;
+	ds.e=ee[i];
+	vec.push_back(ds);
+    }
+}
+void ana::Analysis()
+{
+  SetOutBranch();
+  if (fChain == 0) return;
+  Long64_t nentries = fChain-&gt;GetEntriesFast();
+  Long64_t nbytes = 0, nb = 0;
+  for (Long64_t jentry=0; jentry&lt;nentries;jentry++) {
+    Long64_t ientry = LoadTree(jentry);
+    if (ientry &lt; 0) break;
+    nb = fChain-&gt;GetEntry(jentry);   nbytes += nb;
+    ProcessDS(d1x,x1v);
+    ProcessDS(d1y,y1v);
+    ProcessDS(d2x,x2v);
+    ProcessDS(d2y,y2v);
+    ProcessDS(d3x,x3v);
+    ProcessDS(d3y,y3v);
+    source_entry = jentry;
+    opt-&gt;Fill(); // 保留空事件及事件对应关系
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">ana::ProcessDS</span><span class="p">(</span><span class="n">Double_t</span><span class="w"> </span><span class="n">ee</span><span class="p">[</span><span class="mi">32</span><span class="p">],</span><span class="w"> </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">dssd</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">vec</span><span class="p">)</span>
-<span class="p">{</span>
-<span class="w">  </span><span class="n">vec</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
-<span class="w">  </span><span class="n">dssd</span><span class="w"> </span><span class="n">ds</span><span class="p">;</span>
-<span class="w">  </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">32</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">ee</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">continue</span><span class="p">;</span>
-<span class="w">    </span><span class="n">ds</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
-<span class="w">    </span><span class="n">ds</span><span class="p">.</span><span class="n">e</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">ee</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
-<span class="w">    </span><span class="n">vec</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">ds</span><span class="p">);</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">ana::Analysis</span><span class="p">()</span>
-<span class="p">{</span>
-<span class="w">  </span><span class="n">SetOutBranch</span><span class="p">();</span>
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">fChain</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
-
-<span class="w">  </span><span class="n">Long64_t</span><span class="w"> </span><span class="n">nentries</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fChain</span><span class="o">-&gt;</span><span class="n">GetEntriesFast</span><span class="p">();</span>
-<span class="w">  </span><span class="n">Long64_t</span><span class="w"> </span><span class="n">nbytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">nb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-
-<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Long64_t</span><span class="w"> </span><span class="n">jentry</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">jentry</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nentries</span><span class="p">;</span><span class="w"> </span><span class="n">jentry</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">Long64_t</span><span class="w"> </span><span class="n">ientry</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoadTree</span><span class="p">(</span><span class="n">jentry</span><span class="p">);</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ientry</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
-<span class="w">    </span><span class="n">nb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fChain</span><span class="o">-&gt;</span><span class="n">GetEntry</span><span class="p">(</span><span class="n">jentry</span><span class="p">);</span><span class="w"> </span><span class="n">nbytes</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">nb</span><span class="p">;</span>
-
-<span class="w">    </span><span class="n">ProcessDS</span><span class="p">(</span><span class="n">d1x</span><span class="p">,</span><span class="w"> </span><span class="n">x1v</span><span class="p">);</span>
-<span class="w">    </span><span class="n">ProcessDS</span><span class="p">(</span><span class="n">d1y</span><span class="p">,</span><span class="w"> </span><span class="n">y1v</span><span class="p">);</span>
-<span class="w">    </span><span class="n">ProcessDS</span><span class="p">(</span><span class="n">d2x</span><span class="p">,</span><span class="w"> </span><span class="n">x2v</span><span class="p">);</span>
-<span class="w">    </span><span class="n">ProcessDS</span><span class="p">(</span><span class="n">d2y</span><span class="p">,</span><span class="w"> </span><span class="n">y2v</span><span class="p">);</span>
-<span class="w">    </span><span class="n">ProcessDS</span><span class="p">(</span><span class="n">d3x</span><span class="p">,</span><span class="w"> </span><span class="n">x3v</span><span class="p">);</span>
-<span class="w">    </span><span class="n">ProcessDS</span><span class="p">(</span><span class="n">d3y</span><span class="p">,</span><span class="w"> </span><span class="n">y3v</span><span class="p">);</span>
-
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">b1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x1v</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">y1v</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">b2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x2v</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">y2v</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">b3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x3v</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">y3v</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">b1</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">b2</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">b3</span><span class="p">)</span><span class="w"> </span><span class="n">opt</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">();</span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">jentry</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">1000</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="n">printf</span><span class="p">(</span><span class="s">"Process %.2f %% %dk / %dk</span><span class="se">\r</span><span class="s">"</span><span class="p">,</span>
-<span class="w">             </span><span class="n">Double_t</span><span class="p">(</span><span class="n">jentry</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">nentries</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">100.</span><span class="p">,</span>
-<span class="w">             </span><span class="kt">int</span><span class="p">(</span><span class="n">jentry</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1000</span><span class="p">),</span><span class="w"> </span><span class="kt">int</span><span class="p">(</span><span class="n">nentries</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1000</span><span class="p">));</span>
-<span class="w">      </span><span class="n">fflush</span><span class="p">(</span><span class="n">stdout</span><span class="p">);</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-<p>这里的做法是：对每一个事件，分别把 <code>d1x</code>、<code>d1y</code>、<code>d2x</code>、<code>d2y</code>、<code>d3x</code>、<code>d3y</code> 中满足条件的通道转成 <code>dssd</code> 结构体，再压入对应的 <code>vector</code> 中。只要三层 DSSD 中至少有一层存在 hit，就把该事件写入输出树。</p>
+  }
+}</code></pre></div>
+<p>这里的做法是：对每一个事件，分别把 <code>d1x</code>、<code>d1y</code>、<code>d2x</code>、<code>d2y</code>、<code>d3x</code>、<code>d3y</code> 中满足条件的通道转成 <code>dssd</code> 结构体，再压入对应的 <code>vector</code> 中。每个输入事件都写入输出树，包括空 vector；这样后续仍能追溯原事件。</p>
 <hr/>
-<h3 id="%E5%AD%97%E5%85%B8%E4%B8%8E%E7%BC%96%E8%AF%91">字典与编译<a class="anchor-link" href="#%E5%AD%97%E5%85%B8%E4%B8%8E%E7%BC%96%E8%AF%91">¶</a></h3><p>当 TTree 的 Branch 中保存的是自定义结构体，或 <code>vector&lt;自定义类型&gt;</code> 这类 STL 容器时，需要为相应类型生成 ROOT 字典。否则，ROOT 在读取文件时将无法正确识别这些类型，并可能给出找不到字典的警告信息，从而影响数据的正常读写与后续分析。</p>
+<h3 id="%E5%AD%97%E5%85%B8%E4%B8%8E%E7%BC%96%E8%AF%91">字典与编译</h3><p>当 TTree 的 Branch 中保存的是自定义结构体，或 <code>vector&lt;自定义类型&gt;</code> 这类 STL 容器时，需要为相应类型生成 ROOT 字典。否则，ROOT 在读取文件时将无法正确识别这些类型，并可能给出找不到字典的警告信息，从而影响数据的正常读写与后续分析。</p>
 <p>例如，在本节中，输出 Branch 中使用了自定义结构体 <code>dssd</code> 以及 <code>vector&lt;dssd&gt;</code>，因此需要在 <code>Linkdef.h</code> 中加入相应的字典声明：</p>
-<div class="highlight"><pre><span></span><span class="cp">#ifdef __CINT__</span>
+<div class="highlight"><pre><code class="language-cpp">#ifdef __CLING__
 
-<span class="cp">#pragma link off all globals;</span>
-<span class="cp">#pragma link off all classes;</span>
-<span class="cp">#pragma link off all functions;</span>
-<span class="cp">#pragma link C++ nestedclasses;</span>
+#pragma link off all globals;
+#pragma link off all classes;
+#pragma link off all functions;
+#pragma link C++ nestedclasses;
 
-<span class="cp">#pragma link C++ class dssd+;</span>
-<span class="cp">#pragma link C++ class vector&lt;dssd&gt;+;</span>
+#pragma link C++ class dssd+;
+#pragma link C++ class vector&lt;dssd&gt;+;
 
-<span class="cp">#endif</span>
-</pre></div>
+#endif</code></pre></div>
 <p>在完成 <code>Linkdef.h</code> 的设置后，还需要在编译过程中调用 <code>rootcling</code> 生成字典源文件，并将该文件与主程序及其他源文件一起编译。为此，可以编写如下 <code>makefile</code>：</p>
-<div class="highlight"><pre><span></span><span class="c">###############################################################################</span>
-<span class="nv">OBJ</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>dssd
-<span class="nv">MainFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>main.cpp
+<div class="highlight"><pre><code class="language-cpp">CXX = c++
+CPPFLAGS = -Iinclude $(shell root-config --cflags)
+CXXFLAGS = -O2 -Wall
+LDLIBS = $(shell root-config --libs)
+SOURCES = main.cpp $(wildcard src/*.cpp src/*.C) LinkDict.cc
+HEADERS = $(wildcard include/*.h)
 
-<span class="c">###############################################################################</span>
+all: dssd libhits.so
 
-<span class="nv">LinkFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>LinkDict.cc
+LinkDict.cc: $(HEADERS) Linkdef.h
+	rootcling -f $@ -Iinclude include/ana.h Linkdef.h
 
-<span class="c">###############################################################################</span>
+dssd: $(SOURCES) $(HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(SOURCES) $(LDLIBS) -o $@
 
-<span class="nv">SourceFile</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">$(</span>LinkFile<span class="k">)</span><span class="w"> </span><span class="k">$(</span>MainFile<span class="k">)</span><span class="w"> </span><span class="se">\</span>
-<span class="w">              </span><span class="k">$(</span>wildcard<span class="w"> </span><span class="k">$(</span>shell<span class="w"> </span><span class="nb">pwd</span><span class="k">)</span>/src/*.c<span class="w"> </span><span class="k">$(</span>shell<span class="w"> </span><span class="nb">pwd</span><span class="k">)</span>/src/*.cc<span class="w"> </span><span class="se">\</span>
-<span class="w">                         </span><span class="k">$(</span>shell<span class="w"> </span><span class="nb">pwd</span><span class="k">)</span>/src/*.C<span class="w"> </span><span class="k">$(</span>shell<span class="w"> </span><span class="nb">pwd</span><span class="k">)</span>/src/*.cpp<span class="w"> </span><span class="se">\</span>
-<span class="w">                         </span><span class="k">$(</span>shell<span class="w"> </span><span class="nb">pwd</span><span class="k">)</span>/src/*.cxx<span class="o">)</span>
+libhits.so: LinkDict.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -fPIC -shared LinkDict.cc $(LDLIBS) -o $@
 
-<span class="nv">IncludeFile</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">$(</span>wildcard<span class="w"> </span><span class="k">$(</span>shell<span class="w"> </span><span class="nb">pwd</span><span class="k">)</span>/include/*.h<span class="w"> </span><span class="se">\</span>
-<span class="w">                           </span><span class="k">$(</span>shell<span class="w"> </span><span class="nb">pwd</span><span class="k">)</span>/include/*.hh<span class="w"> </span><span class="se">\</span>
-<span class="w">                           </span><span class="k">$(</span>shell<span class="w"> </span><span class="nb">pwd</span><span class="k">)</span>/include/*.hpp<span class="o">)</span>
-
-<span class="c">###############################################################################</span>
-
-<span class="nv">ROOTCFLAGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>shell<span class="w"> </span>root-config<span class="w"> </span>--cflags<span class="k">)</span>
-<span class="nv">ROOTLIBS</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>shell<span class="w"> </span>root-config<span class="w"> </span>--libs<span class="k">)</span>
-<span class="nv">ROOTGLIBS</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>shell<span class="w"> </span>root-config<span class="w"> </span>--glibs<span class="k">)</span>
-
-<span class="nv">GXX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>g++
-<span class="nv">DIR_INC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>-I<span class="k">$(</span>ROOTSYS<span class="k">)</span>/include<span class="w"> </span>-I<span class="k">$(</span>shell<span class="w"> </span><span class="nb">pwd</span><span class="k">)</span>/include
-<span class="nv">CFLAGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>-Wall<span class="w"> </span>-O2<span class="w"> </span><span class="k">$(</span>DIR_INC<span class="k">)</span><span class="w"> </span>-I<span class="k">$(</span>ROOTSYS<span class="k">)</span>/include<span class="w"> </span><span class="se">\</span>
-<span class="w">         </span><span class="k">$(</span>ROOTLIBS<span class="k">)</span><span class="w"> </span>-lSpectrum<span class="w"> </span>-lXMLParser<span class="w"> </span><span class="se">\</span>
-<span class="w">         </span>-D_LARGEFILE_SOURCE<span class="w"> </span>-D_FILE_OFFSET_BITS<span class="o">=</span><span class="m">64</span>
-
-<span class="c">###############################################################################</span>
-
-<span class="nf">all</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">OBJ</span><span class="k">)</span>
-
-<span class="c"># 在 Linkdef.h 之前，需要放置包含相关类型声明的头文件</span>
-<span class="nf">$(LinkFile) </span><span class="o">:</span><span class="w"> </span><span class="n">include</span>/<span class="n">ana</span>.<span class="n">h</span> <span class="n">Linkdef</span>.<span class="n">h</span>
-<span class="w">	</span>rootcling<span class="w"> </span>-f<span class="w"> </span><span class="k">$(</span>LinkFile<span class="k">)</span><span class="w"> </span>-c<span class="w"> </span>$^
-
-<span class="nf">$(OBJ)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">SourceFile</span><span class="k">)</span>
-<span class="w">	</span><span class="k">$(</span>GXX<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CFLAGS<span class="k">)</span><span class="w"> </span><span class="k">$(</span>ROOTCFLAGS<span class="k">)</span><span class="w"> </span><span class="k">$(</span>ROOTLIBS<span class="k">)</span><span class="w"> </span><span class="k">$(</span>ROOTGLIBS<span class="k">)</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">$@</span><span class="w"> </span><span class="k">$(</span>SourceFile<span class="k">)</span>
-<span class="w">	</span>@echo<span class="w"> </span><span class="s2">"=============================================================="</span>
-<span class="w">	</span>@echo<span class="w"> </span><span class="s2">"</span><span class="nv">$@</span><span class="s2"> done !"</span>
-<span class="w">	</span>@echo<span class="w"> </span><span class="s2">"=============================================================="</span>
-
-<span class="nf">clean</span><span class="o">:</span>
-<span class="w">	</span>rm<span class="w"> </span>-f<span class="w"> </span>*.o<span class="w"> </span>*.d<span class="w"> </span><span class="k">$(</span>OBJ<span class="k">)</span><span class="w"> </span>*Dict*
-</pre></div>
+clean:
+	rm -f libhits.so dssd LinkDict.cc LinkDict_rdict.pcm</code></pre></div>
 <p>上述 <code>makefile</code> 中：</p>
 <ul>
 <li><code>OBJ</code> 指定最终生成的可执行文件名；</li>
@@ -8111,14 +8059,13 @@ a.anchor-link {
 <li><code>clean</code> 目标用于清除编译过程中产生的中间文件和可执行文件。</li>
 </ul>
 <p>这里需要特别注意的是，在调用 <code>rootcling</code> 生成字典时，必须将包含相关类型定义的头文件放在 <code>Linkdef.h</code> 之前。例如本例中使用了 <code>include/ana.h</code>，其中定义了 <code>dssd</code> 以及相关 <code>vector</code> 类型，因此应写成：</p>
-<div class="highlight"><pre><span></span><span class="nf">$(LinkFile) </span><span class="o">:</span><span class="w"> </span><span class="n">include</span>/<span class="n">ana</span>.<span class="n">h</span> <span class="n">Linkdef</span>.<span class="n">h</span>
-<span class="w">	</span>rootcling<span class="w"> </span>-f<span class="w"> </span><span class="k">$(</span>LinkFile<span class="k">)</span><span class="w"> </span>-c<span class="w"> </span>$^
-</pre></div>
+<div class="highlight"><pre><code class="language-cpp">$(LinkFile) : include/ana.h Linkdef.h
+	rootcling -f $(LinkFile) -c $^</code></pre></div>
 <p>如果顺序不正确，<code>rootcling</code> 在处理 <code>Linkdef.h</code> 时将无法识别这些类型，从而导致字典生成失败。也就是说，<code>Linkdef.h</code> 只负责声明需要生成字典的类型，而这些类型本身必须在它之前已经被包含并定义。</p>
 <hr/>
-<h3 id="%E5%9C%A8-ROOT-%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%90%AB-vector-%E7%B1%BB%E5%9E%8B-Branch-%E7%9A%84%E6%96%87%E4%BB%B6">在 ROOT 命令行中使用含 <code>vector</code> 类型 Branch 的文件<a class="anchor-link" href="#%E5%9C%A8-ROOT-%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%90%AB-vector-%E7%B1%BB%E5%9E%8B-Branch-%E7%9A%84%E6%96%87%E4%BB%B6">¶</a></h3><p>生成含 <code>vector</code> Branch 的新文件后，可以直接在 ROOT 命令行中进行查看和分析。</p>
+<h3 id="%E5%9C%A8-ROOT-%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%90%AB-vector-%E7%B1%BB%E5%9E%8B-Branch-%E7%9A%84%E6%96%87%E4%BB%B6">在 ROOT 命令行中使用含 <code>vector</code> 类型 Branch 的文件</h3><p>生成含 <code>vector</code> Branch 的新文件后，可以直接在 ROOT 命令行中进行查看和分析。</p>
 <p>例如：</p>
-</div>
+<p>本节输入为 <code>data/strip_arrays_16C.root</code>，保留刻度后的固定数组，区别于 3.6 的 compact-hit 文件。它没有时间数据，结构体中的 t 显式设为 NaN，不生成虚构时间。两个转换程序均保留原事件编号和空事件。</p></div>
 </div>
 </div>
 </div>
@@ -8128,7 +8075,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="%E5%9C%A8-ROOT-%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%90%AB-vector-%E7%B1%BB%E5%9E%8B-Branch-%E7%9A%84%E6%96%87%E4%BB%B6">在 ROOT 命令行中使用含 <code>vector</code> 类型 Branch 的文件<a class="anchor-link" href="#%E5%9C%A8-ROOT-%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%90%AB-vector-%E7%B1%BB%E5%9E%8B-Branch-%E7%9A%84%E6%96%87%E4%BB%B6">¶</a></h3><p>生成含 <code>vector</code> Branch 的新文件后，可以直接在 ROOT 命令行中进行查看和分析。</p>
+<h3 id="%E5%9C%A8-ROOT-%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%90%AB-vector-%E7%B1%BB%E5%9E%8B-Branch-%E7%9A%84%E6%96%87%E4%BB%B6">在 ROOT 命令行中使用含 <code>vector</code> 类型 Branch 的文件</h3><p>生成含 <code>vector</code> Branch 的新文件后，可以直接在 ROOT 命令行中进行查看和分析。</p>
 <p>例如：</p>
 </div>
 </div>
@@ -8139,25 +8086,11 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-c++"><pre><span></span><span class="n">TCanvas</span><span class="w"> </span><span class="o">*</span><span class="n">c1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TCanvas</span><span class="p">;</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">gSystem</span><span class="o">-&gt;</span><span class="n">Load</span><span class="p">(</span><span class="s">"code/code1/libhits.so"</span><span class="p">);</span><span class="w"> </span><span class="c1">// 本节 make 同时生成读取字典</span>
+<span class="n">TCanvas</span><span class="w"> </span><span class="o">*</span><span class="n">c1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TCanvas</span><span class="p">;</span>
 <span class="n">TFile</span><span class="w"> </span><span class="o">*</span><span class="n">ff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TFile</span><span class="p">(</span><span class="s">"vec_16C.root"</span><span class="p">);</span>
+<span class="n">TTree</span><span class="w"> </span><span class="o">*</span><span class="n">tree</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">TTree</span><span class="o">*</span><span class="p">)</span><span class="n">ff</span><span class="o">-&gt;</span><span class="n">Get</span><span class="p">(</span><span class="s">"tree"</span><span class="p">);</span>
 </pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>Warning in &lt;TClass::Init&gt;: no dictionary for class dssd is available
-</pre>
-</div>
 </div>
 </div>
 </div>
@@ -8172,7 +8105,7 @@ a.anchor-link {
 <div class="highlight"><pre><span></span><span class="n">Warning</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="o">&lt;</span><span class="n">TClass</span><span class="o">::</span><span class="n">Init</span><span class="o">&gt;:</span><span class="w"> </span><span class="n">no</span><span class="w"> </span><span class="n">dictionary</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">dssd</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">available</span>
 </pre></div>
 <p>这说明 ROOT 虽然能够打开文件，但对自定义类型的支持并不完整，因此前面的字典生成步骤是必要的。</p>
-<h4 id="%E6%9F%A5%E7%9C%8B-vector-%E7%9A%84%E9%95%BF%E5%BA%A6">查看 <code>vector</code> 的长度<a class="anchor-link" href="#%E6%9F%A5%E7%9C%8B-vector-%E7%9A%84%E9%95%BF%E5%BA%A6">¶</a></h4><p>ROOT 提供了 <code>@vec.size()</code> 的写法，用于获得某个 <code>vector</code> 的长度。例如：</p>
+<h4 id="%E6%9F%A5%E7%9C%8B-vector-%E7%9A%84%E9%95%BF%E5%BA%A6">查看 <code>vector</code> 的长度</h4><p>ROOT 提供了 <code>@vec.size()</code> 的写法，用于获得某个 <code>vector</code> 的长度。例如：</p>
 </div>
 </div>
 </div>
@@ -8191,70 +8124,7 @@ a.anchor-link {
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<div id="root_plot_1777126385981" style="width: 700px; height: 500px; position: relative">
-</div>
-<script>
-
-function display_root_plot_1777126385981(Core) {
-   let obj = Core.parse({"_typename":"TCanvasWebSnapshot","fUniqueID":0,"fBits":0,"fObjectID":"","fOption":"","fKind":3,"fSnapshot":{"_typename":"TCanvas","fUniqueID":0,"fBits":3342344,"fLineColor":1,"fLineStyle":1,"fLineWidth":1,"fFillColor":0,"fFillStyle":1001,"fLeftMargin":0.1,"fRightMargin":0.1,"fBottomMargin":0.1,"fTopMargin":0.1,"fXfile":2,"fYfile":2,"fAfile":1,"fXstat":0.99,"fYstat":0.99,"fAstat":2,"fFrameFillColor":0,"fFrameLineColor":1,"fFrameFillStyle":1001,"fFrameLineStyle":1,"fFrameLineWidth":1,"fFrameBorderSize":1,"fFrameBorderMode":0,"fX1":-4.37500032596292,"fY1":-197081.208433694,"fX2":39.3750003259629,"fY2":1773730.75843369,"fXtoAbsPixelk":69.6000041484835,"fXtoPixelk":69.6000041484835,"fXtoPixel":15.9085711915152,"fYtoAbsPixelk":424.799997186661,"fYtoPixelk":424.799997186661,"fYtoPixel":-2.39495196870681e-4,"fUtoAbsPixelk":0,"fUtoPixelk":0,"fUtoPixel":696,"fVtoAbsPixelk":472,"fVtoPixelk":472,"fVtoPixel":-472,"fAbsPixeltoXk":-4.37500032596292,"fPixeltoXk":-4.37500032596292,"fPixeltoX":0.0628591963389739,"fAbsPixeltoYk":1773730.75843369,"fPixeltoYk":-197081.208433694,"fPixeltoY":-4175.44908234616,"fXlowNDC":0,"fYlowNDC":0,"fXUpNDC":1,"fYUpNDC":1,"fWNDC":1,"fHNDC":1,"fAbsXlowNDC":0,"fAbsYlowNDC":0,"fAbsWNDC":1,"fAbsHNDC":1,"fUxmin":0,"fUymin":0,"fUxmax":35,"fUymax":1576649.55,"fTheta":30,"fPhi":30,"fAspectRatio":0,"fNumber":0,"fTickx":0,"fTicky":0,"fLogx":0,"fLogy":0,"fLogz":0,"fPadPaint":0,"fCrosshair":0,"fCrosshairPos":0,"fBorderSize":2,"fBorderMode":0,"fModified":false,"fGridx":false,"fGridy":false,"fAbsCoord":false,"fEditable":true,"fFixedAspectRatio":false,"fPrimitives":{"_typename":"TList","name":"TList","arr":[],"opt":[]},"fExecs":null,"fName":"c1","fTitle":"c1","fNumPaletteColor":0,"fNextPaletteColor":0,"fDISPLAY":"$DISPLAY","fDoubleBuffer":0,"fRetained":true,"fXsizeUser":0,"fYsizeUser":0,"fXsizeReal":20,"fYsizeReal":14.28571,"fWindowTopX":0,"fWindowTopY":0,"fWindowWidth":0,"fWindowHeight":0,"fCw":696,"fCh":472,"fCatt":{"_typename":"TAttCanvas","fXBetween":2,"fYBetween":2,"fTitleFromTop":1.2,"fXdate":0.2,"fYdate":0.3,"fAdate":1},"kMoveOpaque":true,"kResizeOpaque":true,"fHighLightColor":2,"fBatch":true,"kShowEventStatus":false,"kAutoExec":true,"kMenuBar":true},"fActive":false,"fReadOnly":true,"fWithoutPrimitives":false,"fHasExecs":false,"fPrimitives":[{"_typename":"TWebSnapshot","fUniqueID":0,"fBits":0,"fObjectID":"","fOption":"","fKind":4,"fSnapshot":{"_typename":"TWebPainting","fUniqueID":0,"fBits":0,"fOper":"0:255,255,255;1:0,0,0;2:255,0,0;3:0,255,0;4:0,0,255;5:255,255,0;6:255,0,255;7:0,255,255;8:89,211,84;9:89,84,216;10:254,254,254;11:192,182,172;12:76,76,76;13:102,102,102;14:127,127,127;15:153,153,153;16:178,178,178;17:204,204,204;18:229,229,229;19:242,242,242;20:204,198,170;21:204,198,170;22:193,191,168;23:186,181,163;24:178,165,150;25:183,163,155;26:173,153,140;27:155,142,130;28:135,102,86;29:175,206,198;30:132,193,163;31:137,168,160;32:130,158,140;33:173,188,198;34:122,142,153;35:117,137,145;36:104,130,150;37:109,122,132;38:124,153,209;39:127,127,155;40:170,165,191;41:211,206,135;42:221,186,135;43:188,158,130;44:198,153,124;45:191,130,119;46:206,94,96;47:170,142,147;48:165,119,122;49:147,104,112;50:211,89,84;51:146,0,255;52:122,0,255;53:98,0,255;54:74,0,255;55:51,0,255;56:27,0,255;57:3,0,255;58:0,20,255;59:0,44,255;60:0,68,255;61:0,91,255;62:0,115,255;63:0,139,255;64:0,163,255;65:0,187,255;66:0,210,255;67:0,234,255;68:0,255,251;69:0,255,227;70:0,255,204;71:0,255,180;72:0,255,156;73:0,255,132;74:0,255,108;75:0,255,85;76:0,255,61;77:0,255,37;78:0,255,13;79:10,255,0;80:34,255,0;81:57,255,0;82:81,255,0;83:105,255,0;84:129,255,0;85:153,255,0;86:176,255,0;87:200,255,0;88:224,255,0;89:248,255,0;90:255,238,0;91:255,214,0;92:255,190,0;93:255,166,0;94:255,142,0;95:255,119,0;96:255,95,0;97:255,71,0;98:255,47,0;99:255,23,0;100:111,45,168;101:165,42,42;102:178,190,181;103:87,144,252;104:248,156,32;105:228,37,54;106:150,74,139;107:156,156,161;108:122,33,221;109:24,69,251;110:255,94,2;111:201,31,22;112:200,73,169;113:173,173,125;114:134,200,221;115:87,141,255;116:101,99,100;117:63,144,218;118:255,169,14;119:189,31,1;120:148,164,162;121:131,45,182;122:169,107,89;123:231,99,0;124:185,172,112;125:113,117,129;126:146,218,221;127:178,178,178;201:91,91,91;202:122,122,122;203:183,183,183;204:214,214,214;205:137,15,15;206:183,20,20;207:234,71,71;208:239,117,117;209:15,137,15;210:20,183,20;211:71,234,71;212:117,239,117;213:15,15,137;214:20,20,183;215:71,71,234;216:117,117,239;217:137,137,15;218:183,183,20;219:234,234,71;220:239,239,117;221:137,15,137;222:183,20,183;223:234,71,234;224:239,117,239;225:15,137,137;226:20,183,183;227:71,234,234;228:117,239,239;390:255,255,204;391:255,255,153;392:204,204,153;393:255,255,102;394:204,204,102;395:153,153,102;396:255,255,51;397:204,204,51;398:153,153,51;399:102,102,51;400:255,255,0;401:204,204,0;402:153,153,0;403:102,102,0;404:51,51,0;406:204,255,204;407:153,255,153;408:153,204,153;409:102,255,102;410:102,204,102;411:102,153,102;412:51,255,51;413:51,204,51;414:51,153,51;415:51,102,51;416:0,255,0;417:0,204,0;418:0,153,0;419:0,102,0;420:0,51,0;422:204,255,255;423:153,255,255;424:153,204,204;425:102,255,255;426:102,204,204;427:102,153,153;428:51,255,255;429:51,204,204;430:51,153,153;431:51,102,102;432:0,255,255;433:0,204,204;434:0,153,153;435:0,102,102;436:0,51,51;590:204,204,255;591:153,153,255;592:153,153,204;593:102,102,255;594:102,102,204;595:102,102,153;596:51,51,255;597:51,51,204;598:51,51,153;599:51,51,102;600:0,0,255;601:0,0,204;602:0,0,153;603:0,0,102;604:0,0,51;606:255,204,255;607:255,153,255;608:204,153,204;609:255,102,255;610:204,102,204;611:153,102,153;612:255,51,255;613:204,51,204;614:153,51,153;615:102,51,102;616:255,0,255;617:204,0,204;618:153,0,153;619:102,0,102;620:51,0,51;622:255,204,204;623:255,153,153;624:204,153,153;625:255,102,102;626:204,102,102;627:153,102,102;628:255,51,51;629:204,51,51;630:153,51,51;631:102,51,51;632:255,0,0;633:204,0,0;634:153,0,0;635:102,0,0;636:51,0,0;791:255,204,153;792:204,153,102;793:153,102,51;794:153,102,0;795:204,153,51;796:255,204,102;797:255,153,0;798:255,204,51;799:204,153,0;800:255,204,0;801:255,153,51;802:204,102,0;803:102,51,0;804:153,51,0;805:204,102,51;806:255,153,102;807:255,102,0;808:255,102,51;809:204,51,0;810:255,51,0;811:153,255,51;812:102,204,0;813:51,102,0;814:51,153,0;815:102,204,51;816:153,255,102;817:102,255,0;818:102,255,51;819:51,204,0;820:51,255,0;821:204,255,153;822:153,204,102;823:102,153,51;824:102,153,0;825:153,204,51;826:204,255,102;827:153,255,0;828:204,255,51;829:153,204,0;830:204,255,0;831:153,255,204;832:102,204,153;833:51,153,102;834:0,153,102;835:51,204,153;836:102,255,204;837:0,255,102;838:51,255,204;839:0,204,153;840:0,255,204;841:51,255,153;842:0,204,102;843:0,102,51;844:0,153,51;845:51,204,102;846:102,255,153;847:0,255,153;848:51,255,102;849:0,204,51;850:0,255,51;851:153,204,255;852:102,153,204;853:51,102,153;854:0,51,153;855:51,102,204;856:102,153,255;857:0,102,255;858:51,102,255;859:0,51,204;860:0,51,255;861:51,153,255;862:0,102,204;863:0,51,102;864:0,102,153;865:51,153,204;866:102,204,255;867:0,153,255;868:51,204,255;869:0,153,204;870:0,204,255;871:204,153,255;872:153,102,204;873:102,51,153;874:102,0,153;875:153,51,204;876:204,102,255;877:153,0,255;878:204,51,255;879:153,0,204;880:204,0,255;881:153,51,255;882:102,0,204;883:51,0,102;884:51,0,153;885:102,51,204;886:153,102,255;887:102,0,255;888:102,51,255;889:51,0,204;890:51,0,255;891:255,51,153;892:204,0,102;893:102,0,51;894:153,0,51;895:204,51,102;896:255,102,153;897:255,0,102;898:255,51,102;899:204,0,51;900:255,0,51;901:255,153,204;902:204,102,153;903:153,51,102;904:153,0,102;905:204,51,153;906:255,102,204;907:255,0,153;908:204,0,153;909:255,51,204;910:255,0,153;920:204,204,204;921:153,153,153;922:102,102,102;923:51,51,51;924:53,42,134;925:51,44,137;926:50,45,140;927:49,47,143;928:48,48,146;929:46,50,148;930:45,51,151;931:44,53,154;932:43,55,157;933:42,56,160;934:40,58,162;935:39,59,165;936:38,61,168;937:37,63,171;938:35,64,174;939:34,66,176;940:33,67,179;941:32,69,182;942:31,71,185;943:29,72,187;944:28,74,190;945:27,75,193;946:26,77,196;947:24,79,199;948:23,80,201;949:22,82,204;950:21,83,207;951:19,85,210;952:18,86,213;953:17,88,215;954:16,90,218;955:15,91,221;956:15,92,221;957:15,94,220;958:15,95,220;959:15,96,220;960:15,97,220;961:15,98,220;962:16,99,219;963:16,100,219;964:16,102,219;965:16,103,219;966:16,104,218;967:16,105,218;968:17,106,218;969:17,107,218;970:17,109,217;971:17,110,217;972:17,111,217;973:17,112,217;974:17,113,216;975:18,114,216;976:18,115,216;977:18,117,216;978:18,118,215;979:18,119,215;980:18,120,215;981:18,121,215;982:19,122,215;983:19,123,214;984:19,125,214;985:19,126,214;986:19,127,214;987:19,128,213;988:19,129,213;989:19,130,213;990:18,131,212;991:18,132,212;992:17,134,211;993:17,135,211;994:16,136,211;995:16,137,210;996:15,138,210;997:15,139,210;998:15,140,209;999:14,141,209;1000:14,142,208;1001:13,143,208;1002:13,145,208;1003:12,146,207;1004:12,147,207;1005:12,148,207;1006:11,149,206;1007:11,150,206;1008:10,151,205;1009:10,152,205;1010:9,153,205;1011:9,154,204;1012:8,155,204;1013:8,157,204;1014:8,158,203;1015:7,159,203;1016:7,160,202;1017:6,161,202;1018:6,162,202;1019:5,163,201;1020:7,164,200;1021:8,164,199;1022:9,165,198;1023:10,166,197;1024:12,166,195;1025:13,167,194;1026:14,167,193;1027:15,168,192;1028:17,169,191;1029:18,169,189;1030:19,170,188;1031:20,170,187;1032:22,171,186;1033:23,172,185;1034:24,172,184;1035:25,173,182;1036:27,173,181;1037:28,174,180;1038:29,175,179;1039:30,175,178;1040:32,176,176;1041:33,176,175;1042:34,177,174;1043:35,178,173;1044:37,178,172;1045:38,179,170;1046:39,180,169;1047:40,180,168;1048:42,181,167;1049:43,181,166;1050:44,182,165;1051:45,183,163;1052:48,183,162;1053:51,183,161;1054:54,183,159;1055:57,184,158;1056:59,184,156;1057:62,184,155;1058:65,184,154;1059:68,185,152;1060:71,185,151;1061:73,185,149;1062:76,185,148;1063:79,186,146;1064:82,186,145;1065:84,186,144;1066:87,186,142;1067:90,187,141;1068:93,187,139;1069:96,187,138;1070:98,187,137;1071:101,188,135;1072:104,188,134;1073:107,188,132;1074:110,188,131;1075:112,189,130;1076:115,189,128;1077:118,189,127;1078:121,189,125;1079:124,190,124;1080:126,190,123;1081:129,190,121;1082:132,190,120;1083:135,191,118;1084:137,190,117;1085:139,190,117;1086:142,190,116;1087:144,190,115;1088:146,190,114;1089:148,190,113;1090:151,190,112;1091:153,190,111;1092:155,189,110;1093:158,189,109;1094:160,189,108;1095:162,189,107;1096:165,189,106;1097:167,189,105;1098:169,189,104;1099:171,188,104;1100:174,188,103;1101:176,188,102;1102:178,188,101;1103:181,188,100;1104:183,188,99;1105:185,188,98;1106:188,188,97;1107:190,187,96;1108:192,187,95;1109:194,187,94;1110:197,187,93;1111:199,187,92;1112:201,187,92;1113:204,187,91;1114:206,186,90;1115:208,186,89;1116:210,187,88;1117:211,187,86;1118:212,188,85;1119:214,188,84;1120:215,188,83;1121:217,189,81;1122:218,189,80;1123:220,190,79;1124:221,190,78;1125:222,191,77;1126:224,191,75;1127:225,191,74;1128:227,192,73;1129:228,192,72;1130:229,193,70;1131:231,193,69;1132:232,194,68;1133:234,194,67;1134:235,194,66;1135:236,195,64;1136:238,195,63;1137:239,196,62;1138:241,196,61;1139:242,197,59;1140:244,197,58;1141:245,197,57;1142:246,198,56;1143:248,198,55;1144:249,199,53;1145:251,199,52;1146:252,200,51;1147:253,200,50;1148:253,202,49;1149:253,203,47;1150:253,205,46;1151:253,206,45;1152:253,208,44;1153:252,209,43;1154:252,211,42;1155:252,213,41;1156:252,214,39;1157:252,216,38;1158:252,217,37;1159:252,219,36;1160:251,220,35;1161:251,222,34;1162:251,224,33;1163:251,225,31;1164:251,227,30;1165:251,228,29;1166:250,230,28;1167:250,231,27;1168:250,233,26;1169:250,235,25;1170:250,236,23;1171:250,238,22;1172:250,239,21;1173:249,241,20;1174:249,242,19;1175:249,244,18;1176:249,246,17;1177:249,247,16;1178:249,249,14","fBuf":{"$arr":"Float32","len":255,"v":[924,925,926,927,928,929,930,931,932,933,934,935,936,937,938,939,940,941,942,943,944,945,946,947,948,949,950,951,952,953,954,955,956,957,958,959,960,961,962,963,964,965,966,967,968,969,970,971,972,973,974,975,976,977,978,979,980,981,982,983,984,985,986,987,988,989,990,991,992,993,994,995,996,997,998,999,1000,1001,1002,1003,1004,1005,1006,1007,1008,1009,1010,1011,1012,1013,1014,1015,1016,1017,1018,1019,1020,1021,1022,1023,1024,1025,1026,1027,1028,1029,1030,1031,1032,1033,1034,1035,1036,1037,1038,1039,1040,1041,1042,1043,1044,1045,1046,1047,1048,1049,1050,1051,1052,1053,1054,1055,1056,1057,1058,1059,1060,1061,1062,1063,1064,1065,1066,1067,1068,1069,1070,1071,1072,1073,1074,1075,1076,1077,1078,1079,1080,1081,1082,1083,1084,1085,1086,1087,1088,1089,1090,1091,1092,1093,1094,1095,1096,1097,1098,1099,1100,1101,1102,1103,1104,1105,1106,1107,1108,1109,1110,1111,1112,1113,1114,1115,1116,1117,1118,1119,1120,1121,1122,1123,1124,1125,1126,1127,1128,1129,1130,1131,1132,1133,1134,1135,1136,1137,1138,1139,1140,1141,1142,1143,1144,1145,1146,1147,1148,1149,1150,1151,1152,1153,1154,1155,1156,1157,1158,1159,1160,1161,1162,1163,1164,1165,1166,1167,1168,1169,1170,1171,1172,1173,1174,1175,1176,1177,1178]}}},{"_typename":"TWebSnapshot","fUniqueID":0,"fBits":0,"fObjectID":"","fOption":"","fKind":5,"fSnapshot":{"_typename":"TStyle","fUniqueID":0,"fBits":0,"fName":"Modern","fTitle":"Modern Style","fLineColor":1,"fLineStyle":1,"fLineWidth":1,"fFillColor":19,"fFillStyle":1001,"fMarkerColor":1,"fMarkerStyle":1,"fMarkerSize":1,"fTextAngle":0,"fTextSize":0.05,"fTextAlign":11,"fTextColor":1,"fTextFont":62,"fXaxis":{"_typename":"TAttAxis","fNdivisions":510,"fAxisColor":1,"fLabelColor":1,"fLabelFont":42,"fLabelOffset":0.005,"fLabelSize":0.035,"fTickLength":0.03,"fTitleOffset":1,"fTitleSize":0.035,"fTitleColor":1,"fTitleFont":42},"fYaxis":{"_typename":"TAttAxis","fNdivisions":510,"fAxisColor":1,"fLabelColor":1,"fLabelFont":42,"fLabelOffset":0.005,"fLabelSize":0.035,"fTickLength":0.03,"fTitleOffset":0,"fTitleSize":0.035,"fTitleColor":1,"fTitleFont":42},"fZaxis":{"_typename":"TAttAxis","fNdivisions":510,"fAxisColor":1,"fLabelColor":1,"fLabelFont":42,"fLabelOffset":0.005,"fLabelSize":0.035,"fTickLength":0.03,"fTitleOffset":1,"fTitleSize":0.035,"fTitleColor":1,"fTitleFont":42},"fBarWidth":1,"fBarOffset":0,"fColorModelPS":0,"fDrawBorder":0,"fOptLogx":0,"fOptLogy":0,"fOptLogz":0,"fOptDate":0,"fOptStat":1111,"fOptTitle":1,"fOptFile":0,"fOptFit":0,"fShowEventStatus":0,"fShowEditor":0,"fShowToolBar":0,"fNumberContours":20,"fAttDate":{"_typename":"TAttText","fTextAngle":0,"fTextSize":0.025,"fTextAlign":11,"fTextColor":1,"fTextFont":62},"fDateX":0.01,"fDateY":0.01,"fEndErrorSize":2,"fErrorX":0.5,"fFuncColor":2,"fFuncStyle":1,"fFuncWidth":2,"fGridColor":0,"fGridStyle":3,"fGridWidth":1,"fLegendBorderSize":1,"fLegendFillColor":0,"fLegendFillStyle":1001,"fLegendFont":42,"fLegendTextSize":0,"fHatchesLineWidth":1,"fHatchesSpacing":1,"fFrameFillColor":0,"fFrameLineColor":1,"fFrameFillStyle":1001,"fFrameLineStyle":1,"fFrameLineWidth":1,"fFrameBorderSize":1,"fFrameBorderMode":0,"fHistFillColor":0,"fHistLineColor":602,"fHistFillStyle":1001,"fHistLineStyle":1,"fHistLineWidth":1,"fHistMinimumZero":false,"fHistTopMargin":0.05,"fCanvasPreferGL":false,"fCanvasColor":0,"fCanvasBorderSize":2,"fCanvasBorderMode":0,"fCanvasDefH":500,"fCanvasDefW":700,"fCanvasDefX":10,"fCanvasDefY":10,"fPadColor":0,"fPadBorderSize":2,"fPadBorderMode":0,"fPadBottomMargin":0.1,"fPadTopMargin":0.1,"fPadLeftMargin":0.1,"fPadRightMargin":0.1,"fPadGridX":false,"fPadGridY":false,"fPadTickX":0,"fPadTickY":0,"fPaperSizeX":20,"fPaperSizeY":26,"fScreenFactor":1,"fStatColor":0,"fStatTextColor":1,"fStatBorderSize":1,"fStatFont":42,"fStatFontSize":0,"fStatStyle":1001,"fStatFormat":"6.4g","fStatX":0.98,"fStatY":0.935,"fStatW":0.2,"fStatH":0.16,"fStripDecimals":true,"fTitleAlign":23,"fTitleColor":0,"fTitleTextColor":1,"fTitleBorderSize":0,"fTitleFont":42,"fTitleFontSize":0.05,"fTitleStyle":0,"fTitleX":0.5,"fTitleY":0.995,"fTitleW":0,"fTitleH":0,"fLegoInnerR":0.5,"fLineStyles":["","  "," 12 12"," 4 8"," 12 16 4 16"," 20 12 4 12"," 20 12 4 12 4 12 4 12"," 20 20"," 20 12 4 12 4 12"," 80 20"," 80 40 4 40","  ","  ","  ","  ","  ","  ","  ","  ","  ","  ","  ","  ","  ","  ","  ","  ","  ","  ","  "],"fHeaderPS":"","fTitlePS":"","fFitFormat":"5.4g","fPaintTextFormat":"g","fLineScalePS":3,"fJoinLinePS":0,"fCapLinePS":0,"fTimeOffset":788918400,"fImageScaling":1,"fCandleWhiskerRange":1,"fCandleBoxRange":0.5,"fCandleScaled":false,"fViolinScaled":true,"fXAxisExpXOffset":0,"fXAxisExpYOffset":0,"fYAxisExpXOffset":0,"fYAxisExpYOffset":0,"fAxisMaxDigits":5,"fOrthoCamera":false}},{"_typename":"TWebSnapshot","fUniqueID":0,"fBits":0,"fObjectID":"","fOption":"","fKind":1,"fSnapshot":{"_typename":"TFrame","fUniqueID":0,"fBits":8,"fLineColor":1,"fLineStyle":1,"fLineWidth":1,"fFillColor":0,"fFillStyle":1001,"fX1":0,"fY1":0,"fX2":35,"fY2":1576649.55,"fBorderSize":1,"fBorderMode":0}},{"_typename":"TWebSnapshot","fUniqueID":0,"fBits":0,"fObjectID":"","fOption":"","fKind":1,"fSnapshot":{"_typename":"TH1F","fUniqueID":0,"fBits":9,"fName":"htemp","fTitle":"@x1v.size()","fLineColor":602,"fLineStyle":1,"fLineWidth":1,"fFillColor":0,"fFillStyle":1001,"fMarkerColor":1,"fMarkerStyle":1,"fMarkerSize":1,"fNcells":102,"fXaxis":{"_typename":"TAxis","fUniqueID":0,"fBits":0,"fName":"xaxis","fTitle":"@x1v.size()","fNdivisions":510,"fAxisColor":1,"fLabelColor":1,"fLabelFont":42,"fLabelOffset":0.005,"fLabelSize":0.035,"fTickLength":0.03,"fTitleOffset":1,"fTitleSize":0.035,"fTitleColor":1,"fTitleFont":42,"fNbins":100,"fXmin":0,"fXmax":35,"fXbins":[],"fFirst":1,"fLast":100,"fBits2":0,"fTimeDisplay":false,"fTimeFormat":"","fLabels":null,"fModLabs":null},"fYaxis":{"_typename":"TAxis","fUniqueID":0,"fBits":0,"fName":"yaxis","fTitle":"","fNdivisions":510,"fAxisColor":1,"fLabelColor":1,"fLabelFont":42,"fLabelOffset":0.005,"fLabelSize":0.035,"fTickLength":0.03,"fTitleOffset":0,"fTitleSize":0.035,"fTitleColor":1,"fTitleFont":42,"fNbins":1,"fXmin":0,"fXmax":1,"fXbins":[],"fFirst":0,"fLast":0,"fBits2":0,"fTimeDisplay":false,"fTimeFormat":"","fLabels":null,"fModLabs":null},"fZaxis":{"_typename":"TAxis","fUniqueID":0,"fBits":0,"fName":"zaxis","fTitle":"","fNdivisions":510,"fAxisColor":1,"fLabelColor":1,"fLabelFont":42,"fLabelOffset":0.005,"fLabelSize":0.035,"fTickLength":0.03,"fTitleOffset":1,"fTitleSize":0.035,"fTitleColor":1,"fTitleFont":42,"fNbins":1,"fXmin":0,"fXmax":1,"fXbins":[],"fFirst":0,"fLast":0,"fBits2":0,"fTimeDisplay":false,"fTimeFormat":"","fLabels":null,"fModLabs":null},"fBarOffset":0,"fBarWidth":1000,"fEntries":1926502,"fTsumw":1926502,"fTsumw2":1926502,"fTsumwx":4236416,"fTsumwx2":14933728,"fMaximum":-1111,"fMinimum":-1111,"fNormFactor":0,"fContour":[],"fSumw2":[],"fOption":"","fFunctions":{"_typename":"TList","name":"TList","arr":[{"_typename":"TPaveStats","fUniqueID":0,"fBits":9,"fLineColor":1,"fLineStyle":1,"fLineWidth":1,"fFillColor":0,"fFillStyle":1001,"fX1":29.7500008866191,"fY1":1330298.07763549,"fX2":38.5000011473894,"fY2":1645627.9852861,"fX1NDC":0.780000016093254,"fY1NDC":0.775000005960464,"fX2NDC":0.980000019073486,"fY2NDC":0.935000002384186,"fBorderSize":1,"fInit":1,"fShadowColor":1,"fCornerRadius":0,"fOption":"brNDC","fName":"stats","fTextAngle":0,"fTextSize":0,"fTextAlign":12,"fTextColor":1,"fTextFont":42,"fLabel":"","fLongest":18,"fMargin":0.05,"fLines":{"_typename":"TList","name":"TList","arr":[{"_typename":"TLatex","fUniqueID":0,"fBits":0,"fName":"","fTitle":"htemp","fTextAngle":0,"fTextSize":0.0368,"fTextAlign":0,"fTextColor":0,"fTextFont":0,"fX":0,"fY":0,"fLineColor":1,"fLineStyle":1,"fLineWidth":2,"fLimitFactorSize":3,"fOriginSize":0.0368000008165836},{"_typename":"TLatex","fUniqueID":0,"fBits":0,"fName":"","fTitle":"Entries = 1926502","fTextAngle":0,"fTextSize":0,"fTextAlign":0,"fTextColor":0,"fTextFont":0,"fX":0,"fY":0,"fLineColor":1,"fLineStyle":1,"fLineWidth":2,"fLimitFactorSize":3,"fOriginSize":0.04},{"_typename":"TLatex","fUniqueID":0,"fBits":0,"fName":"","fTitle":"Mean  =  2.199","fTextAngle":0,"fTextSize":0,"fTextAlign":0,"fTextColor":0,"fTextFont":0,"fX":0,"fY":0,"fLineColor":1,"fLineStyle":1,"fLineWidth":2,"fLimitFactorSize":3,"fOriginSize":0.04},{"_typename":"TLatex","fUniqueID":0,"fBits":0,"fName":"","fTitle":"Std Dev   =  1.708","fTextAngle":0,"fTextSize":0,"fTextAlign":0,"fTextColor":0,"fTextFont":0,"fX":0,"fY":0,"fLineColor":1,"fLineStyle":1,"fLineWidth":2,"fLimitFactorSize":3,"fOriginSize":0.04}],"opt":["","","",""]},"fOptFit":0,"fOptStat":1111,"fFitFormat":"5.4g","fStatFormat":"6.4g","fParent":{"$ref":15}}],"opt":["brNDC"]},"fBufferSize":0,"fBuffer":[],"fBinStatErrOpt":0,"fStatOverflows":2,"fArray":{"$arr":"Float32","len":102,"p":3,"v":[143071,0,0,1501571,0,0,226495,0,0,38523,0,0,6118,0,0,1315,0,0,611,0,428,0,0,329,0,0,319,0,0,258,0,0,200,0,0,173,0,0,177,0,193,0,0,201,0,0,238,0,0,266,0,0,252,0,0,178,0,0,107,0,75,0,0,68,0,0,88,0,0,133,0,0,143,0,0,140,0,0,110,0,113,0,0,220,0,0,765,0,0,3624]}}},{"_typename":"TWebSnapshot","fUniqueID":0,"fBits":0,"fObjectID":"","fOption":"blNDC","fKind":1,"fSnapshot":{"_typename":"TPaveText","fUniqueID":0,"fBits":9,"fLineColor":1,"fLineStyle":1,"fLineWidth":1,"fFillColor":0,"fFillStyle":0,"fX1":12.945222633278,"fY1":1648634.31332417,"fX2":22.054777366722,"fY2":1763876.70799692,"fX1NDC":0.395890804597701,"fY1NDC":0.936525428497185,"fX2NDC":0.604109195402299,"fY2NDC":0.995000004768372,"fBorderSize":0,"fInit":1,"fShadowColor":1,"fCornerRadius":0,"fOption":"blNDC","fName":"title","fTextAngle":0,"fTextSize":0,"fTextAlign":22,"fTextColor":1,"fTextFont":42,"fLabel":"","fLongest":11,"fMargin":0.05,"fLines":{"_typename":"TList","name":"TList","arr":[{"_typename":"TLatex","fUniqueID":0,"fBits":0,"fName":"","fTitle":"@x1v.size()","fTextAngle":0,"fTextSize":0,"fTextAlign":0,"fTextColor":0,"fTextFont":0,"fX":0,"fY":0,"fLineColor":1,"fLineStyle":1,"fLineWidth":2,"fLimitFactorSize":3,"fOriginSize":0.0497033894062042}],"opt":[""]}}}],"fScripts":"","fHighlightConnect":false,"fFixedSize":false});
-   Core.settings.HandleKeys = false;
-   Core.draw("root_plot_1777126385981", obj, "");
-}
-
-function script_load_root_plot_1777126385981(src, on_error) {
-    let script = document.createElement('script');
-    script.src = src;
-    script.onload = function() { display_root_plot_1777126385981(JSROOT); };
-    script.onerror = function() { script.remove(); on_error(); };
-    document.head.appendChild(script);
-}
-
-if (typeof requirejs !== 'undefined') {
-
-    // We are in jupyter notebooks, use require.js which should be configured already
-    requirejs.config({
-       paths: { 'JSRootCore' : [ 'build/jsroot', 'https://root.cern/js/7.8.2/build/jsroot', 'https://jsroot.gsi.de/7.8.2/build/jsroot' ] }
-    })(['JSRootCore'],  function(Core) {
-       display_root_plot_1777126385981(Core);
-    });
-
-} else if (typeof JSROOT !== 'undefined') {
-
-   // JSROOT already loaded, just use it
-   display_root_plot_1777126385981(JSROOT);
-
-} else {
-
-    // We are in jupyterlab without require.js, directly loading jsroot
-    // Jupyterlab might be installed in a different base_url so we need to know it.
-    try {
-        var base_url = JSON.parse(document.getElementById('jupyter-config-data').innerHTML).baseUrl;
-    } catch(_) {
-        var base_url = '/';
-    }
-
-    // Try loading a local version of requirejs and fallback to cdn if not possible.
-    script_load_root_plot_1777126385981(base_url + 'static/build/jsroot.js', function(){
-        console.error('Fail to load JSROOT locally, please check your jupyter_notebook_config.py file');
-        script_load_root_plot_1777126385981('https://root.cern/js/7.8.2/build/jsroot.js', function(){
-            document.getElementById("root_plot_1777126385981").innerHTML = "Failed to load JSROOT";
-        });
-    });
-}
-
-</script>
-</div>
-</div>
-</div>
-</div>
-</div>
+<div class="verified-output"><img alt="3.8_TTree_Branch_with_vector: cell 4, c1" src="figures/3.8_TTree_Branch_with_vector/cell_04_c1.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -8262,7 +8132,7 @@ if (typeof requirejs !== 'undefined') {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p>该语句可以直接画出 <code>x1v</code> 在各事件中的 hit 数分布。</p>
-<h4 id="%E8%AE%BF%E9%97%AE-vector-%E4%B8%AD%E5%8D%95%E4%B8%AA%E5%85%83%E7%B4%A0%E7%9A%84%E6%88%90%E5%91%98">访问 <code>vector</code> 中单个元素的成员<a class="anchor-link" href="#%E8%AE%BF%E9%97%AE-vector-%E4%B8%AD%E5%8D%95%E4%B8%AA%E5%85%83%E7%B4%A0%E7%9A%84%E6%88%90%E5%91%98">¶</a></h4><p>可以通过</p>
+<h4 id="%E8%AE%BF%E9%97%AE-vector-%E4%B8%AD%E5%8D%95%E4%B8%AA%E5%85%83%E7%B4%A0%E7%9A%84%E6%88%90%E5%91%98">访问 <code>vector</code> 中单个元素的成员</h4><p>可以通过</p>
 <div class="highlight"><pre><span></span><span class="n">vec</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">member</span>
 </pre></div>
 <p>的形式访问 <code>vector</code> 中第 <code>i</code> 个元素的成员变量。例如：</p>
@@ -8284,30 +8154,17 @@ if (typeof requirejs !== 'undefined') {
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>************************************************************************************
+<div class="verified-output"><pre>************************************************************************************
 *    Row   * x1v[0].id *  x1v[0].e *  x1v[0].t * x1v[1].id *  x1v[1].e *  x1v[1].t *
 ************************************************************************************
-*        1 *        17 * 4925.0811 * 1.988e-81 *        18 * 1007.1224 *         0 *
-*        2 *        23 * 3146.8572 * 1.988e-81 *        24 * 339.14570 *         0 *
-*        3 *        23 * 5465.0851 * 1.988e-81 *        24 * 41.435740 *         0 *
-*        4 *        21 * 5993.6417 * 1.988e-81 *        22 * 43.867701 *         0 *
-*        5 *        11 * 4196.0801 * 1.988e-81 *        12 * 1159.4884 *         0 *
-*        6 *        13 * 387.77402 * 1.988e-81 *        14 * 3889.7610 *         0 *
+*        1 *        17 * 4925.0811 *       nan *        18 * 1007.1224 *       nan *
+*        2 *        23 * 3146.8572 *       nan *        24 * 339.14570 *       nan *
+*        3 *        23 * 5465.0851 *       nan *        24 * 41.435740 *       nan *
+*        4 *        21 * 5993.6417 *       nan *        22 * 43.867701 *       nan *
+*        5 *        11 * 4196.0801 *       nan *        12 * 1159.4884 *       nan *
+*        6 *        13 * 387.77402 *       nan *        14 * 3889.7610 *       nan *
 ************************************************************************************
-==&gt; 6 selected entries
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
+==&gt; 6 selected entries</pre></div></div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -8315,7 +8172,7 @@ if (typeof requirejs !== 'undefined') {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p>表示查看 <code>x1v</code> 中前两个 hit 的条带编号、能量和时间。</p>
-<h4 id="%E5%B1%95%E5%BC%80%E6%9F%A5%E7%9C%8B%E5%85%A8%E9%83%A8-hit-%E4%BF%A1%E6%81%AF">展开查看全部 hit 信息<a class="anchor-link" href="#%E5%B1%95%E5%BC%80%E6%9F%A5%E7%9C%8B%E5%85%A8%E9%83%A8-hit-%E4%BF%A1%E6%81%AF">¶</a></h4><p>除了按下标逐项访问之外，也可以直接写成：</p>
+<h4 id="%E5%B1%95%E5%BC%80%E6%9F%A5%E7%9C%8B%E5%85%A8%E9%83%A8-hit-%E4%BF%A1%E6%81%AF">展开查看全部 hit 信息</h4><p>除了按下标逐项访问之外，也可以直接写成：</p>
 </div>
 </div>
 </div>
@@ -8333,36 +8190,23 @@ if (typeof requirejs !== 'undefined') {
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>***********************************************************
+<div class="verified-output"><pre>***********************************************************
 *    Row   * Instance *    x1v.id *     x1v.e *     x1v.t *
 ***********************************************************
-*        1 *        0 *        17 * 4925.0811 * 1.988e-81 *
-*        1 *        1 *        18 * 1007.1224 *         0 *
-*        2 *        0 *        23 * 3146.8572 * 1.988e-81 *
-*        2 *        1 *        24 * 339.14570 *         0 *
-*        3 *        0 *        23 * 5465.0851 * 1.988e-81 *
-*        3 *        1 *        24 * 41.435740 *         0 *
-*        4 *        0 *        21 * 5993.6417 * 1.988e-81 *
-*        4 *        1 *        22 * 43.867701 *         0 *
-*        5 *        0 *        11 * 4196.0801 * 1.988e-81 *
-*        5 *        1 *        12 * 1159.4884 *         0 *
-*        6 *        0 *        13 * 387.77402 * 1.988e-81 *
-*        6 *        1 *        14 * 3889.7610 *         0 *
+*        1 *        0 *        17 * 4925.0811 *       nan *
+*        1 *        1 *        18 * 1007.1224 *       nan *
+*        2 *        0 *        23 * 3146.8572 *       nan *
+*        2 *        1 *        24 * 339.14570 *       nan *
+*        3 *        0 *        23 * 5465.0851 *       nan *
+*        3 *        1 *        24 * 41.435740 *       nan *
+*        4 *        0 *        21 * 5993.6417 *       nan *
+*        4 *        1 *        22 * 43.867701 *       nan *
+*        5 *        0 *        11 * 4196.0801 *       nan *
+*        5 *        1 *        12 * 1159.4884 *       nan *
+*        6 *        0 *        13 * 387.77402 *       nan *
+*        6 *        1 *        14 * 3889.7610 *       nan *
 ***********************************************************
-==&gt; 12 selected entries
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
+==&gt; 12 selected entries</pre></div></div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -8370,7 +8214,7 @@ if (typeof requirejs !== 'undefined') {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p>在这种情况下，ROOT 会自动把 <code>vector</code> 中的每个元素展开显示，并为每个元素给出对应的 <code>Instance</code> 编号。这样可以方便地查看一个事件中所有 hit 的详细信息。</p>
-<h3 id="%E5%9C%A8%E5%90%8E%E7%BB%AD%E5%88%86%E6%9E%90%E4%B8%AD%E7%BB%A7%E7%BB%AD%E4%BF%9D%E6%8C%81-vector-%E7%B1%BB%E5%9E%8B-Branch">在后续分析中继续保持 <code>vector</code> 类型 Branch<a class="anchor-link" href="#%E5%9C%A8%E5%90%8E%E7%BB%AD%E5%88%86%E6%9E%90%E4%B8%AD%E7%BB%A7%E7%BB%AD%E4%BF%9D%E6%8C%81-vector-%E7%B1%BB%E5%9E%8B-Branch">¶</a></h3><p>如果已经生成了含 <code>vector</code> Branch 的 ROOT 文件，后续分析时往往希望继续以 <code>vector</code> 的形式读取这些数据，而不是重新退回到数组形式。此时需要特别注意：不能直接沿用 <code>MakeClass</code> 的默认处理方式。</p>
+<h3 id="%E5%9C%A8%E5%90%8E%E7%BB%AD%E5%88%86%E6%9E%90%E4%B8%AD%E7%BB%A7%E7%BB%AD%E4%BF%9D%E6%8C%81-vector-%E7%B1%BB%E5%9E%8B-Branch">在后续分析中继续保持 <code>vector</code> 类型 Branch</h3><p>如果已经生成了含 <code>vector</code> Branch 的 ROOT 文件，后续分析时往往希望继续以 <code>vector</code> 的形式读取这些数据，而不是重新退回到数组形式。此时需要特别注意：不能直接沿用 <code>MakeClass</code> 的默认处理方式。</p>
 <p>原因在于，<code>MakeClass</code> 对 <code>vector</code> Branch 的展开方式更接近于动态数组。也就是说，虽然树中原本保存的是 <code>vector&lt;dssd&gt;</code>，但 <code>MakeClass</code> 生成的代码会将其解释为长度变量和若干数组成员的组合。例如，执行：</p>
 </div>
 </div>
@@ -8389,120 +8233,135 @@ if (typeof requirejs !== 'undefined') {
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>******************************************************************************
+<div class="verified-output"><pre>******************************************************************************
 *Tree    :tree      : vector branch                                          *
-*Entries :  2023076 : Total =       744983759 bytes  File  Size =  335786363 *
-*        :          : Tree compression factor =   2.22                       *
+*Entries :  1926502 : Total =       825074564 bytes  File  Size =  342577290 *
+*        :          : Tree compression factor =   2.41                       *
 ******************************************************************************
-*Br    0 :x1v       : Int_t x1v_                                             *
-*Entries :  2023076 : Total  Size=   16284062 bytes  File Size  =    3881644 *
-*Baskets :      764 : Basket Size=      32000 bytes  Compression=   4.18     *
+*Br    0 :source_entry : source_entry/L                                      *
+*Entries :  1926502 : Total  Size=   15417703 bytes  File Size  =    2963374 *
+*Baskets :       54 : Basket Size=    1520128 bytes  Compression=   5.20     *
 *............................................................................*
-*Br    1 :x1v.id    : Int_t id[x1v_]                                         *
-*Entries :  2023076 : Total  Size=   25352263 bytes  File Size  =    6320782 *
-*Baskets :       98 : Basket Size=    3794944 bytes  Compression=   4.01     *
+*Br    1 :x1v       : Int_t x1v_                                             *
+*Entries :  1926502 : Total  Size=   15507888 bytes  File Size  =    3614131 *
+*Baskets :      735 : Basket Size=      32000 bytes  Compression=   4.28     *
 *............................................................................*
-*Br    2 :x1v.e     : Double_t e[x1v_]                                       *
-*Entries :  2023076 : Total  Size=   42606133 bytes  File Size  =   32524001 *
-*Baskets :      141 : Basket Size=    5379584 bytes  Compression=   1.31     *
+*Br    2 :x1v.id    : Int_t id[x1v_]                                         *
+*Entries :  1926502 : Total  Size=   24661757 bytes  File Size  =    6135902 *
+*Baskets :       96 : Basket Size=    3631104 bytes  Compression=   4.02     *
 *............................................................................*
-*Br    3 :x1v.t     : Double_t t[x1v_]                                       *
-*Entries :  2023076 : Total  Size=   42606133 bytes  File Size  =   13246169 *
-*Baskets :      141 : Basket Size=    5379584 bytes  Compression=   3.22     *
+*Br    3 :x1v.e     : Double_t e[x1v_]                                       *
+*Entries :  1926502 : Total  Size=   41611521 bytes  File Size  =   35194103 *
+*Baskets :      138 : Basket Size=    5157376 bytes  Compression=   1.18     *
 *............................................................................*
-*Br    4 :x2v       : Int_t x2v_                                             *
-*Entries :  2023076 : Total  Size=   16285402 bytes  File Size  =    4196636 *
-*Baskets :      764 : Basket Size=      32000 bytes  Compression=   3.87     *
+*Br    4 :x1v.t     : Double_t t[x1v_]                                       *
+*Entries :  1926502 : Total  Size=   41611521 bytes  File Size  =    3061385 *
+*Baskets :      138 : Basket Size=    5157376 bytes  Compression=  13.59     *
 *............................................................................*
-*Br    5 :x2v.id    : Int_t id[x2v_]                                         *
-*Entries :  2023076 : Total  Size=   28880153 bytes  File Size  =    8438087 *
-*Baskets :      112 : Basket Size=    4293120 bytes  Compression=   3.42     *
+*Br    5 :x2v       : Int_t x2v_                                             *
+*Entries :  1926502 : Total  Size=   15509108 bytes  File Size  =    3988457 *
+*Baskets :      735 : Basket Size=      32000 bytes  Compression=   3.88     *
 *............................................................................*
-*Br    6 :x2v.e     : Double_t e[x2v_]                                       *
-*Entries :  2023076 : Total  Size=   49661789 bytes  File Size  =   38240269 *
-*Baskets :      168 : Basket Size=    6375936 bytes  Compression=   1.30     *
+*Br    6 :x2v.id    : Int_t id[x2v_]                                         *
+*Entries :  1926502 : Total  Size=   27790829 bytes  File Size  =    8149989 *
+*Baskets :      108 : Basket Size=    4084736 bytes  Compression=   3.41     *
 *............................................................................*
-*Br    7 :x2v.t     : Double_t t[x2v_]                                       *
-*Entries :  2023076 : Total  Size=   49661789 bytes  File Size  =   17650173 *
-*Baskets :      168 : Basket Size=    6375936 bytes  Compression=   2.81     *
+*Br    7 :x2v.e     : Double_t e[x2v_]                                       *
+*Entries :  1926502 : Total  Size=   47869745 bytes  File Size  =   41377037 *
+*Baskets :      163 : Basket Size=    6064640 bytes  Compression=   1.16     *
 *............................................................................*
-*Br    8 :x3v       : Int_t x3v_                                             *
-*Entries :  2023076 : Total  Size=   16282902 bytes  File Size  =    3994156 *
-*Baskets :      764 : Basket Size=      32000 bytes  Compression=   4.07     *
+*Br    8 :x2v.t     : Double_t t[x2v_]                                       *
+*Entries :  1926502 : Total  Size=   47869745 bytes  File Size  =    3326076 *
+*Baskets :      163 : Basket Size=    6064640 bytes  Compression=  14.39     *
 *............................................................................*
-*Br    9 :x3v.id    : Int_t id[x3v_]                                         *
-*Entries :  2023076 : Total  Size=   20228212 bytes  File Size  =    6121364 *
-*Baskets :       87 : Basket Size=    3377664 bytes  Compression=   3.30     *
+*Br    9 :x3v       : Int_t x3v_                                             *
+*Entries :  1926502 : Total  Size=   15506668 bytes  File Size  =    3801045 *
+*Baskets :      735 : Basket Size=      32000 bytes  Compression=   4.07     *
 *............................................................................*
-*Br   10 :x3v.e     : Double_t e[x3v_]                                       *
-*Entries :  2023076 : Total  Size=   32357957 bytes  File Size  =   23241034 *
-*Baskets :      118 : Basket Size=    4545024 bytes  Compression=   1.39     *
+*Br   10 :x3v.id    : Int_t id[x3v_]                                         *
+*Entries :  1926502 : Total  Size=   19228061 bytes  File Size  =    5806670 *
+*Baskets :       84 : Basket Size=    3197952 bytes  Compression=   3.31     *
 *............................................................................*
-*Br   11 :x3v.t     : Double_t t[x3v_]                                       *
-*Entries :  2023076 : Total  Size=   32357957 bytes  File Size  =   10010541 *
-*Baskets :      118 : Basket Size=    4545024 bytes  Compression=   3.23     *
+*Br   11 :x3v.e     : Double_t e[x3v_]                                       *
+*Entries :  1926502 : Total  Size=   30744157 bytes  File Size  =   24490887 *
+*Baskets :      114 : Basket Size=    4291584 bytes  Compression=   1.26     *
 *............................................................................*
-*Br   12 :x1v       : Int_t x1v_                                             *
-*Entries :  2023076 : Total  Size=   16284042 bytes  File Size  =    3881644 *
-*Baskets :      764 : Basket Size=      32000 bytes  Compression=   4.18     *
+*Br   12 :x3v.t     : Double_t t[x3v_]                                       *
+*Entries :  1926502 : Total  Size=   30744157 bytes  File Size  =    2681812 *
+*Baskets :      114 : Basket Size=    4291584 bytes  Compression=  11.46     *
 *............................................................................*
-*Br   13 :x1v.id    : Int_t id[x1v_]                                         *
-*Entries :  2023076 : Total  Size=   25352259 bytes  File Size  =    6320782 *
-*Baskets :       98 : Basket Size=    3794944 bytes  Compression=   4.01     *
+*Br   13 :y1v       : Int_t y1v_                                             *
+*Entries :  1926502 : Total  Size=   15507908 bytes  File Size  =    4073264 *
+*Baskets :      735 : Basket Size=      32000 bytes  Compression=   3.80     *
 *............................................................................*
-*Br   14 :x1v.e     : Double_t e[x1v_]                                       *
-*Entries :  2023076 : Total  Size=   42606129 bytes  File Size  =   32524001 *
-*Baskets :      141 : Basket Size=    5379584 bytes  Compression=   1.31     *
+*Br   14 :y1v.id    : Int_t id[y1v_]                                         *
+*Entries :  1926502 : Total  Size=   24196297 bytes  File Size  =    6776205 *
+*Baskets :       96 : Basket Size=    3644416 bytes  Compression=   3.57     *
 *............................................................................*
-*Br   15 :x1v.t     : Double_t t[x1v_]                                       *
-*Entries :  2023076 : Total  Size=   42606129 bytes  File Size  =   13246169 *
-*Baskets :      141 : Basket Size=    5379584 bytes  Compression=   3.22     *
+*Br   15 :y1v.e     : Double_t e[y1v_]                                       *
+*Entries :  1926502 : Total  Size=   40680705 bytes  File Size  =   34401533 *
+*Baskets :      139 : Basket Size=    5184512 bytes  Compression=   1.18     *
 *............................................................................*
-*Br   16 :x2v       : Int_t x2v_                                             *
-*Entries :  2023076 : Total  Size=   16285402 bytes  File Size  =    4196636 *
-*Baskets :      764 : Basket Size=      32000 bytes  Compression=   3.87     *
+*Br   16 :y1v.t     : Double_t t[y1v_]                                       *
+*Entries :  1926502 : Total  Size=   40680705 bytes  File Size  =    3161987 *
+*Baskets :      139 : Basket Size=    5184512 bytes  Compression=  12.86     *
 *............................................................................*
-*Br   17 :x2v.id    : Int_t id[x2v_]                                         *
-*Entries :  2023076 : Total  Size=   28880153 bytes  File Size  =    8438087 *
-*Baskets :      112 : Basket Size=    4293120 bytes  Compression=   3.42     *
+*Br   17 :y2v       : Int_t y2v_                                             *
+*Entries :  1926502 : Total  Size=   15509068 bytes  File Size  =    4135907 *
+*Baskets :      735 : Basket Size=      32000 bytes  Compression=   3.74     *
 *............................................................................*
-*Br   18 :x2v.e     : Double_t e[x2v_]                                       *
-*Entries :  2023076 : Total  Size=   49661789 bytes  File Size  =   38240269 *
-*Baskets :      168 : Basket Size=    6375936 bytes  Compression=   1.30     *
+*Br   18 :y2v.id    : Int_t id[y2v_]                                         *
+*Entries :  1926502 : Total  Size=   27906997 bytes  File Size  =    8156518 *
+*Baskets :      108 : Basket Size=    4072960 bytes  Compression=   3.42     *
 *............................................................................*
-*Br   19 :x2v.t     : Double_t t[x2v_]                                       *
-*Entries :  2023076 : Total  Size=   49661789 bytes  File Size  =   17650173 *
-*Baskets :      168 : Basket Size=    6375936 bytes  Compression=   2.81     *
+*Br   19 :y2v.e     : Double_t e[y2v_]                                       *
+*Entries :  1926502 : Total  Size=   48101981 bytes  File Size  =   41621527 *
+*Baskets :      162 : Basket Size=    6041600 bytes  Compression=   1.16     *
 *............................................................................*
-*Br   20 :x3v       : Int_t x3v_                                             *
-*Entries :  2023076 : Total  Size=   16282902 bytes  File Size  =    3994156 *
-*Baskets :      764 : Basket Size=      32000 bytes  Compression=   4.07     *
+*Br   20 :y2v.t     : Double_t t[y2v_]                                       *
+*Entries :  1926502 : Total  Size=   48101981 bytes  File Size  =    3336585 *
+*Baskets :      162 : Basket Size=    6041600 bytes  Compression=  14.42     *
 *............................................................................*
-*Br   21 :x3v.id    : Int_t id[x3v_]                                         *
-*Entries :  2023076 : Total  Size=   20228212 bytes  File Size  =    6121364 *
-*Baskets :       87 : Basket Size=    3377664 bytes  Compression=   3.30     *
+*Br   21 :y3v       : Int_t y3v_                                             *
+*Entries :  1926502 : Total  Size=   15506768 bytes  File Size  =    3829699 *
+*Baskets :      735 : Basket Size=      32000 bytes  Compression=   4.04     *
 *............................................................................*
-*Br   22 :x3v.e     : Double_t e[x3v_]                                       *
-*Entries :  2023076 : Total  Size=   32357957 bytes  File Size  =   23241034 *
-*Baskets :      118 : Basket Size=    4545024 bytes  Compression=   1.39     *
+*Br   22 :y3v.id    : Int_t id[y3v_]                                         *
+*Entries :  1926502 : Total  Size=   19574150 bytes  File Size  =    5895363 *
+*Baskets :       85 : Basket Size=    3237888 bytes  Compression=   3.32     *
 *............................................................................*
-*Br   23 :x3v.t     : Double_t t[x3v_]                                       *
-*Entries :  2023076 : Total  Size=   32357957 bytes  File Size  =   10010541 *
-*Baskets :      118 : Basket Size=    4545024 bytes  Compression=   3.23     *
+*Br   23 :y3v.e     : Double_t e[y3v_]                                       *
+*Entries :  1926502 : Total  Size=   31436333 bytes  File Size  =   25193096 *
+*Baskets :      116 : Basket Size=    4371456 bytes  Compression=   1.25     *
 *............................................................................*
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
+*Br   24 :y3v.t     : Double_t t[y3v_]                                       *
+*Entries :  1926502 : Total  Size=   31436333 bytes  File Size  =    2718790 *
+*Baskets :      116 : Basket Size=    4371456 bytes  Compression=  11.56     *
+*............................................................................*
+*Br   25 :sx1e      : sx1e/D                                                 *
+*Entries :  1926502 : Total  Size=   15417239 bytes  File Size  =    9161955 *
+*Baskets :       54 : Basket Size=    1519616 bytes  Compression=   1.68     *
+*............................................................................*
+*Br   26 :sx2e      : sx2e/D                                                 *
+*Entries :  1926502 : Total  Size=   15417239 bytes  File Size  =    9313360 *
+*Baskets :       54 : Basket Size=    1519616 bytes  Compression=   1.66     *
+*............................................................................*
+*Br   27 :sx3e      : sx3e/D                                                 *
+*Entries :  1926502 : Total  Size=   15417239 bytes  File Size  =    8957602 *
+*Baskets :       54 : Basket Size=    1519616 bytes  Compression=   1.72     *
+*............................................................................*
+*Br   28 :sy1e      : sy1e/D                                                 *
+*Entries :  1926502 : Total  Size=   15417239 bytes  File Size  =    8916249 *
+*Baskets :       54 : Basket Size=    1519616 bytes  Compression=   1.73     *
+*............................................................................*
+*Br   29 :sy2e      : sy2e/D                                                 *
+*Entries :  1926502 : Total  Size=   15417239 bytes  File Size  =    9295908 *
+*Baskets :       54 : Basket Size=    1519616 bytes  Compression=   1.66     *
+*............................................................................*
+*Br   30 :sy3e      : sy3e/D                                                 *
+*Entries :  1926502 : Total  Size=   15417239 bytes  File Size  =    8982079 *
+*Baskets :       54 : Basket Size=    1519616 bytes  Compression=   1.72     *
+*............................................................................*</pre></div></div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -8510,10 +8369,9 @@ if (typeof requirejs !== 'undefined') {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <hr/>
-<h3 id="%E5%9C%A8%E5%90%8E%E7%BB%AD%E5%88%86%E6%9E%90%E4%B8%AD%E7%BB%A7%E7%BB%AD%E4%BF%9D%E6%8C%81-vector-%E7%B1%BB%E5%9E%8B-Branch">在后续分析中继续保持 <code>vector</code> 类型 Branch<a class="anchor-link" href="#%E5%9C%A8%E5%90%8E%E7%BB%AD%E5%88%86%E6%9E%90%E4%B8%AD%E7%BB%A7%E7%BB%AD%E4%BF%9D%E6%8C%81-vector-%E7%B1%BB%E5%9E%8B-Branch">¶</a></h3><p>如果已经生成了含 <code>vector</code> Branch 的 ROOT 文件，后续分析时往往希望继续以 <code>vector</code> 的形式读取这些数据，而不是重新退回到数组形式。此时需要特别注意：不能直接沿用 <code>MakeClass</code> 的默认处理方式。</p>
+<h3 id="%E5%9C%A8%E5%90%8E%E7%BB%AD%E5%88%86%E6%9E%90%E4%B8%AD%E7%BB%A7%E7%BB%AD%E4%BF%9D%E6%8C%81-vector-%E7%B1%BB%E5%9E%8B-Branch">在后续分析中继续保持 <code>vector</code> 类型 Branch</h3><p>如果已经生成了含 <code>vector</code> Branch 的 ROOT 文件，后续分析时往往希望继续以 <code>vector</code> 的形式读取这些数据，而不是重新退回到数组形式。此时需要特别注意：不能直接沿用 <code>MakeClass</code> 的默认处理方式。</p>
 <p>原因在于，<code>MakeClass</code> 对 <code>vector</code> Branch 的展开方式更接近于动态数组。也就是说，虽然树中原本保存的是 <code>vector&lt;dssd&gt;</code>，但 <code>MakeClass</code> 生成的代码会将其解释为长度变量和若干数组成员的组合。例如，执行：</p>
-<div class="highlight"><pre><span></span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">Print</span><span class="p">();</span>
-</pre></div>
+<div class="highlight"><pre><code class="language-cpp">tree-&gt;Print();</code></pre></div>
 <p>可以看到 <code>x1v</code> 之类的 Branch 被展开为：</p>
 <ul>
 <li><code>x1v_</code></li>
@@ -8523,102 +8381,93 @@ if (typeof requirejs !== 'undefined') {
 </ul>
 <p>这种展开方式虽然可以访问数据，但不利于继续使用 STL 中针对 <code>vector</code> 的各种操作。</p>
 <p>因此，若希望在分析代码中继续把输入量视为 <code>vector&lt;dssd&gt;</code>，就需要手动定义指针，并使用 <code>SetBranchAddress()</code> 建立关联。</p>
-<h4 id="%E8%BE%93%E5%85%A5-Branch-%E7%9A%84%E5%AE%9A%E4%B9%89">输入 Branch 的定义<a class="anchor-link" href="#%E8%BE%93%E5%85%A5-Branch-%E7%9A%84%E5%AE%9A%E4%B9%89">¶</a></h4><p>在新的分析类中，可以将输入 <code>vector</code> Branch 定义为指针，同时定义一个新的结构体用于保存 x-y 配对后的结果：</p>
-<div class="highlight"><pre><span></span><span class="cp">#ifndef ana_h</span>
-<span class="cp">#define ana_h</span>
+<h4 id="%E8%BE%93%E5%85%A5-Branch-%E7%9A%84%E5%AE%9A%E4%B9%89">输入 Branch 的定义</h4><p>在新的分析类中，可以将输入 <code>vector</code> Branch 定义为指针，同时定义一个新的结构体用于保存 x-y 配对后的结果：</p>
+<div class="highlight"><pre><code class="language-cpp">#ifndef ana_h
+#define ana_h
 
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;vector&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;algorithm&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;TFile.h&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;TTree.h&gt;</span>
+#include &lt;vector&gt;
+#include &lt;limits&gt;
+#include &lt;algorithm&gt;
+#include &lt;TFile.h&gt;
+#include &lt;TTree.h&gt;
 
-<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="p">;</span>
+using namespace std;
+struct dssd//aside
+{
+  Int_t id;
+  Double_t e;
+  Double_t t = std::numeric_limits&lt;double&gt;::quiet_NaN();
+};
 
-<span class="k">struct</span><span class="w"> </span><span class="nc">dssd</span>
-<span class="p">{</span>
-<span class="w">  </span><span class="n">Int_t</span><span class="w"> </span><span class="n">id</span><span class="p">;</span>
-<span class="w">  </span><span class="n">Double_t</span><span class="w"> </span><span class="n">e</span><span class="p">;</span>
-<span class="w">  </span><span class="n">Double_t</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
-<span class="p">};</span>
+struct DSSD//x-y side
+{
+ int xid;
+ int yid;
+ double xe;//xe
+ double ye;//xt
+};
 
-<span class="k">struct</span><span class="w"> </span><span class="nc">DSSD</span>
-<span class="p">{</span>
-<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">xid</span><span class="p">;</span>
-<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">yid</span><span class="p">;</span>
-<span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="n">xe</span><span class="p">;</span>
-<span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="n">ye</span><span class="p">;</span>
-<span class="p">};</span>
+class ana
+{
+ public:
+  vector&lt;dssd&gt; *br_x1v, *br_x2v, *br_x3v;  //声明vector指针
+  vector&lt;dssd&gt; *br_y1v, *br_y2v, *br_y3v;
+  Double_t sx1e,sx2e,sx3e;//sum
+  Double_t sy1e,sy2e,sy3e;
+  TTree *ipt;
+  Long64_t source_entry = 0;
+  TTree *opt;
 
-<span class="k">class</span><span class="w"> </span><span class="nc">ana</span>
-<span class="p">{</span>
-<span class="w"> </span><span class="k">public</span><span class="o">:</span>
-<span class="w">  </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">dssd</span><span class="o">&gt;</span><span class="w"> </span><span class="o">*</span><span class="n">br_x1v</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">br_x2v</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">br_x3v</span><span class="p">;</span>
-<span class="w">  </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">dssd</span><span class="o">&gt;</span><span class="w"> </span><span class="o">*</span><span class="n">br_y1v</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">br_y2v</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">br_y3v</span><span class="p">;</span>
-<span class="w">  </span><span class="n">Double_t</span><span class="w"> </span><span class="n">sx1e</span><span class="p">,</span><span class="w"> </span><span class="n">sx2e</span><span class="p">,</span><span class="w"> </span><span class="n">sx3e</span><span class="p">;</span>
-<span class="w">  </span><span class="n">Double_t</span><span class="w"> </span><span class="n">sy1e</span><span class="p">,</span><span class="w"> </span><span class="n">sy2e</span><span class="p">,</span><span class="w"> </span><span class="n">sy3e</span><span class="p">;</span>
-<span class="w">  </span><span class="n">TTree</span><span class="w"> </span><span class="o">*</span><span class="n">ipt</span><span class="p">;</span>
-<span class="w">  </span><span class="n">TTree</span><span class="w"> </span><span class="o">*</span><span class="n">opt</span><span class="p">;</span>
+  vector&lt;DSSD&gt; d1,d2,d3; //output
 
-<span class="w">  </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">DSSD</span><span class="o">&gt;</span><span class="w"> </span><span class="n">d1</span><span class="p">,</span><span class="w"> </span><span class="n">d2</span><span class="p">,</span><span class="w"> </span><span class="n">d3</span><span class="p">;</span>
-
-<span class="w">  </span><span class="n">ana</span><span class="p">(</span><span class="n">TTree</span><span class="o">*</span><span class="w"> </span><span class="n">ipt_</span><span class="p">,</span><span class="w"> </span><span class="n">TTree</span><span class="w"> </span><span class="o">*</span><span class="n">opt_</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">ipt</span><span class="p">(</span><span class="n">ipt_</span><span class="p">),</span><span class="w"> </span><span class="n">opt</span><span class="p">(</span><span class="n">opt_</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
-<span class="w">  </span><span class="k">virtual</span><span class="w"> </span><span class="o">~</span><span class="n">ana</span><span class="p">()</span><span class="w"> </span><span class="p">{};</span>
-
-<span class="w">  </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">SetBranchInput</span><span class="p">();</span>
-<span class="w">  </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">GetDSSD</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">dssd</span><span class="o">&gt;</span><span class="w"> </span><span class="o">*</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">dssd</span><span class="o">&gt;</span><span class="w"> </span><span class="o">*</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">DSSD</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">xy</span><span class="p">);</span>
-<span class="w">  </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">Analysis</span><span class="p">();</span>
-<span class="w">  </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">BranchOutput</span><span class="p">();</span>
-<span class="p">};</span>
-
-<span class="cp">#endif</span>
-</pre></div>
-<h4 id="%E8%AE%BE%E7%BD%AE%E8%BE%93%E5%85%A5-Branch-%E5%9C%B0%E5%9D%80">设置输入 Branch 地址<a class="anchor-link" href="#%E8%AE%BE%E7%BD%AE%E8%BE%93%E5%85%A5-Branch-%E5%9C%B0%E5%9D%80">¶</a></h4><p>在使用 <code>SetBranchAddress()</code> 之前，应先将这些指针初始化为空：</p>
-<div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">"ana.h"</span>
-<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="p">;</span>
-
-<span class="kt">void</span><span class="w"> </span><span class="nf">ana::SetBranchInput</span><span class="p">()</span>
-<span class="p">{</span>
-<span class="w">  </span><span class="n">br_x1v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
-<span class="w">  </span><span class="n">br_x2v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
-<span class="w">  </span><span class="n">br_x3v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
-<span class="w">  </span><span class="n">br_y1v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
-<span class="w">  </span><span class="n">br_y2v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
-<span class="w">  </span><span class="n">br_y3v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
-
-<span class="w">  </span><span class="n">ipt</span><span class="o">-&gt;</span><span class="n">SetBranchAddress</span><span class="p">(</span><span class="s">"x1v"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">br_x1v</span><span class="p">);</span>
-<span class="w">  </span><span class="n">ipt</span><span class="o">-&gt;</span><span class="n">SetBranchAddress</span><span class="p">(</span><span class="s">"x2v"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">br_x2v</span><span class="p">);</span>
-<span class="w">  </span><span class="n">ipt</span><span class="o">-&gt;</span><span class="n">SetBranchAddress</span><span class="p">(</span><span class="s">"x3v"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">br_x3v</span><span class="p">);</span>
-<span class="w">  </span><span class="n">ipt</span><span class="o">-&gt;</span><span class="n">SetBranchAddress</span><span class="p">(</span><span class="s">"y1v"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">br_y1v</span><span class="p">);</span>
-<span class="w">  </span><span class="n">ipt</span><span class="o">-&gt;</span><span class="n">SetBranchAddress</span><span class="p">(</span><span class="s">"y2v"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">br_y2v</span><span class="p">);</span>
-<span class="w">  </span><span class="n">ipt</span><span class="o">-&gt;</span><span class="n">SetBranchAddress</span><span class="p">(</span><span class="s">"y3v"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">br_y3v</span><span class="p">);</span>
-
-<span class="w">  </span><span class="n">ipt</span><span class="o">-&gt;</span><span class="n">SetBranchAddress</span><span class="p">(</span><span class="s">"sx1e"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">sx1e</span><span class="p">);</span>
-<span class="w">  </span><span class="n">ipt</span><span class="o">-&gt;</span><span class="n">SetBranchAddress</span><span class="p">(</span><span class="s">"sx2e"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">sx2e</span><span class="p">);</span>
-<span class="w">  </span><span class="n">ipt</span><span class="o">-&gt;</span><span class="n">SetBranchAddress</span><span class="p">(</span><span class="s">"sx3e"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">sx3e</span><span class="p">);</span>
-<span class="w">  </span><span class="n">ipt</span><span class="o">-&gt;</span><span class="n">SetBranchAddress</span><span class="p">(</span><span class="s">"sy1e"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">sy1e</span><span class="p">);</span>
-<span class="w">  </span><span class="n">ipt</span><span class="o">-&gt;</span><span class="n">SetBranchAddress</span><span class="p">(</span><span class="s">"sy2e"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">sy2e</span><span class="p">);</span>
-<span class="w">  </span><span class="n">ipt</span><span class="o">-&gt;</span><span class="n">SetBranchAddress</span><span class="p">(</span><span class="s">"sy3e"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">sy3e</span><span class="p">);</span>
-<span class="p">}</span>
-</pre></div>
+ ana(TTree* ipt_,TTree *opt_): ipt(ipt_),opt(opt_) {}
+  virtual ~ana() {};
+  virtual void     SetBranchInput();
+  virtual void     GetDSSD(vector&lt;dssd&gt; *x, vector&lt;dssd&gt; *y, vector&lt;DSSD&gt; &amp;xy);
+  virtual void     Analysis();
+  virtual void     BranchOutput();
+};
+#endif</code></pre></div>
+<h4 id="%E8%AE%BE%E7%BD%AE%E8%BE%93%E5%85%A5-Branch-%E5%9C%B0%E5%9D%80">设置输入 Branch 地址</h4><p>在使用 <code>SetBranchAddress()</code> 之前，应先将这些指针初始化为空：</p>
+<div class="highlight"><pre><code class="language-cpp">void ana::SetBranchInput()
+{
+  ipt-&gt;SetBranchAddress("source_entry", &amp;source_entry);
+  br_x1v = NULL; //给指针初始化, 这一步必需。
+  br_x2v = NULL;
+  br_x3v = NULL;
+  br_y1v = NULL;
+  br_y2v = NULL;
+  br_y3v = NULL;
+  ipt-&gt;SetBranchAddress("x1v", &amp;br_x1v); //将变量指向对应Branch的地址
+  ipt-&gt;SetBranchAddress("x2v", &amp;br_x2v);
+  ipt-&gt;SetBranchAddress("x3v", &amp;br_x3v);
+  ipt-&gt;SetBranchAddress("y1v", &amp;br_y1v);
+  ipt-&gt;SetBranchAddress("y2v", &amp;br_y2v);
+  ipt-&gt;SetBranchAddress("y3v", &amp;br_y3v);
+  ipt-&gt;SetBranchAddress("sx1e", &amp;sx1e);
+  ipt-&gt;SetBranchAddress("sx2e", &amp;sx2e);
+  ipt-&gt;SetBranchAddress("sx3e", &amp;sx3e);
+  ipt-&gt;SetBranchAddress("sy1e", &amp;sy1e);
+  ipt-&gt;SetBranchAddress("sy2e", &amp;sy2e);
+  ipt-&gt;SetBranchAddress("sy3e", &amp;sy3e);
+}</code></pre></div>
 <p>这一步非常重要。若不先初始化为空指针，程序在运行时可能会出现错误。</p>
-<h4 id="%E8%AE%BE%E7%BD%AE%E8%BE%93%E5%87%BA-Branch">设置输出 Branch<a class="anchor-link" href="#%E8%AE%BE%E7%BD%AE%E8%BE%93%E5%87%BA-Branch">¶</a></h4><p>输出时，可以将配对后的结果保存为新的 <code>vector&lt;DSSD&gt;</code> Branch：</p>
-<div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">ana::BranchOutput</span><span class="p">()</span>
-<span class="p">{</span>
-<span class="w">  </span><span class="n">opt</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">"d1"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">d1</span><span class="p">);</span>
-<span class="w">  </span><span class="n">opt</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">"d2"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">d2</span><span class="p">);</span>
-<span class="w">  </span><span class="n">opt</span><span class="o">-&gt;</span><span class="n">Branch</span><span class="p">(</span><span class="s">"d3"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">d3</span><span class="p">);</span>
-<span class="p">}</span>
-</pre></div>
-<h4 id="%E6%8E%92%E5%BA%8F%E4%B8%8E%E9%85%8D%E5%AF%B9">排序与配对<a class="anchor-link" href="#%E6%8E%92%E5%BA%8F%E4%B8%8E%E9%85%8D%E5%AF%B9">¶</a></h4><p>由于同一侧探测器可能存在多个 hit，在进行 x-y 关联之前，常常需要先对 hit 按能量进行排序。例如，可以定义一个比较函数：</p>
-<div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">SortDS</span><span class="p">(</span><span class="n">dssd</span><span class="w"> </span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">dssd</span><span class="w"> </span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
-<span class="p">{</span>
-<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">e</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">e</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
+<h4 id="%E8%AE%BE%E7%BD%AE%E8%BE%93%E5%87%BA-Branch">设置输出 Branch</h4><p>输出时，可以将配对后的结果保存为新的 <code>vector&lt;DSSD&gt;</code> Branch：</p>
+<div class="highlight"><pre><code class="language-cpp">void ana::BranchOutput()
+{
+  opt-&gt;Branch("source_entry", &amp;source_entry, "source_entry/L");
+  opt-&gt;Branch("d1",&amp;d1);
+  opt-&gt;Branch("d2",&amp;d2);
+  opt-&gt;Branch("d3",&amp;d3);
+}</code></pre></div>
+<h4 id="%E6%8E%92%E5%BA%8F%E4%B8%8E%E9%85%8D%E5%AF%B9">排序与配对</h4><p>由于同一侧探测器可能存在多个 hit，在进行 x-y 关联之前，常常需要先对 hit 按能量进行排序。例如，可以定义一个比较函数：</p>
+<div class="highlight"><pre><code class="language-cpp">bool SortDS(const dssd &amp;a, const dssd &amp;b)
+{
+  return a.e &gt; b.e;
+}</code></pre></div>
 <p>随后对各 <code>vector</code> 分别排序：</p>
-<div class="highlight"><pre><span></span><span class="n">sort</span><span class="p">(</span><span class="n">br_x1v</span><span class="o">-&gt;</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">br_x1v</span><span class="o">-&gt;</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">SortDS</span><span class="p">);</span>
-<span class="n">sort</span><span class="p">(</span><span class="n">br_y1v</span><span class="o">-&gt;</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">br_y1v</span><span class="o">-&gt;</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">SortDS</span><span class="p">);</span>
-</pre></div>
+<div class="highlight"><pre><code class="language-cpp">sort(br_x1v-&gt;begin(), br_x1v-&gt;end(), SortDS);
+sort(br_y1v-&gt;begin(), br_y1v-&gt;end(), SortDS);</code></pre></div>
 <p>在完成排序后，就可以进行 x-y 配对。一个简单的思路是：</p>
 <ul>
 <li>取 x、y 两侧 hit 数目的较小值作为循环上限；</li>
@@ -8627,30 +8476,29 @@ if (typeof requirejs !== 'undefined') {
 <li>若满足条件，则构造一个 <code>DSSD</code> 结果并保存。</li>
 </ul>
 <p>示意代码如下：</p>
-<div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">ana::GetDSSD</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">dssd</span><span class="o">&gt;</span><span class="w"> </span><span class="o">*</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">dssd</span><span class="o">&gt;</span><span class="w"> </span><span class="o">*</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">DSSD</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">xy</span><span class="p">)</span>
-<span class="p">{</span>
-<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">hit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">min</span><span class="p">(</span><span class="n">x</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">(),</span><span class="w"> </span><span class="n">y</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">());</span>
-<span class="w">  </span><span class="n">xy</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
-<span class="w">  </span><span class="n">DSSD</span><span class="w"> </span><span class="n">dxy</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-cpp">void ana::GetDSSD(vector&lt;dssd&gt; *x, vector&lt;dssd&gt; *y, vector&lt;DSSD&gt; &amp;xy)
+{
+  size_t hit = std::min(x-&gt;size(), y-&gt;size());
+  xy.clear();
+  DSSD dxy;
 
-<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">hit</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">xe</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">)[</span><span class="n">i</span><span class="p">].</span><span class="n">e</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">ye</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">y</span><span class="p">)[</span><span class="n">i</span><span class="p">].</span><span class="n">e</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">ix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">)[</span><span class="n">i</span><span class="p">].</span><span class="n">id</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">iy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">y</span><span class="p">)[</span><span class="n">i</span><span class="p">].</span><span class="n">id</span><span class="p">;</span>
+  for (size_t i = 0; i &lt; hit; i++) {
+    double xe = (*x)[i].e;
+    double ye = (*y)[i].e;
+    int ix = (*x)[i].id;
+    int iy = (*y)[i].id;
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">abs</span><span class="p">(</span><span class="n">xe</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">ye</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="n">dxy</span><span class="p">.</span><span class="n">xe</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">xe</span><span class="p">;</span>
-<span class="w">      </span><span class="n">dxy</span><span class="p">.</span><span class="n">ye</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">ye</span><span class="p">;</span>
-<span class="w">      </span><span class="n">dxy</span><span class="p">.</span><span class="n">xid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ix</span><span class="p">;</span>
-<span class="w">      </span><span class="n">dxy</span><span class="p">.</span><span class="n">yid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iy</span><span class="p">;</span>
-<span class="w">      </span><span class="n">xy</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">dxy</span><span class="p">);</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
+    if (abs(xe - ye) &lt; 50) {
+      dxy.xe  = xe;
+      dxy.ye  = ye;
+      dxy.xid = ix;
+      dxy.yid = iy;
+      xy.push_back(dxy);
+    }
+  }
+}</code></pre></div>
 <p>这里的能量匹配条件、配对策略以及排序方式都可以根据具体实验数据进行调整。</p>
-<h4 id="%E5%90%8E%E7%BB%AD%E5%88%86%E6%9E%90%E4%B8%BB%E5%BE%AA%E7%8E%AF">后续分析主循环<a class="anchor-link" href="#%E5%90%8E%E7%BB%AD%E5%88%86%E6%9E%90%E4%B8%BB%E5%BE%AA%E7%8E%AF">¶</a></h4><p>在 <code>Analysis()</code> 中，完整流程通常包括：</p>
+<h4 id="%E5%90%8E%E7%BB%AD%E5%88%86%E6%9E%90%E4%B8%BB%E5%BE%AA%E7%8E%AF">后续分析主循环</h4><p>在 <code>Analysis()</code> 中，完整流程通常包括：</p>
 <ul>
 <li>设置输入 Branch；</li>
 <li>设置输出 Branch；</li>
@@ -8659,146 +8507,119 @@ if (typeof requirejs !== 'undefined') {
 <li>进行 x-y 配对；</li>
 <li>将得到的结果写入新的输出树。</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">ana::Analysis</span><span class="p">()</span>
-<span class="p">{</span>
-<span class="w">  </span><span class="n">SetBranchInput</span><span class="p">();</span>
-<span class="w">  </span><span class="n">BranchOutput</span><span class="p">();</span>
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ipt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-cpp">void ana::Analysis()
+{
+  SetBranchInput();
+  BranchOutput();
+  if (ipt == 0) return;
+  Long64_t nentries = ipt-&gt;GetEntriesFast();
+  for (Long64_t jentry=0; jentry&lt;nentries;jentry++) {
+    ipt-&gt;GetEntry(jentry);
+    sort(br_x1v-&gt;begin(),br_x1v-&gt;end(),SortDS);
+    sort(br_y1v-&gt;begin(),br_y1v-&gt;end(),SortDS);
+    sort(br_x2v-&gt;begin(),br_x2v-&gt;end(),SortDS);
+    sort(br_y2v-&gt;begin(),br_y2v-&gt;end(),SortDS);
+    sort(br_x3v-&gt;begin(),br_x3v-&gt;end(),SortDS);
+    sort(br_y3v-&gt;begin(),br_y3v-&gt;end(),SortDS);
+    GetDSSD(br_x1v,br_y1v,d1);
+    GetDSSD(br_x2v,br_y2v,d2);
+    GetDSSD(br_x3v,br_y3v,d3);
+    opt-&gt;Fill(); // 无候选时保存空 vector，不改变事件顺序
 
-<span class="w">  </span><span class="n">Long64_t</span><span class="w"> </span><span class="n">nentries</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ipt</span><span class="o">-&gt;</span><span class="n">GetEntriesFast</span><span class="p">();</span>
-<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Long64_t</span><span class="w"> </span><span class="n">jentry</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">jentry</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nentries</span><span class="p">;</span><span class="w"> </span><span class="n">jentry</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">ipt</span><span class="o">-&gt;</span><span class="n">GetEntry</span><span class="p">(</span><span class="n">jentry</span><span class="p">);</span>
 
-<span class="w">    </span><span class="n">sort</span><span class="p">(</span><span class="n">br_x1v</span><span class="o">-&gt;</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">br_x1v</span><span class="o">-&gt;</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">SortDS</span><span class="p">);</span>
-<span class="w">    </span><span class="n">sort</span><span class="p">(</span><span class="n">br_y1v</span><span class="o">-&gt;</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">br_y1v</span><span class="o">-&gt;</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">SortDS</span><span class="p">);</span>
-<span class="w">    </span><span class="n">sort</span><span class="p">(</span><span class="n">br_x2v</span><span class="o">-&gt;</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">br_x2v</span><span class="o">-&gt;</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">SortDS</span><span class="p">);</span>
-<span class="w">    </span><span class="n">sort</span><span class="p">(</span><span class="n">br_y2v</span><span class="o">-&gt;</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">br_y2v</span><span class="o">-&gt;</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">SortDS</span><span class="p">);</span>
-<span class="w">    </span><span class="n">sort</span><span class="p">(</span><span class="n">br_x3v</span><span class="o">-&gt;</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">br_x3v</span><span class="o">-&gt;</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">SortDS</span><span class="p">);</span>
-<span class="w">    </span><span class="n">sort</span><span class="p">(</span><span class="n">br_y3v</span><span class="o">-&gt;</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">br_y3v</span><span class="o">-&gt;</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">SortDS</span><span class="p">);</span>
-
-<span class="w">    </span><span class="n">GetDSSD</span><span class="p">(</span><span class="n">br_x1v</span><span class="p">,</span><span class="w"> </span><span class="n">br_y1v</span><span class="p">,</span><span class="w"> </span><span class="n">d1</span><span class="p">);</span>
-<span class="w">    </span><span class="n">GetDSSD</span><span class="p">(</span><span class="n">br_x2v</span><span class="p">,</span><span class="w"> </span><span class="n">br_y2v</span><span class="p">,</span><span class="w"> </span><span class="n">d2</span><span class="p">);</span>
-<span class="w">    </span><span class="n">GetDSSD</span><span class="p">(</span><span class="n">br_x3v</span><span class="p">,</span><span class="w"> </span><span class="n">br_y3v</span><span class="p">,</span><span class="w"> </span><span class="n">d3</span><span class="p">);</span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">d1</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">d2</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">d3</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
-<span class="w">      </span><span class="n">opt</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">();</span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">jentry</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">1000</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="n">printf</span><span class="p">(</span><span class="s">"Process %.2f %% %dk / %dk</span><span class="se">\r</span><span class="s">"</span><span class="p">,</span>
-<span class="w">             </span><span class="n">Double_t</span><span class="p">(</span><span class="n">jentry</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">nentries</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">100.</span><span class="p">,</span>
-<span class="w">             </span><span class="kt">int</span><span class="p">(</span><span class="n">jentry</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1000</span><span class="p">),</span><span class="w"> </span><span class="kt">int</span><span class="p">(</span><span class="n">nentries</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1000</span><span class="p">));</span>
-<span class="w">      </span><span class="n">fflush</span><span class="p">(</span><span class="n">stdout</span><span class="p">);</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
+  }
+}</code></pre></div>
 <p>后续分析时的 <code>main.cpp</code> 与前面类似，只是输入文件变为 <code>vec_16C.root</code>，输出文件变为 <code>sort_16C.root</code>：</p>
-<div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;TFile.h&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;TTree.h&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;TString.h&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"ana.h"</span>
-<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="p">;</span>
-
-<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">**</span><span class="w"> </span><span class="n">argv</span><span class="p">)</span>
-<span class="p">{</span>
-<span class="w">   </span><span class="n">TString</span><span class="w"> </span><span class="n">InputPath</span><span class="p">,</span><span class="w"> </span><span class="n">OutputPath</span><span class="p">,</span><span class="w"> </span><span class="n">infile</span><span class="p">,</span><span class="w"> </span><span class="n">outfile</span><span class="p">;</span>
-<span class="w">   </span><span class="n">InputPath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"./"</span><span class="p">;</span>
-<span class="w">   </span><span class="n">OutputPath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"./"</span><span class="p">;</span>
-<span class="w">   </span><span class="n">infile</span><span class="p">.</span><span class="n">Form</span><span class="p">(</span><span class="s">"%svec_16C.root"</span><span class="p">,</span><span class="w"> </span><span class="n">InputPath</span><span class="p">.</span><span class="n">Data</span><span class="p">());</span>
-<span class="w">   </span><span class="n">outfile</span><span class="p">.</span><span class="n">Form</span><span class="p">(</span><span class="s">"%ssort_16C.root"</span><span class="p">,</span><span class="w"> </span><span class="n">OutputPath</span><span class="p">.</span><span class="n">Data</span><span class="p">());</span>
-
-<span class="w">   </span><span class="c1">// input</span>
-<span class="w">   </span><span class="n">TFile</span><span class="w"> </span><span class="o">*</span><span class="n">ipf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TFile</span><span class="p">(</span><span class="n">infile</span><span class="p">);</span>
-<span class="w">   </span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">ipf</span><span class="o">-&gt;</span><span class="n">IsOpen</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-<span class="w">       </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Cannot open input file: "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">infile</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
-<span class="w">       </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
-<span class="w">   </span><span class="p">}</span>
-<span class="w">   </span><span class="n">TTree</span><span class="w"> </span><span class="o">*</span><span class="n">ipt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">TTree</span><span class="o">*</span><span class="p">)</span><span class="n">ipf</span><span class="o">-&gt;</span><span class="n">Get</span><span class="p">(</span><span class="s">"tree"</span><span class="p">);</span>
-
-<span class="w">   </span><span class="c1">// output</span>
-<span class="w">   </span><span class="n">TFile</span><span class="w"> </span><span class="o">*</span><span class="n">opf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TFile</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span><span class="w"> </span><span class="s">"RECREATE"</span><span class="p">);</span>
-<span class="w">   </span><span class="n">TTree</span><span class="w"> </span><span class="o">*</span><span class="n">opt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TTree</span><span class="p">(</span><span class="s">"tree"</span><span class="p">,</span><span class="w"> </span><span class="s">"vector branch"</span><span class="p">);</span>
-
-<span class="w">   </span><span class="n">ana</span><span class="w"> </span><span class="o">*</span><span class="n">tk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ana</span><span class="p">(</span><span class="n">ipt</span><span class="p">,</span><span class="w"> </span><span class="n">opt</span><span class="p">);</span>
-<span class="w">   </span><span class="n">tk</span><span class="o">-&gt;</span><span class="n">Analysis</span><span class="p">();</span>
-
-<span class="w">   </span><span class="n">opt</span><span class="o">-&gt;</span><span class="n">Write</span><span class="p">();</span>
-<span class="w">   </span><span class="n">ipf</span><span class="o">-&gt;</span><span class="n">Close</span><span class="p">();</span>
-<span class="w">   </span><span class="n">opf</span><span class="o">-&gt;</span><span class="n">Close</span><span class="p">();</span>
-<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
+<div class="highlight"><pre><code class="language-cpp">#include &lt;TFile.h&gt;
+#include &lt;TTree.h&gt;
+#include &lt;iostream&gt;
+#include "ana.h"
+int main(int argc, char** argv) {
+    const char* inputName = argc&gt;1 ? argv[1] : "../../vec_16C.root";
+    const char* outputName = argc&gt;2 ? argv[2] : "../../sort_16C.root";
+    TFile* input = TFile::Open(inputName);
+    if (!input || input-&gt;IsZombie()) return 1;
+    TTree* tin = input-&gt;Get&lt;TTree&gt;("tree");
+    if (!tin) return 1;
+    TFile output(outputName,"RECREATE");
+    TTree* tout = new TTree("tree","vector branch");
+    {
+        ana analysis(tin,tout);
+        analysis.Analysis();
+        std::cout &lt;&lt; "Input=" &lt;&lt; tin-&gt;GetEntries() &lt;&lt; ", output=" &lt;&lt; tout-&gt;GetEntries() &lt;&lt; '\n';
+        output.cd();
+        tout-&gt;Write();
+    }
+    delete input;
+    return 0;
+}</code></pre></div>
 <p>如果输出中又引入了新的结构体 <code>DSSD</code> 以及 <code>vector&lt;DSSD&gt;</code>，那么也需要继续在 <code>Linkdef.h</code> 中补充对应的字典声明：</p>
-<div class="highlight"><pre><span></span><span class="cp">#ifdef __CINT__</span>
+<div class="highlight"><pre><code class="language-cpp">#ifdef __CLING__
 
-<span class="cp">#pragma link off all globals;</span>
-<span class="cp">#pragma link off all classes;</span>
-<span class="cp">#pragma link off all functions;</span>
-<span class="cp">#pragma link C++ nestedclasses;</span>
+#pragma link off all globals;
+#pragma link off all classes;
+#pragma link off all functions;
+#pragma link C++ nestedclasses;
 
-<span class="cp">#pragma link C++ class dssd+;</span>
-<span class="cp">#pragma link C++ class vector&lt;dssd&gt;+;</span>
-<span class="cp">#pragma link C++ class DSSD+;</span>
-<span class="cp">#pragma link C++ class vector&lt;DSSD&gt;+;</span>
+#pragma link C++ class dssd+;
+#pragma link C++ class vector&lt;dssd&gt;+;
+#pragma link C++ class DSSD+;
+#pragma link C++ class vector&lt;DSSD&gt;+;
 
-<span class="cp">#endif</span>
-</pre></div>
+#endif</code></pre></div>
 <hr/>
-<h2 id="%E5%AE%9E%E9%99%85%E4%BB%A3%E7%A0%81">实际代码<a class="anchor-link" href="#%E5%AE%9E%E9%99%85%E4%BB%A3%E7%A0%81">¶</a></h2><p>本节对应的完整可运行代码放在 GitHub 仓库的 <code>chapt3/code</code> 目录下，其中包含 <code>code1</code> 和 <code>code2</code> 两个子目录。<code>code1</code> 的主程序读取 <code>cal_16C.root</code>，输出 <code>vec_16C.root</code>；<code>code2</code> 的主程序读取 <code>vec_16C.root</code>，输出 <code>sort_16C.root</code>。这两个目录对应前后两个连续的分析步骤。<br/>
+<h2 id="%E5%AE%9E%E9%99%85%E4%BB%A3%E7%A0%81">实际代码</h2><p>本节对应的完整可运行代码放在 GitHub 仓库的 <code>chapt3/code</code> 目录下，其中包含 <code>code1</code> 和 <code>code2</code> 两个子目录。<code>code1</code> 的主程序读取 <code>strip_arrays_16C.root</code>，输出 <code>vec_16C.root</code>；<code>code2</code> 的主程序读取 <code>vec_16C.root</code>，输出 <code>sort_16C.root</code>。这两个目录对应前后两个连续的分析步骤。<br/>
 代码目录：<br/>
 <a href="https://github.com/zhihuanli/Experimental-Data-Analysis-Course/tree/master/chapt3/code">https://github.com/zhihuanli/Experimental-Data-Analysis-Course/tree/master/chapt3/code</a> (<a href="https://github.com/zhihuanli/Experimental-Data-Analysis-Course/tree/master/chapt3/code">GitHub</a>)</p>
-<p><code>code1</code> 用于将原始 ROOT 文件中的数组形式数据整理成 <code>vector</code> 类型的 Branch，并写入新的 ROOT 文件。对应讲义中“从普通 ROOT 文件生成含 <code>vector</code> 类型 Branch 的新文件”这一部分。<code>code1</code> 中的 <code>main.cpp</code> 明确给出了输入文件 <code>cal_16C.root</code> 和输出文件 <code>vec_16C.root</code>，而 <code>src/ana.cpp</code> 中则完成了 <code>x1v</code>、<code>x2v</code>、<code>x3v</code>、<code>y1v</code>、<code>y2v</code>、<code>y3v</code> 等 <code>vector</code> Branch 的建立与填充。</p>
+<p><code>code1</code> 用于将原始 ROOT 文件中的数组形式数据整理成 <code>vector</code> 类型的 Branch，并写入新的 ROOT 文件。对应讲义中“从普通 ROOT 文件生成含 <code>vector</code> 类型 Branch 的新文件”这一部分。<code>code1</code> 中的 <code>main.cpp</code> 明确给出了输入文件 <code>strip_arrays_16C.root</code> 和输出文件 <code>vec_16C.root</code>，而 <code>src/ana.cpp</code> 中则完成了 <code>x1v</code>、<code>x2v</code>、<code>x3v</code>、<code>y1v</code>、<code>y2v</code>、<code>y3v</code> 等 <code>vector</code> Branch 的建立与填充。</p>
 <p><code>code2</code> 用于继续读取已经包含 <code>vector</code> Branch 的 ROOT 文件，在分析中保持 <code>vector</code> 类型读入，完成 x-y hit 的排序、配对，并将结果写入新的 ROOT 文件。对应讲义中“使用含 <code>vector</code> 类型 Branch 的 ROOT 文件继续进行分析”这一部分。<code>code2</code> 的 <code>main.cpp</code> 给出了输入文件 <code>vec_16C.root</code> 和输出文件 <code>sort_16C.root</code>，而 <code>src/ana.cpp</code> 中则通过 <code>SetBranchAddress()</code> 读取 <code>vector&lt;dssd&gt;</code>，并将配对结果输出为 <code>d1</code>、<code>d2</code>、<code>d3</code> 等新的 Branch。</p>
-<h3 id="vector-%E7%9A%84%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C"><code>vector</code> 的常用操作<a class="anchor-link" href="#vector-%E7%9A%84%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C">¶</a></h3><p>在实际分析中，<code>vector</code> 的优势不仅在于可以保存变长数据，更重要的是可以直接利用 STL 提供的各种操作完成排序、筛选和去重等任务。</p>
+<h3 id="vector-%E7%9A%84%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C"><code>vector</code> 的常用操作</h3><p>在实际分析中，<code>vector</code> 的优势不仅在于可以保存变长数据，更重要的是可以直接利用 STL 提供的各种操作完成排序、筛选和去重等任务。</p>
 <p>常见的 <code>vector</code> 成员函数包括：</p>
-<div class="highlight"><pre><span></span><span class="n">vector</span><span class="o">::</span><span class="n">size</span><span class="p">();</span><span class="w">                        </span><span class="c1">// 返回 vector 大小</span>
-<span class="n">vector</span><span class="o">::</span><span class="n">clear</span><span class="p">();</span><span class="w">                       </span><span class="c1">// 清空 vector</span>
-<span class="n">vector</span><span class="o">::</span><span class="n">push_back</span><span class="p">(</span><span class="n">value</span><span class="p">);</span><span class="w">              </span><span class="c1">// 在 vector 内填入元素</span>
-<span class="n">vector</span><span class="o">::</span><span class="n">begin</span><span class="p">();</span><span class="w">                       </span><span class="c1">// 返回 vector 的首地址</span>
-<span class="n">vector</span><span class="o">::</span><span class="n">end</span><span class="p">();</span><span class="w">                         </span><span class="c1">// 返回 vector 的尾地址</span>
-<span class="n">vector</span><span class="o">::</span><span class="n">assign</span><span class="p">(</span><span class="n">v1</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">v2</span><span class="p">.</span><span class="n">end</span><span class="p">());</span><span class="w">  </span><span class="c1">// 将 v1 拷贝到 vector 中</span>
-<span class="n">vector</span><span class="o">::</span><span class="n">erase</span><span class="p">(</span><span class="n">it</span><span class="p">);</span><span class="w">                     </span><span class="c1">// 删除 it 位置变量，返回下一个元素的指针</span>
-</pre></div>
-<h4 id="%E6%8E%92%E5%BA%8F">排序<a class="anchor-link" href="#%E6%8E%92%E5%BA%8F">¶</a></h4><p>若要按能量从高到低排序，可结合比较函数与 <code>sort()</code> 使用：</p>
-<div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">SortDS</span><span class="p">(</span><span class="n">dssd</span><span class="w"> </span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">dssd</span><span class="w"> </span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
-<span class="p">{</span>
-<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">e</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">e</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="n">sort</span><span class="p">(</span><span class="n">x1v</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">x1v</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">SortDS</span><span class="p">);</span>
-</pre></div>
-<h4 id="%E5%88%A0%E9%99%A4%E9%87%8D%E5%A4%8D%E5%85%83%E7%B4%A0">删除重复元素<a class="anchor-link" href="#%E5%88%A0%E9%99%A4%E9%87%8D%E5%A4%8D%E5%85%83%E7%B4%A0">¶</a></h4><p>如果需要删除重复 hit，可以先定义“重复”的判据，再结合 <code>unique()</code> 与 <code>erase()</code> 使用：</p>
-<div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">Equal</span><span class="p">(</span><span class="n">dssd</span><span class="w"> </span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">dssd</span><span class="w"> </span><span class="o">&amp;</span><span class="n">b</span><span class="p">)</span>
-<span class="p">{</span>
-<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">Long64_t</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">e</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">id</span><span class="p">;</span>
-<span class="p">}</span>
+<div class="highlight"><pre><code class="language-cpp">vector::size();                        // 返回 vector 大小
+vector::clear();                       // 清空 vector
+vector::push_back(value);              // 在 vector 内填入元素
+vector::begin();                       // 返回 vector 的起始迭代器
+vector::end();                         // 返回 vector 的末尾之后的迭代器
+vector::assign(v1.begin(), v1.end());  // 将 v1 拷贝到 vector 中
+vector::erase(it);                     // 删除 it 位置变量，返回下一个元素的指针</code></pre></div>
+<h4 id="%E6%8E%92%E5%BA%8F">排序</h4><p>若要按能量从高到低排序，可结合比较函数与 <code>sort()</code> 使用：</p>
+<div class="highlight"><pre><code class="language-cpp">bool SortDS(const dssd &amp;a, const dssd &amp;b)
+{
+  return a.e &gt; b.e;
+}
+sort(x1v.begin(), x1v.end(), SortDS);</code></pre></div>
+<h4 id="%E5%88%A0%E9%99%A4%E9%87%8D%E5%A4%8D%E5%85%83%E7%B4%A0">删除重复元素</h4><p>如果需要删除重复 hit，可以先定义“重复”的判据，再结合 <code>unique()</code> 与 <code>erase()</code> 使用：</p>
+<div class="highlight"><pre><code class="language-cpp">bool Equal(dssd &amp;a, dssd &amp;b)
+{
+  return a.id == b.id &amp;&amp; a.e == b.e &amp;&amp; a.t == b.t;
+}
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">Unique</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">dssd</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">a</span><span class="p">)</span>
-<span class="p">{</span>
-<span class="w">  </span><span class="n">a</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">unique</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">Equal</span><span class="p">),</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
-<span class="p">}</span>
+void Unique(vector&lt;dssd&gt; &amp;a)
+{
+  a.erase(unique(a.begin(), a.end(), Equal), a.end());
+}
 
-<span class="c1">// remove identical events, probably caused by bugs in Digital modules</span>
-<span class="n">Unique</span><span class="p">(</span><span class="n">xvec</span><span class="p">);</span>
-</pre></div>
-<h4 id="%E6%8C%89%E6%9D%A1%E4%BB%B6%E5%88%A0%E9%99%A4%E5%85%83%E7%B4%A0">按条件删除元素<a class="anchor-link" href="#%E6%8C%89%E6%9D%A1%E4%BB%B6%E5%88%A0%E9%99%A4%E5%85%83%E7%B4%A0">¶</a></h4><p>在很多分析中，需要从 <code>vector</code> 中删除不满足条件的元素。例如，当某个 hit 的时间与参考时间相差过大时，可以将其剔除：</p>
-<div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">tCut</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">dssd</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">dssd</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">t1</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">t2</span><span class="p">)</span>
-<span class="p">{</span>
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="kt">int</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Long64_t</span><span class="p">(</span><span class="n">it</span><span class="o">-&gt;</span><span class="n">t</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">t</span><span class="p">);</span>
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dt</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">t1</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">t2</span><span class="p">)</span>
-<span class="w">        </span><span class="n">it</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">it</span><span class="p">);</span>
-<span class="w">      </span><span class="k">else</span>
-<span class="w">        </span><span class="o">++</span><span class="n">it</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
+// remove identical events, probably caused by bugs in Digital modules
+Unique(xvec);</code></pre></div>
+<h4 id="%E6%8C%89%E6%9D%A1%E4%BB%B6%E5%88%A0%E9%99%A4%E5%85%83%E7%B4%A0">按条件删除元素</h4><p>在很多分析中，需要从 <code>vector</code> 中删除不满足条件的元素。例如，当某个 hit 的时间与参考时间相差过大时，可以将其剔除：</p>
+<div class="highlight"><pre><code class="language-cpp">void tCut(vector&lt;dssd&gt; &amp;a, vector&lt;dssd&gt; &amp;b, double t1, double t2)
+{
+  if (b.size() &gt; 0) {
+    const double referenceTime = b[0].t; // 删除元素前保存参考时间
+    const double referenceTime = b[0].t; // 删除元素前保存参考时间
+    for (auto it = a.begin(); it != a.end(); ) {
+      double dt = it-&gt;t - referenceTime;
+      if (dt &lt; t1 || dt &gt; t2)
+        it = a.erase(it);
+      else
+        ++it;
+    }
+  }
+}
 
-<span class="n">tCut</span><span class="p">(</span><span class="n">x1v</span><span class="p">,</span><span class="w"> </span><span class="n">x1v</span><span class="p">,</span><span class="w"> </span><span class="mi">-20</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">);</span>
-</pre></div>
+tCut(x1v, x1v, -20, 20);</code></pre></div>
 <p>这些例子说明，使用 <code>vector</code> 的优势不仅在于能够保存变长 hit 信息，还在于可以直接利用 STL 提供的排序、去重和筛选等操作，使后续分析实现起来更加自然。</p>
-</div>
+<p><code>unique</code> 只去掉相邻的等价元素；相同条号和近似相等的能量不能证明是重复读出，真实 pileup 也可能如此。数据去重应有原始事件标识、timestamp 或电子学重复记录的证据。本节参考文件没有时间，不能运行基于 t 的物理 cut；时间选择代码仅说明有有效时间输入时的容器用法。</p><p>按能量排序后同下标配对，是单条响应和清晰能量分离下的初步候选算法，并未覆盖 3.6 的 sharing、共用条及多解事件。保留未匹配结果，再按需要回到完整重建。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">

@@ -1,14 +1,10 @@
 <!DOCTYPE html>
+
 <html>
-<head><meta charset="utf-8" />
-
+<head><meta charset="utf-8"/>
 <title>ROOT_tips</title>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-
-
-
 <style type="text/css">
     /*!
 *
@@ -9129,15 +9125,15 @@ label {
 }
 /* Flexible box model classes */
 /* Taken from Alex Russell http://infrequently.org/2009/08/css-3-progress/ */
-/* This file is a compatability layer.  It allows the usage of flexible box 
+/* This file is a compatability layer.  It allows the usage of flexible box
 model layouts accross multiple browsers, including older browsers.  The newest,
 universal implementation of the flexible box model is used when available (see
-`Modern browsers` comments below).  Browsers that are known to implement this 
+`Modern browsers` comments below).  Browsers that are known to implement this
 new spec completely include:
 
     Firefox 28.0+
     Chrome 29.0+
-    Internet Explorer 11+ 
+    Internet Explorer 11+
     Opera 17.0+
 
 Browsers not listed, including Safari, are supported via the styling under the
@@ -12519,7 +12515,7 @@ div#pager .ui-resizable-handle {
   background: #f7f7f7;
   border-top: 1px solid #cfcfcf;
   border-bottom: 1px solid #cfcfcf;
-  /* This injects handle bars (a short, wide = symbol) for 
+  /* This injects handle bars (a short, wide = symbol) for
         the resize handle. */
 }
 div#pager .ui-resizable-handle::after {
@@ -13056,8 +13052,6 @@ margin: 0 auto;
 
 
     </style>
-
-
 <style type="text/css">
 /* Overrides of notebook CSS for static HTML export */
 body {
@@ -13072,26 +13066,23 @@ div#notebook {
   div.cell {
     display: block;
     page-break-inside: avoid;
-  } 
-  div.output_wrapper { 
-    display: block;
-    page-break-inside: avoid; 
   }
-  div.output { 
+  div.output_wrapper {
     display: block;
-    page-break-inside: avoid; 
+    page-break-inside: avoid;
+  }
+  div.output {
+    display: block;
+    page-break-inside: avoid;
   }
 }
 </style>
-
 <!-- Custom stylesheet, it must be in the same directory as the html file -->
-<link rel="stylesheet" href="custom.css">
-
 <!-- Loading mathjax macro -->
 <!-- Load mathjax -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_HTML"></script>
-    <!-- MathJax configuration -->
-    <script type="text/x-mathjax-config">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_HTML"></script>
+<!-- MathJax configuration -->
+<script type="text/x-mathjax-config">
     MathJax.Hub.Config({
         tex2jax: {
             inlineMath: [ ['$','$'], ["\\(","\\)"] ],
@@ -13108,68 +13099,69 @@ div#notebook {
         }
     });
     </script>
-    <!-- End of mathjax configuration --></head>
-<body>
-  <div tabindex="-1" id="notebook" class="border-box-sizing">
-    <div class="container" id="notebook-container">
+<!-- End of mathjax configuration --><link data-course-header="true" href="../assets/css/course-header.css" rel="stylesheet"/></head>
+<body><header class="course-banner"><div class="course-banner-inner">
+<a href="../index.html"><img alt="课程标志" src="../assets/images/course-logo.png"/></a>
+<div class="course-banner-title"><a href="../index.html">核物理实验数据处理</a>
+<span class="course-banner-en">Experimental Data Analysis in Nuclear Physics</span></div></div></header>
+<nav aria-label="课程导航" class="course-nav"><div class="course-nav-inner">
+<a href="../index.html">课程主页</a><a href="../index.html#preparation">课前准备</a>
+<a href="../index.html#lectures">课程讲义</a><a href="https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/">实验方法课程</a></div></nav>
 
+<div class="border-box-sizing" id="notebook" tabindex="-1">
+<div class="container" id="notebook-container">
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="How-to-save-objects-in-a-File">How to save objects in a File<a class="anchor-link" href="#How-to-save-objects-in-a-File">&#182;</a></h2><div class="highlight"><pre><span></span><span class="n">TFile</span><span class="o">*</span> <span class="n">f</span> <span class="o">=</span> <span class="n">TFile</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="s">&quot;myfile.root&quot;</span><span class="p">,</span><span class="err">”</span><span class="n">NEW</span><span class="err">”</span><span class="p">);</span>
-<span class="n">TH1D</span><span class="o">*</span> <span class="n">h1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TH1D</span><span class="p">(</span><span class="err">“</span><span class="n">h1</span><span class="err">”</span><span class="p">,</span><span class="err">”</span><span class="n">h1</span><span class="err">”</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="o">-</span><span class="mf">5.</span><span class="p">,</span><span class="mf">5.</span><span class="p">);</span>
-<span class="n">h1</span><span class="o">-&gt;</span><span class="n">FillRandom</span><span class="p">(</span><span class="err">“</span><span class="n">gaus</span><span class="err">”</span><span class="p">);</span>  <span class="c1">// fill histogram with random data</span>
-<span class="n">h1</span><span class="o">-&gt;</span><span class="n">Write</span><span class="p">();</span>
-<span class="k">delete</span> <span class="n">f</span><span class="p">;</span>
-</pre></div>
-<h2 id="File-Merging">File Merging<a class="anchor-link" href="#File-Merging">&#182;</a></h2><ul>
+<h2 id="How-to-save-objects-in-a-File">How to save objects in a File</h2><div class="highlight"><pre><code class="language-cpp">TFile* f = TFile::Open("myfile.root","NEW");
+TH1D* h1 = new TH1D("h1","h1",100,-5.,5.);
+h1-&gt;FillRandom("gaus");  // fill histogram with random data
+h1-&gt;Write();
+delete f;</code></pre></div>
+<h2 id="File-Merging">File Merging</h2><ul>
 <li>ROOT file containing the same data objects (e.g. histograms, Trees, etc...) can be merged using the command line tool $ROOTSYS/bin/ hadd</li>
 </ul>
 <div class="highlight"><pre><span></span><span class="err">$</span><span class="o">&gt;</span>  <span class="n">hadd</span>  <span class="n">fileOut</span><span class="p">.</span><span class="n">root</span> <span class="n">file1</span><span class="p">.</span><span class="n">root</span> <span class="n">file2</span><span class="p">.</span><span class="n">root</span> <span class="n">file3</span><span class="p">.</span><span class="n">root</span>
 </pre></div>
-<h2 id="How-to-Use-Chains-(Lists-of-Files)?">How to Use Chains (Lists of Files)?<a class="anchor-link" href="#How-to-Use-Chains-(Lists-of-Files)?">&#182;</a></h2><p>TChain object is a list of Root files containing the same tree. As an example, assume we have 3 Root files called file1.root, file2.root, file3.root. Each file contains one tree called "T". We can create a chain with the following statements:</p>
-<div class="highlight"><pre><span></span><span class="n">TChain</span> <span class="o">*</span><span class="n">chain</span><span class="o">=</span><span class="k">new</span> <span class="n">TChain</span><span class="p">(</span><span class="s">&quot;tree&quot;</span><span class="p">);</span>
-   <span class="n">chain</span><span class="o">-&gt;</span><span class="n">Add</span><span class="p">(</span><span class="s">&quot;file1.root&quot;</span><span class="p">);</span>
-   <span class="n">chain</span><span class="o">-&gt;</span><span class="n">Add</span><span class="p">(</span><span class="s">&quot;file2.root&quot;</span><span class="p">);</span>
-   <span class="n">chain</span><span class="o">-&gt;</span><span class="n">Add</span><span class="p">(</span><span class="s">&quot;file3.root&quot;</span><span class="p">);</span>
+<h2 id="How-to-Use-Chains-(Lists-of-Files)?">How to Use Chains (Lists of Files)?</h2><p>TChain object is a list of Root files containing the same tree. As an example, assume we have 3 Root files called file1.root, file2.root, file3.root. Each file contains one tree called "tree". We can create a chain with the following statements:</p>
+<div class="highlight"><pre><span></span><span class="n">TChain</span> <span class="o">*</span><span class="n">chain</span><span class="o">=</span><span class="k">new</span> <span class="n">TChain</span><span class="p">(</span><span class="s">"tree"</span><span class="p">);</span>
+   <span class="n">chain</span><span class="o">-&gt;</span><span class="n">Add</span><span class="p">(</span><span class="s">"file1.root"</span><span class="p">);</span>
+   <span class="n">chain</span><span class="o">-&gt;</span><span class="n">Add</span><span class="p">(</span><span class="s">"file2.root"</span><span class="p">);</span>
+   <span class="n">chain</span><span class="o">-&gt;</span><span class="n">Add</span><span class="p">(</span><span class="s">"file3.root"</span><span class="p">);</span>
 </pre></div>
 <p>The class TChain is derived from the class TTree
 . For example, to generate an histogram corresponding to the attribute "x" in tree "tree" by processing sequentially the 3 files of this chain, we can do:</p>
-<div class="highlight"><pre><span></span><span class="n">chain</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">&quot;x&quot;</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><span class="n">chain</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"x"</span><span class="p">);</span>
 </pre></div>
 <p>Chain files with loop</p>
-<div class="highlight"><pre><span></span><span class="n">TChain</span> <span class="o">*</span><span class="n">chain</span><span class="o">=</span><span class="k">new</span> <span class="n">TChain</span><span class="p">(</span><span class="s">&quot;chain&quot;</span><span class="p">,</span> <span class="s">&quot;chainname&quot;</span><span class="p">);</span>
-<span class="k">const</span> <span class="n">Int_t</span> <span class="n">fNFile</span><span class="o">=</span><span class="mi">11</span><span class="p">;</span>
-<span class="n">Int_t</span> <span class="n">iFile</span><span class="p">;</span>
-<span class="k">for</span> <span class="p">(</span><span class="n">iFile</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">iFile</span><span class="o">&lt;</span><span class="n">fNFile</span><span class="p">;</span> <span class="o">++</span><span class="n">iFile</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">chain</span><span class="o">-&gt;</span><span class="n">Add</span><span class="p">(</span><span class="n">Form</span><span class="p">(</span><span class="s">&quot;../anadata/CALIB_RUN%d.root&quot;</span><span class="p">,</span> <span class="n">iFile</span><span class="o">+</span><span class="mi">10</span><span class="p">));</span>
-<span class="p">}</span>
-</pre></div>
-<h2 id="Create-new-root-file-with-cut-from-a-existing-tree">Create new root file with cut from a existing tree<a class="anchor-link" href="#Create-new-root-file-with-cut-from-a-existing-tree">&#182;</a></h2><div class="highlight"><pre><span></span><span class="n">TFile</span> <span class="o">*</span><span class="n">infile</span>  <span class="o">=</span> <span class="k">new</span> <span class="n">TFile</span><span class="p">(</span><span class="s">&quot;input.root&quot;</span><span class="p">);</span>
-<span class="n">TFile</span> <span class="o">*</span><span class="n">fout</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TFile</span><span class="p">(</span><span class="s">&quot;output.root&quot;</span><span class="p">,</span><span class="s">&quot;recreate&quot;</span><span class="p">);</span>
-<span class="p">((</span><span class="n">TTree</span><span class="o">*</span><span class="p">)</span><span class="n">infile</span><span class="o">-&gt;</span><span class="n">Get</span><span class="p">(</span><span class="s">&quot;tree&quot;</span><span class="p">))</span><span class="o">-&gt;</span><span class="n">CopyTree</span><span class="p">(</span><span class="s">&quot;aoq&lt;3.5&amp;&amp;aoq&gt;3&amp;&amp;zet&gt;49&amp;&amp;zet&lt;51&quot;</span><span class="p">)</span>
-<span class="n">fout</span><span class="o">-&gt;</span><span class="n">Write</span><span class="p">();</span>
-<span class="n">fout</span><span class="o">-&gt;</span><span class="n">Close</span><span class="p">();</span>
-</pre></div>
-<h2 id="Read-a-subset-of-data(TTree-branches)">Read a subset of data(TTree branches)<a class="anchor-link" href="#Read-a-subset-of-data(TTree-branches)">&#182;</a></h2><p>• Faster to read – if you only want a subset of data members</p>
+<div class="highlight"><pre><code class="language-cpp">TChain *chain=new TChain("tree");
+const Int_t fNFile=11;
+Int_t iFile;
+for (iFile=0; iFile&lt;fNFile; ++iFile) {
+    chain-&gt;Add(Form("../anadata/CALIB_RUN%d.root", iFile+10));
+}</code></pre></div>
+<h2 id="Create-new-root-file-with-cut-from-a-existing-tree">Create new root file with cut from a existing tree</h2><div class="highlight"><pre><code class="language-cpp">TFile *infile  = new TFile("input.root");
+TFile *fout = new TFile("output.root","recreate");
+((TTree*)infile-&gt;Get("tree"))-&gt;CopyTree("aoq&lt;3.5&amp;&amp;aoq&gt;3&amp;&amp;zet&gt;49&amp;&amp;zet&lt;51");;
+fout-&gt;Write();
+fout-&gt;Close();</code></pre></div>
+<h2 id="Read-a-subset-of-data(TTree-branches)">Read a subset of data(TTree branches)</h2><p>• Faster to read – if you only want a subset of data members</p>
 <p>• Slower to write due to the large number of branches</p>
 <p>• For reading a subset of data recommend to use</p>
-<div class="highlight"><pre><span></span><span class="n">TBranch</span><span class="o">*</span> <span class="n">b_MyBranch</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-cpp">TBranch* b_MyBranch;
 
-<span class="n">tree</span><span class="o">-&gt;</span><span class="n">SetBranchAddress</span><span class="p">(</span><span class="s">&quot;MyBranch&quot;</span><span class="p">,</span><span class="o">&amp;</span><span class="n">MyBranch</span><span class="p">,</span><span class="o">&amp;</span><span class="n">b_MyBrancy</span><span class="p">);</span>
+tree-&gt;SetBranchAddress("MyBranch",&amp;MyBranch,&amp;b_MyBranch);
 
-<span class="n">b_MyBranch</span><span class="o">-&gt;</span><span class="n">GetEntry</span><span class="p">(</span><span class="n">ientry</span><span class="p">);</span><span class="c1">//name of branch MyBranch</span>
-</pre></div>
+b_MyBranch-&gt;GetEntry(ientry);//name of branch MyBranch</code></pre></div>
 <p>it will read only the required branch data (big difference in case of trees with many branches)</p>
 <p>• Alternatively can use also</p>
-<div class="highlight"><pre><span></span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">SetBranchStatus</span><span class="p">(</span><span class="s">&quot;*&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-<span class="n">tree</span><span class="o">-&gt;</span><span class="n">SetBranchStatus</span><span class="p">(</span><span class="err">“</span><span class="n">myBranch</span><span class="err">”</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
-</pre></div>
-<h2 id="Scanning-a-Tree">Scanning a Tree<a class="anchor-link" href="#Scanning-a-Tree">&#182;</a></h2><ul>
-<li>Prints all the variables of the tree: <div class="highlight"><pre><span></span><span class="n">MyTree</span><span class="o">-&gt;</span><span class="n">Scan</span><span class="p">(</span><span class="s">&quot;*&quot;</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-cpp">tree-&gt;SetBranchStatus("*", 0);
+tree-&gt;SetBranchStatus("myBranch",1);</code></pre></div>
+<h2 id="Scanning-a-Tree">Scanning a Tree</h2><ul>
+<li>Prints all the variables of the tree: <div class="highlight"><pre><span></span><span class="n">MyTree</span><span class="o">-&gt;</span><span class="n">Scan</span><span class="p">(</span><span class="s">"*"</span><span class="p">);</span>
 </pre></div>
 </li>
-<li>Prints the values of var1, var2 and var3. <div class="highlight"><pre><span></span><span class="n">MyTree</span><span class="o">-&gt;</span><span class="n">Scan</span><span class="p">(</span><span class="s">&quot;var1:var2:var3&quot;</span><span class="p">);</span>
+<li>Prints the values of var1, var2 and var3. <div class="highlight"><pre><span></span><span class="n">MyTree</span><span class="o">-&gt;</span><span class="n">Scan</span><span class="p">(</span><span class="s">"var1:var2:var3"</span><span class="p">);</span>
 </pre></div>
 </li>
 <li>A selection can be applied in the second argument:<ul>
@@ -13177,101 +13169,88 @@ div#notebook {
 </ul>
 </li>
 </ul>
-<div class="highlight"><pre><span></span><span class="n">MyTree</span><span class="o">-&gt;</span><span class="n">Scan</span><span class="p">(</span><span class="s">&quot;var1:var2:var3&quot;</span><span class="p">,</span> <span class="s">&quot;var1&gt;0&quot;</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><span class="n">MyTree</span><span class="o">-&gt;</span><span class="n">Scan</span><span class="p">(</span><span class="s">"var1:var2:var3"</span><span class="p">,</span> <span class="s">"var1&gt;0"</span><span class="p">);</span>
 </pre></div>
 <p>• Use the same syntax as TTree::Draw()</p>
-
-</div>
+<p>这些片段分别说明一种用法；输入文件、tree 名与变量名须与实际文件一致。使用 TChain 时，每个文件中对应 tree 的分支名和类型也应一致。</p></div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="How-to-obtain-more-info-from-TTree::Draw">How to obtain more info from TTree::Draw<a class="anchor-link" href="#How-to-obtain-more-info-from-TTree::Draw">&#182;</a></h2><h3 id="1.-to-TH">1. to TH<a class="anchor-link" href="#1.-to-TH">&#182;</a></h3><ul>
-<li>1.按照ROOT默认的bin和范围画图<div class="highlight"><pre><span></span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">&quot;counts&quot;</span><span class="p">);</span>        
-<span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">&quot;counts&gt;&gt;h&quot;</span><span class="p">);</span>     <span class="c1">// 生成以&quot;h&quot;为名的histogram </span>
-<span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">&quot;counts &gt;&gt;+ h&quot;</span><span class="p">)</span>   <span class="c1">// 如果已存在&quot;h&quot;为名的histogram，将数据追加到“h”上</span>
-</pre></div>
+<h2 id="How-to-obtain-more-info-from-TTree::Draw">How to obtain more info from TTree::Draw</h2><h3 id="1.-to-TH">1. to TH</h3><ul>
+<li>1.按照ROOT默认的bin和范围画图<div class="highlight"><pre><code class="language-cpp">tree-&gt;Draw("counts");
+tree-&gt;Draw("counts&gt;&gt;h");     // 生成以"h"为名的histogram
+tree-&gt;Draw("counts &gt;&gt;+ h");;   // 如果已存在"h"为名的histogram，将数据追加到"h"上</code></pre></div>
 </li>
-<li>2.指定histogram<div class="highlight"><pre><span></span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">&quot;counts&gt;&gt;h(100, 0, 100)&quot;</span>    <span class="c1">// nbin,xmin,xmax</span>
-<span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">&quot;counts&gt;&gt;h(100, 0, )&quot;</span>       <span class="c1">// nbin,xmin,不指定xmax</span>
-<span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">&quot;counts&gt;&gt;h(100, ,100 )&quot;</span>       <span class="c1">// nbin,不指定xmin,xmax</span>
-</pre></div>
+<li>2.指定histogram<div class="highlight"><pre><code class="language-cpp">tree-&gt;Draw("counts&gt;&gt;h(100,0,100)"); // 指定 nbin、xmin、xmax</code></pre></div>
 </li>
-<li>3.先定义histogram<div class="highlight"><pre><span></span><span class="n">TH1D</span> <span class="o">*</span><span class="n">h1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TH1D</span><span class="p">(</span><span class="s">&quot;hoge&quot;</span><span class="p">,</span> <span class="s">&quot;hoge&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
-<span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">&quot;counts&gt;&gt;hoge&quot;</span><span class="p">);</span>
+<li>3.先定义histogram<div class="highlight"><pre><span></span><span class="n">TH1D</span> <span class="o">*</span><span class="n">h1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TH1D</span><span class="p">(</span><span class="s">"hoge"</span><span class="p">,</span> <span class="s">"hoge"</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+<span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"counts&gt;&gt;hoge"</span><span class="p">);</span>
 </pre></div>
 </li>
 <li><p>TH2,TH3 以此类推</p>
 </li>
-<li><p><font color=Red>用2.的方式生成的histogram默认为Float_t型，对每个bin上的数有限制，在数目超过$10^5$时显示会有问题 (当前版本ROOT的bug)。此时推荐用3.的方式。</font></p>
+<li><p>默认 TH1F 的每个 bin 用 Float_t 存储；单位计数累加超过 2^24 后不再保持整数精确性。高统计量或加权数据可预先定义 TH1D。这是浮点表示精度，不是 10^5 处的 ROOT bug。</p>
 </li>
 </ul>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="2.-to-TGraph">2. to TGraph<a class="anchor-link" href="#2.-to-TGraph">&#182;</a></h3><ul>
+<h3 id="2.-to-TGraph">2. to TGraph</h3><ul>
 <li><p>Once TTree::Draw has been called, it is possible to access useful information still stored in the TTree object via the following functions:</p>
-<div class="highlight"><pre><span></span><span class="o">-</span><span class="n">GetSelectedRows</span><span class="p">()</span>    <span class="c1">// return the number of entries accepted by the</span>
-                        <span class="c1">//selection expression. In case where no selection</span>
-                        <span class="c1">//was specified, returns the number of entries processed.</span>
-  <span class="o">-</span><span class="n">GetV1</span><span class="p">()</span>              <span class="c1">//returns a pointer to the float array of V1</span>
-  <span class="o">-</span><span class="n">GetV2</span><span class="p">()</span>              <span class="c1">//returns a pointer to the float array of V2</span>
-  <span class="o">-</span><span class="n">GetV3</span><span class="p">()</span>              <span class="c1">//returns a pointer to the float array of V3</span>
-  <span class="o">-</span><span class="n">GetW</span><span class="p">()</span>               <span class="c1">//returns a pointer to the double array of Weights</span>
-                        <span class="c1">//where weight equal the result of the selection expression.</span>
-</pre></div>
+<div class="highlight"><pre><code class="language-cpp">-GetSelectedRows()    // return the number of entries accepted by the
+                        //selection expression. In case where no selection
+                        //was specified, returns the number of entries processed.
+  -GetV1()              //returns a pointer to the double array of V1
+  -GetV2()              //returns a pointer to the double array of V2
+  -GetV3()              //returns a pointer to the double array of V3
+  -GetW()               //returns a pointer to the double array of Weights
+                        //where weight equal the result of the selection expression.</code></pre></div>
 <p>where V1,V2,V3 correspond to the expressions in</p>
-<div class="highlight"><pre><span></span><span class="n">TTree</span><span class="o">::</span><span class="n">Draw</span><span class="p">(</span><span class="s">&quot;V1:V2:V3&quot;</span><span class="p">,</span><span class="n">selection</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><span class="n">TTree</span><span class="o">::</span><span class="n">Draw</span><span class="p">(</span><span class="s">"V1:V2:V3"</span><span class="p">,</span><span class="n">selection</span><span class="p">);</span>
 </pre></div>
 <p>Example:</p>
-<div class="highlight"><pre><span></span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">&quot;py:px&quot;</span><span class="p">,</span><span class="s">&quot;pz&gt;4&quot;</span><span class="p">);</span>
-  <span class="n">TGraph</span> <span class="o">*</span><span class="n">gr</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TGraph</span><span class="p">(</span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">GetSelectedRows</span><span class="p">(),</span><span class="n">ntuple</span><span class="o">-&gt;</span><span class="n">GetV2</span><span class="p">(),</span> <span class="n">ntuple</span><span class="o">-&gt;</span><span class="n">GetV1</span><span class="p">());</span>
-  <span class="n">gr</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">&quot;ap&quot;</span><span class="p">);</span> <span class="c1">//draw graph in current pad creates a TGraph object with a number of points corresponding to the number of entries selected by the expression &quot;pz&gt;4&quot;, the x points of the graph being the px values of the Tree and the y points the py values.</span>
-</pre></div>
-<p>Important note: By default TTree::Draw creates the arrays obtained with GetV1, GetV2, GetV3, GetW with a length corresponding to the
-  parameter fEstimate. By default fEstimate=10000 and can be modified via TTree::SetEstimate. 
-  A possible recipee is to do</p>
-<div class="highlight"><pre><span></span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">SetEstimate</span><span class="p">(</span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">GetEntries</span><span class="p">());</span>
-</pre></div>
-<p>You must call SetEstimate if the expected number of selected rows is greater than 10000.</p>
+<div class="highlight"><pre><code class="language-cpp">tree-&gt;SetEstimate(tree-&gt;GetEntries()+1);
+tree-&gt;Draw("py:px","pz&gt;4","goff");
+  TGraph *gr = new TGraph(tree-&gt;GetSelectedRows(),tree-&gt;GetV2(), tree-&gt;GetV1());
+  gr-&gt;Draw("ap"); //draw graph in current pad creates a TGraph object with a number of points corresponding to the number of entries selected by the expression "pz&gt;4", the x points of the graph being the px values of the Tree and the y points the py values.</code></pre></div>
+<p>GetV1/GetV2 等缓冲区由 GetEstimate() 控制，不能假定固定容量。Draw 前设置足够容量；数组分支展开后的行数可能多于事件数。数据指针会被下一次 Draw 更新，应及时复制。</p>
+<div class="highlight"><pre><code class="language-cpp">tree-&gt;SetEstimate(tree-&gt;GetEntries()+1);</code></pre></div>
+<p>下面的 SetEstimate 示例适用于每个事件只产生一行的 scalar 表达式。</p>
 </li>
 </ul>
 <p>You can use the option "goff" to turn off the graphics output of TTree::Draw in the above example.</p>
-<h3 id="3.-to-TVectorD">3. to TVectorD<a class="anchor-link" href="#3.-to-TVectorD">&#182;</a></h3><div class="highlight"><pre><span></span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">&quot;x:y&quot;</span><span class="p">,</span><span class="n">tcut</span><span class="p">);</span> <span class="c1">// alternative: tr-&gt;Project(&quot;&quot;, &quot;x:y&quot;, tcut);    </span>
-<span class="n">TVectorD</span> <span class="o">*</span><span class="n">x_vec</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TVectorD</span><span class="p">(</span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">GetSelectedRows</span><span class="p">(),</span> <span class="n">tr</span><span class="o">-&gt;</span><span class="n">GetV1</span><span class="p">());</span>    
-<span class="n">TVectorD</span> <span class="o">*</span><span class="n">y_vec</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TVectorD</span><span class="p">(</span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">GetSelectedRows</span><span class="p">(),</span> <span class="n">tr</span><span class="o">-&gt;</span><span class="n">GetV2</span><span class="p">());</span>
-</pre></div>
-
+<h3 id="3.-to-TVectorD">3. to TVectorD</h3><div class="highlight"><pre><code class="language-cpp">tree-&gt;Draw("x:y",tcut); // alternative: tree-&gt;Project("", "x:y", tcut);
+TVectorD *x_vec = new TVectorD(tree-&gt;GetSelectedRows(), tree-&gt;GetV1());
+TVectorD *y_vec = new TVectorD(tree-&gt;GetSelectedRows(), tree-&gt;GetV2());</code></pre></div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Print-some-global-quantities-for-a-histogram.">Print some global quantities for a histogram.<a class="anchor-link" href="#Print-some-global-quantities-for-a-histogram.">&#182;</a></h2><ul>
+<h2 id="Print-some-global-quantities-for-a-histogram.">Print some global quantities for a histogram.</h2><ul>
 <li>"base" is given, number of bins and ranges are also printed</li>
 <li>"range" is given, bin contents and errors are also printed for all bins in the current range (default 1–&gt;nbins)</li>
 <li>"all" is given, bin contents and errors are also printed for all bins including under and overflows.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="n">h1</span><span class="o">-&gt;</span><span class="n">Print</span><span class="p">(</span><span class="s">&quot;base&quot;</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><span class="n">h1</span><span class="o">-&gt;</span><span class="n">Print</span><span class="p">(</span><span class="s">"base"</span><span class="p">);</span>
 
 <span class="n">TH1</span><span class="p">.</span><span class="n">Print</span> <span class="n">Name</span>  <span class="o">=</span> <span class="n">h</span><span class="p">,</span> <span class="n">Entries</span><span class="o">=</span> <span class="mi">172374006</span><span class="p">,</span> <span class="n">Total</span> <span class="n">sum</span><span class="o">=</span> <span class="mf">1.70879e+06</span>
           <span class="n">Title</span> <span class="o">=</span> <span class="n">e</span>
           <span class="n">NbinsX</span><span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">xmin</span><span class="o">=</span> <span class="mi">500</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mi">510</span>
 
-<span class="n">h1</span><span class="o">-&gt;</span><span class="n">Print</span><span class="p">(</span><span class="s">&quot;range&quot;</span><span class="p">);</span>
+<span class="n">h1</span><span class="o">-&gt;</span><span class="n">Print</span><span class="p">(</span><span class="s">"range"</span><span class="p">);</span>
 
 <span class="n">TH1</span><span class="p">.</span><span class="n">Print</span> <span class="n">Name</span>  <span class="o">=</span> <span class="n">h</span><span class="p">,</span> <span class="n">Entries</span><span class="o">=</span> <span class="mi">172374006</span><span class="p">,</span> <span class="n">Total</span> <span class="n">sum</span><span class="o">=</span> <span class="mf">1.70879e+06</span>
  <span class="n">fSumw</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="mi">106573</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mf">500.5</span>
@@ -13285,7 +13264,7 @@ div#notebook {
  <span class="n">fSumw</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="o">=</span><span class="mi">258089</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mf">508.5</span>
  <span class="n">fSumw</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="o">=</span><span class="mi">449478</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mf">509.5</span>
 
-<span class="n">h1</span><span class="o">-&gt;</span><span class="n">Print</span><span class="p">(</span><span class="s">&quot;all&quot;</span><span class="p">);</span>    
+<span class="n">h1</span><span class="o">-&gt;</span><span class="n">Print</span><span class="p">(</span><span class="s">"all"</span><span class="p">);</span>
 
 <span class="n">TH1</span><span class="p">.</span><span class="n">Print</span> <span class="n">Name</span>  <span class="o">=</span> <span class="n">h</span><span class="p">,</span> <span class="n">Entries</span><span class="o">=</span> <span class="mi">172374006</span><span class="p">,</span> <span class="n">Total</span> <span class="n">sum</span><span class="o">=</span> <span class="mf">1.70879e+06</span>
  <span class="n">fSumw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="mf">1.67772e+07</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mf">499.5</span>
@@ -13301,61 +13280,49 @@ div#notebook {
  <span class="n">fSumw</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="o">=</span><span class="mi">449478</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mf">509.5</span>
  <span class="n">fSumw</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span><span class="o">=</span><span class="mf">1.67772e+07</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mf">510.5</span>
 </pre></div>
-<h2 id="histogram-Draw()">histogram Draw()<a class="anchor-link" href="#histogram-Draw()">&#182;</a></h2><div class="highlight"><pre><span></span><span class="n">gStyle</span><span class="o">-&gt;</span><span class="n">SetStatStyle</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="c1">//remove statistics </span>
-<span class="n">gStyle</span><span class="o">-&gt;</span><span class="n">SetPalette</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="c1">//colz pattern</span>
-</pre></div>
-
+<h2 id="histogram-Draw()">histogram Draw()</h2><div class="highlight"><pre><code class="language-cpp">gStyle-&gt;SetOptStat(0);//remove statistics
+gStyle-&gt;SetPalette(kViridis);//colz pattern</code></pre></div>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Convert-TGraph-g-to-TH2D-h">Convert TGraph <em>g to TH2D </em>h<a class="anchor-link" href="#Convert-TGraph-g-to-TH2D-h">&#182;</a></h2><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">n</span><span class="o">=</span><span class="n">g</span><span class="o">-&gt;</span><span class="n">GetN</span><span class="p">();</span>
-<span class="kt">double</span> <span class="o">*</span><span class="n">x</span><span class="o">=</span><span class="n">g</span><span class="o">-&gt;</span><span class="n">GetX</span><span class="p">();</span>
-<span class="kt">double</span> <span class="o">*</span><span class="n">y</span><span class="o">=</span><span class="n">g</span><span class="o">-&gt;</span><span class="n">GetY</span><span class="p">();</span>
-<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">h</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">);</span>
-<span class="n">h</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">&quot;colz&quot;</span><span class="p">)</span>
-</pre></div>
-<h2 id="Adding-points-to-a-graph">Adding points to a graph<a class="anchor-link" href="#Adding-points-to-a-graph">&#182;</a></h2><ul>
-<li>Add point (x,y) to a grahp g<div class="highlight"><pre><span></span><span class="n">g</span><span class="o">-&gt;</span><span class="n">SetPoint</span><span class="p">(</span><span class="n">g</span><span class="o">-&gt;</span><span class="n">GetN</span><span class="p">(),</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
-</pre></div>
+<h2 id="Convert-TGraph-g-to-TH2D-h">Convert TGraph <em>g to TH2D </em>h</h2><div class="highlight"><pre><code class="language-cpp">int n=g-&gt;GetN();
+double *x=g-&gt;GetX();
+double *y=g-&gt;GetY();
+for(int i=0;i&lt;n;i++) h-&gt;Fill(x[i],y[i]);
+h-&gt;Draw("colz");;</code></pre></div>
+<h2 id="Adding-points-to-a-graph">Adding points to a graph</h2><ul>
+<li>Add point (x,y) to a grahp g<div class="highlight"><pre><code class="language-cpp">g-&gt;SetPoint(g-&gt;GetN(), x,y);;</code></pre></div>
 </li>
 </ul>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="&#22312;&#20195;&#30721;&#20013;&#36816;&#34892;&#33050;&#26412;">&#22312;&#20195;&#30721;&#20013;&#36816;&#34892;&#33050;&#26412;<a class="anchor-link" href="#&#22312;&#20195;&#30721;&#20013;&#36816;&#34892;&#33050;&#26412;">&#182;</a></h2><div class="highlight"><pre><span></span><span class="n">gROOT</span><span class="o">-&gt;</span><span class="n">ProcessLine</span><span class="p">(</span><span class="s">&quot;.L anotherScript.c&quot;</span><span class="p">);</span>
-<span class="n">gROOT</span><span class="o">-&gt;</span><span class="n">ProcessLine</span><span class="p">(</span><span class="s">&quot;tree-&gt;Draw(&quot;</span><span class="n">x</span><span class="s">&quot;)&quot;</span><span class="p">);</span>
-</pre></div>
-<h2 id="to-know-if-a-file-exists">to know if a file exists<a class="anchor-link" href="#to-know-if-a-file-exists">&#182;</a></h2><div class="highlight"><pre><span></span><span class="k">if</span><span class="p">(</span><span class="n">gSystem</span><span class="o">-&gt;</span><span class="n">AccessPathName</span><span class="p">(</span><span class="s">&quot;test.txt&quot;</span><span class="p">)){</span>
-    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;test does not exist&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<h2 id="在代码中运行脚本">在代码中运行脚本</h2><div class="highlight"><pre><code class="language-cpp">gROOT-&gt;ProcessLine(".L anotherScript.c");
+gROOT-&gt;ProcessLine("tree-&gt;Draw(\"x\")");</code></pre></div>
+<h2 id="to-know-if-a-file-exists">to know if a file exists</h2><div class="highlight"><pre><span></span><span class="k">if</span><span class="p">(</span><span class="n">gSystem</span><span class="o">-&gt;</span><span class="n">AccessPathName</span><span class="p">(</span><span class="s">"test.txt"</span><span class="p">)){</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"test does not exist"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;test exists&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"test exists"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
  <span class="p">}</span>
 </pre></div>
-
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="compile-with-root-library">compile with root library<a class="anchor-link" href="#compile-with-root-library">&#182;</a></h2><div class="highlight"><pre><span></span><span class="n">g</span><span class="o">++</span> <span class="n">Good</span><span class="p">.</span><span class="n">C</span> <span class="err">`</span><span class="n">root</span><span class="o">-</span><span class="n">config</span> <span class="o">--</span><span class="n">cflags</span><span class="err">`</span> <span class="err">`</span><span class="n">root</span><span class="o">-</span><span class="n">config</span> <span class="o">--</span><span class="n">glibs</span><span class="err">`</span> <span class="o">-</span><span class="n">o</span> <span class="n">Good</span>
+<h2 id="compile-with-root-library">compile with root library</h2><div class="highlight"><pre><span></span><span class="n">g</span><span class="o">++</span> <span class="n">Good</span><span class="p">.</span><span class="n">C</span> <span class="err">`</span><span class="n">root</span><span class="o">-</span><span class="n">config</span> <span class="o">--</span><span class="n">cflags</span><span class="err">`</span> <span class="err">`</span><span class="n">root</span><span class="o">-</span><span class="n">config</span> <span class="o">--</span><span class="n">glibs</span><span class="err">`</span> <span class="o">-</span><span class="n">o</span> <span class="n">Good</span>
 </pre></div>
-
 </div>
 </div>
 </div>
-    </div>
-  </div>
+</div>
+</div>
 </body>
-
- 
-
-
 </html>
