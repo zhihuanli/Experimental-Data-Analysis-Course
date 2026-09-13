@@ -30,6 +30,14 @@ PAGES = [
  'chapt3/3.8_TTree_Branch_with_vector.html',
  'chapt1/Integration_in_TH1_and_TF1.html',
  'chapt1/Example_of_Integration_in_TH1_and_TF1.html',
+ 'chapt4/4.0_gamma-gamma_coincidence.html',
+ 'chapt4/4.0_pairtimewalk.html',
+ 'chapt4/4.0_check_corrected_timewalk.html',
+ 'chapt4/4.1_gamma-gamma_coincidence_matrix.html',
+ 'chapt4/4.2_gamma-gamma_background_matrix.html',
+ 'chapt5/5.1_Decay_analysis_I.html',
+ 'chapt5/5.2_Decay_analysis_II.html',
+ 'chapt5/fitting_LS_LH.html',
 ]
 
 def fragment(s):

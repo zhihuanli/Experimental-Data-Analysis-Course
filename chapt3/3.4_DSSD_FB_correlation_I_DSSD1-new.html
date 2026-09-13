@@ -8382,7 +8382,10 @@ Core.unzipJSON(33982,'WkwIPDQAvoQAeAHtnWtzG0eyYP+Kg3E/7IOLQL+7iY2N0MMaeVeWFJI8lq
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3>3. 残差与幅度的关系</h3><p>定义 residual 为 <code>d1x[12] − (p0 + p1*d1y[13])</code>。直线描述合适时，主条带应在零附近，且不随幅度出现系统趋势。若有趋势，应检查模型、两轴测量误差、阈值和残留混合事件；不能仅凭低能端事例较多就判定为“统计假象”，也不能据此排除电子学非线性。</p>
+<h3>3. 残差与幅度的关系</h3>
+<p>定义 residual 为 <code>d1x[12] − (p0 + p1*d1y[13])</code>。除检查主条带是否在零附近，还要看低、中、高幅度区是否存在不同的偏移或趋势。</p>
+<p>本例低幅度事例密集，逐事例拟合时这一段对目标函数的累计贡献较大。即使使用 <code>ROB</code>，拟合也可能更侧重低幅度区，高幅度区的符合程度却未必同样好；若刻度近似或残留事件成分随幅度变化，这种影响会反映在 residual 中。</p>
+<p><a href="3.5_DSSD_FB_correlation_II_DSSD1-new.html">3.5 逐条归一</a>采用按待刻度条幅度抽样的处理，降低密集区的主导作用，再用完整候选样本检查归一结果。若抽样后仍有系统趋势，还需检查电子学非线性、两轴测量误差、阈值及残留混合事件；不能仅凭事例密度就断定趋势一定是统计效应。</p>
 </div>
 </div>
 </div>

@@ -7860,7 +7860,9 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2>1. 相邻探测器的幅度关联</h2><p>先看所有事例，再选择每层一个或两个 hit。这里 <code>Draw("e1:e2")</code> 按数组下标组成点，不会判断是否来自同一个粒子。图中连续分布可能含误配、散射、反应或电荷收集不完整，不能只从二维图决定来源。</p>
+<h3>1. 相邻探测器的幅度关联</h3>
+<p>先看所有事例，再选择每层一个或两个 hit。正常穿过前层并在后层继续损失能量的粒子形成 $\Delta E$–$E$ 条带。粒子在探测器内发生反应或散射时，粒子种类、能量和路径可能改变，使事例偏离原来的条带，形成连续分布。</p>
+<p>层间误配和电荷收集不完整也会产生带外事例。这里 <code>Draw("e1:e2")</code> 按数组下标组成点；后面通过位置关联检查对应关系，比较选择前后的能量图。</p>
 </div>
 </div>
 </div>
@@ -7946,7 +7948,8 @@ Core.unzipJSON(1209214,'WkwIY7YFfnMSeAHsvWmzXNd1pvlXFIz6SDNwpxyA6A8arJK7ZUlhySWq
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3>一个重建粒子</h3><p>先选取相邻两层各有一个重建 hit 的事例，观察主条带和连续分布。连续分布可能含散射、反应、能量收集不完整及误配等成分，不能仅靠这张图确定来源。</p>
+<h4>一个重建粒子</h4>
+<p>选择相邻两层各有一个重建 hit 的事例，观察主粒子带及其周围的连续分布。这一选择减少了多粒子组合，但粒子在探测器内发生反应或散射后，仍可能只留下一个重建 hit。因此，下面还要检查两层位置是否相容。</p>
 </div>
 </div>
 </div>

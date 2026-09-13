@@ -22,7 +22,7 @@ for c in nb.cells:
     if not render_only:
         c.outputs=[];c.execution_count=None
     # Definition cells are supported directly by the ROOT kernel's C++ magic.
-    if re.match(r'^(void|bool|struct|class)\s+\w+[\s({]',c.source):
+    if re.match(r'^(void|bool|struct|class)\s+\w+[\s({]',c.source) or re.match(r'^TH\w+\s*\*\s*\w+\s*\(',c.source):
         c.source='%%cpp -d\n'+c.source
 
 def progress(cell,cell_index,**kwargs):

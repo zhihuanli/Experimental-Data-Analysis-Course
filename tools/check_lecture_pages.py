@@ -36,8 +36,9 @@ for rel in pages:
                 for output in ncell.outputs:
                     assert output.output_type!='error',(rel,'execution error')
                     markup=output.get('data',{}).get('text/html','')
-                    packed=re.search(r"Core.unzipJSON\((\d+),'([^']+)'",markup)
+                    packed=re.search(r"Core.unzipJSON\((\d+),'([^']*)'",markup)
                     if packed:
+                        assert packed[2],(rel,'empty JSROOT compressed payload')
                         payload=base64.b64decode(packed[2]);raw=b''
                         while payload:
                             assert payload[:2]==b'ZL',(rel,'ROOT compression header')
@@ -52,7 +53,7 @@ for rel in pages:
                         assert any(script.get_text().strip()==s.get_text().strip()
                                    for s in cell.find_all('script')),(rel,'native script differs')
                     if output.output_type=='stream':
-                        plain=re.sub(r'\x1b\[[0-9;]*m','',output.text).replace('\r','\n').strip()
+                        plain=re.sub(r'\x1b\[[0-9;]*m','',output.text).replace('\r\n','\n').replace('\r','\n').strip()
                         rendered='\n'.join(p.get_text() for p in cell.select('.jp-OutputArea pre'))
                         assert plain in rendered,(rel,'printed output differs',plain[:100])
                 actual=[n['id'] for n in cell.select('[id^="root_plot_"]')]
@@ -69,7 +70,8 @@ for rel in pages:
 
 # Compare semantic notebook content of later chapters, not serialization.
 for rel in subprocess.check_output(['git','diff','--name-only'],cwd=ROOT,text=True).splitlines():
-    if not rel.startswith(('chapt4/','chapt5/','chapt7/')) or not rel.endswith('.html'):continue
+    if rel in PAGES:continue
+    if not rel.startswith(('chapt4/','chapt5/','chapt6/','chapt7/')) or not rel.endswith('.html'):continue
     old=BeautifulSoup(subprocess.check_output(['git','show','HEAD:'+rel],cwd=ROOT),'html.parser')
     new=BeautifulSoup((ROOT/rel).read_text(),'html.parser')
     for selector in ['.jp-Cell','.cell']:
@@ -92,8 +94,9 @@ assert len(links)==1,'Use one Methods link, before chapter 1'
 chapters=[h for h in home.find_all(['h2','h3']) if re.search(r'第一章|chapter\s+1\.',h.get_text(),re.I)]
 assert chapters,'Chapter 1 heading'
 assert links[0] in list(chapters[0].previous_elements),'Methods link should precede chapter 1'
-root_heading=next(h for h in home.find_all(['h2','h3']) if h.get_text(strip=True)=='ROOT 基础')
-assert root_heading.find_next('a')==links[0], 'ROOT basics links directly to Methods'
+prerequisite=home.find(id='preparation')
+assert prerequisite and prerequisite.get_text(strip=True).startswith('前置课程：')
+assert prerequisite.find('a')==links[0], 'The prerequisite links directly to Methods'
 for link in home.select('a[href]'):
     if link['href'].startswith(prefix):
         target=ROOT.parent/'method'/unquote(link['href'][len(prefix):] or 'README.md')

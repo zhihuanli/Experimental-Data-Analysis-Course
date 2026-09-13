@@ -7946,7 +7946,19 @@ opt-&gt;Fill(); // 只有满足触发条件才存入 Tree
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2>2. 数字化数据的处理</h2><h3>Pedestal 与有效区间</h3><p>先画原始 channel 分布，识别 pedestal、物理信号和无效码。阈值由噪声水平与信号需求选择。对理想 Gaussian 噪声，单侧超过均值 3σ 的概率约 0.135%；这是纯噪声的越阈概率，不是“该事例为真实信号的概率”。对数、开方及倒数运算前，检查其输入是否有效。</p><h3>量化与 Dithering</h3><p>ADC/TDC 原始整数道值可以直接保留。若 N 表示区间 [N,N+1)，可用 N+0.5 作代表值；变换后的直方图 bin 宽度应与输入步距相称。Dithering 是按“bin 内均匀”近似加上 U(0,1) 的可选做法，并不恢复真实的连续信号，也不改善探测器分辨。</p><p>下面用同一组模拟时间比较 bin 中心取值与 bin 内随机化。两者保持相同的平均刻度，随机化只是改变量化结构的显示，并额外引入随机涨落。</p>
+<h2>数字化信号处理：有效范围与 Dithering</h2>
+<h3>先确定有效道值</h3>
+<p>用空触发或无束流数据画出 ADC 谱，拟合 pedestal 得到均值 $\mu_{ped}$ 和宽度 $\sigma_{ped}$。以 $\mu_{ped}+3\sigma_{ped}$ 为阈值，是抑制噪声的常用起点，再根据低幅度信号与噪声的分离情况调整。对 Gaussian 噪声，超过这一阈值的单侧概率约为 0.135%；它描述噪声的越阈比例，不是所选事例的信号纯度。</p>
+<p>计算组合量前，排除缺失、overflow 及不在有效范围内的读数。例如，一端 TDC 无效时，两端平均时间也没有意义。本模拟可先用以下条件选择两端时间：</p>
+<pre><code class="language-cpp">TCut valid_tdc = "itL&gt;0 &amp;&amp; itL&lt;4095 &amp;&amp; itR&gt;0 &amp;&amp; itR&lt;4095";</code></pre>
+<p>这里的 0、4095 对应前面模拟的编码约定；实验数据按模块的状态与有效码范围设置。幅度扣除 pedestal 后，再检查开方、对数和倒数所需的输入条件。</p>
+<h3>刻度和组合运算前进行 Dithering</h3>
+<p>本讲义将 dithering 作为整数 ADC/TDC 道值进入逐事件连续刻度前的标准步骤。整数道值代表一个量化区间；直接缩放、求差或取平均后，新 histogram 的 bin 宽度与离散步距可能不匹配，从而产生人为的锯齿、条纹或空 bin。</p>
+<p>前面的模拟采用向下取整，$N$ 对应 $[N,N+1)$。在一个道宽内分布变化较慢时，采用道内均匀近似：</p>
+<p>$$A_{cont}=N+u,\qquad u\sim U(0,1).$$</p>
+<p>先由有效整数道值生成连续值，再用该值进行刻度和组合运算。每个事例的每路测量只随机化一次，后续计算复用它；原始整数和状态仍保留。Dithering 不增加仪器分辨率，也不确定单个事例在道内的真实位置。</p>
+<h3>比较两端平均时间</h3>
+<p>下面对同一批整数时间读数比较两种处理：左图取道中心 $N+0.5$ 后求平均，右图先分别 dithering 再求平均。使用相同的 histogram 范围和 bin 宽度。道中心与道内均匀取值具有相同的期望值，因而不会把半个道的整体平移混入比较。</p>
 </div>
 </div>
 </div>
@@ -8035,7 +8047,11 @@ Dither model: mean=49.9884, RMS=3.56175
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2>3. 用于后续分析</h2><p>保留原始码和状态，再生成刻度后的幅度、时间。有效性检查与阈值选择记录在分析中；是否使用 dithering 是量化模型的选择，不是所有数据的必做步骤。</p>
+<h3>图中的量化结构</h3>
+<p>左图的两端平均时间仍以 0.5 channel 为间隔，而 histogram 的 bin 宽度为 0.2 channel，因而出现交替的空 bin 和高计数 bin。它们来自量化步距与新 binning 的不匹配，不是物理峰。</p>
+<p>右图在求平均前对每端做了 dithering，离散码不再集中映射到少数 bin，量化条纹明显减弱。打印的均值和 RMS 用于比较整体位置和宽度；后者包含道内均匀近似的贡献。</p>
+<h3>用于后续分析</h3>
+<p>逐事件处理按“有效性检查 → dithering → 刻度与组合量计算”的顺序进行。先生成并保存各路连续值，再由同一组数值求时间差、平均时间、能量等量，不在每次计算或画图时重新加随机数。固定随机种子便于复现示例。</p>
 </div>
 </div>
 </div>

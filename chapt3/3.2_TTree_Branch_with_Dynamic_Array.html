@@ -7819,7 +7819,7 @@ a.anchor-link {
 <div class="highlight"><pre><span></span><span class="n">Int_t</span><span class="w"> </span><span class="n">xt</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">128</span><span class="p">],</span><span class="w"> </span><span class="n">yt</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">128</span><span class="p">];</span><span class="w">            </span><span class="c1">// raw</span>
 <span class="n">Double_t</span><span class="w"> </span><span class="n">xtc</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">128</span><span class="p">],</span><span class="w"> </span><span class="n">ytc</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">128</span><span class="p">];</span><span class="w">      </span><span class="c1">// calibrated</span>
 </pre></div>
-<p>这种写法的优点是结构直接，适合原始数据存储；后续若主要处理有效条，也可以转换为紧凑的 hit 列表。在本例中，一个事件通常只有少数条有信号。固定数组的零值可被 ROOT 压缩；hit 结构的主要优点是便于表达和处理有效条，而不是保证文件总会更小。固定数组的下标直接是 strip ID；hit 列表的下标则是本事件内的 hit 编号。两种结构都能使用，区别在于访问方式。</p>
+<p>这种写法的优点是结构直接，适合原始数据存储；后续若主要处理有效条，也可以转换为紧凑的 hit 列表。在本例中，一个事件通常只有少数条有信号。固定数组中重复的无效标记也可被 ROOT 压缩；hit 结构的主要优点是便于表达和处理有效条，而不是保证文件总会更小。固定数组的下标直接是 strip ID；hit 列表的下标则是本事件内的 hit 编号。两种结构都能使用，区别在于访问方式。</p>
 <h2 id="%E5%A6%82%E6%9E%9C%E6%9C%89%E5%A4%9A%E4%B8%AA%E5%90%8C%E7%B1%BB%E5%9E%8B%E6%8E%A2%E6%B5%8B%E5%99%A8">如果有多个同类型探测器</h2><p>如果系统中有多个同类型探测器，更适合把事件整理成 hit structure。对于 x side，可以写成：</p>
 <div class="highlight"><pre><code class="language-cpp">Int_t xhit;
 Int_t xdet[384];      // dssd: 1-3
@@ -8847,7 +8847,7 @@ Core.unzipJSON(256604,'WkwIZn0BXOoDeAHsvWuTHcd1pvtXHIj5iIPY9wv6E0VJls+RJYUojahRO
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="assignment">作业</h2><ol>
-<li>参照 3.1 节完成 Pie 侧所有 48 条的能量刻度。结合已知谱线、峰序和残差检查峰匹配，再比较各条的峰宽和拟合质量。</li>
+<li>参照 3.1 节完成 Pie 侧所有 48 条的能量刻度。先对有效的整数道值进行 dithering，再应用各条刻度。按已知谱线的能量顺序枚举候选峰组合，比较拟合残差与峰身份，确定对应关系；再比较各条的峰宽和拟合质量。</li>
 <li>将带有高斯拟合曲线的所有单条原始能谱、刻度后的单条能谱保存到一个 ROOT 文件中。将刻度后所有条的能谱累积在一个 TH1 上，给出 4 个参与刻度的 $\alpha$ 峰的分辨。</li>
 <li>提取各条的分辨率，画出 FWHM-条id 的关系图并放在一个 <code>TGraph</code> 上（参照下图）。同时，对比刻度前后 Pie 侧所有条的能量分布。</li>
 <li>将刻度前和刻度后的数据转换成 hit 结构，对比并展示刻度前后 Pie 侧所有条的整体能量分布情况。其中，Ring 侧的条事件需按照能量由大到小的顺序进行排序后，再填入 hit 结构。</li>

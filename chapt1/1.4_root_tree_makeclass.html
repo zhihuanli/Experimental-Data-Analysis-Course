@@ -8533,7 +8533,7 @@ Core.unzipJSON(892073,'WkwI8jYEqZwNeAHkvVuTnMeRpvlXZLS5RNOqKrMyqwDbC4pqjXpXJ5PUI
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="assignment">作业</h2><p>用 MakeClass 读取前面的模拟数据，为探测器增加两端读出的薄 Veto Wall，按原练习的简化设定生成带电粒子的 veto 信号。比较应用 veto 条件前后的归一化 TOF—幅度二维图，不用 pid 作选择。</p><p>再把测量幅度、时间映射为 12-bit ADC/TDC 道值，保留原始量与状态。选定有效区间后重建位置和 TOF，比较 bin 中心取值与 1.3 的可选 dithering 结果。</p><p>Veto Wall 厚 1 cm，前后距离 5 cm；练习中设带电粒子沉积入射能量的 1/10，中子和 gamma 不产生 veto 信号，响应分辨采用前面的参数。这是该模拟的设定，不是实际探测效率的描述。</p><p><img alt="Veto Wall 与中子探测器" src="fig/vetowall.png"/></p>
+<h2 id="assignment">作业</h2><p>用 MakeClass 读取前面的模拟数据，为探测器增加两端读出的薄 Veto Wall，按原练习的简化设定生成带电粒子的 veto 信号。比较应用 veto 条件前后的归一化 TOF—幅度二维图，不用 pid 作选择。</p><p>再把测量幅度、时间映射为 12-bit ADC/TDC 道值，保留原始量与状态。参照 1.3，先选择有效道值并进行 dithering，再重建位置和 TOF。保留未做 dithering 的结果作对比，观察量化结构对组合量分布的影响。</p><p>Veto Wall 厚 1 cm，前后距离 5 cm；练习中设带电粒子沉积入射能量的 1/10，中子和 gamma 不产生 veto 信号，响应分辨采用前面的参数。这是该模拟的设定，不是实际探测效率的描述。</p><p><img alt="Veto Wall 与中子探测器" src="fig/vetowall.png"/></p>
 </div>
 </div>
 </div>
