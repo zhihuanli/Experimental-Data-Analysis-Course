@@ -7837,30 +7837,17 @@ a.anchor-link {
 <a href="../index.html"><img alt="课程标志" src="../assets/images/course-logo.png"/></a>
 <div class="course-banner-title"><a href="../index.html">核物理实验数据处理</a>
 <span class="course-banner-en">Experimental Data Analysis in Nuclear Physics</span></div></div></header>
-
 <main>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e7a2fdf4-25a6-413c-ba56-f04ce1d1caae">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="3.6-DSSD-Multiplicity-Event-Analysis">3.6 DSSD Multiplicity Event Analysis</h1><p>the main task in this section is <strong>event reconstruction</strong>: based on the x-y correlation, determine how many particles entered the detector, where they hit, and what energies should be assigned to them.</p>
-<h2 id="Input-data-structure-in-cal_16C.root">Input data structure in <code>cal_16C.root</code></h2><p>The multiplicity analysis starts from the calibrated ROOT file <code>cal_16C.root</code>, where the tree stores strip-level quantities for each detector side, including the strip multiplicities, strip indices, strip energies, summed front/back energies, and cluster multiplicities with adjacent strips merged.</p>
-<p>A representative event structure is</p>
-<div class="highlight"><pre><span></span><span class="n">Int_t</span><span class="w">  </span><span class="n">x1hit</span><span class="p">;</span>
-<span class="n">Int_t</span><span class="w">  </span><span class="n">x1</span><span class="p">[</span><span class="n">x1hit</span><span class="p">];</span>
-<span class="kt">double</span><span class="w"> </span><span class="n">x1e</span><span class="p">[</span><span class="n">x1hit</span><span class="p">];</span>
-
-<span class="n">Int_t</span><span class="w">  </span><span class="n">y1hit</span><span class="p">;</span>
-<span class="n">Int_t</span><span class="w">  </span><span class="n">y1</span><span class="p">[</span><span class="n">y1hit</span><span class="p">];</span>
-<span class="kt">double</span><span class="w"> </span><span class="n">y1e</span><span class="p">[</span><span class="n">y1hit</span><span class="p">];</span>
-
-<span class="kt">double</span><span class="w"> </span><span class="n">x1es</span><span class="p">,</span><span class="w"> </span><span class="n">y1es</span><span class="p">;</span>
-<span class="kt">int</span><span class="w">    </span><span class="n">x1m</span><span class="p">,</span><span class="w"> </span><span class="n">y1m</span><span class="p">;</span><span class="w">   </span><span class="c1">// adjacent strips counted as one cluster</span>
-</pre></div>
-<p>The key distinction is that <code>xhit</code> and <code>yhit</code> are the numbers of strips above threshold, while <code>xm</code> and <code>ym</code> are cluster multiplicities after merging adjacent strips. Neither of them is automatically equal to the true particle multiplicity. That is precisely why a dedicated multiplicity analysis is needed.</p>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h1>3.6 DSSD multiplicity：从条的组合到粒子候选</h1><p>本节沿着“两面幅度和 → multiplicity 相关 offset → 相邻条 → 候选配对”的顺序，判断一片 DSSD 中有几个粒子、位置在哪里、每个粒子分配多少能量。</p><p><code>data/cal_16C.root</code> 保存逐条的相对刻度结果。以 DSSD1 为例：</p><pre><code class="language-cpp">Int_t x1hit, y1hit;       // 超过阈值的条数
+Int_t x1[32], y1[32];     // 条号；有效长度由 x1hit/y1hit 给出
+Double_t x1e[32], y1e[32];// 相对幅度，还不是 MeV
+Double_t x1es, y1es;     // 两面相对幅度和
+Int_t x1m, y1m;           // 相邻条的连通组数</code></pre><p><code>xhit</code> 不等于粒子数；<code>xm</code> 也只是空间连通组数。两个相邻 hit 可能来自一个粒子的 sharing，也可能来自两个相邻粒子，不能先无条件合并再当成答案。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=2ca5ec58-0079-40e9-875a-76cd131aa7c2">
@@ -7884,9 +7871,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="x-y-correlation">x-y correlation</h3>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h2>1. 两面总幅度的一致性</h2></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=fd939b71-367d-4436-9261-5eb33512946e">
@@ -7920,9 +7905,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Hit-Pattern">Hit Pattern</h3>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>条的 multiplicity</h3><p>先比较 X、Y 两面有效条数。两面 hit 数不同不一定意味着数据无效。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=585c1b35-4288-40d6-876b-6d624922f70b">
@@ -7953,11 +7936,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Difference-in-total-energy-between-the-X-and-Y-sides">Difference in total energy between the X and Y sides</h3><ul>
-<li>The energy difference between the two sides is not always centered at zero. Instead, it clusters around several specific offset values, with equal spacing between adjacent offsets.</li>
-</ul>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>两面幅度和的差</h3><p>差值不总在零附近，而出现相隔近似固定幅度的结构。接着查看它与两面 hit 数之差的关系。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=79f039ac-efa1-4c1f-9eb5-bd739ffc1c9c">
@@ -7995,11 +7974,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="total-energy-difference-vs.-multiplicity-difference">total energy difference vs. multiplicity difference</h3><ul>
-<li>The energy difference between the two sides shows linear dependence on the multiplicity difference.</li>
-</ul>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>幅度和之差与 multiplicity 之差</h3><p>观察不同 hit 数差对应的中心位置，检查是否可由共同 offset 描述。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=3ea4dd23-d9b2-44a7-8f8a-8bddfee375f3">
@@ -8031,28 +8006,14 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Offset-correction">Offset correction</h2><p>The reason of behaviors showed in above are following. After normalization, the amplitude of one strip can be written approximately as</p>
-<p>$$
-E_i = kA_i' + b ,
-$$</p>
-<p>where $A_i'$ is the normalized strip amplitude. If the x side has multiplicity $m_x$ and the y side has multiplicity $m_y$, and if</p>
-<p>$$
-xes=\sum_{i\in m_x} A'_{x_i}, \qquad
-yes=\sum_{j\in m_y} A'_{y_j},
-$$</p>
-<p>then the total energies on the two sides are</p>
-<p>$$
-E_x = k\cdot xes + m_x b,\qquad
-E_y = k\cdot yes + m_y b.
-$$</p>
-<p>Assuming energy conservation, $E_x=E_y$, one obtains</p>
-<p>$$
-xes-yes = (m_y-m_x)\frac{b}{k}.
-$$</p>
-<p>This means that even for a physically correct event, the summed normalized amplitudes on the two sides will not generally be equal if the front-back multiplicities are different. Therefore, the systematic offset associated with unequal front-back multiplicities must be corrected <strong>before</strong> multiplicity classification is attempted.</p>
-<p>本参考文件的共同 offset 取 <code>b/k = −25, −25, −30</code>，分别对应 DSSD1、2、3。因此修正幅度是每条相对幅度加上 b/k，即分别减去 25、25、30。它们是当前参考刻度的经验常数；重新刻度后应从 multiplicity 关联重新确定。</p>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>共同 offset 为什么要逐条修正？</h3>
+<p>设相对归一后的单条幅度为 $A_i'$，绝对能量还需共同变换 $E_i=kA_i'+b$。若两面有效条数为 $m_x,m_y$，
+$$xes=\sum_{i=1}^{m_x}A'_{x_i},\qquad yes=\sum_{j=1}^{m_y}A'_{y_j},$$
+则两面能量和为
+$$E_x=k\,xes+m_xb,\qquad E_y=k\,yes+m_yb.$$
+对于电荷收集完整的事例 $E_x=E_y$，因此
+$$xes-yes=(m_y-m_x)\frac{b}{k}.$$</p>
+<p>上图的斜率给出共同 offset 的线索。本参考刻度采用 $b/k=-25,-25,-30$，分别对应 DSSD1、2、3。把每条幅度加上 $b/k$ 后再求和，避免两面条数不同产生人为偏移。这些数值属于本参考刻度；重新求相对刻度后需重新检查。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=ae4924e0-57cf-4028-a6ec-194af55878b0">
@@ -8109,18 +8070,9 @@ $$</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Adjacent-Strip-Effects">Adjacent Strip Effects</h3><p>After applying the correction by adding the corresponding $b/k$ value from each strip’s amplitude, the energy difference between the x-side and y-side still exhibits a dependence on the amplitude of one side. This is attributed to induced signals between adjacent strips.</p>
-<h4 id="Detailed-Correlation-Between-Adjacent-Strips">Detailed Correlation Between Adjacent Strips</h4><p>Figure (a) illustrates the energy signal correlation between the adjacent 15th and 16th strips of the DSSD. The plot is divided into four distinct regions:</p>
-<ul>
-<li><strong>Region A</strong>: Represents energy-sharing signals between strips.</li>
-<li><strong>Regions B and C</strong>: Correspond to induced signals in adjacent strips.</li>
-<li><strong>Region D</strong>: Indicates baseline (pedestal) signals.</li>
-</ul>
-<p>Figure (b) provides a magnified view of the low-energy end of the horizontal axis in Figure (a). It is observed that as the energy of the 16th strip increases, a small signal is consistently generated on the 15th strip in a fixed proportion. This small signal is referred to as the <strong>induced signal</strong> from the adjacent strip. The amplitude of the induced signal is proportional to the amplitude of the source signal. When the induced signal’s amplitude falls below the ADC threshold, it is not recorded, resulting in a loss of this signal and a corresponding reduction in multiplicity by 1. This mechanism explains the observed dependence of the energy difference on the amplitude.</p>
-<p><img alt="Adjacent Strip Correlation" src="fig/x1x2_correlation.png"/></p>
-<h4 id="Impact-Assessment">Impact Assessment</h4><p>The maximum observed offset in the data is approximately $40/6000 = 0.0067$, 即约 0.67%。本例先保留这项 residual；其能否忽略要与后续观测量要求比较，不能仅凭比例小就认定没有影响。</p>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>相邻条信号与剩余趋势</h3>
+<p>共同 offset 修正后仍有随幅度变化的 residual。邻条耦合、阈值以下未记录的共享电荷及收集不完整，都可能造成这种趋势；仅凭幅度和不能区分这些机制。</p>
+<p>原图展示几类相邻条关联：A 区有 sharing 条带，B、C 区为一强一弱的相关信号，D 区在 pedestal 附近。右图放大弱信号区域，显示弱信号可随主信号增加。若弱信号低于读出阈值，相应电荷与 hit 数就不在记录中。</p><img alt="Adjacent Strip Correlation" src="fig/x1x2_correlation.png"/><p>当前谱中约 40/6000≈0.67% 的残余偏移，在总能量上不大，但对要求数个幅度单位精度的配对仍可能重要。下面的 gate 保留了这项实验特征；不通过修改事件幅度把它“拉直”。</p></div>
 </div>
 </div>
 </div>
@@ -8129,13 +8081,7 @@ $$</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Total-energy-difference-cuts">Total energy difference cuts</h3><p>After defining <code>xesc</code> and <code>yesc</code>, the next step is to inspect the correlation between the corrected total energy on one side and the corrected front-back energy difference. In the original ROOT analysis, histograms of the form</p>
-<p>$$
-xesc \ \text{vs.}\ (xesc-yesc)
-$$
-are drawn for DSSD1–3, and a graphical cut is placed on the <strong>cross-shaped region around the central bright concentration</strong>. This cut is loaded from <code>cutd1esc.cut</code>, <code>cutd2esc.cut</code>, and <code>cutd3esc.cut</code>.</p>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>两面总能量 gate</h3><p>在 $xesc$ 对 $(xesc-yesc)$ 的图上，沿主条带选择候选。文件 <code>cutd1esc.cut</code> 等保存的是本参考数据使用的多边形。这个 gate 检查<strong>全事件的能量和</strong>，并未决定单个粒子的 x-y 对应。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=d30fed84-7581-4c98-ae0d-5066387aa78d">
@@ -8186,17 +8132,15 @@ are drawn for DSSD1–3, and a graphical cut is placed on the <strong>cross-shap
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Event-Classification">Event Classification</h2><p>The event classification combines strip multiplicities (<code>xhit</code>, <code>yhit</code>), cluster multiplicities (<code>xm</code>, <code>ym</code>), strip adjacency, and corrected front-back energy matching.</p>
-<p>Because a single particle can produce a double-strip response via charge sharing or induced signals, strip multiplicity is not automatically particle multiplicity. Each topology must be examined explicitly.</p>
-<h3 id="Notation-and-Plot-Reading">Notation and Plot Reading</h3><p>To classify event topologies accurately, we use the following variables and plotting conventions:</p>
-<ul>
-<li><strong>Multiplicities</strong>: <code>xhit</code>/<code>yhit</code> count fired strips, while <code>xm</code>/<code>ym</code> count spatial clusters (adjacent strips merged). <em>Note: Neither automatically equals the true number of incident particles.</em></li>
-<li><strong>Hit Indices</strong>: <code>x[i]</code> and <code>xe[i]</code> are the strip number and relatively normalized amplitude of the $i$-th hit in the event. Adjacency is verified by strip numbers (e.g., <code>abs(x[0]-x[1]) == 1</code>).</li>
-<li><strong>Corrected Energies (Aliases)</strong>: We subtract empirical offsets (25, 25, 30 for DSSD1, 2, and 3) from the relatively normalized amplitudes. In the ROOT code, an alias like <strong><code>x1ec0</code></strong> represents the <strong>e</strong>nergy <strong>c</strong>orrected 0-th hit on the X-side of DSSD1 ($xe[0]-25$).</li>
-<li><strong>Reading the Plots</strong>: The <code>tree-&gt;Draw("A:B")</code> commands test specific particle-pairing hypotheses by plotting their front-back energy matching errors ($\Delta E$). If a hypothesis is correct, the events will cluster near the origin $(0,0)$.</li>
-</ul>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h2>2. 把每种分类当成待检验的假设</h2>
+<p>下面保留原有拓扑图，但读图时先说清：哪些 hit 归为一个粒子，哪些两面信号互相配对。条号检查相邻关系；能量关系检验候选。这里的 <code>x1ec0</code> 指第 0 个 X hit 修正后的幅度，并不指第 0 条。</p>
+<table><thead><tr><th>候选</th><th>检验量</th><th>需要比较的替代假设</th></tr></thead><tbody>
+<tr><td>X、Y 各两条，各自对应一个粒子</td><td>$r_1=X_0-Y_0,\ r_2=X_1-Y_1$</td><td>交换 Y：$X_0-Y_1,\ X_1-Y_0$</td></tr>
+<tr><td>X 两条，Y 三条中的 a、b 共享</td><td>$r_1=X_i-(Y_a+Y_b),\ r_2=X_{1-i}-Y_c$</td><td>枚举相邻的 a、b，并对 i=0、1 都检验</td></tr>
+<tr><td>两面各三条，三粒子</td><td>三个 $X_i-Y_{\pi(i)}$</td><td>三条 Y 的全部 6 个排列</td></tr>
+</tbody></table>
+<p><strong>斜条带本身不是正确配对的证据。</strong>前面已经限制两面能量和，所以两粒子的 $r_1+r_2\approx0$；错误配对也可落在负斜率线上。需要两个 residual 同时接近零，并检查是否还有其他候选也通过。共享条求和后，组的能量顺序可能变化，不能继续假定原先按单条能量排序的下标就是配对顺序。</p>
+<p>以下图分别展示若干候选的 residual，而不是自动完成分类。稍后用一个完整的两条对三条实例，把这种检验写成可执行的判断。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=8dd54c08-ab7d-4ddb-bf26-fe9d800e207d">
@@ -8311,9 +8255,7 @@ are drawn for DSSD1–3, and a graphical cut is placed on the <strong>cross-shap
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="xhit=2-and-yhit=3"><code>xhit=2 and yhit=3</code></h4>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>X 两条、Y 三条：尝试 Y 侧的 sharing 组</h3><p>三个面板组分别尝试 (0,1)、(1,2)、(0,2)。括号里是 hit 下标；对应条号相邻才允许求和。图中只显示一种对应，实际判断还要交换两个 X 候选。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=08d5ff7e-2ed2-4737-8a5d-154b357e47fc">
@@ -8371,9 +8313,7 @@ are drawn for DSSD1–3, and a graphical cut is placed on the <strong>cross-shap
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="xhit=3-and-yhit=2"><code>xhit=3 and yhit=2</code></h4>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>X 三条、Y 两条</h3><p>与上一种情况对称，在 X 面枚举相邻组，并比较两种与 Y 的对应关系。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=32765cd0-4274-4009-81c9-ddd7e0461632">
@@ -8433,9 +8373,7 @@ are drawn for DSSD1–3, and a graphical cut is placed on the <strong>cross-shap
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Three-particles">Three particles</h3><h4 id="xhit=3-&amp;&amp;-yhit-=3">xhit=3 &amp;&amp; yhit =3</h4>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>两面各三条</h3><p>先显示按当前能量顺序直接配对的三个 residual 之间的关系。三粒子判断要检验三项，同时比较 6 种排列；只看其中一对接近零还不够。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=2ab2c917-908f-4aad-95e2-56a279dbf93d">
@@ -8468,46 +8406,67 @@ are drawn for DSSD1–3, and a graphical cut is placed on the <strong>cross-shap
 </div>
 </div>
 <div class="verified-output"><img alt="3.6_DSSD_Multiplicity_Analysis: cell 26, c3" src="figures/3.6_DSSD_Multiplicity_Analysis/cell_26_c3.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=29c43fca-f0d7-4c2c-a390-2e9a79f87181">
+<div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><h2>3. 可运行实例：X 两条、Y 三条</h2>
+<p>选择 DSSD2 中两条 X 互不相邻、Y 恰有一个相邻双条组的事例，检验“两粒子，其中一个在 Y 面 sharing”的模型。不先加总能量 gate，以便看见全部几何候选的 residual。</p>
+<p>对每个相邻组，计算 <code>rGroup</code> 和 <code>rSingle</code>，并尝试 X 的两种对应。下面的函数返回通过条件的候选数。一次求和包含几条，就逐条扣几次共同 offset，不能只给整个组扣一次。</p></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><pre><code class="language-cpp">inline int Pair23(const int x[2], const int y[3],
+                  const double ex[2], const double ey[3], double tolerance,
+                  int&amp; groupA, int&amp; groupB, int&amp; single, int&amp; matchedX) {
+    if (std::abs(x[0]-x[1])&lt;=1) return 0;
+    int count=0;
+    for (int a=0; a&lt;3; ++a) {
+        for (int b=a+1; b&lt;3; ++b) {
+            int c=3-a-b; // 剩下的 Y hit，下标为 0+1+2-a-b
+            if (std::abs(y[a]-y[b])!=1) continue;
+            if (std::abs(y[c]-y[a])&lt;=1 || std::abs(y[c]-y[b])&lt;=1) continue;
+            for (int i=0; i&lt;2; ++i) { // 合并的 Y 组分别尝试对应 X[0]、X[1]
+                double rGroup=ex[i]-(ey[a]+ey[b]);
+                double rSingle=ex[1-i]-ey[c];
+                if (std::abs(rGroup)&gt;tolerance || std::abs(rSingle)&gt;tolerance) continue;
+                ++count;
+                groupA=a; groupB=b; single=c; matchedX=i;
+            }
+        }
+    }
+    return count;
+}</code></pre><p><code>tolerance</code> 是两个 residual 各自允许的绝对差。下面以相对幅度 15 为演示值，结合候选分布检查；它不是已标定的 3σ，也不是所有幅度和 multiplicity 都通用的宽度。精细分析可由干净样本确定随幅度与共享条数变化的匹配宽度。</p></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><h3>输入、状态与输出</h3><p>完整事件循环见 <a href="reconstruct_two_particles.C">reconstruct_two_particles.C</a>，配对函数见 <a href="dssd_pairing.h">dssd_pairing.h</a>。输入为 <code>data/cal_16C.root</code>，输出另存为 <code>two_particle_candidates.root</code>。</p>
+<ul><li><code>nCandidates=1</code>：在本两粒子模型中唯一，记录两个粒子的条号、幅度和 residual。</li><li><code>nCandidates=0</code> 或大于 1：保留无解或多解状态，<code>hit=0</code> 表示本例未给出确定重建，不表示物理上没有粒子。</li></ul>
+<p>X 面两个分开的 hit 提供两个粒子的幅度；Y 共享组暂以较大幅度条定位，并保存其成员 <code>ymask</code>，不声称取得了亚条位置分辨。这里只检验一种两粒子拓扑，三粒子共条等替代模型仍由后面的作业讨论。</p></div></div><div class="jp-Cell jp-CodeCell"><div class="jp-InputArea"><div class="jp-InputArea-editor"><div class="highlight"><pre><span></span><span class="n">gROOT</span><span class="o">-&gt;</span><span class="n">ProcessLine</span><span class="p">(</span><span class="s">".L reconstruct_two_particles.C"</span><span class="p">);</span>
+<span class="n">gROOT</span><span class="o">-&gt;</span><span class="n">ProcessLine</span><span class="p">(</span><span class="s">"reconstruct_two_particles(15);"</span><span class="p">);</span>
+<span class="n">TFile</span><span class="w"> </span><span class="o">*</span><span class="n">fCandidates</span><span class="o">=</span><span class="k">new</span><span class="w"> </span><span class="n">TFile</span><span class="p">(</span><span class="s">"two_particle_candidates.root"</span><span class="p">);</span>
+<span class="n">TTree</span><span class="w"> </span><span class="o">*</span><span class="n">candidateTree</span><span class="o">=</span><span class="n">fCandidates</span><span class="o">-&gt;</span><span class="n">Get</span><span class="o">&lt;</span><span class="n">TTree</span><span class="o">&gt;</span><span class="p">(</span><span class="s">"tree"</span><span class="p">);</span>
+<span class="n">candidateTree</span><span class="o">-&gt;</span><span class="n">Scan</span><span class="p">(</span><span class="s">"source_entry:nCandidates:hit:x:y:e:residual"</span><span class="p">,</span><span class="s">"hit==2"</span><span class="p">,</span><span class="s">""</span><span class="p">,</span><span class="mi">3</span><span class="p">);</span>
+</pre></div>
+</div></div><div class="verified-output"><pre>Example input entry 40: Y[0]+Y[2] -&gt; X[0], Y[1] -&gt; X[1]
+Input=1878694, (2,3)=190461, tested topology=97549
+Tolerance=15, unique=68663, ambiguous=1253, no match=27633
+Saved rows=97549
+***********************************************************************************************************
+*    Row   * Instance * source_en * nCandidat *       hit *         x *         y *         e *  residual *
+***********************************************************************************************************
+*        0 *        0 *        40 *         1 *         2 *         2 *        19 * 1928.2107 * 10.836302 *
+*        0 *        1 *        40 *         1 *         2 *        12 *        13 * 464.27441 * 1.1699172 *
+*        1 *        0 *        58 *         1 *         2 *        17 *         0 * 384.79693 * -3.146499 *
+*        1 *        1 *        58 *         1 *         2 *        20 *        13 * 741.18670 * 0.4998214 *
+*        2 *        0 *        68 *         1 *         2 *        16 *        25 * 353.69936 * -0.936192 *
+*        2 *        1 *        68 *         1 *         2 *        13 *        17 * 1021.2565 * -0.144656 *
+***********************************************************************************************************
+==&gt; 6 selected entries</pre></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><h3>候选分布与通过选择的唯一解</h3><p>左图每个几何假设贡献一个点，右图每个唯一通过的事例贡献一个点。右图集中在零附近是筛选条件的结果，不是独立证明；需要同时看左图及打印的无解、多解计数。</p></div></div><div class="jp-Cell jp-CodeCell"><div class="jp-InputArea"><div class="jp-InputArea-editor"><div class="highlight"><pre><span></span><span class="n">TCanvas</span><span class="w"> </span><span class="o">*</span><span class="n">cCandidates</span><span class="o">=</span><span class="k">new</span><span class="w"> </span><span class="n">TCanvas</span><span class="p">(</span><span class="s">"cCandidates"</span><span class="p">,</span><span class="s">"Two-by-three reconstruction"</span><span class="p">,</span><span class="mi">1000</span><span class="p">,</span><span class="mi">400</span><span class="p">);</span>
+<span class="n">cCandidates</span><span class="o">-&gt;</span><span class="n">Divide</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">cCandidates</span><span class="o">-&gt;</span><span class="n">cd</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">fCandidates</span><span class="o">-&gt;</span><span class="n">Get</span><span class="o">&lt;</span><span class="n">TH2</span><span class="o">&gt;</span><span class="p">(</span><span class="s">"hCandidates"</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"colz"</span><span class="p">);</span><span class="w"> </span><span class="n">gPad</span><span class="o">-&gt;</span><span class="n">SetLogz</span><span class="p">();</span>
+<span class="n">cCandidates</span><span class="o">-&gt;</span><span class="n">cd</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">fCandidates</span><span class="o">-&gt;</span><span class="n">Get</span><span class="o">&lt;</span><span class="n">TH2</span><span class="o">&gt;</span><span class="p">(</span><span class="s">"hUnique"</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"colz"</span><span class="p">);</span><span class="w"> </span><span class="n">gPad</span><span class="o">-&gt;</span><span class="n">SetLogz</span><span class="p">();</span>
+<span class="n">cCandidates</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
+</pre></div>
+</div></div><div class="verified-output"><img alt="3.6_DSSD_Multiplicity_Analysis: cell 32, cCandidates" src="figures/3.6_DSSD_Multiplicity_Analysis/cell_32_cCandidates.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div><div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=29c43fca-f0d7-4c2c-a390-2e9a79f87181">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="assignment">Assignment</h2><p><span style="color:red">Note: Multiple particles may be incident on the same strip, for example, two particles at coordinates <code>(16,14)</code> and <code>(16,15)</code>. In such cases, the amplitude relationship is given by $A'_{x16} = A'_{y14} + A'_{y15}$</span>.</p>
-<p><strong>1.</strong> For the topology <code>xhit=3</code> and <code>yhit=3</code>:</p>
-<ul>
-<li>Determine the energy-matching conditions for <strong>other possible three-particle configurations</strong> (i.e., different permutations of x-y pairings).</li>
-<li>Determine the conditions for <strong>all possible two-particle configurations</strong> within this topology (e.g., when adjacent strips are fired by a single particle).</li>
-<li>Provide the corresponding ROOT plots to verify your conditions.</li>
-</ul>
-<p><strong>2.</strong> For the asymmetric topologies <code>xhit=2</code> and <code>yhit=3</code> (or <code>xhit=3</code> and <code>yhit=2</code>):</p>
-<ul>
-<li>Determine the energy-matching conditions for a <strong>three-particle event</strong>. <em>(Hint: Apply the shared-strip logic described in the Note above).</em></li>
-<li>Provide the corresponding ROOT plots to verify your conditions.</li>
-</ul>
-<p><strong>3.</strong> Based on the event classification logic discussed in this section, write a ROOT macro to fully reconstruct the events.</p>
-<ul>
-<li>Determine the reconstructed particle multiplicity (<code>hit</code>) for each detector based on your topology tests.</li>
-<li>Assign the final particle energy <code>e</code> using the corrected x-side energy.</li>
-<li>Save the reconstructed events into a new ROOT file (e.g., <code>evt_16C.root</code>) using the following tree structure:</li>
-</ul>
-<div class="highlight"><pre><span></span><span class="c1">// det1</span>
-<span class="n">Int_t</span><span class="w">  </span><span class="n">hit1</span><span class="p">;</span>
-<span class="kt">double</span><span class="w"> </span><span class="n">e1</span><span class="p">[</span><span class="n">hit1</span><span class="p">];</span>
-<span class="n">Int_t</span><span class="w">  </span><span class="n">x1</span><span class="p">[</span><span class="n">hit1</span><span class="p">],</span><span class="w"> </span><span class="n">y1</span><span class="p">[</span><span class="n">hit1</span><span class="p">];</span>
-
-<span class="c1">// det2</span>
-<span class="n">Int_t</span><span class="w">  </span><span class="n">hit2</span><span class="p">;</span>
-<span class="kt">double</span><span class="w"> </span><span class="n">e2</span><span class="p">[</span><span class="n">hit2</span><span class="p">];</span>
-<span class="n">Int_t</span><span class="w">  </span><span class="n">x2</span><span class="p">[</span><span class="n">hit2</span><span class="p">],</span><span class="w"> </span><span class="n">y2</span><span class="p">[</span><span class="n">hit2</span><span class="p">];</span><span class="w">  </span><span class="c1">// Note: fixed the index typo here</span>
-
-<span class="c1">// det3</span>
-<span class="n">Int_t</span><span class="w">  </span><span class="n">hit3</span><span class="p">;</span>
-<span class="kt">double</span><span class="w"> </span><span class="n">e3</span><span class="p">[</span><span class="n">hit3</span><span class="p">];</span>
-<span class="n">Int_t</span><span class="w">  </span><span class="n">x3</span><span class="p">[</span><span class="n">hit3</span><span class="p">],</span><span class="w"> </span><span class="n">y3</span><span class="p">[</span><span class="n">hit3</span><span class="p">];</span>
-</pre></div>
-<p>能量相近或多个粒子共用同一条时，配对可能不唯一。保存未匹配和多解状态，不要强行给每个事件唯一“真值”。上面的变长数组写法表示 ROOT leaflist；程序内给数组设置容量。记录原事件编号，后续才能与其他探测器逐事件关联。</p></div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h2 id="assignment">作业</h2>
+<p>把上面的候选检验推广到两面各三条的事例：分别考虑三粒子的不同排列，以及一侧或两侧发生 sharing 的两粒子假设。参照原有 residual 图，比较哪些候选能同时满足各粒子的能量关系，再统计唯一解、多解和无解。</p>
+<p>对于 X 两条、Y 三条的三粒子假设，还需考虑两粒子共用一条 X。此时 $X_{\rm shared}\approx Y_a+Y_b$，两个粒子的幅度可取来自能分辨它们的 Y 面；不能把完整的 $X_{\rm shared}$ 分别赋给两粒子，否则能量重复计数。</p>
+<p>在新 ROOT 文件中保存每层的粒子候选 <code>hit,e[hit],x[hit],y[hit]</code>、重建类别、候选数和原事例编号。不要求仅凭本节信息给所有拓扑强行唯一解；保存未解决的状态，后续可引入层间位置关系检验。原始和参考文件保留不变。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=20a0a52e-e3b5-4d1b-ac01-a9fe7184aa4a">

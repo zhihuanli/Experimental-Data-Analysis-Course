@@ -7837,7 +7837,6 @@ a.anchor-link {
 <a href="../index.html"><img alt="课程标志" src="../assets/images/course-logo.png"/></a>
 <div class="course-banner-title"><a href="../index.html">核物理实验数据处理</a>
 <span class="course-banner-en">Experimental Data Analysis in Nuclear Physics</span></div></div></header>
-
 <main>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=37c371e9-5083-45af-b444-b82b6393c9a3">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -7894,7 +7893,7 @@ $$</p>
 <p>Suppose $X_r$ is the baseline reference strip. Since its global parameters are already fixed, the local fit of pixel $(r,j_1)$ can be used together with the forward-propagation formula to generate the calibration parameters of the back strip $Y_{j_1}$. Once $Y_{j_1}$ becomes calibrated, the local bridge at another pixel $(i_1,j_1)$ can be used in the reverse direction to generate the parameters of the front strip $X_{i_1}$. The newly calibrated strip $X_{i_1}$ can then continue to propagate the scale to additional back strips.</p>
 <p>Therefore, the detector-wide calibration can be viewed as a propagation process on the strip-pixel network: already calibrated strips serve as sources, local pixel fits serve as bridges, and newly generated strip parameters serve as the next wave of sources. This is the same physical task as the strip-normalization sequence in the main tutorial, now written in a form that is more convenient for algorithmic extension.</p>
 <p><img alt="" src="fig/dssd_calibration.png" width="400"/></p>
-<h3 id="Explicit-Uncertainty-Propagation">Explicit Uncertainty Propagation</h3><p>The local pixel fits inherently contain uncertainties $\sigma(s_{ij})$ and $\sigma(t_{ij})$. According to the law of error propagation, the variances of these <strong>candidate parameters</strong> depend on both the local fit errors and the <em>current global uncertainties</em> of the source strip:</p>
+<h3 id="Explicit-Uncertainty-Propagation">Explicit Uncertainty Propagation</h3><p>下面四个逐项平方和是<strong>忽略相关项的近似</strong>，用于读懂参数如何传递。一般形式是 $C_v=J C_uJ^T$；同一次直线拟合的 slope 与 intercept 通常相关，完整计算需要它们的 covariance。参考条的 σ=0 仅表示相对单位被固定，不表示探测器没有测量误差。</p><p>The local pixel fits inherently contain uncertainties $\sigma(s_{ij})$ and $\sigma(t_{ij})$. According to the law of error propagation, the variances of these <strong>candidate parameters</strong> depend on both the local fit errors and the <em>current global uncertainties</em> of the source strip:</p>
 <p><strong>Variances for the candidate parameters of $Y_j$ (from source $X_i$):</strong>
 $$\sigma^2\!\left(k_{y,j}^{[i]}\right) \approx s_{ij}^2\,\sigma^2(k_{x,i}) + k_{x,i}^2\,\sigma^2(s_{ij})$$
 $$\sigma^2\!\left(b_{y,j}^{[i]}\right) \approx t_{ij}^2\,\sigma^2(k_{x,i}) + k_{x,i}^2\,\sigma^2(t_{ij}) + \sigma^2(b_{x,i})$$</p>
@@ -7905,7 +7904,7 @@ $$\sigma^2\!\left(b_{x,i}^{[j]}\right) \approx \sigma^2(b_{y,j}) + \left(\frac{t
 <hr/>
 <h3 id="Multi-path-Fusion-by-Inverse-Variance-Weighting">Multi-path Fusion by Inverse-Variance Weighting</h3><p>The main Tutorial 3.5 uses a practical strip-normalization sequence to propagate the relative scale across DSSD1. The present supplementary formulation makes clear that, in the full strip-pixel network, this propagation is generally <strong>multi-path</strong> rather than strictly one-dimensional.</p>
 <p>A single target strip may intersect several already calibrated strips on the opposite side. As a result, it may receive multiple path-specific candidates for its global parameters at the same time. These candidates are not identical, because they come from different local bridges and different source-strip uncertainties.</p>
-<p>To combine them consistently, we use <strong>inverse-variance weighting</strong>: candidates with smaller propagated uncertainty receive larger weights.</p>
+<p>若各路径候选确实独立，可以采用 inverse-variance 标量组合。路径复用了事例或共享有误差的参考时，应纳入路径间的 covariance；“来自不同路径”本身不等于独立。</p>
 <p>For a back strip $Y_j$, let $\mathcal{C}_j$ be the set of all already calibrated front strips that can provide candidates to it. Then:
 $$
 w^{(k)}_{ij}=\frac{1}{\sigma^2\!\left(k^{[i]}_{y,j}\right)},
@@ -7927,7 +7926,7 @@ $$</p>
 $$
 \text{current global state} \rightarrow \text{path-wise candidates} \rightarrow \text{inverse-variance fusion} \rightarrow \text{updated global state}
 $$
-until the strip parameters become stable. This provides a more explicit algorithmic generalization of the strip-normalization idea introduced in the main Tutorial 3.5.</p>
+这里只描述如何产生候选，不应反复使用同一批数据来缩小误差。 This provides a more explicit algorithmic generalization of the strip-normalization idea introduced in the main Tutorial 3.5.</p>
 <h3>Covariance 与独立性</h3><p>上面的逐项平方和仅适用于忽略相关项的近似。令输入参数向量为 u，传播后的参数为 v(u)，一般公式为 \(C_v=J C_u J^T\)，其中 \(J_{ij}=\partial v_i/\partial u_j\)。同一次直线拟合的 slope 与 intercept 通常相关，不能遗漏它们的 covariance。</p><p>下面的小例子固定 X15 为相对单位的定义，三条路径使用互不重叠的 pixel 事例，并近似忽略探测器共同系统误差。代码保留每条路径内部 k、b 的 covariance。分别对 k、b 作 inverse-variance 平均只是便于演示的组合，不是一般情况下的最优联合估计。若循环使用同一 pixel 或共享一个有误差的参考，不能反复当作独立新信息迭代，否则会低估误差。</p></div>
 </div>
 </div>

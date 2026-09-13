@@ -7837,30 +7837,13 @@ a.anchor-link {
 <a href="../index.html"><img alt="课程标志" src="../assets/images/course-logo.png"/></a>
 <div class="course-banner-title"><a href="../index.html">核物理实验数据处理</a>
 <span class="course-banner-en">Experimental Data Analysis in Nuclear Physics</span></div></div></header>
-
 <main>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=d48ed175-0a07-45fa-9a57-d187464a1cca">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="DSSD-front-back-Correlation(II)---dssd1">DSSD front-back Correlation(II) - dssd1</h1><p>In the previous tutorial, we introduced the physical basis of front-back energy correlation in a DSSD and defined a detector-internal relative energy scale. We also discussed the most direct calibration approach, namely the <strong>pixel-pixel method</strong>, in which the relative coefficients are extracted from purified events belonging to individual pixels.</p>
-<p>That method is conceptually simple and physically transparent, because the correlation is established directly between the front-side and back-side signals of a specific pixel. However, in practical analysis, the statistical quality of different pixels is often highly uneven. Some pixels contain abundant events and can be fitted reliably, while others suffer from low statistics and cannot provide stable calibration coefficients.</p>
-<p>For this reason, a more robust full-detector strategy is needed. In this tutorial, we move from the local <strong>pixel-pixel calibration</strong> introduced in 3.4 to a more stable <strong>strip-normalization method</strong>, in which the relative energy scale is propagated strip by strip from the best-populated regions to the full detector.</p>
-<hr/>
-<h2 id="Method-2:-Strip-Normalization">Method 2: Strip Normalization</h2><p>The basic idea of <strong>strip normalization</strong> is to avoid relying on one individual pixel at a time. Instead, we begin with the strip that has the highest event statistics, use it to calibrate a statistically strong strip group on the opposite side, and then progressively propagate the relative scale until all strips are covered.</p>
-<p>The practical procedure is:</p>
-<ol>
-<li>identify the strip with the highest event count;</li>
-<li>use it to normalize a neighboring group on the opposite detector side;</li>
-<li>combine the normalized group as an effective reference;</li>
-<li>use that wider reference to normalize the full detector side;</li>
-<li>return to the opposite side and complete the remaining calibration.</li>
-</ol>
-<p>Compared with the pixel-pixel method, this approach is more stable for full-array calibration because each step uses a broader statistical basis.</p>
-<p>This is the route used below for DSSD1.</p>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h1>3.5 DSSD front-back 关联：strip normalization</h1><p>3.4 用单个 pixel 建立两条间的对应关系。如果某些 pixel 事例很少，可以把已在共同尺度上的多条作为参考，集中统计量刻度另一面。本节保留三步传播：X[16] → Y[8–16] → 全部 X → 全部 Y。</p><p>参考条固定 <code>b=0,k=1</code>，其他条的系数相对于它确定。这样得到的是同一探测器内可比较的相对幅度，不是绝对能量。覆盖范围取决于实际有数据连接的条；没有可用数据的条不应被默认视为已刻度。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=8c44eb6b-2f2e-4b98-9a46-ea08afa532ca">
@@ -7977,15 +7960,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Input-Data-for-Strip-Normalization">Input Data for Strip Normalization</h2><p>The input file used in this tutorial is the purified single-pixel event sample prepared in the previous tutorial. These events were selected by applying strict local isolation cuts in order to suppress adjacent-strip charge sharing and preserve only clean front-back correlation data.</p>
-<p>The input tree contains four branches,</p>
-<p>$$
-(ix,\ iy,\ xe,\ ye),
-$$</p>
-<p>where <code>ix</code> and <code>iy</code> are the front-strip and back-strip IDs, and <code>xe</code>, <code>ye</code> are the corresponding raw amplitudes.</p>
-<p>These purified events provide the data foundation for the strip-normalization procedure developed below.</p>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h2>输入与参数表</h2><p><code>data/d1xy.root</code> 保存前一节方法得到的候选：<code>ix,iy</code> 是条号，<code>xe,ye</code> 是两条的 raw amplitude。选择降低了可见 sharing 和远离条带的组合，但样本仍需 residual 检查。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=ade6bb5e-6b67-4cef-a0b9-3e72c0d997b6">
@@ -8022,11 +7997,7 @@ $$</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Inspect-the-Global-x-y-Correlation">Inspect the Global x-y Correlation</h2><p>Before starting the strip-wise calibration, we first inspect the global front-back correlation of the purified event sample.</p>
-<p>A clear diagonal correlation band indicates that the selected events already preserve the underlying front-back energy consistency. This confirms that the purified sample is suitable for constructing a detector-wide relative normalization.</p>
-<p>The purpose of this step is not yet to determine calibration coefficients, but to verify the overall quality and usability of the extracted single-pixel data.</p>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>先检查整体关联</h3><p>查看所有候选的 x-y 主条带和离群区域。这一步判断是否有可用的线性关联，不直接给出每条的刻度，也不能证明每个候选都正确。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=4e255330-1184-4b76-813f-c0a867e54871">
@@ -8050,19 +8021,7 @@ $$</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Reference-Strip-Selection">Reference Strip Selection</h2><p>In the strip-normalization method, the calibration must start from the most statistically reliable region. Therefore, the first task is to inspect the strip-count distributions and identify the strips with the highest statistics.</p>
-<p>For DSSD1, the count distributions show that the front strip with the largest event population is</p>
-<p>$$
-ix = 16,
-$$</p>
-<p>while the corresponding dense back-strip region lies approximately in</p>
-<p>$$
-iy = 8 \sim 16.
-$$</p>
-<p>Therefore, the strip <code>ix = 16</code> is chosen as the initial x-side reference, and the first y-side target group is taken as the central band <code>iy = 8 ... 16</code>.</p>
-<p>This choice defines the starting point of the strip-normalization sequence.</p>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>选择起始参考条</h3><p>统计各条的候选数。本例 X[16] 的统计量较好，并与 Y[8–16] 有较多交叉事例，因而采用这一区域开始传播。除了数量，也应查看幅度覆盖范围和 residual。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=a753eb4d-4a47-4de7-8bcf-0d0430a86a98">
@@ -8149,10 +8108,7 @@ Highest y-strip bin = 12</pre><img alt="3.5_DSSD_FB_correlation_II_DSSD1-new: ce
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The comparison above is used to choose the initial reference strip.<br/>
-For DSSD1, <code>ix = 16</code> is taken as the initial x-side reference strip, and the first y-side target group is <code>iy = 8 ... 16</code>.</p>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><p>以下固定 X[16] 为参考，第一步刻度 Y[8–16]。</p></div>
 </div>
 </div>
 </div>
@@ -8204,43 +8160,39 @@ For DSSD1, <code>ix = 16</code> is taken as the initial x-side reference strip, 
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Strip-wise-Fit-Procedure">Strip-wise Fit Procedure</h2><p>To implement the strip-normalization method, we construct a fitting routine that performs the following tasks:</p>
-<ul>
-<li>builds strip-wise correlation graphs from the purified event sample;</li>
-<li>fits each strip correlation with a linear function;</li>
-<li>updates the parameter tables for the x side and y side;</li>
-<li>stores the corresponding residual plots for immediate inspection.</li>
-</ul>
-<p>Two parameter tables are maintained throughout the procedure:</p>
-<ul>
-<li><code>parx[i][0], parx[i][1]</code> for the front strips;</li>
-<li><code>pary[j][0], pary[j][1]</code> for the back strips.</li>
-</ul>
-<p>These parameters define the strip-wise relative transformations</p>
-<p>$$
-E_{x,i}^{(\mathrm{rel})} = k_{x,i} A_{x,i} + b_{x,i},
-\qquad
-E_{y,j}^{(\mathrm{rel})} = k_{y,j} A_{y,j} + b_{y,j}.
-$$</p>
-<p>The fit routine updates these parameters step by step as the relative scale is propagated across the detector.</p>
-<p>本例 TGraph 没有逐点误差，输出的 residual sum of squares/NDF 带有幅度平方的量纲，不宜当作标准 χ²/NDF 或用其接近 1 来评价拟合。ROB 是对离群点较不敏感的回归，不会自动识别粒子或电荷共享。</p></div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h2>先看一条 Y 如何得到 b、k</h2>
+<p>以 Y[12] 为例，选择 <code>ix==16 &amp;&amp; iy==12</code>。横轴是待刻度 Y 的 raw amplitude，纵轴是已刻度 X 的参考幅度；初始参考 X[16] 的幅度就是 <code>xe</code>。因此 <code>pol1</code> 的截距、斜率可直接用于 $E_y^{(\rm rel)}=b_y+k_y A_y$，不要把两轴放反后仍使用同一组系数。</p></div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=a4b70893-fbf5-483a-9e0c-212e2263cb3b">
+</div><div class="jp-Cell jp-CodeCell"><div class="jp-InputArea"><div class="jp-InputArea-editor"><div class="highlight"><pre><span></span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">SetEstimate</span><span class="p">(</span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">GetEntries</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"xe:ye"</span><span class="p">,</span><span class="s">"ix==16 &amp;&amp; iy==12"</span><span class="p">,</span><span class="s">"goff"</span><span class="p">);</span>
+<span class="n">TGraph</span><span class="w"> </span><span class="o">*</span><span class="n">gExample</span><span class="o">=</span><span class="k">new</span><span class="w"> </span><span class="n">TGraph</span><span class="p">(</span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">GetSelectedRows</span><span class="p">(),</span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">GetV2</span><span class="p">(),</span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">GetV1</span><span class="p">());</span>
+<span class="n">TCanvas</span><span class="w"> </span><span class="o">*</span><span class="n">cStripExample</span><span class="o">=</span><span class="k">new</span><span class="w"> </span><span class="n">TCanvas</span><span class="p">(</span><span class="s">"cStripExample"</span><span class="p">,</span><span class="s">"One-strip normalization"</span><span class="p">,</span><span class="mi">700</span><span class="p">,</span><span class="mi">430</span><span class="p">);</span>
+<span class="n">gExample</span><span class="o">-&gt;</span><span class="n">SetTitle</span><span class="p">(</span><span class="s">"X[16] reference vs Y[12];Raw Y[12];Reference amplitude X[16]"</span><span class="p">);</span>
+<span class="n">gExample</span><span class="o">-&gt;</span><span class="n">SetMarkerStyle</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
+<span class="n">gExample</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"AP"</span><span class="p">);</span>
+<span class="n">gExample</span><span class="o">-&gt;</span><span class="n">Fit</span><span class="p">(</span><span class="s">"pol1"</span><span class="p">,</span><span class="s">"Q ROB"</span><span class="p">);</span>
+<span class="n">TF1</span><span class="w"> </span><span class="o">*</span><span class="n">fExample</span><span class="o">=</span><span class="n">gExample</span><span class="o">-&gt;</span><span class="n">GetFunction</span><span class="p">(</span><span class="s">"pol1"</span><span class="p">);</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Y[12]: b="</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">fExample</span><span class="o">-&gt;</span><span class="n">GetParameter</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", k="</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">fExample</span><span class="o">-&gt;</span><span class="n">GetParameter</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">     </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", N="</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">gExample</span><span class="o">-&gt;</span><span class="n">GetN</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="n">cStripExample</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
+</pre></div>
+</div></div><div class="verified-output"><pre>Y[12]: b=12.6699, k=1.0001, N=739</pre><img alt="3.5_DSSD_FB_correlation_II_DSSD1-new: cell 15, cStripExample" src="figures/3.5_DSSD_FB_correlation_II_DSSD1-new/cell_15_cStripExample.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><h3>对多条重复相同操作</h3><p><code>parx[i][0/1]</code>、<code>pary[j][0/1]</code> 分别保存 <strong>b、k</strong>。<code>Ex</code>、<code>Ey</code> 按这两张表转换幅度。下面把例行操作分为收集关联点、拟合、画 residual 三部分。</p><p><code>fity</code> 使用已刻度 X 面作纵轴参考，求 Y 系数；<code>fitx</code> 则相反。无逐点误差的 TGraph 拟合输出 RSS/NDF 带有幅度平方单位，不能要求它接近 1 来评价拟合。</p></div></div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=a4b70893-fbf5-483a-9e0c-212e2263cb3b">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="n">Int_t</span><span class="w"> </span><span class="n">ix1</span><span class="p">,</span><span class="w"> </span><span class="n">Int_t</span><span class="w"> </span><span class="n">ix2</span><span class="p">,</span><span class="w"> </span><span class="n">Int_t</span><span class="w"> </span><span class="n">iy1</span><span class="p">,</span><span class="w"> </span><span class="n">Int_t</span><span class="w"> </span><span class="n">iy2</span><span class="p">,</span><span class="w"> </span><span class="n">TString</span><span class="w"> </span><span class="n">fitmethod</span><span class="p">)</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">cpp</span><span class="w"> </span><span class="o">-</span><span class="n">d</span>
+<span class="n">TGraph</span><span class="w"> </span><span class="o">*</span><span class="n">g</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+<span class="n">Int_t</span><span class="w"> </span><span class="n">npt</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">collectCorrelations</span><span class="p">(</span><span class="n">Int_t</span><span class="w"> </span><span class="n">ix1</span><span class="p">,</span><span class="w"> </span><span class="n">Int_t</span><span class="w"> </span><span class="n">ix2</span><span class="p">,</span><span class="w"> </span><span class="n">Int_t</span><span class="w"> </span><span class="n">iy1</span><span class="p">,</span><span class="w"> </span><span class="n">Int_t</span><span class="w"> </span><span class="n">iy2</span><span class="p">,</span><span class="w"> </span><span class="n">TString</span><span class="w"> </span><span class="n">fitmethod</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="w">    </span><span class="n">Int_t</span><span class="w"> </span><span class="n">id1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">fitmethod</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">"fity"</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">iy1</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">ix1</span><span class="p">;</span>
 <span class="w">    </span><span class="n">Int_t</span><span class="w"> </span><span class="n">id2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">fitmethod</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">"fity"</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">iy2</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">ix2</span><span class="p">;</span>
 <span class="w">    </span><span class="n">TString</span><span class="w"> </span><span class="n">sid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">fitmethod</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">"fity"</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">"iy"</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">"ix"</span><span class="p">;</span>
 
-<span class="w">    </span><span class="n">TGraph</span><span class="w"> </span><span class="o">*</span><span class="n">g</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
-<span class="w">    </span><span class="n">Int_t</span><span class="w">   </span><span class="n">npt</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+
 
 <span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Int_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">32</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="n">g</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TGraph</span><span class="p">();</span>
@@ -8272,6 +8224,15 @@ $$</p>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><h3>拟合各条并更新系数</h3><p>只拟合至少有 20 个候选点的条，这是本例的最低数量检查，不保证幅度范围或拟合质量。参考 X[16] 始终保持 b=0、k=1，避免改变尺度定义。</p></div></div><div class="jp-Cell jp-CodeCell"><div class="jp-InputArea"><div class="jp-InputArea-editor"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">cpp</span><span class="w"> </span><span class="o">-</span><span class="n">d</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">fitCorrelations</span><span class="p">(</span><span class="n">Int_t</span><span class="w"> </span><span class="n">id1</span><span class="p">,</span><span class="w"> </span><span class="n">Int_t</span><span class="w"> </span><span class="n">id2</span><span class="p">,</span><span class="w"> </span><span class="n">TString</span><span class="w"> </span><span class="n">fitmethod</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">TString</span><span class="w"> </span><span class="n">sid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fitmethod</span><span class="o">==</span><span class="s">"fity"</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">"iy"</span><span class="o">:</span><span class="s">"ix"</span><span class="p">;</span>
 <span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">Form</span><span class="p">(</span><span class="s">"%4s%12s%12s%12s%10s"</span><span class="p">,</span>
 <span class="w">                 </span><span class="n">sid</span><span class="p">.</span><span class="n">Data</span><span class="p">(),</span><span class="w"> </span><span class="s">"b"</span><span class="p">,</span><span class="w"> </span><span class="s">"k"</span><span class="p">,</span><span class="w"> </span><span class="s">"RSS/NDF"</span><span class="p">,</span><span class="w"> </span><span class="s">"Ncounts"</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
 
@@ -8299,6 +8260,20 @@ $$</p>
 <span class="w">            </span><span class="n">parx</span><span class="p">[</span><span class="n">id</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">k</span><span class="p">;</span>
 <span class="w">        </span><span class="p">}</span>
 
+<span class="w">        </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">Form</span><span class="p">(</span><span class="s">"%4d%12.3f%12.6f%12.2f%10d"</span><span class="p">,</span>
+<span class="w">                     </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">c2n</span><span class="p">,</span><span class="w"> </span><span class="n">npt</span><span class="p">[</span><span class="n">id</span><span class="p">])</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+</div></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><h3>查看 residual</h3><p>每个点计算“参考幅度 − 新刻度幅度”，在各条的图中检查是否有随幅度变化的弯曲或偏移。绘图使用拟合过的同一批点，属于一致性检查；独立 run 可用于进一步验证。</p></div></div><div class="jp-Cell jp-CodeCell"><div class="jp-InputArea"><div class="jp-InputArea-editor"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">cpp</span><span class="w"> </span><span class="o">-</span><span class="n">d</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">showResiduals</span><span class="p">(</span><span class="n">Int_t</span><span class="w"> </span><span class="n">id1</span><span class="p">,</span><span class="w"> </span><span class="n">Int_t</span><span class="w"> </span><span class="n">id2</span><span class="p">,</span><span class="w"> </span><span class="n">TString</span><span class="w"> </span><span class="n">fitmethod</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">TString</span><span class="w"> </span><span class="n">sid</span><span class="o">=</span><span class="n">fitmethod</span><span class="o">==</span><span class="s">"fity"</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">"iy"</span><span class="o">:</span><span class="s">"ix"</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="o">=</span><span class="n">id1</span><span class="p">;</span><span class="n">id</span><span class="o">&lt;=</span><span class="n">id2</span><span class="p">;</span><span class="o">++</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">b</span><span class="o">=</span><span class="n">fitmethod</span><span class="o">==</span><span class="s">"fity"</span><span class="o">?</span><span class="n">pary</span><span class="p">[</span><span class="n">id</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">:</span><span class="n">parx</span><span class="p">[</span><span class="n">id</span><span class="p">][</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">k</span><span class="o">=</span><span class="n">fitmethod</span><span class="o">==</span><span class="s">"fity"</span><span class="o">?</span><span class="n">pary</span><span class="p">[</span><span class="n">id</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">:</span><span class="n">parx</span><span class="p">[</span><span class="n">id</span><span class="p">][</span><span class="mi">1</span><span class="p">];</span>
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">k</span><span class="o">&lt;=</span><span class="mi">0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">g</span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">GetN</span><span class="p">()</span><span class="o">&lt;</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">continue</span><span class="p">;</span>
 <span class="w">        </span><span class="n">gResiduals</span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TH2F</span><span class="p">(</span>
 <span class="w">            </span><span class="n">Form</span><span class="p">(</span><span class="s">"h2res_%s_%02d"</span><span class="p">,</span><span class="w"> </span><span class="n">sid</span><span class="p">.</span><span class="n">Data</span><span class="p">(),</span><span class="w"> </span><span class="n">id</span><span class="p">),</span>
 <span class="w">            </span><span class="n">Form</span><span class="p">(</span><span class="s">"Residuals %s-strip %d;Residual;Raw amplitude"</span><span class="p">,</span><span class="w"> </span><span class="n">sid</span><span class="p">.</span><span class="n">Data</span><span class="p">(),</span><span class="w"> </span><span class="n">id</span><span class="p">),</span>
@@ -8313,40 +8288,24 @@ $$</p>
 <span class="w">            </span><span class="n">gResiduals</span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
 <span class="w">        </span><span class="p">}</span>
 
-<span class="w">        </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">Form</span><span class="p">(</span><span class="s">"%4d%12.3f%12.6f%12.2f%10d"</span><span class="p">,</span>
-<span class="w">                     </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">c2n</span><span class="p">,</span><span class="w"> </span><span class="n">npt</span><span class="p">[</span><span class="n">id</span><span class="p">])</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
 
-<span class="w">    </span><span class="n">DrawResiduals</span><span class="p">(</span><span class="n">id1</span><span class="p">,</span><span class="w"> </span><span class="n">id2</span><span class="p">,</span><span class="w"> </span><span class="n">Form</span><span class="p">(</span><span class="s">"c_res_%s"</span><span class="p">,</span><span class="w"> </span><span class="n">fitmethod</span><span class="p">.</span><span class="n">Data</span><span class="p">()));</span>
-
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Int_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">32</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="k">delete</span><span class="w"> </span><span class="n">g</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
 <span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">DrawResiduals</span><span class="p">(</span><span class="n">id1</span><span class="p">,</span><span class="n">id2</span><span class="p">,</span><span class="n">Form</span><span class="p">(</span><span class="s">"c_res_%s"</span><span class="p">,</span><span class="n">fitmethod</span><span class="p">.</span><span class="n">Data</span><span class="p">()));</span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">32</span><span class="p">;</span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="k">delete</span><span class="w"> </span><span class="n">g</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="p">}</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">fit</span><span class="p">(</span><span class="n">Int_t</span><span class="w"> </span><span class="n">ix1</span><span class="p">,</span><span class="n">Int_t</span><span class="w"> </span><span class="n">ix2</span><span class="p">,</span><span class="n">Int_t</span><span class="w"> </span><span class="n">iy1</span><span class="p">,</span><span class="n">Int_t</span><span class="w"> </span><span class="n">iy2</span><span class="p">,</span><span class="n">TString</span><span class="w"> </span><span class="n">method</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">first</span><span class="o">=</span><span class="n">method</span><span class="o">==</span><span class="s">"fity"</span><span class="o">?</span><span class="n">iy1</span><span class="o">:</span><span class="n">ix1</span><span class="p">,</span><span class="w"> </span><span class="n">last</span><span class="o">=</span><span class="n">method</span><span class="o">==</span><span class="s">"fity"</span><span class="o">?</span><span class="n">iy2</span><span class="o">:</span><span class="n">ix2</span><span class="p">;</span>
+<span class="w">    </span><span class="n">collectCorrelations</span><span class="p">(</span><span class="n">ix1</span><span class="p">,</span><span class="n">ix2</span><span class="p">,</span><span class="n">iy1</span><span class="p">,</span><span class="n">iy2</span><span class="p">,</span><span class="n">method</span><span class="p">);</span>
+<span class="w">    </span><span class="n">fitCorrelations</span><span class="p">(</span><span class="n">first</span><span class="p">,</span><span class="n">last</span><span class="p">,</span><span class="n">method</span><span class="p">);</span>
+<span class="w">    </span><span class="n">showResiduals</span><span class="p">(</span><span class="n">first</span><span class="p">,</span><span class="n">last</span><span class="p">,</span><span class="n">method</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0f42b074-2741-4cdb-a2bc-7ff659f5a98d">
+</div></div></div><div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0f42b074-2741-4cdb-a2bc-7ff659f5a98d">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Interpretation-of-the-Two-Fit-Directions">Interpretation of the Two Fit Directions</h2><p>The strip-normalization procedure alternates between two fitting directions.</p>
-<p><code>fity</code>:Use the already normalized x side as the reference and determine the parameters $(k_{y,j}, b_{y,j})$ for the target y strips.</p>
-<p>For each accepted event, the fitted relation is</p>
-<p>$$
-E_{x,i}^{(\mathrm{rel})} = k_{y,j} A_{y,j} + b_{y,j}.
-$$</p>
-<p><code>fitx</code>:Use the already normalized y side as the reference and determine the parameters $(k_{x,i}, b_{x,i})$ for the target x strips.</p>
-<p>For each accepted event, the fitted relation is</p>
-<p>$$
-E_{y,j}^{(\mathrm{rel})} = k_{x,i} A_{x,i} + b_{x,i}.
-$$</p>
-<p>By alternating <code>fity</code> and <code>fitx</code>, the relative scale is propagated from the initial high-statistics reference region to the entire detector.</p>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><p>现在三个调用按同一顺序收集、拟合并显示结果，物理选择与前面的单条例子相同。</p></div>
 </div>
 </div>
 </div>
@@ -8355,11 +8314,7 @@ $$</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Three-step-Normalization-Sequence-for-DSSD1">Three-step Normalization Sequence for DSSD1</h2><p>The following three-step procedure is the practical implementation of <strong>Method 2</strong> for DSSD1. Starting from the highest-statistics strip, the relative energy scale is first established in the central region and then extended outward until both detector sides are fully covered.</p>
-<h3 id="Step-1:-Calibrate-the-central-y-strip-band">Step 1: Calibrate the central y-strip band</h3><p>Use <code>ix = 16</code> as the initial x-side reference strip and normalize the central back-strip band <code>iy = 8 ... 16</code>.</p>
-<p>This step establishes the first reliable normalized region on the y side.</p>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h2>三步刻度</h2><h3>1. X[16] → Y[8–16]</h3><p>用初始参考条建立中央 Y 区域的共同尺度。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=7610901f-1db0-46a3-b7b4-a2a74a276f31">
@@ -8368,11 +8323,9 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [20]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-c++"><pre><span></span><span class="n">fit</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="s">"fity"</span><span class="p">);</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">fit</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="s">"fity"</span><span class="p">);</span>
+<span class="n">gResidualCanvas</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 </pre></div>
-</div>
 </div>
 </div>
 </div>
@@ -8385,16 +8338,13 @@ $$</p>
   13      15.391    0.979973     3372.09       667
   14       8.540    0.980518     2807.11       655
   15      18.120    0.988528     3485.80       634
-  16      -3.045    0.980788     2663.90       618</pre><img alt="3.5_DSSD_FB_correlation_II_DSSD1-new: cell 18, c_res_fity" src="figures/3.5_DSSD_FB_correlation_II_DSSD1-new/cell_18_c_res_fity.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
+  16      -3.045    0.980788     2663.90       618</pre><img alt="3.5_DSSD_FB_correlation_II_DSSD1-new: cell 24, gResidualCanvas" src="figures/3.5_DSSD_FB_correlation_II_DSSD1-new/cell_24_gResidualCanvas.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0f6f20eb-9a04-46e2-92bf-c3aff96a367f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Step-2:-Propagate-the-scale-to-all-x-strips">Step 2: Propagate the scale to all x strips</h3><p>Use the normalized y-strip band <code>iy = 8 ... 16</code> as the reference and normalize all x strips.</p>
-<p>After this step, the full x side is mapped onto a common relative energy scale.</p>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>2. Y[8–16] → 全部 X</h3><p>合并已经刻度的 Y 条，增加每条 X 的统计量。X[16] 不改变。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=b3471bd9-f581-46fd-aa1b-c7e54f53ebcd">
@@ -8403,11 +8353,9 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-c++"><pre><span></span><span class="n">fit</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">31</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="s">"fitx"</span><span class="p">);</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">fit</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">31</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="s">"fitx"</span><span class="p">);</span>
+<span class="n">gResidualCanvas</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 </pre></div>
-</div>
 </div>
 </div>
 </div>
@@ -8443,16 +8391,13 @@ $$</p>
   28       0.908    0.966033     3990.62      1632
   29       0.824    0.999707     4497.07      1345
   30       1.851    1.004465     5067.22       893
-  31       2.016    0.969643     7374.11       802</pre><img alt="3.5_DSSD_FB_correlation_II_DSSD1-new: cell 20, c_res_fitx" src="figures/3.5_DSSD_FB_correlation_II_DSSD1-new/cell_20_c_res_fitx.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
+  31       2.016    0.969643     7374.11       802</pre><img alt="3.5_DSSD_FB_correlation_II_DSSD1-new: cell 26, gResidualCanvas" src="figures/3.5_DSSD_FB_correlation_II_DSSD1-new/cell_26_gResidualCanvas.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a468d614-725a-4cc2-bda3-3152e26f05da">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Step-3:-Complete-the-y-side-normalization">Step 3: Complete the y-side normalization</h3><p>Use the fully normalized x side as the reference and normalize all y strips.</p>
-<p>After this step, both the x side and the y side are placed on the same detector-internal relative energy scale.</p>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>3. 全部已刻度 X → 全部 Y</h3><p>再用有可用系数的 X 条完成其余 Y 条。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=7afa3b28-84cd-4df6-a63e-18a39c256f54">
@@ -8461,11 +8406,9 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-c++"><pre><span></span><span class="n">fit</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">31</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">31</span><span class="p">,</span><span class="s">"fity"</span><span class="p">);</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">fit</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">31</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">31</span><span class="p">,</span><span class="s">"fity"</span><span class="p">);</span>
+<span class="n">gResidualCanvas</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 </pre></div>
-</div>
 </div>
 </div>
 </div>
@@ -8501,17 +8444,13 @@ Warning: too few points for iy-strip 22
   28      -4.621    0.984427     3946.93      3018
   29      -3.363    0.969592     4065.77      2299
   30       0.339    0.976810     4477.96      1556
-  31       1.486    0.969182     5201.49      1408</pre><img alt="3.5_DSSD_FB_correlation_II_DSSD1-new: cell 22, c_res_fity" src="figures/3.5_DSSD_FB_correlation_II_DSSD1-new/cell_22_c_res_fity.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
+  31       1.486    0.969182     5201.49      1408</pre><img alt="3.5_DSSD_FB_correlation_II_DSSD1-new: cell 28, gResidualCanvas" src="figures/3.5_DSSD_FB_correlation_II_DSSD1-new/cell_28_gResidualCanvas.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a2f8bd80-d153-4ca1-a3c2-1e3554dc99a5">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Save-and-Reload-the-Calibration-Parameters">Save and Reload the Calibration Parameters</h2><p>After the strip-normalization procedure is completed, the fitted calibration parameters should be saved for later use.</p>
-<p>The saved parameter file contains the relative calibration coefficients for all front strips and back strips. Reloading these parameters makes it possible to apply the same detector-wide normalization to the full data set in subsequent analysis steps.</p>
-<p>This also provides the direct input for the event-level front-back energy normalization assignment.</p>
-<p>缺少可用事例的条保持 <code>k=0</code>，明确表示未刻度，不把默认恒等变换当作刻度结果。后续校验排除这些条，并报告数量；实际分析需另找刻度数据或将其标为无效通道。</p></div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h2>保存与读取参数</h2><p>文件前 32 行是 X，后 32 行是 Y，每行为 <code>strip b k</code>。无可用数据的条保持 k=0，后续跳过并报告；不能把恒等变换当成它的刻度。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=a11392b1-f9e7-45d2-89b4-299a44e68b4c">
@@ -8567,19 +8506,7 @@ Warning: too few points for iy-strip 22
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Global-Validation-After-Normalization">Global Validation After Normalization</h2><p>After all strip parameters are determined, the full purified event sample is recalculated using the fitted relative calibration coefficients.</p>
-<p>The purpose of this validation is to test whether DSSD1 has been successfully mapped onto a unified relative energy scale. If the strip-normalization procedure is successful, the corrected front-back correlation should be concentrated around the diagonal</p>
-<p>$$
-E_{x}^{(\mathrm{rel})} \approx E_{y}^{(\mathrm{rel})},
-$$
-and the residual distribution</p>
-<p>$$
-E_{y}^{(\mathrm{rel})} - E_{x}^{(\mathrm{rel})}
-$$</p>
-<p>should be centered near zero over the full dynamic range.</p>
-<p>This global check provides the final confirmation that the strip-wise propagation has produced a consistent detector-wide normalization.</p>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h2>检查整体归一结果</h2><p>重新计算全部候选的 $E_x^{(\rm rel)}$ 和 $E_y^{(\rm rel)}$，查看二维主条带及 $E_y^{(\rm rel)}-E_x^{(\rm rel)}$ 是否在零附近、是否随幅度发生漂移。整体主条带正确不替代逐条检查；少数错误系数可能被高统计条掩盖。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=e97dc972-3ae7-4dc9-85f9-e3f077c5fcb7">
@@ -8596,8 +8523,8 @@ $$</p>
 <span class="w">    </span><span class="n">DeleteIfExists</span><span class="p">(</span><span class="s">"hxy_check"</span><span class="p">);</span>
 <span class="w">    </span><span class="n">DeleteIfExists</span><span class="p">(</span><span class="s">"hdiff_check"</span><span class="p">);</span>
 
-<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">hxy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TH2F</span><span class="p">(</span><span class="s">"hxy_check"</span><span class="p">,</span><span class="w"> </span><span class="s">"cye:cxe;cxe;cye"</span><span class="p">,</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">8000</span><span class="p">,</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">8000</span><span class="p">);</span>
-<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">hdiff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TH2F</span><span class="p">(</span><span class="s">"hdiff_check"</span><span class="p">,</span><span class="w"> </span><span class="s">"cye-cxe;cxe;cye-cxe"</span><span class="p">,</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">8000</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="mi">-200</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">);</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">hxy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TH2F</span><span class="p">(</span><span class="s">"hxy_check"</span><span class="p">,</span><span class="w"> </span><span class="s">"Normalized front-back;X relative amplitude;Y relative amplitude"</span><span class="p">,</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">8000</span><span class="p">,</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">8000</span><span class="p">);</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">hdiff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TH2F</span><span class="p">(</span><span class="s">"hdiff_check"</span><span class="p">,</span><span class="w"> </span><span class="s">"Normalized residual;X relative amplitude;Y-X relative amplitude"</span><span class="p">,</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">8000</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="mi">-200</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">);</span>
 
 <span class="w">    </span><span class="n">Long64_t</span><span class="w"> </span><span class="n">skipped</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 <span class="w">    </span><span class="n">Long64_t</span><span class="w"> </span><span class="n">nentries</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">GetEntries</span><span class="p">();</span>
@@ -8613,10 +8540,10 @@ $$</p>
 <span class="w">    </span><span class="p">}</span>
 
 <span class="w">    </span><span class="n">DeleteIfExists</span><span class="p">(</span><span class="s">"c_check"</span><span class="p">);</span>
-<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">c_check</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TCanvas</span><span class="p">(</span><span class="s">"c_check"</span><span class="p">,</span><span class="w"> </span><span class="s">"Global check"</span><span class="p">,</span><span class="w"> </span><span class="mi">800</span><span class="p">,</span><span class="w"> </span><span class="mi">400</span><span class="p">);</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">c_check</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TCanvas</span><span class="p">(</span><span class="s">"c_check"</span><span class="p">,</span><span class="w"> </span><span class="s">"Global check"</span><span class="p">,</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="mi">430</span><span class="p">);</span>
 <span class="w">    </span><span class="n">c_check</span><span class="o">-&gt;</span><span class="n">Divide</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
-<span class="w">    </span><span class="n">c_check</span><span class="o">-&gt;</span><span class="n">cd</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="n">hxy</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"colz"</span><span class="p">);</span>
-<span class="w">    </span><span class="n">c_check</span><span class="o">-&gt;</span><span class="n">cd</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span><span class="w"> </span><span class="n">hdiff</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"colz"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">c_check</span><span class="o">-&gt;</span><span class="n">cd</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="n">gPad</span><span class="o">-&gt;</span><span class="n">SetLeftMargin</span><span class="p">(</span><span class="mf">0.14</span><span class="p">);</span><span class="w"> </span><span class="n">gPad</span><span class="o">-&gt;</span><span class="n">SetRightMargin</span><span class="p">(</span><span class="mf">0.16</span><span class="p">);</span><span class="w"> </span><span class="n">hxy</span><span class="o">-&gt;</span><span class="n">SetStats</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"> </span><span class="n">hxy</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"colz"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">c_check</span><span class="o">-&gt;</span><span class="n">cd</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span><span class="w"> </span><span class="n">gPad</span><span class="o">-&gt;</span><span class="n">SetLeftMargin</span><span class="p">(</span><span class="mf">0.14</span><span class="p">);</span><span class="w"> </span><span class="n">gPad</span><span class="o">-&gt;</span><span class="n">SetRightMargin</span><span class="p">(</span><span class="mf">0.16</span><span class="p">);</span><span class="w"> </span><span class="n">hdiff</span><span class="o">-&gt;</span><span class="n">SetStats</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"> </span><span class="n">hdiff</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"colz"</span><span class="p">);</span>
 <span class="w">    </span><span class="n">c_check</span><span class="o">-&gt;</span><span class="n">Update</span><span class="p">();</span>
 <span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Input="</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">nentries</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", calibrated="</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">nentries</span><span class="o">-</span><span class="n">skipped</span>
 <span class="w">         </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", unavailable calibration="</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">skipped</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
@@ -8631,15 +8558,14 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [30]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-c++"><pre><span></span><span class="n">calibrateAndPlot</span><span class="p">(</span><span class="s">"cal_dssd1.txt"</span><span class="p">);</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">calibrateAndPlot</span><span class="p">(</span><span class="s">"cal_dssd1.txt"</span><span class="p">);</span>
+<span class="n">TCanvas</span><span class="w"> </span><span class="o">*</span><span class="n">cCheck</span><span class="o">=</span><span class="p">(</span><span class="n">TCanvas</span><span class="o">*</span><span class="p">)</span><span class="n">gROOT</span><span class="o">-&gt;</span><span class="n">GetListOfCanvases</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">FindObject</span><span class="p">(</span><span class="s">"c_check"</span><span class="p">);</span>
+<span class="n">cCheck</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="verified-output"><pre>Input=210820, calibrated=210820, unavailable calibration=0</pre><img alt="3.5_DSSD_FB_correlation_II_DSSD1-new: cell 28, c_check" src="figures/3.5_DSSD_FB_correlation_II_DSSD1-new/cell_28_c_check.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
+<div class="verified-output"><pre>Input=210820, calibrated=210820, unavailable calibration=0</pre><img alt="3.5_DSSD_FB_correlation_II_DSSD1-new: cell 34, cCheck" src="figures/3.5_DSSD_FB_correlation_II_DSSD1-new/cell_34_cCheck.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=65feb4a1-1216-4fdd-b749-5087ff0505ca">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -8654,39 +8580,11 @@ $$</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="assignment">Assignment</h2><h3 id="Front-back-Energy-Normalization-on-DSSD1,-DSSD2,-and-DSSD3">Front-back Energy Normalization on DSSD1, DSSD2, and DSSD3</h3><p>In this assignment, perform front-back energy normalization for <strong>DSSD1</strong>, <strong>DSSD2</strong>, and <strong>DSSD3</strong> using the strip-wise relative calibration parameters obtained with the strip-normalization procedure developed in this tutorial.</p>
-<p>After the strip parameters are determined, the normalized detector events should be reorganized into a structured hit format for further analysis.</p>
-<h3 id="Task">Task</h3><p>For each detector:</p>
-<ol>
-<li>apply the front-strip and back-strip normalization parameters to convert raw amplitudes into normalized amplitudes;</li>
-<li>sort the front-side and back-side signals in descending order of amplitude;</li>
-<li>apply a threshold of <code>100</code> channels;</li>
-<li>discard all signals below threshold when constructing the hit list;</li>
-<li>store the normalized event information in a structured format in an output ROOT file.</li>
-</ol>
-<h3 id="Required-Output-Structure">Required Output Structure</h3><p>A typical output structure for <strong>DSSD1</strong> is</p>
-<div class="highlight"><pre><span></span><span class="n">Int_t</span><span class="w">   </span><span class="n">x1hit</span><span class="p">;</span>
-<span class="n">Int_t</span><span class="w">   </span><span class="n">x1</span><span class="p">[</span><span class="n">x1hit</span><span class="p">];</span>
-<span class="kt">double</span><span class="w">  </span><span class="n">x1e</span><span class="p">[</span><span class="n">x1hit</span><span class="p">];</span>
-
-<span class="n">Int_t</span><span class="w">   </span><span class="n">y1hit</span><span class="p">;</span>
-<span class="n">Int_t</span><span class="w">   </span><span class="n">y1</span><span class="p">[</span><span class="n">y1hit</span><span class="p">];</span>
-<span class="kt">double</span><span class="w">  </span><span class="n">y1e</span><span class="p">[</span><span class="n">y1hit</span><span class="p">];</span>
-
-<span class="kt">double</span><span class="w">  </span><span class="n">x1es</span><span class="p">,</span><span class="w"> </span><span class="n">y1es</span><span class="p">;</span>
-<span class="kt">int</span><span class="w">     </span><span class="n">x1m</span><span class="p">,</span><span class="w">  </span><span class="n">y1m</span><span class="p">;</span>
-</pre></div>
-<p>The same structure should be extended consistently to <strong>DSSD2</strong> and <strong>DSSD3</strong>.</p>
-<p>Here:</p>
-<ul>
-<li><code>x1hit</code>, <code>y1hit</code> are the multiplicities of accepted x-side and y-side hits after threshold selection;</li>
-<li><code>x1</code>, <code>y1</code> are the strip IDs of the accepted hits;</li>
-<li><code>x1e</code>, <code>y1e</code> are the normalized amplitudes of the accepted hits;</li>
-<li><code>x1es</code>, <code>y1es</code> are the sums of the calibrated amplitudes of all strips on the x side and y side, respectively;</li>
-<li><code>x1m</code>, <code>y1m</code> are the multiplicities after merging adjacent-strip hits, where adjacent hits are counted as one.</li>
-</ul>
-<p>这些数值仍在参考条的相对幅度尺度上，并非 MeV。事件循环中使用容量为 32 的数组，leaflist 再用 x1hit/y1hit 指定有效长度。保留事件编号以及未通过选择的原因，避免丢失各层之间的对应关系。</p></div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h2 id="assignment">作业：三层 DSSD 的相对归一与 hit 列表</h2><p>参照三步方法求 DSSD1–3 的参数，检查各条 residual，保存参数。把 raw amplitude 转为相对幅度，选择幅度≥100 的条，分别按两面幅度从高到低排列，条号与幅度一起移动，写入新的 ROOT 文件。</p><pre><code class="language-cpp">Int_t x1hit, y1hit;
+Int_t x1[32], y1[32];
+Double_t x1e[32], y1e[32];
+Double_t x1es, y1es;
+Int_t x1m, y1m;</code></pre><p>branch 的 leaflist 使用 <code>x1[x1hit]/I</code>、<code>x1e[x1hit]/D</code> 等形式。<code>x1es,y1es</code> 是通过阈值的相对幅度之和；<code>x1m,y1m</code> 只统计相邻有效条的连通组数，不代表已确定的粒子数。DSSD2、3 使用同样结构，保留源事例编号。3.6 再根据两面能量关系判断如何合并或配对。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=6dcbd10d-2c5e-4885-9d8d-34b8fd07940f">

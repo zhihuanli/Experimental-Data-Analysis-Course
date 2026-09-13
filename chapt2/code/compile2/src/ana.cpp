@@ -3,9 +3,9 @@
 #include <TStyle.h>
 #include <TCanvas.h>
 #include <TF1.h>
-#include <TGraphErrors.h>   // 【修改】必须包含带有误差的图类
+#include <TGraphErrors.h>   // 输入测量点及其误差
 #include <TFitResult.h>
-#include <TMatrixDSym.h>    // 【新增】用于接收协方差矩阵
+#include <TMatrixDSym.h>    // 拟合参数的协方差矩阵
 #include <iostream>
 #include <cmath>
 
@@ -24,7 +24,7 @@ void ana::SetBranch(TTree *tree)
     tree->Branch("yy2b", yy2b, "yy2b[2]/D");
     tree->Branch("anode2b", &anode2b, "anode2b/D");
 
-    // 【新增】注册所有运动学中心值及其物理误差
+    // 保存位置、投影角与模型内传播的不确定度
     tree->Branch("tx", &tx, "tx/D");
     tree->Branch("ty", &ty, "ty/D");
     tree->Branch("theta_x", &theta_x, "theta_x/D");
@@ -80,7 +80,7 @@ void ana::Analysis()
     TH2D *htf8xz = new TH2D("htf8xz", "X-Z Plane Trace; Z (mm); X (mm)", 2200, -2000, 200, 300, -150, 150);
     TH2D *htf8yz = new TH2D("htf8yz", "Y-Z Plane Trace; Z (mm); Y (mm)", 2200, -2000, 200, 300, -150, 150);
 
-    // 【核心修改】使用 TGraphErrors 替代 TGraph，输入假设的单层位置误差
+    // 输入假设的单层位置误差，演示误差传播
     TGraphErrors *grx = new TGraphErrors(3);
     TGraphErrors *gry = new TGraphErrors(3);
     TF1 *fx = new TF1("fx", "pol1", -2000, 0);
@@ -112,7 +112,7 @@ void ana::Analysis()
             grx->SetPointError(i, 0.0, det_resolution); // 关键：输入Z和X的误差
         }
 
-        // 【核心修改】去除 "W" 选项。S=保存结果(以获取矩阵), Q=静默模式
+        // S 保存结果及协方差；Q 减少日志；N 不附加逐事件拟合函数
         TFitResultPtr rx = grx->Fit(fx, "SQN");
 
         if (int(rx)==0 && rx.Get() && rx->IsValid()) {
@@ -191,4 +191,3 @@ void ana::Analysis()
 
 
 }
-

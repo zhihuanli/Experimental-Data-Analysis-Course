@@ -7837,7 +7837,6 @@ a.anchor-link {
 <a href="../index.html"><img alt="课程标志" src="../assets/images/course-logo.png"/></a>
 <div class="course-banner-title"><a href="../index.html">核物理实验数据处理</a>
 <span class="course-banner-en">Experimental Data Analysis in Nuclear Physics</span></div></div></header>
-
 <main>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -7881,7 +7880,7 @@ $$
 $$</p>
 <h2 id=""></h2><p><img alt="PPAC" src="fig/ppac-delayline.png"/></p>
 <h2 id="PPAC-Position-Calibration">PPAC Position Calibration</h2><ul>
-<li>将 $\alpha$-放射源置于远处，$\alpha$ 粒子入射到盖有 Mask 的探测器上（Mask上孔的位置分布已知），得到 x 方向和 y 方向的一系列峰位。通过拟合时间差谱 $(\Delta t_{x2} - \Delta t_{x1})$ 的峰位和实际物理位置，得到刻度系数 $k = L / 2T_{xdelay}$。</li>
+<li>将 $\alpha$-放射源置于远处，$\alpha$ 粒子入射到盖有 Mask 的探测器上（Mask上孔的位置分布已知），得到 x 方向和 y 方向的一系列峰位。通过拟合时间差谱 $(\Delta t_{x1} - \Delta t_{x2})$ 的峰位和实际物理位置，得到线性刻度 $x=k\,\Delta t+b$。理想模型给出 $k=L/(2T_{xdelay})$；实际采用 mask 峰位的拟合结果，并检查各孔位置的 residual。</li>
 <li>探测器安装到束流线后，通过位置测量，确定探测器中心相对于束流中心线的偏移 $b$。</li>
 <li>实验中，通过测量经过中心线的束流（利用限制束流线上的 slit 狭缝），进一步检验和校准上述偏移。</li>
 </ul>
@@ -7920,7 +7919,7 @@ $$</p>
 <li>$T_a = TOF + t_{off,a}$</li>
 </ul>
 <p><strong>组合参数 (相对时间，消除速度依赖性)</strong></p>
-<p>上述绝对时间信号不仅与探测器内部传输有关，也与束流的到达时间 ($TOF$) 有关。研究探测器特征时，必须消除束流动量弥散带来的 $TOF$ 展宽。
+<p>上述绝对时间信号不仅与探测器内部传输有关，也与束流的到达时间 ($TOF$) 有关。研究探测器特征时，可先消除公共 $TOF$ 引入的展宽。
 通过将阴极信号减去阳极信号，可以抵消 $TOF$的影响：</p>
 <ul>
 <li>$\Delta T_{x1} = T_{x1} - T_a = t_{x1} + (t_{off,x1} - t_{off,a})$</li>
@@ -7931,10 +7930,10 @@ $$</p>
 <li>$\mathbf{T_{x1} + T_{x2}} = 2 TOF + Const.$
 <strong>(包含 $TOF$，与束流速度有关，分布表现为一个较宽的峰)</strong></li>
 <li>$\mathbf{\Delta T_{x1} + \Delta T_{x2}} = t_{x1} + t_{x2} + (t_{off,x1} + t_{off,x2} - 2t_{off,a}) = T_{xelay} + Const. = \mathbf{Const.}$
-<strong>(与束流速度无关，分布表现为一个极窄的峰，直接反映探测器本征时间分辨率)</strong></li>
+<strong>（公共到达时间被抵消，分布通常变窄；宽度包含两端及 anode 定时误差和相关项。）</strong></li>
 </ul>
 <h2 id="%E6%96%87%E4%BB%B6%E4%B8%AD-TreeBranch-%E7%9A%84%E5%AE%9A%E4%B9%89">文件中 TreeBranch 的定义</h2><ul>
-<li><strong>Trigger = beamTrig + must2Trig</strong><ul>
+<li><strong>触发样本可用 beamTrig || must2Trig 选择；两个标记也可能同时为 1。</strong><ul>
 <li><code>beamTrig=1</code>，由靶前塑闪探测器触发（束流的取样触发）。</li>
 <li><code>must2Trig=1</code>，由靶后 MUST2 望远镜信号触发（即物理事件符合触发）。</li>
 </ul>
@@ -8005,11 +8004,7 @@ $$</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">数据分析</h3><h4 id="%E8%A7%82%E5%AF%9F%E5%8E%9F%E5%A7%8B%E5%8F%98%E9%87%8F%EF%BC%8C%E7%A1%AE%E5%AE%9A%E5%90%88%E7%90%86%E8%8C%83%E5%9B%B4">观察原始变量，确定合理范围</h4><ul>
-<li>合理信号范围：0 &lt; t &lt; 4095</li>
-</ul>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h2>2. 原始信号与 time-sum</h2><p>先查看各路 TDC 道值。这个文件的编码范围为 0–4095；以下用 10–4000 排除端点附近的无效读数，再检查时间组合的分布。这里仍是 TDC channel，尚未换算为时间单位。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
@@ -8202,32 +8197,19 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-c++"><pre><span></span><span class="n">TCanvas</span><span class="w"> </span><span class="o">*</span><span class="n">c3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TCanvas</span><span class="p">(</span><span class="s">"c3"</span><span class="p">,</span><span class="s">"c3"</span><span class="p">,</span><span class="mi">1000</span><span class="p">,</span><span class="mi">400</span><span class="p">);</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">TCanvas</span><span class="w"> </span><span class="o">*</span><span class="n">c3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TCanvas</span><span class="p">(</span><span class="s">"c3"</span><span class="p">,</span><span class="s">"c3"</span><span class="p">,</span><span class="mi">1000</span><span class="p">,</span><span class="mi">400</span><span class="p">);</span>
 <span class="n">c3</span><span class="o">-&gt;</span><span class="n">Divide</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
 <span class="n">c3</span><span class="o">-&gt;</span><span class="n">cd</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 <span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"dt_x2 : dt_x1 &gt;&gt; h2_corrx(1000, -2000, 2000, 1000, -2000, 2000)"</span><span class="p">,</span><span class="w"> </span><span class="n">cut_xvalid</span><span class="p">,</span><span class="w"> </span><span class="s">"colz"</span><span class="p">);</span>
-<span class="n">TLine</span><span class="w"> </span><span class="o">*</span><span class="n">tlx1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TLine</span><span class="p">(</span><span class="mi">-200</span><span class="p">,</span><span class="mi">1410</span><span class="p">,</span><span class="mi">1420</span><span class="p">,</span><span class="mi">-200</span><span class="p">);</span>
-<span class="n">TLine</span><span class="w"> </span><span class="o">*</span><span class="n">tlx2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TLine</span><span class="p">(</span><span class="mi">-200</span><span class="p">,</span><span class="mi">1330</span><span class="p">,</span><span class="mi">1340</span><span class="p">,</span><span class="mi">-200</span><span class="p">);</span>
-<span class="n">tlx1</span><span class="o">-&gt;</span><span class="n">SetLineColor</span><span class="p">(</span><span class="n">kRed</span><span class="p">);</span>
-<span class="n">tlx2</span><span class="o">-&gt;</span><span class="n">SetLineColor</span><span class="p">(</span><span class="n">kRed</span><span class="p">);</span>
-<span class="n">tlx1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"same"</span><span class="p">);</span>
-<span class="n">tlx2</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"same"</span><span class="p">);</span>
+
 
 <span class="n">c3</span><span class="o">-&gt;</span><span class="n">cd</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
 <span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"dt_y2 : dt_y1 &gt;&gt; h2_corry(1000, -2000, 2000, 1000, -2000, 2000)"</span><span class="p">,</span><span class="w"> </span><span class="n">cut_yvalid</span><span class="p">,</span><span class="w"> </span><span class="s">"colz"</span><span class="p">);</span>
-<span class="n">TLine</span><span class="w"> </span><span class="o">*</span><span class="n">tly1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TLine</span><span class="p">(</span><span class="mi">-200</span><span class="p">,</span><span class="mi">900</span><span class="p">,</span><span class="mi">900</span><span class="p">,</span><span class="mi">-200</span><span class="p">);</span>
-<span class="n">TLine</span><span class="w"> </span><span class="o">*</span><span class="n">tly2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TLine</span><span class="p">(</span><span class="mi">-200</span><span class="p">,</span><span class="mi">820</span><span class="p">,</span><span class="mi">820</span><span class="p">,</span><span class="mi">-200</span><span class="p">);</span>
-<span class="n">tly1</span><span class="o">-&gt;</span><span class="n">SetLineColor</span><span class="p">(</span><span class="n">kRed</span><span class="p">);</span>
-<span class="n">tly2</span><span class="o">-&gt;</span><span class="n">SetLineColor</span><span class="p">(</span><span class="n">kRed</span><span class="p">);</span>
-<span class="n">tly1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"same"</span><span class="p">);</span>
-<span class="n">tly2</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"same"</span><span class="p">);</span>
+
 
 <span class="n">c3</span><span class="o">-&gt;</span><span class="n">SetLogy</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
 <span class="n">c3</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 </pre></div>
-</div>
 </div>
 </div>
 </div>
@@ -8237,55 +8219,45 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">TCanvas</span><span class="w"> </span><span class="o">*</span><span class="n">c4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TCanvas</span><span class="p">(</span><span class="s">"c4"</span><span class="p">,</span><span class="s">"c4"</span><span class="p">,</span><span class="mi">1000</span><span class="p">,</span><span class="mi">400</span><span class="p">);</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">TCanvas</span><span class="w"> </span><span class="o">*</span><span class="n">c4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TCanvas</span><span class="p">(</span><span class="s">"c4"</span><span class="p">,</span><span class="s">"Time sums"</span><span class="p">,</span><span class="mi">1000</span><span class="p">,</span><span class="mi">400</span><span class="p">);</span>
 <span class="n">c4</span><span class="o">-&gt;</span><span class="n">Divide</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
 <span class="n">c4</span><span class="o">-&gt;</span><span class="n">cd</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-<span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"dt_x2 + dt_x1 &gt;&gt; hdt_xsum(1500, 0, 1500)"</span><span class="p">,</span><span class="w"> </span><span class="n">cut_xvalid</span><span class="p">,</span><span class="w"> </span><span class="s">"colz"</span><span class="p">);</span>
+<span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"dt_x2+dt_x1&gt;&gt;hdt_xsum(1500,0,1500)"</span><span class="p">,</span><span class="n">cut_xvalid</span><span class="p">,</span><span class="s">"hist"</span><span class="p">);</span>
 <span class="n">TH1</span><span class="w"> </span><span class="o">*</span><span class="n">hdt_xsum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">TH1</span><span class="o">*</span><span class="p">)</span><span class="n">gROOT</span><span class="o">-&gt;</span><span class="n">FindObject</span><span class="p">(</span><span class="s">"hdt_xsum"</span><span class="p">);</span>
-<span class="n">hdt_xsum</span><span class="o">-&gt;</span><span class="n">Fit</span><span class="p">(</span><span class="s">"gaus"</span><span class="p">,</span><span class="s">"Q"</span><span class="p">);</span>
-<span class="n">TF1</span><span class="w"> </span><span class="o">*</span><span class="n">fx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hdt_xsum</span><span class="o">-&gt;</span><span class="n">GetFunction</span><span class="p">(</span><span class="s">"gaus"</span><span class="p">);</span>
-<span class="n">Float_t</span><span class="w"> </span><span class="n">xpeak</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fx</span><span class="o">-&gt;</span><span class="n">GetParameter</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-<span class="n">Float_t</span><span class="w"> </span><span class="n">xsigma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fx</span><span class="o">-&gt;</span><span class="n">GetParameter</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"xpeak = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">xpeak</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">" xsigma = "</span><span class="o">&lt;&lt;</span><span class="n">xsigma</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">xm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hdt_xsum</span><span class="o">-&gt;</span><span class="n">GetBinCenter</span><span class="p">(</span><span class="n">hdt_xsum</span><span class="o">-&gt;</span><span class="n">GetMaximumBin</span><span class="p">());</span>
+<span class="n">TF1</span><span class="w"> </span><span class="o">*</span><span class="n">fx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TF1</span><span class="p">(</span><span class="s">"fx"</span><span class="p">,</span><span class="s">"gaus"</span><span class="p">,</span><span class="n">xm</span><span class="mi">-25</span><span class="p">,</span><span class="n">xm</span><span class="o">+</span><span class="mi">25</span><span class="p">);</span><span class="w"> </span><span class="c1">// 只拟合主峰附近</span>
+<span class="n">hdt_xsum</span><span class="o">-&gt;</span><span class="n">Fit</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span><span class="s">"RQ"</span><span class="p">);</span>
+<span class="n">fx</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"same"</span><span class="p">);</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">xpeak</span><span class="o">=</span><span class="n">fx</span><span class="o">-&gt;</span><span class="n">GetParameter</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="n">xsigma</span><span class="o">=</span><span class="n">abs</span><span class="p">(</span><span class="n">fx</span><span class="o">-&gt;</span><span class="n">GetParameter</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
 <span class="n">gPad</span><span class="o">-&gt;</span><span class="n">SetLogy</span><span class="p">();</span>
 
 <span class="n">c4</span><span class="o">-&gt;</span><span class="n">cd</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-<span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"dt_y2 + dt_y1 &gt;&gt; hdt_ysum(1500, 0, 1500)"</span><span class="p">,</span><span class="w"> </span><span class="n">cut_yvalid</span><span class="p">,</span><span class="w"> </span><span class="s">"colz"</span><span class="p">);</span>
+<span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"dt_y2+dt_y1&gt;&gt;hdt_ysum(1500,0,1500)"</span><span class="p">,</span><span class="n">cut_yvalid</span><span class="p">,</span><span class="s">"hist"</span><span class="p">);</span>
 <span class="n">TH1</span><span class="w"> </span><span class="o">*</span><span class="n">hdt_ysum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">TH1</span><span class="o">*</span><span class="p">)</span><span class="n">gROOT</span><span class="o">-&gt;</span><span class="n">FindObject</span><span class="p">(</span><span class="s">"hdt_ysum"</span><span class="p">);</span>
-<span class="n">hdt_ysum</span><span class="o">-&gt;</span><span class="n">Fit</span><span class="p">(</span><span class="s">"gaus"</span><span class="p">,</span><span class="s">"Q"</span><span class="p">);</span>
-<span class="n">TF1</span><span class="w"> </span><span class="o">*</span><span class="n">fy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hdt_ysum</span><span class="o">-&gt;</span><span class="n">GetFunction</span><span class="p">(</span><span class="s">"gaus"</span><span class="p">);</span>
-<span class="n">Float_t</span><span class="w"> </span><span class="n">ypeak</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fy</span><span class="o">-&gt;</span><span class="n">GetParameter</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-<span class="n">Float_t</span><span class="w"> </span><span class="n">ysigma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fy</span><span class="o">-&gt;</span><span class="n">GetParameter</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"ypeak = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">ypeak</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">" ysigma = "</span><span class="o">&lt;&lt;</span><span class="n">ysigma</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">ym</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hdt_ysum</span><span class="o">-&gt;</span><span class="n">GetBinCenter</span><span class="p">(</span><span class="n">hdt_ysum</span><span class="o">-&gt;</span><span class="n">GetMaximumBin</span><span class="p">());</span>
+<span class="n">TF1</span><span class="w"> </span><span class="o">*</span><span class="n">fy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TF1</span><span class="p">(</span><span class="s">"fy"</span><span class="p">,</span><span class="s">"gaus"</span><span class="p">,</span><span class="n">ym</span><span class="mi">-25</span><span class="p">,</span><span class="n">ym</span><span class="o">+</span><span class="mi">25</span><span class="p">);</span>
+<span class="n">hdt_ysum</span><span class="o">-&gt;</span><span class="n">Fit</span><span class="p">(</span><span class="n">fy</span><span class="p">,</span><span class="s">"RQ"</span><span class="p">);</span>
+<span class="n">fy</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"same"</span><span class="p">);</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">ypeak</span><span class="o">=</span><span class="n">fy</span><span class="o">-&gt;</span><span class="n">GetParameter</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="n">ysigma</span><span class="o">=</span><span class="n">abs</span><span class="p">(</span><span class="n">fy</span><span class="o">-&gt;</span><span class="n">GetParameter</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
 <span class="n">gPad</span><span class="o">-&gt;</span><span class="n">SetLogy</span><span class="p">();</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"X sum: mean="</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">xpeak</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", sigma="</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">xsigma</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">" channels</span><span class="se">\n</span><span class="s">"</span>
+<span class="w">     </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Y sum: mean="</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">ypeak</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", sigma="</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">ysigma</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">" channels</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
 <span class="n">c4</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="verified-output"><pre>xpeak = 1172.2 xsigma = 7.98306
-ypeak = 662.065 ysigma = 9.00337</pre><img alt="2.1_PPAC_analysis: cell 16, c4" src="figures/2.1_PPAC_analysis/cell_16_c4.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
+<div class="verified-output"><pre>X sum: mean=1172.2, sigma=7.88441 channels
+Y sum: mean=661.904, sigma=8.68733 channels</pre><img alt="2.1_PPAC_analysis: cell 16, c4" src="figures/2.1_PPAC_analysis/cell_16_c4.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Pileup-Cut">Pileup Cut</h3><ul>
-<li><p>当同时有2个或以上的粒子打在 PPAC 上时，到达 delayline 的 x 的两端的时间由不同粒子的信号给出。</p>
-<ul>
-<li>假设 a, b 粒子同时穿过探测器，且 a 粒子靠近 $x_1$ 侧，b 粒子靠近 $x_2$ 侧，则 $T_{x_1}$ 由 a 粒子给出，$T_{x_2}$ 则由 b 粒子给出。
-(TDC 只记录与 start 信号最近的第一个信号)。</li>
-</ul>
-</li>
-<li><p>此时，$T_{x_1}+T_{x_2} &lt; T_{delay}$。即 delayline 的两端信号传输时间之和不再是常数。这个条件可作为信号堆积的标志。</p>
-</li>
-<li><p>从上述讨论可知，PPAC 无堆积条件：前后两个粒子到达探测器的时间间隔大于 $T_{delay}$。</p>
-</li>
-<li><p>一般选择加合峰（正常单粒子事件）两侧三倍 $\sigma$ 的范围作为好事件的筛选条件，剔除范围外的堆积信号：`</p>
-</li>
-</ul>
-<p>sum gate 检查的是各路时间是否符合单事例的读出关系，可以抑制一部分 pileup，但不能识别所有重叠脉冲；窗口也会影响有效事件的保留比例。</p></div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>Time-sum 选择</h3>
+<p>正常的两端信号应满足近似固定的 time-sum。若两粒子在延迟线传输时间内到达，两端可能记录了不同粒子的最早信号，time-sum 就可能偏小。δ rays 也可造成提前的读出信号。因此，峰外事件不能全称为 pileup，落在峰内也不能保证没有重叠。</p>
+<p>下面以主峰的 ±3σ 作为示例 gate。先看上图主峰和尾部，再选择保留范围；σ 来自主峰附近的 Gaussian 拟合，不是对整个尾部的拟合。gate 的宽度决定了选择效率。</p>
+<p>参考：H. Kumagai et al., <a href="https://arxiv.org/abs/1311.0215">Development of Parallel Plate Avalanche Counter PPAC for BigRIPS fragment separator</a>, arXiv:1311.0215 (2013)。文中讨论了 delay-line time-sum 与 δ-ray 效应。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
@@ -8294,12 +8266,9 @@ ypeak = 662.065 ysigma = 9.00337</pre><img alt="2.1_PPAC_analysis: cell 16, c4" 
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [19]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-c++"><pre><span></span><span class="n">TString</span><span class="w"> </span><span class="n">scut_xpile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Form</span><span class="p">(</span><span class="s">"abs(dt_x2 + dt_x1 - %f) &lt; 3 * %f"</span><span class="p">,</span><span class="w"> </span><span class="n">xpeak</span><span class="p">,</span><span class="w"> </span><span class="n">xsigma</span><span class="p">);</span>
-<span class="n">TString</span><span class="w"> </span><span class="n">scut_ypile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Form</span><span class="p">(</span><span class="s">"abs(dt_y2 + dt_y1 - %f) &lt; 3 * %f"</span><span class="p">,</span><span class="w"> </span><span class="n">ypeak</span><span class="p">,</span><span class="w"> </span><span class="n">ysigma</span><span class="p">);</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">TString</span><span class="w"> </span><span class="n">scut_xsum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Form</span><span class="p">(</span><span class="s">"abs(dt_x2 + dt_x1 - %f) &lt; 3 * %f"</span><span class="p">,</span><span class="w"> </span><span class="n">xpeak</span><span class="p">,</span><span class="w"> </span><span class="n">xsigma</span><span class="p">);</span>
+<span class="n">TString</span><span class="w"> </span><span class="n">scut_ysum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Form</span><span class="p">(</span><span class="s">"abs(dt_y2 + dt_y1 - %f) &lt; 3 * %f"</span><span class="p">,</span><span class="w"> </span><span class="n">ypeak</span><span class="p">,</span><span class="w"> </span><span class="n">ysigma</span><span class="p">);</span>
 </pre></div>
-</div>
 </div>
 </div>
 </div>
@@ -8309,13 +8278,10 @@ ypeak = 662.065 ysigma = 9.00337</pre><img alt="2.1_PPAC_analysis: cell 16, c4" 
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [20]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-c++"><pre><span></span><span class="n">TCut</span><span class="w"> </span><span class="n">cut_xpile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scut_xpile</span><span class="p">.</span><span class="n">Data</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">cut_xvalid</span><span class="p">;</span><span class="w"> </span>
-<span class="n">TCut</span><span class="w"> </span><span class="n">cut_ypile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scut_ypile</span><span class="p">.</span><span class="n">Data</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">cut_yvalid</span><span class="p">;</span><span class="w"> </span>
-<span class="n">TCut</span><span class="w"> </span><span class="n">cut_xypile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cut_xpile</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">cut_ypile</span><span class="p">;</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">TCut</span><span class="w"> </span><span class="n">cut_xsum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scut_xsum</span><span class="p">.</span><span class="n">Data</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">cut_xvalid</span><span class="p">;</span><span class="w"> </span>
+<span class="n">TCut</span><span class="w"> </span><span class="n">cut_ysum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scut_ysum</span><span class="p">.</span><span class="n">Data</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">cut_yvalid</span><span class="p">;</span><span class="w"> </span>
+<span class="n">TCut</span><span class="w"> </span><span class="n">cut_xysum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cut_xsum</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">cut_ysum</span><span class="p">;</span>
 </pre></div>
-</div>
 </div>
 </div>
 </div>
@@ -8325,10 +8291,8 @@ ypeak = 662.065 ysigma = 9.00337</pre><img alt="2.1_PPAC_analysis: cell 16, c4" 
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [34]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-c++"><pre><span></span><span class="n">TCanvas</span><span class="w"> </span><span class="o">*</span><span class="n">c1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TCanvas</span><span class="p">;</span>
-<span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"dt_y1-dt_y2:dt_x1-dt_x2"</span><span class="p">,</span><span class="n">cut_xypile</span><span class="p">,</span><span class="w"> </span><span class="s">"colz"</span><span class="p">);</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">TCanvas</span><span class="w"> </span><span class="o">*</span><span class="n">c1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TCanvas</span><span class="p">;</span>
+<span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"dt_y1-dt_y2:dt_x1-dt_x2"</span><span class="p">,</span><span class="n">cut_xysum</span><span class="p">,</span><span class="w"> </span><span class="s">"colz"</span><span class="p">);</span>
 <span class="n">gPad</span><span class="o">-&gt;</span><span class="n">SetLogy</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
 <span class="n">gPad</span><span class="o">-&gt;</span><span class="n">SetLogz</span><span class="p">();</span>
 <span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
@@ -8336,8 +8300,37 @@ ypeak = 662.065 ysigma = 9.00337</pre><img alt="2.1_PPAC_analysis: cell 16, c4" 
 </div>
 </div>
 </div>
-</div>
-<div class="verified-output"><img alt="2.1_PPAC_analysis: cell 20, c1" src="figures/2.1_PPAC_analysis/cell_20_c1.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="verified-output"><img alt="2.1_PPAC_analysis: cell 20, c1" src="figures/2.1_PPAC_analysis/cell_20_c1.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><h2>3. 位置刻度与边界 cut</h2>
+<p>这里用 $L$ 表示<strong>半宽</strong>，物理灵敏区为 $-L&lt;x&lt;L$（前面 delay-line 公式中的总宽度为 $2L$）。有限分辨使测量位置 $x_{\rm rec}=x+\delta x$ 在物理边界外也有分布。不能把谱中最外侧的非零 bin 强行刻度到 ±L；mask 孔或 slit 的已知位置才提供独立的位置基准。只有照明分布与边缘响应已知时，才适合用边缘模型辅助刻度。</p>
+<p>下图仅用均匀照明、Gaussian 分辨 σ=1 mm、半宽 L=120 mm <strong>说明边界展宽</strong>，不是对本组 PPAC 数据的拟合。左图为测量分布在右边缘的变化；右图为真实位置给定时，通过 $|x_{\rm rec}|&lt;L$ 的概率。</p></div></div><div class="jp-Cell jp-CodeCell"><div class="jp-InputArea"><div class="jp-InputArea-editor"><div class="highlight"><pre><span></span><span class="n">TCanvas</span><span class="w"> </span><span class="o">*</span><span class="n">cBoundary</span><span class="o">=</span><span class="k">new</span><span class="w"> </span><span class="n">TCanvas</span><span class="p">(</span><span class="s">"cBoundary"</span><span class="p">,</span><span class="s">"Resolution at an active edge"</span><span class="p">,</span><span class="mi">1000</span><span class="p">,</span><span class="mi">380</span><span class="p">);</span>
+<span class="n">cBoundary</span><span class="o">-&gt;</span><span class="n">Divide</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">TF1</span><span class="w"> </span><span class="o">*</span><span class="n">edge</span><span class="o">=</span><span class="k">new</span><span class="w"> </span><span class="n">TF1</span><span class="p">(</span><span class="s">"edge"</span><span class="p">,</span>
+<span class="w"> </span><span class="s">"0.5*(TMath::Erf((x+[0])/(sqrt(2)*[1]))-TMath::Erf((x-[0])/(sqrt(2)*[1])))"</span><span class="p">,</span>
+<span class="w"> </span><span class="mi">114</span><span class="p">,</span><span class="mi">126</span><span class="p">);</span>
+<span class="n">edge</span><span class="o">-&gt;</span><span class="n">SetParameters</span><span class="p">(</span><span class="mi">120</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="c1">// half-width L, assumed sigma, in mm</span>
+<span class="n">cBoundary</span><span class="o">-&gt;</span><span class="n">cd</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">edge</span><span class="o">-&gt;</span><span class="n">SetTitle</span><span class="p">(</span><span class="s">"Uniform illumination, Gaussian response;x_{rec} (mm);Relative density"</span><span class="p">);</span>
+<span class="n">edge</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
+<span class="n">TLine</span><span class="w"> </span><span class="o">*</span><span class="n">boundary</span><span class="o">=</span><span class="k">new</span><span class="w"> </span><span class="n">TLine</span><span class="p">(</span><span class="mi">120</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">120</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">boundary</span><span class="o">-&gt;</span><span class="n">SetLineStyle</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span><span class="w"> </span><span class="n">boundary</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
+<span class="n">cBoundary</span><span class="o">-&gt;</span><span class="n">cd</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">TF1</span><span class="w"> </span><span class="o">*</span><span class="n">survival</span><span class="o">=</span><span class="p">(</span><span class="n">TF1</span><span class="o">*</span><span class="p">)</span><span class="n">edge</span><span class="o">-&gt;</span><span class="n">Clone</span><span class="p">(</span><span class="s">"survival"</span><span class="p">);</span>
+<span class="n">survival</span><span class="o">-&gt;</span><span class="n">SetRange</span><span class="p">(</span><span class="mi">114</span><span class="p">,</span><span class="mi">120</span><span class="p">);</span>
+<span class="n">survival</span><span class="o">-&gt;</span><span class="n">SetTitle</span><span class="p">(</span><span class="s">"Acceptance of |x_{rec}|&lt;120 mm;True x (mm);Cut survival probability"</span><span class="p">);</span>
+<span class="n">survival</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"At x=L: "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">survival</span><span class="o">-&gt;</span><span class="n">Eval</span><span class="p">(</span><span class="mi">120</span><span class="p">)</span>
+<span class="w">     </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"; at x=L-sigma: "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">survival</span><span class="o">-&gt;</span><span class="n">Eval</span><span class="p">(</span><span class="mi">119</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="n">cBoundary</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
+</pre></div>
+</div></div><div class="verified-output"><pre>At x=L: 0.5; at x=L-sigma: 0.841345</pre><img alt="2.1_PPAC_analysis: cell 22, cBoundary" src="figures/2.1_PPAC_analysis/cell_22_cBoundary.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><h3>怎样选择边界？</h3>
+<p>若目的是测量探测器内部的读出效率，先用<strong>不包含待测 PPAC 的 reference track</strong>预测位置，并选择 $|x_{\rm ref}|&lt;L-d$ 的内部区域。$d$ 根据参考径迹的不确定度及边缘响应选择，不能直接用待测层自己的位置定义分母。下一节采用的 $|x_{\rm ref}|&lt;100$ mm、$|y_{\rm ref}|&lt;60$ mm 就是在 240×150 mm² 灵敏区内留下边缘余量。</p>
+<p>若分析要求测量坐标也落在 ±L 内，可以再加这个 cut，但删去的边缘事件属于<strong>位置选择损失</strong>，不应直接解释为探测器没有响应。也可以保留边界外的少量测量尾部，再通过 residual 和本底确定是否可靠。没有一条对所有束斑和分辨都适用的固定放宽范围。</p>
+<p>在同一 reference 样本内，分别数出 $N_{\rm ref}$、有有效读数的 $N_{\rm valid}$、以及读数通过边界 cut 的 $N_{\rm pass}$：</p>
+<p>$$\epsilon_{\rm read}=\frac{N_{\rm valid}}{N_{\rm ref}},\qquad
+\epsilon_{\rm cut}=\frac{N_{\rm pass}}{N_{\rm valid}},\qquad
+\epsilon_{\rm selected}=\frac{N_{\rm pass}}{N_{\rm ref}}
+=\epsilon_{\rm read}\epsilon_{\rm cut}.$$</p>
+<p>这是计数定义，不要求两个过程独立。若已用最后一个比值作总效率修正，就不要再重复修正边界损失。真实边界处的 cut 保留概率约为 50%，不表示全探测器损失一半；总损失还取决于束斑在边缘的粒子比例。</p></div></div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>

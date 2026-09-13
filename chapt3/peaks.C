@@ -32,13 +32,16 @@ void peaks(TString hname, vector<Double_t> &pe, Double_t thres=0.05, int backsub
     h->Add(hb, -1);
   }
 
-  nfound = sp->Search(h, 2, "", thres);
+  // 本底已在上面处理，不再使用 Search 的默认本底扣除。
+  nfound = sp->Search(h, 2, "nobackground nodraw", thres);
+  h->Draw("hist");
 
   TPolyMarker *pm = (TPolyMarker*)h->GetListOfFunctions()->FindObject("TPolyMarker");
   if(pm) {
     pm->SetMarkerStyle(32);
     pm->SetMarkerColor(kGreen);
     pm->SetMarkerSize(0.4);
+    pm->Draw(); // HIST 不画附加对象，显式叠加候选峰标记
   }
 
   xpeaks = sp->GetPositionX();
@@ -48,8 +51,8 @@ void peaks(TString hname, vector<Double_t> &pe, Double_t thres=0.05, int backsub
     me.emplace(ypeaks[j], xpeaks[j]);
 
     TLatex *tex = new TLatex(xpeaks[j], ypeaks[j], Form("%.0f", xpeaks[j]));
-    tex->SetTextFont(13);
-    tex->SetTextSize(0.02);
+    tex->SetTextFont(42);
+    tex->SetTextSize(0.025);
     tex->SetTextAlign(12);
     tex->SetTextAngle(90);
     tex->SetTextColor(kRed);
@@ -63,4 +66,3 @@ void peaks(TString hname, vector<Double_t> &pe, Double_t thres=0.05, int backsub
 
   delete sp;
 }
-

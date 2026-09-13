@@ -7837,7 +7837,6 @@ a.anchor-link {
 <a href="../index.html"><img alt="课程标志" src="../assets/images/course-logo.png"/></a>
 <div class="course-banner-title"><a href="../index.html">核物理实验数据处理</a>
 <span class="course-banner-en">Experimental Data Analysis in Nuclear Physics</span></div></div></header>
-
 <main>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -7850,7 +7849,7 @@ a.anchor-link {
 <p>得到径迹的线性方程后，束流线上其他任意位置 (z) 处的 (x,y) 坐标，均可利用上述方程通过内插或外推计算得出。图中黑点即代表由线性方程计算/拟合得到的位置（它代表了我们所能推测出的粒子实际飞行路径）。</p>
 <p><img alt="setup" src="fig/tracking.png"/></p>
 <hr/>
-<h3 id="%E6%9C%AC%E5%AE%9E%E9%AA%8C%E4%B8%AD%E9%87%87%E7%94%A8%E7%9A%84%E9%87%8D%E5%BB%BA%E7%AD%96%E7%95%A5">本实验中采用的重建策略</h3><p>在实际实验中，若强制要求单层探测器必须同时给出 $(x,y)$ 二维有效信号才参与拟合，会导致严重的整体探测效率损失。因此实际上$x$ 方向与 $y$ 方向的径迹重建是完全独立进行的。即：只要某层探测器测得了有效的 $x$ 坐标，即便其 $y$ 信号缺失，该点仍独立参与 $x-z$ 平面的径迹拟合。</p>
+<h3 id="%E6%9C%AC%E5%AE%9E%E9%AA%8C%E4%B8%AD%E9%87%87%E7%94%A8%E7%9A%84%E9%87%8D%E5%BB%BA%E7%AD%96%E7%95%A5">一般重建策略与本例的选择</h3><p>在实际实验中，若强制要求单层探测器必须同时给出 $(x,y)$ 二维有效信号才参与拟合，会导致严重的整体探测效率损失。因此可以分别收集有效的 $x$ 和 $y$ 测量点，重建两个投影。下面的演示固定选择 1A、2A、3 在两个方向均有效的样本；作业再实现按方向选择有效点。即：只要某层探测器测得了有效的 $x$ 坐标，即便其 $y$ 信号缺失，该点仍独立参与 $x-z$ 平面的径迹拟合。</p>
 <p><strong>2. 径迹有效条件</strong>
 对于 $x$ 或 $y$ 径迹，必须满足以下逻辑条件之一才被视为有效重建：</p>
 <ul>
@@ -7931,14 +7930,14 @@ a.anchor-link {
 <li>$y-z$ 平面拟合直线方程 $y = f_y(z)$，使用已知数据点：<code>(yy[0],yz[0]), (yy[1],yz[1]), (yy[2],yz[2])</code></li>
 </ul>
 </li>
-<li><strong>2. 残差 (Residual) 计算（用于评估位置分辨率）：</strong><ul>
+<li><strong>2. included residual 计算（先检查径迹与测量的一致性）：</strong><ul>
 <li>测量值与拟合值的差：$dx[i] = xx[i] - f_x(xz[i])$ ； $dy[i] = yy[i] - f_y(yz[i])$ $(i=0,1,2)$</li>
 </ul>
 </li>
 <li><strong>3. 待测层 F8PPAC2_B (2B) 的对比：</strong><ul>
 <li><strong>实验测量坐标：</strong> <code>(xx2b[0], xz2b)</code> 和 <code>(yy2b[0], yz2b)</code></li>
 <li><strong>外推预期坐标：</strong> 利用拟合直线算得 <code>(xx2b[1], xz2b)</code> 和 <code>(yy2b[1], yz2b)</code></li>
-<li><strong>阳极触发信号：</strong> <code>anode2b</code>（用于求阳极本征效率）</li>
+<li><strong>阳极触发信号：</strong> <code>anode2b</code>（用于统计参考样本内的阳极响应效率）</li>
 </ul>
 </li>
 <li><strong>4. 物理靶位坐标外推：</strong><ul>
@@ -7955,37 +7954,8 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="%E9%9D%B6%E7%82%B9%E5%9D%90%E6%A0%87-$(t_x,-t_y)$-%E4%B8%8E%E5%87%BA%E5%B0%84%E8%A7%92-$%5Ctheta$-%E7%9A%84%E8%AF%AF%E5%B7%AE%E8%AF%84%E4%BC%B0">靶点坐标 $(t_x, t_y)$ 与入射方向的投影角 $\theta$ 的误差评估</h1><h3 id="1.-%E7%89%A9%E7%90%86%E5%8A%A8%E6%9C%BA%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E9%80%90%E4%BA%8B%E4%BB%B6%E8%AF%84%E4%BC%B0%E8%BF%BD%E8%B8%AA%E8%AF%AF%E5%B7%AE%EF%BC%9F">1. 物理动机：为什么要逐事件评估追踪误差？</h3><p>在真实的物理实验中，分析中会采用不同的径迹重建（Tracking）策略。例如：</p>
-<ul>
-<li><strong>策略 A：</strong> 3 层探测器完美击中 $\to$ 杠杆臂长，拟合精度极高。</li>
-<li><strong>策略 B：</strong> 仅有 2 层探测器击中 $\to$ 勉强定迹，拟合误差巨大。</li>
-</ul>
-<p>当我们为每一个事件计算出专属的物理误差（$\sigma_{t_x}, \sigma_\theta$）并存入  TTree 后，在后续的物理分析中，可以通过以下 <strong>三种具体的编程手段</strong> 来统一处理这些质量参差不齐的数据：</p>
-<h4 id="%E7%94%A8%E6%B3%95%E4%B8%80%EF%BC%9AQuality-Cut">用法一：Quality Cut</h4><p>有了误差后，不同 tracking 策略的好坏被统一量化。在 ROOT 中画图或提取数据时，通过TCut选择不同误差的事件：</p>
-<div class="highlight"><pre><span></span><span class="c1">// 只要外推到靶上的误差小于 1.5 mm 的事件</span>
-<span class="n">TCut</span><span class="w"> </span><span class="n">good_track_cut</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"sigma_tx &lt; 1.5 &amp;&amp; sigma_theta &lt; 0.05"</span><span class="p">;</span>
-<span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"tx &gt;&gt; h1"</span><span class="p">,</span><span class="w"> </span><span class="n">good_track_cut</span><span class="p">);</span>
-</pre></div>
-<h4 id="%E7%94%A8%E6%B3%95%E4%BA%8C%EF%BC%9AInverse-Variance-Weighting">用法二：Inverse-Variance Weighting</h4><p>如果物理目标是测量一个确定的中心值（例如：寻找束流打在靶上的绝对中心位置，或者拟合某个共振态的确定散射角），不能对所有事件取简单的算术平均。
-应该使用<strong>逆方差（误差的平方倒数）作为每个事件的权重 $w_i$</strong>：
-$$ w_i = \frac{1}{\sigma_i^2} $$
-<strong>数学原理实现：</strong></p>
-<div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="n">sum_weight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="kt">double</span><span class="w"> </span><span class="n">sum_value</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-
-<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="n">nentries</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">GetEntry</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sigma_tx</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">continue</span><span class="p">;</span><span class="w"> </span><span class="c1">// 排除无效点</span>
-<span class="w">    </span>
-<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">weight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">sigma_tx</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">sigma_tx</span><span class="p">);</span><span class="w"> </span><span class="c1">// 误差越小，权重呈按误差平方的倒数暴增</span>
-<span class="w">    </span><span class="n">sum_value</span><span class="w">  </span><span class="o">+=</span><span class="w"> </span><span class="n">tx</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">weight</span><span class="p">;</span>
-<span class="w">    </span><span class="n">sum_weight</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">weight</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="kt">double</span><span class="w"> </span><span class="n">final_tx_center</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum_value</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">sum_weight</span><span class="p">;</span>
-</pre></div>
-<hr/>
-<h3 id="2.-%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9F%A9%E9%98%B5-(Covariance-Matrix)">2. 协方差矩阵 (Covariance Matrix)</h3><p>假设在 $X-Z$ 平面内用线性方程 $x(z) = p_0 + p_1 \cdot z$ 拟合粒子径迹。
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>靶点位置与入射方向的不确定度</h3>
+<p>外推精度由单层测量误差、探测器间距以及外推距离共同决定。三个测量点不一定比相距较远的两个点有更好的角度精度。这里先假定每层位置误差为 1 mm，说明 ROOT 如何把测量误差传播到靶点与方向；这个数值不是本数据的分辨测量结果。</p><h3 id="2.-%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9F%A9%E9%98%B5-(Covariance-Matrix)">2. 协方差矩阵 (Covariance Matrix)</h3><p>假设在 $X-Z$ 平面内用线性方程 $x(z) = p_0 + p_1 \cdot z$ 拟合粒子径迹。
 最小二乘法在给出截距 $p_0$ 和斜率 $p_1$ 的同时，必然会给出一个 $2 \times 2$ 的<strong>协方差矩阵 $C$</strong>：</p>
 <p>$$ C = \begin{pmatrix} \sigma_{p_0}^2 &amp; Cov(p_0, p_1) \\ Cov(p_1, p_0) &amp; \sigma_{p_1}^2 \end{pmatrix} $$</p>
 <ul>
@@ -7997,13 +7967,13 @@ $$ w_i = \frac{1}{\sigma_i^2} $$
 <h4 id="A.-%E9%9D%B6%E4%B8%8A%E4%BD%8D%E7%BD%AE-$t_x$-%E7%9A%84%E8%AF%AF%E5%B7%AE%E6%8E%A8%E5%AF%BC%EF%BC%88%E7%BA%BF%E6%80%A7%E4%BC%A0%E9%80%92%EF%BC%89">A. 靶上位置 $t_x$ 的误差推导（线性传递）</h4><p>根据直线方程，外推点的计算公式为：$t_x = p_0 + p_1 \cdot z_{target}$。
 利用多元函数误差传递公式：
 $$ \sigma_{f(p_0, p_1)}^2 = \left( \frac{\partial f}{\partial p_0} \right)^2 \sigma_{p_0}^2 + \left( \frac{\partial f}{\partial p_1} \right)^2 \sigma_{p_1}^2 + 2 \left( \frac{\partial f}{\partial p_0} \right) \left( \frac{\partial f}{\partial p_1} \right) Cov(p_0, p_1) $$</p>
-<p>代入偏导数（$\frac{\partial t_x}{\partial p_0} = 1$, $\frac{\partial t_x}{\partial p_1} = z_{target}$），得到靶点位置的真实方差：
+<p>代入偏导数（$\frac{\partial t_x}{\partial p_0} = 1$, $\frac{\partial t_x}{\partial p_1} = z_{target}$），得到模型内的靶点位置方差：
 $$ \mathbf{\sigma_{t_x}^2 = \sigma_{p_0}^2 + (z_{target})^2 \cdot \sigma_{p_1}^2 + 2 \cdot z_{target} \cdot Cov(p_0, p_1)} $$
 <em>(注：Y 方向的 $t_y$ 误差推导与 X 方向完全相同，只需将 X 平面的拟合参数代入即可。)</em></p>
 <h4 id="B.-%E7%89%A9%E7%90%86%E5%87%BA%E5%B0%84%E8%A7%92-$%5Ctheta$-%E7%9A%84%E8%AF%AF%E5%B7%AE%E6%8E%A8%E5%AF%BC%EF%BC%88%E9%9D%9E%E7%BA%BF%E6%80%A7%E4%BC%A0%E9%80%92%EF%BC%89">B. 物理入射方向的投影角 $\theta$ 的误差推导（非线性传递）</h4><p>拟合出的斜率 $p_1$ 等于角度的正切值，真正的物理角度为：$\theta = \arctan(p_1)$。
 利用一元非线性误差传递公式：
 $$ \sigma_\theta^2 = \left( \frac{d\theta}{dp_1} \right)^2 \sigma_{p_1}^2 $$
-根据微积分导数公式 $\frac{d}{dx}\arctan(x) = \frac{1}{1+x^2}$，得到角度的真实绝对误差：
+根据微积分导数公式 $\frac{d}{dx}\arctan(x) = \frac{1}{1+x^2}$，一阶误差传播得到投影角的标准不确定度：
 $$ \mathbf{\sigma_\theta = \frac{\sigma_{p_1}}{1 + p_1^2}} $$</p>
 <p>\(\arctan k_x\)、\(\arctan k_y\) 是两个投影角；相对 z 轴的极角为 \(\theta=\arctan\sqrt{k_x^2+k_y^2}\)。两点也可确定直线并在已知测量误差下传播参数误差，但 NDF=0，不能用 χ²/NDF 检验拟合。</p><p>束斑中不同事例的真实位置本来就有分布，束斑中心不应仅按各事例的 tracking 误差加权；inverse-variance 平均要求它们测量同一个参数，或在模型中同时纳入束斑的本征宽度。</p></div>
 </div>
@@ -8014,67 +7984,21 @@ $$ \mathbf{\sigma_\theta = \frac{\sigma_{p_1}}{1 + p_1^2}} $$</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<hr/>
-<h2 id="4.-%E4%BD%8D%E7%BD%AE%E5%88%86%E8%BE%A8%E7%8E%87">4. 位置分辨率</h2><p>在实验中，测定探测器的本征位置分辨率是评估径迹重建质量和动量/角度分辨率的前提。通常有两种测定方法：</p>
-<h4 id="2.1-%E5%87%86%E7%9B%B4%E6%9D%9F%E5%88%BB%E5%BA%A6%E6%96%B9%E6%B3%95%EF%BC%88%E7%A6%BB%E7%BA%BF%E6%B5%8B%E8%AF%95-/-%E6%94%BE%E5%B0%84%E6%BA%90%EF%BC%89">2.1 准直束刻度方法（离线测试 / 放射源）</h4><p><img alt="" src="fig/pos_res.png"/></p>
-<p>该方法通常在离线实验室中，利用低能放射源和准直狭缝（Collimator）进行。</p>
-<ul>
-<li><strong>理想高斯展宽模型：</strong>
-通过准直孔将粒子准直后打入探测器。此时测得的表观位置分辨率 $\sigma$ 是探测器本征分辨率 $\sigma_0$ 与准直孔几何展宽 $\sigma_{geo}$ 的卷积（近似为高斯叠加）：
-$$ \sigma^2 = \sigma_0^2 + \sigma_{geo}^2 $$
-其中，$\sigma_{geo}$ 由准直孔的物理孔径引入（见图 a）。通过反推即可得到 $\sigma_0$。</li>
-<li><strong>局限性一：源与真实束流的电离差异</strong>
-气体探测器的本征分辨率 $\sigma_0$ 强烈依赖于入射粒子的<strong>比电离能损 ($dE/dx$)</strong>、<strong>原初电离统计涨落</strong>以及<strong>产生 $\delta$ 电子的射程</strong>。因此，用低能 $\alpha$ 放射源测出的 $\sigma_0$，只能证明探测器硬件完好，<strong>不能直接等同于</strong>高能重离子束流条件下的真实分辨率。</li>
-<li><strong>局限性二：高能束流的“边缘散射（Slit Scattering）”</strong>
-如果在真实束流线上强行使用准直孔（图 b），高能粒子在穿过准直孔边缘时会发生严重的<strong>多重库仑散射（MCS）</strong>。这不仅会使得 $\sigma_{geo}$ 的几何关联失效，更会在位置谱上产生巨大的非高斯拖尾（Tail / Halo），彻底淹没探测器真实的 $\sigma_0$。</li>
-</ul>
-<hr/>
-<h4 id="2.2-%E5%A4%9A%E6%8E%A2%E6%B5%8B%E5%99%A8%E5%BE%84%E8%BF%B9%E6%AE%8B%E5%B7%AE%E6%B3%95">2.2 多探测器径迹残差法</h4><p>鉴于准直方法的局限性，在真实的高能物理实验中，<strong>可靠的方法</strong>是利用多层探测器系统，在真实束流和真实数据获取条件下，通过<strong>径迹残差（Residuals）</strong>来逆推分辨率。</p>
-<ul>
-<li><p><strong>残差（Residual）的定义：</strong>
-选择被全部 PPAC（如 5 层）同时探测到的“好事件”进行空间直线拟合。定义第 $i$ 层探测器的测量坐标 $x^i$ 与拟合径迹在该层的预期坐标 $x_{track}^i$ 之差为<strong>残差 $\Delta x^i$</strong>：
-$$ \Delta x^i = x^i - x_{track}^i $$</p>
-</li>
-<li><p>在 $z_i$ 位置观察到的<strong>残差 $\Delta x^i$</strong>，实际上是由两个独立成分叠加而成的：</p>
-</li>
-</ul>
-<ol>
-<li><strong>探测器本身的测量涨落 $\sigma_0$</strong>，即位置分辨。</li>
-<li><strong>拟合直线的误差 $\sigma_{track}$</strong>：这正是通过上一节协方差矩阵在 $z_i$ 处算出的不确定度。</li>
-</ol>
-<p>提取 $\sigma_0$，实验上常用<strong>“排除拟合法”</strong>：即在拟合直线时，不使用第 $i$ 层的数据，而只用其他层连成直线。</p>
-<p>此时，由于第 $i$ 层的测量值与外推直线完全独立，残差的方差是两者方差的<strong>直接相加</strong>：
-$$\sigma_{residual}^2 = \sigma_0^2 + \sigma_{track}^2(z_i)$$</p>
-<hr/>
-<h2 id="5.-PPAC-%E6%8E%A2%E6%B5%8B%E6%95%88%E7%8E%87">5. PPAC 探测效率</h2><p><img alt="" src="fig/pos_eff.png"/></p>
-<p>理想情况下，若有 $N$ 个粒子真实穿过了探测器的灵敏区域（Active Area），而探测器实际成功记录并解析出位置信息的事件数为 $N_{det}$，则该探测器的绝对探测效率定义为：
-$$\epsilon = \frac{N_{det}}{N}$$</p>
-<p>在实际束流实验中，由于我们无法预知真实的 $N$，通常采用以下两种典型的数据分析方法来评估效率：</p>
-<p><strong>方法一：位置读出效率（基于内部信号符合，对应图 a）</strong></p>
-<ul>
-<li><strong>物理意义：</strong> 评估当气体发生有效雪崩后，阴极成功读取出位置坐标的概率。</li>
-<li><strong>计算方法：</strong> 将 PPAC 的<strong>阳极 (Anode) 触发信号计数</strong>作为分母（代表测到粒子确实穿过探测器），将<strong>阴极 (Cathode) 具有位置信息的计数</strong>作为分子。</li>
-</ul>
-<p><strong>方法二：基于径迹外推的绝对探测效率（参考探测器法，对应图 b）</strong></p>
-<ul>
-<li><strong>物理意义：</strong> 利用其他探测器作为基准，评估待测探测器的实际探测能力。</li>
-<li><strong>计算方法：</strong><ol>
-<li>选择任意两层（或多层）具有位置信号的 PPAC 作为<strong>参考探测器（图b中的 i, j）</strong>，拟合出粒子径迹。</li>
-<li><strong>分母 ($N_{ij}$)：</strong> 将上述径迹外推至<strong>待测探测器（图b中的 k）</strong>的位置，统计预期穿过其灵敏面积的所有事件总数。</li>
-<li><strong>分子 ($N_{kij}$)：</strong> 在上述 $N_{ij}$ 个事件的前提下，去检查待测探测器 k 是否确实给出了位置信号，记录成功探测的事件数。</li>
-<li><strong>计算公式：</strong> $\epsilon = \frac{N_{kij}}{N_{ij}}$</li>
-</ol>
-</li>
-<li><strong>拓展：阳极探测效率评估</strong><ul>
-<li>利用类似的径迹外推做法，也可以求得每个探测器<strong>阳极（Anode）的本征探测效率</strong>。只需保持分母（预期事件总数 $N_{ij}$）不变，将分子替换为：在上述事件中，待测探测器 k 的<strong>阳极成功产生触发信号</strong>的事件数即可。</li>
-</ul>
-</li>
-</ul>
-<p><strong>维度独立性：</strong>
-由于 PPAC 内部 $x$ 和 $y$ 方向的阴极读出结构通常是独立的，利用上述“径迹外推法”，可以分别独立评估该探测器单一维度的 <strong>$x$ 效率</strong>、<strong>$y$ 效率</strong>，以及要求两者同时有效的二维 <strong>$(x,y)$ 联合探测效率</strong>。</p>
-<hr/>
-<p>用于分辨估计的 residual 应区分 included 和 excluded fit。若待测层未参与 tracking、且误差独立，则 \(\sigma_r^2=\sigma_{DUT}^2+\sigma_{track}^2\)；同一层参与拟合时，测量值与预测值相关，不能再用这个加法。探测效率也始终对应所选参考径迹、触发条件和有效面积；x 与 y 的响应不必独立。</p></div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>4. 位置分辨：先区分两种 residual</h3>
+<p>准直源或 mask 可用于独立测量。若测量位置是真实照明位置与独立读出误差之和，则方差相加：
+$\sigma_{\rm measured}^2=\sigma_{\rm illumination}^2+\sigma_{\rm det}^2$。
+均匀照明宽度为 $w$ 的狭缝，其位置方差是 $w^2/12$，不是 Gaussian 峰宽。拟合时可把已知照明分布与分辨函数卷积。源、束流的电离密度及边缘散射不同，所得分辨也可能不同。</p>
+<p>束流实验可用其他 PPAC 预测待测层（DUT）的位置。定义
+$r_i=x_i-\hat x_{-i}(z_i)$，其中下标 $-i$ 表示拟合中<strong>没有使用第 i 层</strong>。若 DUT 与参考测量误差独立，且直线模型足够描述径迹，</p>
+<p>$$\sigma_{r_i}^2=\sigma_i^2+\sigma_{\rm pred}^2(z_i),\qquad
+\sigma_{\rm pred}^2(z_i)=C_{00}+2z_i C_{01}+z_i^2 C_{11}.$$</p>
+<p>因此，residual 的宽度还要扣除 reference track 的预测方差，才能估计单层分辨。参考层分辨若未知，可结合多层的 excluded residual 建立方差方程；不能把演示中假设的 1 mm 当作已经测出的输入。多重散射、对准误差和读出相关性也会影响这个关系。</p>
+<p>相反，若第 i 层已经参与拟合，$x_i$ 与预测位置相关，included residual 通常较窄，不能套用上述方差相加公式。下面先画 included residual 检查径迹一致性，再画未参与拟合的 2B residual。</p>
+<h3>5. 探测效率：分母由谁提供？</h3>
+<p>用阳极有效的事例作分母，得到的是<strong>给定阳极响应后的</strong>位置读出效率：
+$\epsilon_{x|a}=N_{x\cap a}/N_a$。它不计入阳极自身漏掉的事例。</p>
+<p>用独立 reference tracks 作分母，可估计该触发及照明样本内的响应效率。先要求参考径迹通过 DUT 的内部有效区域，再统计 DUT 的 anode、x、y 与 x-y 是否有效。参考径迹及分母的 cut 不使用 DUT 信号；x-y 联合效率直接计数，不假定 x 与 y 独立。</p>
+<p>本文件中的位置已在上游处理阶段作过有效性选择。因此，下文“有效读数”指文件中仍保留的有效坐标，不能据此拆分上游已丢失的电子学响应与 time-sum 选择损失。若要分开测量这些效率，应从原始信号逐级计数。</p></div>
 </div>
 </div>
 </div>
@@ -8098,7 +8022,7 @@ root<span class="w"> </span><span class="o">[</span><span class="m">2</span><spa
 root<span class="w"> </span><span class="o">[</span><span class="m">3</span><span class="o">]</span><span class="w"> </span>t.Loop<span class="o">()</span><span class="p">;</span>
 root<span class="w"> </span><span class="o">[</span><span class="m">4</span><span class="o">]</span><span class="w"> </span>.q
 </pre></div>
-<p><em>运行结束后，生成 <code>tracking.root</code> 。</em></p>
+<p><em>运行结束后，生成 <code>tracking_demo.root</code> 。</em></p>
 </div>
 </div>
 </div>
@@ -8123,16 +8047,15 @@ root<span class="w"> </span><span class="o">[</span><span class="m">4</span><spa
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="tracking.C"><code>tracking.C</code></h3><div class="highlight"><pre><code class="language-cpp">#define tracking_cxx
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>tracking.C：逐事件计算</h3><pre><code class="language-cpp">#define tracking_cxx
 #include "tracking.h"
 #include &lt;TH2.h&gt;
 #include &lt;TStyle.h&gt;
 #include &lt;TCanvas.h&gt;
 #include &lt;TF1.h&gt;
-#include &lt;TGraphErrors.h&gt;   // 【修改】必须包含带有误差的图类
+#include &lt;TGraphErrors.h&gt;   // 输入测量点及其误差
 #include &lt;TFitResult.h&gt;
-#include &lt;TMatrixDSym.h&gt;    // 【新增】用于接收协方差矩阵
+#include &lt;TMatrixDSym.h&gt;    // 拟合参数的协方差矩阵
 #include &lt;iostream&gt;
 #include &lt;cmath&gt;
 
@@ -8151,7 +8074,7 @@ void tracking::SetBranch(TTree *tree)
     tree-&gt;Branch("yy2b", yy2b, "yy2b[2]/D");
     tree-&gt;Branch("anode2b", &amp;anode2b, "anode2b/D");
 
-    // 【新增】注册所有运动学中心值及其物理误差
+    // 保存位置、投影角与模型内传播的不确定度
     tree-&gt;Branch("tx", &amp;tx, "tx/D");
     tree-&gt;Branch("ty", &amp;ty, "ty/D");
     tree-&gt;Branch("theta_x", &amp;theta_x, "theta_x/D");
@@ -8208,7 +8131,7 @@ void tracking::Loop()
     TH2D *htf8xz = new TH2D("htf8xz", "X-Z Plane Trace; Z (mm); X (mm)", 2200, -2000, 200, 300, -150, 150);
     TH2D *htf8yz = new TH2D("htf8yz", "Y-Z Plane Trace; Z (mm); Y (mm)", 2200, -2000, 200, 300, -150, 150);
 
-    // 【核心修改】使用 TGraphErrors 替代 TGraph，输入假设的单层位置误差
+    // 输入假设的单层位置误差，演示误差传播
     TGraphErrors *grx = new TGraphErrors(3);
     TGraphErrors *gry = new TGraphErrors(3);
     TF1 *fx = new TF1("fx", "pol1", -2000, 0);
@@ -8240,7 +8163,7 @@ void tracking::Loop()
             grx-&gt;SetPointError(i, 0.0, det_resolution); // 关键：输入Z和X的误差
         }
 
-        // 【核心修改】去除 "W" 选项。S=保存结果(以获取矩阵), Q=静默模式
+        // S 保存结果及协方差；Q 减少日志；N 不附加逐事件拟合函数
         TFitResultPtr rx = grx-&gt;Fit(fx, "SQN");
 
         if (int(rx)==0 &amp;&amp; rx.Get() &amp;&amp; rx-&gt;IsValid()) {
@@ -8250,7 +8173,7 @@ void tracking::Loop()
             // 提取中心值
             xx2b[1] = fx-&gt;Eval(xz2b);
             tx      = p0_x + p1_x * z_target;
-            theta_x = atan(p1_x); // 物理入射方向的投影角 (rad)
+            theta_x = atan(p1_x); // 物理出射角 (rad)
 
             // 提取协方差矩阵并计算严谨物理误差
             TMatrixDSym cov_x = rx-&gt;GetCovarianceMatrix();
@@ -8317,9 +8240,8 @@ void tracking::Loop()
     cout &lt;&lt; "Input events=" &lt;&lt; nentries &lt;&lt; ", accepted reference tracks=" &lt;&lt; tree-&gt;GetEntries() &lt;&lt; endl;
     opf-&gt;Close();
 
-    cout &lt;&lt; "Tracking finished. Output saved to tracking.root" &lt;&lt; endl;
-}</code></pre></div>
-<p>本例固定用 1A、2A、3 三层在两个方向均有效的事件作 reference track，2B 不参与拟合。每层 σ=1 mm 是演示误差传播的假设，不是从本数据已测得的分辨。<code>S</code> 返回拟合结果，<code>Q</code> 减少日志，<code>N</code> 不把逐事件 TF1 挂到 TGraph 上。</p><p>位置与效率分析保留全部合格事件；仅径迹累积图显示输入前 10000 个事件中的合格径迹，以便快速显示。不会按拟合效果挑选显示事例。</p></div>
+    cout &lt;&lt; "Tracking finished. Output saved to tracking_demo.root" &lt;&lt; endl;
+}</code></pre><p>本例固定使用 1A、2A、3 的有效测量，2B 不参与拟合。<code>SetPointError(i,0,1)</code> 输入假设的 1 mm 位置误差；<code>S</code> 返回结果和协方差，<code>Q</code> 减少逐事件日志，<code>N</code> 不向图附加每次拟合的函数。轨迹图只累积输入前 10000 个事例中的合格径迹，结果树保留全部合格事例。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
@@ -8362,7 +8284,7 @@ Processing Event: 630000 / 739685
 Processing Event: 640000 / 739685
 Processing Event: 650000 / 739685
 Input events=739685, accepted reference tracks=232180
-Tracking finished. Output saved to tracking.root</pre></div></div>
+Tracking finished. Output saved to tracking_demo.root</pre></div></div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -8430,12 +8352,9 @@ Tracking finished. Output saved to tracking.root</pre></div></div>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-c++"><pre><span></span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"tx:ty&gt;&gt;htx(120,-60,60,120,-60,60)"</span><span class="p">,</span><span class="s">"beamTrig"</span><span class="p">,</span><span class="s">"colz"</span><span class="p">);</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"ty:tx&gt;&gt;htx_beam(120,-60,60,120,-60,60)"</span><span class="p">,</span><span class="s">"beamTrig"</span><span class="p">,</span><span class="s">"colz"</span><span class="p">);</span>
 <span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 </pre></div>
-</div>
 </div>
 </div>
 </div>
@@ -8456,21 +8375,9 @@ Tracking finished. Output saved to tracking.root</pre></div></div>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="%E6%AE%8B%E5%B7%AE%EF%BC%8Cchi2/NDF">残差，chi2/NDF</h3><ul>
-<li>下图中呈现的残差分布并不是单一的gaus分布，有一个窄的gauss重叠在宽的gauss之上。这种现象在气体探测器中比较常见，其物理根源有：</li>
-</ul>
-<ol>
-<li><strong>多重库仑散射 (MCS)：</strong> 高能束流穿过 PPAC 的镀铝Mylar或工作气体时，发生的卢瑟福散射天然具有非高斯的大角度拖尾。</li>
-<li><strong>$\delta$ 电子 ：</strong> 入射粒子打出的高能次级电子在气体中横向游走，使得雪崩电荷的重心偏离了粒子真实的穿透点。</li>
-<li><strong>电子学与束流本底：</strong>  Pile-up 或电子学的噪声。</li>
-</ol>
-<p>在实际的离线数据分析中，会使用 双高斯函数：窄核 + 宽尾对分布进行拟合。</p>
-<ul>
-<li><strong>宽尾（Tail）：</strong> 吸收由上述多重散射和 $\delta$ 电子造成的物理本底。</li>
-<li><strong>窄核（Core）：</strong> 剥离本底后，<strong>只有这个窄核的高斯宽度（$\sigma_{core}$）才代表探测器真实的响应。</strong></li>
-</ul>
-<p>double-Gaussian 是描述 core 与 tail 的经验模型；宽分量不自动等于本底，窄分量 σ 也不自动等于探测器本征分辨。</p></div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>Residual 与 χ²/NDF</h3>
+<p>先看参与拟合的 1A residual。分布有窄核和尾部，可以用 double-Gaussian 作经验描述；两项本身不能分别认定为“真实信号”和“本底”。窄核宽度是该 residual 的描述参数，不是单层探测器分辨。</p>
+<p>χ²/NDF 用于检查直线与测量点的一致性。它依赖输入的位置误差；本例统一输入 1 mm，因此下面的 10、20 只是演示如何查看不同拟合一致性的样本，不是经过标定的通用判据。只有两点时 NDF=0，不能用这个比值。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
@@ -8479,11 +8386,8 @@ Tracking finished. Output saved to tracking.root</pre></div></div>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-c++"><pre><span></span><span class="n">TF1</span><span class="w"> </span><span class="o">*</span><span class="n">total2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TF1</span><span class="p">(</span><span class="s">"total2"</span><span class="p">,</span><span class="w"> </span><span class="s">"gaus(0)+gaus(3)"</span><span class="p">);</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="c1">// 先给窄核初值，再拟合包含尾部的分布。</span>
 </pre></div>
-</div>
 </div>
 </div>
 </div>
@@ -8493,15 +8397,10 @@ Tracking finished. Output saved to tracking.root</pre></div></div>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-c++"><pre><span></span><span class="n">TF1</span><span class="w"> </span><span class="o">*</span><span class="n">g1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TF1</span><span class="p">(</span><span class="s">"g1"</span><span class="p">,</span><span class="w"> </span><span class="s">"gaus"</span><span class="p">);</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">TF1</span><span class="w"> </span><span class="o">*</span><span class="n">g1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TF1</span><span class="p">(</span><span class="s">"g1"</span><span class="p">,</span><span class="w"> </span><span class="s">"gaus"</span><span class="p">);</span>
 <span class="n">TF1</span><span class="w"> </span><span class="o">*</span><span class="n">g2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TF1</span><span class="p">(</span><span class="s">"g2"</span><span class="p">,</span><span class="w"> </span><span class="s">"gaus"</span><span class="p">);</span>
 <span class="n">TF1</span><span class="w"> </span><span class="o">*</span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TF1</span><span class="p">(</span><span class="s">"total"</span><span class="p">,</span><span class="w"> </span><span class="s">"gaus(0) + gaus(3)"</span><span class="p">);</span>
-<span class="n">TH1F</span><span class="w"> </span><span class="o">*</span><span class="n">hdx</span><span class="p">;</span>
-<span class="n">Double_t</span><span class="w"> </span><span class="n">sigma</span><span class="p">;</span>
 </pre></div>
-</div>
 </div>
 </div>
 </div>
@@ -8547,13 +8446,10 @@ Core sigma=0.216938, tail sigma=1.36868 mm</pre><img alt="2.2_PPAC_tracking: cel
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [20]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-c++"><pre><span></span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"c2ny:dy[0]&gt;&gt;hh(40,-10,10,200,0,1000)"</span><span class="p">,</span><span class="s">""</span><span class="p">,</span><span class="s">"colz"</span><span class="p">);</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"c2ny:dy[0]&gt;&gt;hh(40,-10,10,200,0,1000)"</span><span class="p">,</span><span class="s">""</span><span class="p">,</span><span class="s">"colz"</span><span class="p">);</span>
 <span class="n">c1</span><span class="o">-&gt;</span><span class="n">SetLogy</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-<span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span><span class="c1">//从chi2/ndf图上可看出，部分事件的径迹拟合误差很大，这部分要在后续数据处理中去掉。</span>
+<span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 </pre></div>
-</div>
 </div>
 </div>
 </div>
@@ -8563,13 +8459,10 @@ Core sigma=0.216938, tail sigma=1.36868 mm</pre><img alt="2.2_PPAC_tracking: cel
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [21]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-c++"><pre><span></span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"c2ny&gt;&gt;hh(200,0,1000)"</span><span class="p">,</span><span class="s">""</span><span class="p">,</span><span class="s">""</span><span class="p">);</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"c2ny&gt;&gt;hh(200,0,1000)"</span><span class="p">,</span><span class="s">""</span><span class="p">,</span><span class="s">""</span><span class="p">);</span>
 <span class="n">gPad</span><span class="o">-&gt;</span><span class="n">SetLogy</span><span class="p">();</span>
-<span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span><span class="c1">//从chi2/ndf图上可看出，部分事件的径迹拟合误差很大，这部分要在后续数据处理中去掉。</span>
+<span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 </pre></div>
-</div>
 </div>
 </div>
 </div>
@@ -8592,17 +8485,31 @@ Core sigma=0.216938, tail sigma=1.36868 mm</pre><img alt="2.2_PPAC_tracking: cel
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-c++"><pre><span></span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"tx:ty&gt;&gt;(120,-60,60,120,-60,60)"</span><span class="p">,</span><span class="s">"(c2nx&gt;20 || c2ny&gt;20) &amp;&amp; beamTrig "</span><span class="p">,</span><span class="s">"colz"</span><span class="p">);</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"ty:tx&gt;&gt;(120,-60,60,120,-60,60)"</span><span class="p">,</span><span class="s">"(c2nx&gt;20 || c2ny&gt;20) &amp;&amp; beamTrig "</span><span class="p">,</span><span class="s">"colz"</span><span class="p">);</span>
 <span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span><span class="c1">//</span>
 </pre></div>
 </div>
 </div>
 </div>
-</div>
 <div class="verified-output"><img alt="2.2_PPAC_tracking: cell 21, c1" src="figures/2.2_PPAC_tracking/cell_21_c1.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><h3>待测层 2B 的 excluded residual</h3>
+<p>2B 没有参与 1A、2A、3 的拟合，因此可直接比较 <code>xx2b[0]</code>（测量值）和 <code>xx2b[1]</code>（预测值）。以下拟合中心 ±1.5 mm 的主峰，打印的是 residual 的 core σ。先检查中心是否偏离零以及尾部；分辨的进一步提取再使用上面的预测方差公式。</p></div></div><div class="jp-Cell jp-CodeCell"><div class="jp-InputArea"><div class="jp-InputArea-editor"><div class="highlight"><pre><span></span><span class="n">TCanvas</span><span class="w"> </span><span class="o">*</span><span class="n">cDUT</span><span class="o">=</span><span class="k">new</span><span class="w"> </span><span class="n">TCanvas</span><span class="p">(</span><span class="s">"cDUT"</span><span class="p">,</span><span class="s">"Excluded residual of PPAC 2B"</span><span class="p">,</span><span class="mi">1000</span><span class="p">,</span><span class="mi">380</span><span class="p">);</span>
+<span class="n">cDUT</span><span class="o">-&gt;</span><span class="n">Divide</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">cDUT</span><span class="o">-&gt;</span><span class="n">cd</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"xx2b[0]-xx2b[1]&gt;&gt;hDutX(240,-6,6)"</span><span class="p">,</span><span class="s">"xx2b[0]&gt;-900"</span><span class="p">,</span><span class="s">"hist"</span><span class="p">);</span>
+<span class="n">TH1</span><span class="w"> </span><span class="o">*</span><span class="n">hDutX</span><span class="o">=</span><span class="p">(</span><span class="n">TH1</span><span class="o">*</span><span class="p">)</span><span class="n">gROOT</span><span class="o">-&gt;</span><span class="n">FindObject</span><span class="p">(</span><span class="s">"hDutX"</span><span class="p">);</span>
+<span class="n">TF1</span><span class="w"> </span><span class="o">*</span><span class="n">dutX</span><span class="o">=</span><span class="k">new</span><span class="w"> </span><span class="n">TF1</span><span class="p">(</span><span class="s">"dutX"</span><span class="p">,</span><span class="s">"gaus"</span><span class="p">,</span><span class="mf">-1.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">);</span>
+<span class="n">hDutX</span><span class="o">-&gt;</span><span class="n">Fit</span><span class="p">(</span><span class="n">dutX</span><span class="p">,</span><span class="s">"RQ"</span><span class="p">);</span><span class="w"> </span><span class="n">dutX</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"same"</span><span class="p">);</span>
+<span class="n">cDUT</span><span class="o">-&gt;</span><span class="n">cd</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"yy2b[0]-yy2b[1]&gt;&gt;hDutY(240,-6,6)"</span><span class="p">,</span><span class="s">"yy2b[0]&gt;-900"</span><span class="p">,</span><span class="s">"hist"</span><span class="p">);</span>
+<span class="n">TH1</span><span class="w"> </span><span class="o">*</span><span class="n">hDutY</span><span class="o">=</span><span class="p">(</span><span class="n">TH1</span><span class="o">*</span><span class="p">)</span><span class="n">gROOT</span><span class="o">-&gt;</span><span class="n">FindObject</span><span class="p">(</span><span class="s">"hDutY"</span><span class="p">);</span>
+<span class="n">TF1</span><span class="w"> </span><span class="o">*</span><span class="n">dutY</span><span class="o">=</span><span class="k">new</span><span class="w"> </span><span class="n">TF1</span><span class="p">(</span><span class="s">"dutY"</span><span class="p">,</span><span class="s">"gaus"</span><span class="p">,</span><span class="mf">-1.5</span><span class="p">,</span><span class="mf">1.5</span><span class="p">);</span>
+<span class="n">hDutY</span><span class="o">-&gt;</span><span class="n">Fit</span><span class="p">(</span><span class="n">dutY</span><span class="p">,</span><span class="s">"RQ"</span><span class="p">);</span><span class="w"> </span><span class="n">dutY</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"same"</span><span class="p">);</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Excluded core sigma X="</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">abs</span><span class="p">(</span><span class="n">dutX</span><span class="o">-&gt;</span><span class="n">GetParameter</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="w">     </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", Y="</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">abs</span><span class="p">(</span><span class="n">dutY</span><span class="o">-&gt;</span><span class="n">GetParameter</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">" mm (not intrinsic resolution)</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+<span class="n">cDUT</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
+</pre></div>
+</div></div><div class="verified-output"><pre>Excluded core sigma X=0.597244, Y=0.605476 mm (not intrinsic resolution)</pre><img alt="2.2_PPAC_tracking: cell 23, cDUT" src="figures/2.2_PPAC_tracking/cell_23_cDUT.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div><div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8629,10 +8536,11 @@ Core sigma=0.216938, tail sigma=1.36868 mm</pre><img alt="2.2_PPAC_tracking: cel
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">TCut</span><span class="w"> </span><span class="n">c2btrack</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"abs(xx2b[1])&lt;100 &amp;&amp; abs(yy2b[1])&lt;60"</span><span class="p">;</span>
-<span class="n">TCut</span><span class="w"> </span><span class="n">c2ba</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"anode2b&gt;-900"</span><span class="p">;</span><span class="w"> </span><span class="c1">// -1000 是该文件的无效标记</span>
-<span class="n">TCut</span><span class="w"> </span><span class="n">c2bx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"abs(xx2b[0])&lt;120"</span><span class="p">;</span>
-<span class="n">TCut</span><span class="w"> </span><span class="n">c2by</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"abs(yy2b[0])&lt;75"</span><span class="p">;</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">TCut</span><span class="w"> </span><span class="n">c2btrack</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"abs(xx2b[1])&lt;100 &amp;&amp; abs(yy2b[1])&lt;60"</span><span class="p">;</span><span class="w"> </span><span class="c1">// reference position</span>
+<span class="n">TCut</span><span class="w"> </span><span class="n">c2ba</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"anode2b&gt;-900"</span><span class="p">;</span>
+<span class="n">TCut</span><span class="w"> </span><span class="n">c2bx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"xx2b[0]&gt;-900"</span><span class="p">;</span><span class="w"> </span><span class="c1">// 文件中的有效读数，与边界 cut 分开</span>
+<span class="n">TCut</span><span class="w"> </span><span class="n">c2by</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"yy2b[0]&gt;-900"</span><span class="p">;</span>
+<span class="n">TCut</span><span class="w"> </span><span class="n">c2bInside</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"abs(xx2b[0])&lt;120 &amp;&amp; abs(yy2b[0])&lt;75"</span><span class="p">;</span>
 </pre></div>
 </div>
 </div>
@@ -8643,9 +8551,7 @@ Core sigma=0.216938, tail sigma=1.36868 mm</pre><img alt="2.2_PPAC_tracking: cel
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="1.-%E8%AE%A1%E7%AE%97%E7%A9%BF%E8%BF%87%E6%8E%A2%E6%B5%8B%E5%99%A8%E7%81%B5%E6%95%8F%E9%9D%A2%E7%A7%AF%E7%9A%84%E9%A2%84%E6%9C%9F%E7%B2%92%E5%AD%90%E6%95%B0">1. 计算穿过探测器灵敏面积的预期粒子数</h3><p>利用刚才定义的 <code>c2btrack</code>，可以画出径迹在外推平面上的二维投影，并获取总入射事件数。</p>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>1. 选择 reference tracks</h3><p>分母只由 reference track 定义。内部区域避开物理边缘，不使用 2B 的测量位置。以下统计合并触发样本；比较 beamTrig 与 must2Trig 时，分子、分母应同时加上相同触发条件。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
@@ -8667,7 +8573,7 @@ Core sigma=0.216938, tail sigma=1.36868 mm</pre><img alt="2.2_PPAC_tracking: cel
 </div>
 </div>
 </div>
-<div class="verified-output"><pre>预期穿过 PPAC2B 灵敏区的粒子总数 N_track = 232178</pre><img alt="2.2_PPAC_tracking: cell 26, c1" src="figures/2.2_PPAC_tracking/cell_26_c1.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
+<div class="verified-output"><pre>预期穿过 PPAC2B 灵敏区的粒子总数 N_track = 232178</pre><img alt="2.2_PPAC_tracking: cell 28, c1" src="figures/2.2_PPAC_tracking/cell_28_c1.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -8711,6 +8617,12 @@ Core sigma=0.216938, tail sigma=1.36868 mm</pre><img alt="2.2_PPAC_tracking: cel
 <span class="n">Long64_t</span><span class="w"> </span><span class="n">Nxya</span><span class="o">=</span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">GetEntries</span><span class="p">(</span><span class="n">c2btrack</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">c2ba</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">c2bx</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">c2by</span><span class="p">);</span>
 <span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Given anode: x="</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="kt">double</span><span class="p">(</span><span class="n">Nxa</span><span class="p">)</span><span class="o">/</span><span class="n">Na</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", y="</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="kt">double</span><span class="p">(</span><span class="n">Nya</span><span class="p">)</span><span class="o">/</span><span class="n">Na</span>
 <span class="w">     </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", xy="</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="kt">double</span><span class="p">(</span><span class="n">Nxya</span><span class="p">)</span><span class="o">/</span><span class="n">Na</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="n">Long64_t</span><span class="w"> </span><span class="n">Npass</span><span class="o">=</span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">GetEntries</span><span class="p">(</span><span class="n">c2btrack</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">c2bx</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">c2by</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">c2bInside</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Nxy</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">"no valid xy readings"</span><span class="p">);</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Nref="</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">Ntrack</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", Nvalid(xy)="</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">Nxy</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", Npass="</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">Npass</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">'\n'</span><span class="p">;</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"xy read efficiency="</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="kt">double</span><span class="p">(</span><span class="n">Nxy</span><span class="p">)</span><span class="o">/</span><span class="n">Ntrack</span>
+<span class="w">     </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", boundary-cut survival="</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="kt">double</span><span class="p">(</span><span class="n">Npass</span><span class="p">)</span><span class="o">/</span><span class="n">Nxy</span>
+<span class="w">     </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", selected efficiency="</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="kt">double</span><span class="p">(</span><span class="n">Npass</span><span class="p">)</span><span class="o">/</span><span class="n">Ntrack</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">'\n'</span><span class="p">;</span>
 </pre></div>
 </div>
 </div>
@@ -8719,13 +8631,15 @@ Core sigma=0.216938, tail sigma=1.36868 mm</pre><img alt="2.2_PPAC_tracking: cel
 eff=0.931156 +/- 0.000525452
 eff=0.929791 +/- 0.000530248
 eff=0.868683 +/- 0.00070094
-Given anode: x=0.938415, y=0.937039, xy=0.875455</pre></div></div>
+Given anode: x=0.938415, y=0.937039, xy=0.875455
+Nref=232178, Nvalid(xy)=201689, Npass=201689
+xy read efficiency=0.868683, boundary-cut survival=1, selected efficiency=0.868683</pre></div></div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>效率的含义</h3><p>这里得到的是 reference tracking 样本和指定面积内的条件效率。阳极触发条件下的效率用与阳极同时有效的 numerator，不能把未要求 anode 的 Nx 直接除以 Na。给出的误差是大样本 binomial 近似；x-y 联合效率直接计数，不假设 x、y 独立。</p><p>示例的 fiducial 区域是 |x|&lt;100 mm、|y|&lt;60 mm，位于探测器有效面内。比较不同触发或 reference 组合时使用相同区域，并同时报告分母。</p></div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>效率的含义</h3><p>这里得到的是 reference tracking 样本和指定面积内的条件效率。阳极触发条件下的效率用与阳极同时有效的 numerator，不能把未要求 anode 的 Nx 直接除以 Na。给出的误差是大样本 binomial 近似；x-y 联合效率直接计数，不假设 x、y 独立。</p><p>示例的 fiducial 区域是 |x|&lt;100 mm、|y|&lt;60 mm，位于探测器有效面内。比较不同触发或 reference 组合时使用相同区域，并同时报告分母。</p><p>本次运行中，内部 reference 区域的有效 x-y 读数全部通过物理边界 cut，故 εcut=1。这与刻意避开边缘的选择一致，不能据此推断边缘也没有损失；上游已删除的坐标还需回到 raw data 才能检查。</p></div>
 </div>
 </div>
 </div>
@@ -8748,18 +8662,18 @@ Given anode: x=0.938415, y=0.937039, xy=0.875455</pre></div></div>
 </li>
 <li><p>计算出靶上交点坐标的物理误差 ，以及束流入射方向的投影角误差 。</p>
 </li>
-<li><p>将上述所有拟合卡方值（<code>chi2/ndf</code>）、残差（Residual）、交点坐标及物理误差作为新 Branch 存入 TTree。</p>
+<li><p>将上述所有拟合卡方值与 NDF（<code>NDF&gt;0 时另存 chi2/ndf</code>）、残差（Residual）、交点坐标及物理误差作为新 Branch 存入 TTree。</p>
 </li>
 </ul>
 <h4 id="3.-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">3. 数据分析</h4><ol>
-<li><strong>传输效率计算：</strong> 在 <code>beamTrig</code>（束流触发）条件下，统计“重建的束流打在给定物理靶尺寸范围内”的事件数比例（即靶的几何接受度/传输效率 $\varepsilon_{target}$）。</li>
-<li>分别画出不同策略下的事件在靶位上的位置以及散射角分布，以及各项的误差分布。</li>
+<li><strong>靶区接受度：</strong> 在 <code>beamTrig</code>（束流触发）条件下，统计“重建的束流打在给定物理靶尺寸范围内”的事件数比例（说明分母采用全部束流触发，还是成功重建的束流触发；两者分别还包含或不包含重建损失）。</li>
+<li>分别画出不同策略下的事件在靶位上的位置以及入射方向的投影角分布，以及各项的误差分布。</li>
 </ol>
 <h3 id="Task-B:-PPAC-%E6%8E%A2%E6%B5%8B%E6%95%88%E7%8E%87%E7%9A%84%E5%A4%9A%E9%87%8D%E9%AA%8C%E8%AF%81">Task B: PPAC 探测效率的多重验证</h3><p>计算位于最上游的 <code>PPAC1a</code> 和最下游的 <code>PPAC3</code> 的 $x$ 效率、$y$ 效率以及 $(x,y)$ 二维联合效率。</p>
 <p>要求进行<strong>交叉验证</strong>：</p>
 <ol>
-<li><strong>对比效率类型：</strong> 分别计算它们的<strong>绝对探测效率</strong>（方法一：Tracking 外推作为分母）和<strong>位置读出效率</strong>（方法二：自身阳极信号作为分母）。</li>
-<li>在使用 Tracking 方法时，尝试改变“参考探测器”的组合（例如：测 PPAC3 时，分别尝试用 <code>1a+2a</code> 拟合，或用 <code>1b+2b</code> 拟合），验证在不同基准下求出的效率值是否具有自洽性（结果应相近）。</li>
+<li><strong>对比效率类型：</strong> 分别计算它们的<strong>reference 样本内的响应效率</strong>（方法一：Tracking 外推作为分母）和<strong>位置读出效率</strong>（方法二：自身阳极信号作为分母）。</li>
+<li>在使用 Tracking 方法时，尝试改变“参考探测器”的组合（例如：测 PPAC3 时，分别尝试用 <code>1a+2a</code> 拟合，或用 <code>1b+2b</code> 拟合），验证在不同基准下求出的效率值是否具有自洽性；差异可能来自几何接受度、粒子组成或参考选择的偏差。</li>
 </ol>
 <p>使用两层时记录 NDF=0，不计算 χ²/NDF。对不同 reference 组合比较效率时，检查共同的几何范围和样本条件，不预先要求结果相等。</p></div>
 </div>

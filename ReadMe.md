@@ -8,17 +8,17 @@
   - PKU: 2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026
   - Online: 2020,2021,2022,2023
 
-## 课前准备
+## ROOT 基础
 
 本课程承接核物理实验方法，围绕实际数据组织与分析展开。各章保留所需的探测器背景和分析方法，未修读前一课程也可结合讲义学习。作业随相应讲义给出。
 
-编程和 ROOT 入门使用两门课程的共用资料：
+编程和 ROOT 入门使用两门课程的共用资料。先完成 [ROOT 与 Jupyter 安装及运行检查](https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/setup/ROOT_Jupyter_Installation.html)，再按所用语言阅读：
 
-- [ROOT 与 Jupyter 安装](https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/setup/ROOT_Jupyter_Installation.html)
-- [C++ 基础](https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/cpp/introduction_basic.html) · [数组、函数与类](https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/cpp/introduction_advanced.html)
-- [ROOT Tutorial I：直方图、绘图与拟合](https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/ROOT/ROOT_Tutorial_I_CPP.html)
-- [ROOT Tutorial II：TTree、关联分析与 Cut](https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/ROOT/ROOT_Tutorial_II_CPP.html)
-- [PyROOT 与其他编程准备](https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/programming.html)
+| 内容 | PyROOT | ROOT C++ |
+| --- | --- | --- |
+| 编程基础（按需阅读） | [Python 基础与数组](https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/python/Python_Essentials_for_PyROOT.html) | [C++ 基础](https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/cpp/introduction_basic.html) · [对象与指针](https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/cpp/introduction_advanced.html) |
+| ROOT Tutorial I：直方图、绘图与拟合 | [PyROOT](https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/ROOT/ROOT_Tutorial_I_PyROOT.html) | [ROOT C++](https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/ROOT/ROOT_Tutorial_I_CPP.html) |
+| ROOT Tutorial II：TTree、关联分析与 Cut | [PyROOT](https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/ROOT/ROOT_Tutorial_II_PyROOT.html) | [ROOT C++](https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/ROOT/ROOT_Tutorial_II_CPP.html) |
 
 ## chapter 1. ROOT TTree 初阶
  - 1.1 [用TTree 结构存储事件数据](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.1_create_tree.html)
@@ -26,7 +26,7 @@
  - 1.3 [ADC,TDC信号处理](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.3_adc_analysis.html)
  - 1.4 [TTree的MakeClass方法](https://zhihuanli.github.io/Experimental-Data-Analysis-Course/chapt1/1.4_root_tree_makeclass.html)
 
-  补充：[ROOT tips](chapt1/ROOT_tips.html) · [TH1 与 TF1 的积分](chapt1/Integration_in_TH1_and_TF1.html) · [积分实例](chapt1/Example_of_Integration_in_TH1_and_TF1.html)
+  补充：[ROOT 实用操作](chapt1/ROOT_tips.html) · [TH1 与 TF1 的积分：定义与实例](chapt1/Integration_in_TH1_and_TF1.html)
 
  
 

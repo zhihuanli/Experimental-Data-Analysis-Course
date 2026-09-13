@@ -7837,7 +7837,6 @@ a.anchor-link {
 <a href="../index.html"><img alt="课程标志" src="../assets/images/course-logo.png"/></a>
 <div class="course-banner-title"><a href="../index.html">核物理实验数据处理</a>
 <span class="course-banner-en">Experimental Data Analysis in Nuclear Physics</span></div></div></header>
-
 <main>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -7857,7 +7856,7 @@ a.anchor-link {
 <p>$$
 E = E_i + E_{i+1}.
 $$</p>
-<p>These events should be reconstructed as valid cluster events rather than discarded.
+<p>对满足两侧能量一致性的 sharing 事例，可把相邻条合成 cluster，保留其能量；相邻条同时有信号本身还不足以确定 sharing。
 <img alt="" src="fig/dssd-n3.png"/></p>
 <h2 id="Data">Data</h2><p>In the S4 data set, the Ring side has narrow strips and small spacing, so adjacent-strip correlations are more obvious there. On the pie side, the effect is much weaker. For this reason, the analysis below focuses on the Ring strips.</p>
 </div>
@@ -7890,7 +7889,7 @@ $$</p>
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="Adjacent-Strip-Correlation">Adjacent-Strip Correlation</h2><p>As an example, consider strips 13 and 14.</p>
 <ul>
-<li>On the Ring side, the two-dimensional plot shows a clear band with negative slope. This band corresponds to one particle sharing its energy between two adjacent strips. The pie side does not show such a strong structure.</li>
+<li>On the Ring side, the two-dimensional plot shows a clear band with negative slope. 这条负斜率带与同一粒子的电荷在两条间分配相符；后面用已知 α 能量检验加和结果。 The pie side does not show such a strong structure.</li>
 </ul>
 </div>
 </div>
@@ -7925,7 +7924,7 @@ $$</p>
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="Effect-on-Single-Strip-Spectra">Effect on Single-Strip Spectra</h2><p>Adjacent-strip sharing broadens the spectrum of a single strip. Therefore, single-strip calibration and adjacent-strip reconstruction should be treated separately.</p>
 <ul>
-<li>The red spectrum contains events affected by adjacent-strip sharing, while the black spectrum contains isolated single-strip events. The difference between them shows why inter-strip events must be handled explicitly.</li>
+<li>红谱选择邻条有信号的事例，黑谱选择两侧邻条均无有效信号的事例。前者富集 sharing，但也可能含串扰或偶然符合。 The difference between them shows why inter-strip events must be handled explicitly.</li>
 </ul>
 </div>
 </div>
@@ -8088,7 +8087,7 @@ TGraph *gr = new TGraph(tree-&gt;GetSelectedRows(), tree-&gt;GetV2(), tree-&gt;G
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="Parameter-Extraction">Parameter Extraction</h2>
-</div>
+<p>这里先把两条直线的斜率作等权平均，用于初步估计。可直接检查打印的两个斜率是否接近；若差异超出拟合不确定度，应先检查 cut、能量收集和模型，而不是把不一致隐藏在平均值中。两个已知能量可解增益和 $b_{13}+b_{14}$，不能分别给出两个 offset。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
@@ -8097,9 +8096,7 @@ TGraph *gr = new TGraph(tree-&gt;GetSelectedRows(), tree-&gt;GetV2(), tree-&gt;G
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [63]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-c++"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="n">E1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">8.6931</span><span class="p">;</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="n">E1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">8.6931</span><span class="p">;</span>
 <span class="kt">double</span><span class="w"> </span><span class="n">E2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">6.6708</span><span class="p">;</span>
 <span class="kt">double</span><span class="w"> </span><span class="n">K13</span><span class="p">,</span><span class="n">K14</span><span class="p">,</span><span class="n">K</span><span class="p">,</span><span class="n">B13</span><span class="p">,</span><span class="n">B14</span><span class="p">,</span><span class="n">k13</span><span class="p">,</span><span class="n">k14</span><span class="p">,</span><span class="n">b13_14</span><span class="p">;</span>
 
@@ -8115,19 +8112,21 @@ TGraph *gr = new TGraph(tree-&gt;GetSelectedRows(), tree-&gt;GetV2(), tree-&gt;G
 <span class="n">b13_14</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">E1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">k14</span><span class="o">*</span><span class="n">B13</span><span class="p">;</span>
 
 <span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">Form</span><span class="p">(</span><span class="s">"k13 = %f, k14 = %f, b13 + b14 = %f"</span><span class="p">,</span><span class="n">k13</span><span class="p">,</span><span class="n">k14</span><span class="p">,</span><span class="n">b13_14</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Band slopes: "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">K13</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">" +/- "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">f1</span><span class="o">-&gt;</span><span class="n">GetParError</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">     </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">K14</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">" +/- "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">f2</span><span class="o">-&gt;</span><span class="n">GetParError</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="verified-output"><pre>k13 = 0.007014, k14 = 0.006918, b13 + b14 = -0.826077</pre></div></div>
+<div class="verified-output"><pre>k13 = 0.007014, k14 = 0.006918, b13 + b14 = -0.826077
+Band slopes: -1.01359 +/- 0.000281509, -1.01424 +/- 0.000274002</pre></div></div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Energy-Reconstruction">Energy Reconstruction</h2><p>After reconstruction, the shared events are converted into a total-energy spectrum. In practical analysis, this is the key step: identify the adjacent-strip event, reconstruct the cluster energy, and then keep the event in the later analysis chain. Recent detector studies also show that interstrip events can be reconstructed effectively rather than treated as unusable events.</p>
+<h2 id="Energy-Reconstruction">Energy Reconstruction</h2><p>After reconstruction, the shared events are converted into a total-energy spectrum. In practical analysis, this is the key step: identify the adjacent-strip event, reconstruct the cluster energy, and then keep the event in the later analysis chain. </p>
 <p>这里的直线拟合是初步刻度：两条的幅度都有涨落，普通 TGraph 的最小二乘只处理纵向残差。需要精确参数误差时，应使用含两轴误差的拟合，并传播斜率与截距的 covariance。</p></div>
 </div>
 </div>

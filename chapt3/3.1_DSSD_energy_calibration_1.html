@@ -7837,7 +7837,6 @@ a.anchor-link {
 <a href="../index.html"><img alt="课程标志" src="../assets/images/course-logo.png"/></a>
 <div class="course-banner-title"><a href="../index.html">核物理实验数据处理</a>
 <span class="course-banner-en">Experimental Data Analysis in Nuclear Physics</span></div></div></header>
-
 <main>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -7883,13 +7882,10 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-c++"><pre><span></span><span class="n">TFile</span><span class="w"> </span><span class="o">*</span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TFile</span><span class="p">(</span><span class="s">"s4.root"</span><span class="p">);</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">TFile</span><span class="w"> </span><span class="o">*</span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TFile</span><span class="p">(</span><span class="s">"s4.root"</span><span class="p">);</span>
 <span class="n">TTree</span><span class="w"> </span><span class="o">*</span><span class="n">tree</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">TTree</span><span class="o">*</span><span class="p">)</span><span class="n">f</span><span class="o">-&gt;</span><span class="n">Get</span><span class="p">(</span><span class="s">"tree"</span><span class="p">);</span>
 <span class="n">TCanvas</span><span class="w"> </span><span class="o">*</span><span class="n">c1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TCanvas</span><span class="p">;</span>
 </pre></div>
-</div>
 </div>
 </div>
 </div>
@@ -7904,7 +7900,7 @@ a.anchor-link {
 <span class="n">TH1</span><span class="w"> </span><span class="o">*</span><span class="n">hx0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">TH1</span><span class="o">*</span><span class="p">)</span><span class="n">gROOT</span><span class="o">-&gt;</span><span class="n">FindObject</span><span class="p">(</span><span class="s">"hx0"</span><span class="p">);</span>
 <span class="n">TH1</span><span class="w"> </span><span class="o">*</span><span class="n">hx1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">TH1</span><span class="o">*</span><span class="p">)</span><span class="n">gROOT</span><span class="o">-&gt;</span><span class="n">FindObject</span><span class="p">(</span><span class="s">"hx1"</span><span class="p">);</span>
 <span class="n">hx0</span><span class="o">-&gt;</span><span class="n">SetLineColor</span><span class="p">(</span><span class="n">kGreen</span><span class="p">);</span>
-<span class="n">hx1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
+<span class="n">hx1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"hist"</span><span class="p">);</span>
 <span class="n">hx0</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"same"</span><span class="p">);</span>
 <span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 </pre></div>
@@ -7980,9 +7976,9 @@ a.anchor-link {
 <span class="n">h0</span><span class="o">-&gt;</span><span class="n">SetLineColor</span><span class="p">(</span><span class="n">kBlack</span><span class="p">);</span>
 <span class="n">hbg</span><span class="o">-&gt;</span><span class="n">SetLineColor</span><span class="p">(</span><span class="n">kRed</span><span class="p">);</span>
 <span class="n">hpeak</span><span class="o">-&gt;</span><span class="n">SetLineColor</span><span class="p">(</span><span class="n">kBlue</span><span class="p">);</span>
-<span class="n">h0</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
-<span class="n">hpeak</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"same"</span><span class="p">);</span>
-<span class="n">hbg</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"same"</span><span class="p">);</span>
+<span class="n">h0</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"hist"</span><span class="p">);</span>
+<span class="n">hpeak</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"hist same"</span><span class="p">);</span>
+<span class="n">hbg</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"hist same"</span><span class="p">);</span>
 <span class="n">gPad</span><span class="o">-&gt;</span><span class="n">SetLogy</span><span class="p">();</span>
 <span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 </pre></div>
@@ -8003,7 +7999,7 @@ a.anchor-link {
 <span class="w">                        </span><span class="n">Double_t</span><span class="w"> </span><span class="n">threshold</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.05</span><span class="p">);</span>
 </pre></div>
 <p>sigma 以 bin 为单位描述预期峰宽；threshold 是相对于搜索结果中最高峰的阈值。它们控制候选峰集，不能独立判断某个结构是否为真实谱线。</p>
-</div>
+<p><code>Search</code> 默认包含本底处理。上一步已显式扣除本底，所以这里用 <code>nobackground</code>，避免重复扣除；<code>nodraw</code> 关闭自动绘图，由 <code>hist</code> 画谱，再显式叠加候选峰标记。hist 只改变显示，不删除直方图误差。参见 <a href="https://root.cern.ch/doc/master/classTSpectrum.html">TSpectrum::Search</a>。</p><p>自动寻峰给的是候选位置，不是精确 centroid。后面仍沿用“识别谱线 → 局部拟合 centroid → 能量刻度 → residual 检查”的顺序。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
@@ -8012,12 +8008,10 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-c++"><pre><span></span><span class="n">Double_t</span><span class="w"> </span><span class="o">*</span><span class="n">xpeaks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
-<span class="n">Double_t</span><span class="w"> </span><span class="o">*</span><span class="n">ypeaks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">Double_t</span><span class="w"> </span><span class="o">*</span><span class="n">xpeaks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nullptr</span><span class="p">;</span>
+<span class="n">Double_t</span><span class="w"> </span><span class="o">*</span><span class="n">ypeaks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nullptr</span><span class="p">;</span>
 
-<span class="n">Int_t</span><span class="w"> </span><span class="n">nfound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="o">-&gt;</span><span class="n">Search</span><span class="p">(</span><span class="n">hpeak</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s">""</span><span class="p">,</span><span class="w"> </span><span class="mf">0.01</span><span class="p">);</span>
+<span class="n">Int_t</span><span class="w"> </span><span class="n">nfound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="o">-&gt;</span><span class="n">Search</span><span class="p">(</span><span class="n">hpeak</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s">"nobackground nodraw"</span><span class="p">,</span><span class="w"> </span><span class="mf">0.01</span><span class="p">);</span>
 
 <span class="n">xpeaks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="o">-&gt;</span><span class="n">GetPositionX</span><span class="p">();</span>
 <span class="n">ypeaks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="o">-&gt;</span><span class="n">GetPositionY</span><span class="p">();</span>
@@ -8026,93 +8020,47 @@ a.anchor-link {
 <span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="n">nfound</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
 <span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">": "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="kt">int</span><span class="p">(</span><span class="n">xpeaks</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"> </span>
 <span class="w">         </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">ypeaks</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
-<span class="n">hpeak</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
+<span class="n">hpeak</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"hist"</span><span class="p">);</span>
+<span class="n">TPolyMarker</span><span class="w"> </span><span class="o">*</span><span class="n">peakMarkers</span><span class="o">=</span><span class="p">(</span><span class="n">TPolyMarker</span><span class="o">*</span><span class="p">)</span><span class="n">hpeak</span><span class="o">-&gt;</span><span class="n">GetListOfFunctions</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">FindObject</span><span class="p">(</span><span class="s">"TPolyMarker"</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="n">peakMarkers</span><span class="p">)</span><span class="w"> </span><span class="n">peakMarkers</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 <span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="verified-output"><pre>18
+<div class="verified-output"><pre>22
 0: 332, 984052
 1: 135, 786091
 2: 101, 664539
 3: 322, 538447
 4: 67, 355974
-5: 288, 331300
-6: 239, 171454
-7: 688, 161288
-8: 1217, 167250
-9: 843, 152510
-10: 356, 139327
-11: 265, 136479
-12: 968, 127081
-13: 71, 117777
-14: 946, 100460
-15: 406, 53913
-16: 762, 46709.3
-17: 379, 38620.6</pre><img alt="3.1_DSSD_energy_calibration_1: cell 8, c1" src="figures/3.1_DSSD_energy_calibration_1/cell_08_c1.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
+5: 71, 117777
+6: 63, 71649.2
+7: 96, 61243.9
+8: 59, 57259.4
+9: 94, 43959.7
+10: 98, 39411.4
+11: 87, 29171.4
+12: 132, 17675.6
+13: 168, 23274.4
+14: 104, 18971.5
+15: 78, 18438.1
+16: 160, 17473.4
+17: 129, 19779
+18: 165, 11409.6
+19: 161, 12014.4
+20: 106, 12859.6
+21: 121, 10732.4</pre><img alt="3.1_DSSD_energy_calibration_1: cell 8, c1" src="figures/3.1_DSSD_energy_calibration_1/cell_08_c1.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="std::vector">std::vector</h2><p>自动找峰之后，候选峰的个数并不固定，因此不适合用固定长度数组存放。这里使用 <code>std::vector</code>，把每一条谱上找到的候选峰位收集起来。它和数组一样可以按下标访问，但长度可变，更适合寻峰结果。</p>
-<p>常用写法如下：</p>
-<div class="highlight"><pre><code class="language-cpp">#include &lt;vector&gt;
-#include &lt;algorithm&gt;
-using namespace std;
-
-vector&lt;Double_t&gt; pe;
-pe.push_back(993);
-pe.push_back(1079);
-
-for (int i=0; i&lt;pe.size(); i++) {
-    cout &lt;&lt; i &lt;&lt; " " &lt;&lt; pe[i] &lt;&lt; endl;
-}
-
-for (auto it = pe.begin(); it != pe.end(); ++it) {
-    cout &lt;&lt; *it &lt;&lt; endl;
-}</code></pre></div>
-<p>在这一节，<code>vector&lt;Double_t&gt;</code> 用来保存某一条 Pie 谱上全部候选峰的位置，供后续匹配和拟合使用。</p>
-<h2 id="std::map-%E4%B8%8E-std::multimap">std::map 与 std::multimap</h2><p>找到候选峰之后，下一步不是按返回顺序直接使用，而是要按某个更有物理意义的量重新组织。这里用到 <code>map</code> 和 <code>multimap</code>。它们都会按 key 自动排序，其中 <code>map</code> 的 key 不能重复，而 <code>multimap</code> 允许多个相同 key。</p>
-<ul>
-<li>在 <code>map</code> 或 <code>multimap</code> 中插入元素可用 <code>insert(make_pair(key, value))</code>，也可用 <code>emplace(key, value)</code>；后者直接在容器内构造元素，写法更简洁，在解释环境中也通常更稳。</li>
-</ul>
-<p><img alt="" src="fig/map.png"/></p>
-<p>基本形式可以写成：</p>
-<div class="highlight"><pre><code class="language-cpp">#include &lt;map&gt;
-using namespace std;
-
-map&lt;Int_t, Double_t&gt; m1;
-multimap&lt;Int_t, Double_t&gt; mm1;
-
-// 插入元素可用 insert(make_pair(key, value))
-m1.insert(make_pair(762, 121.78));
-
-// 也可用 emplace(key, value)
-mm1.emplace(1560, 1079.0);
-mm1.emplace(1550,  993.0);
-mm1.emplace(1494, 1147.0);
-
-//常见操作包括 `insert`、`find`、正向遍历和反向遍历：
-
-
-auto im1 = m1.find(762);
-if(im1 != m1.end()) {
-    cout &lt;&lt; im1-&gt;first &lt;&lt; " " &lt;&lt; im1-&gt;second &lt;&lt; endl;
-}
-
-for(auto it = mm1.begin(); it != mm1.end(); ++it) {
-    cout &lt;&lt; it-&gt;first &lt;&lt; " " &lt;&lt; it-&gt;second &lt;&lt; endl;
-}
-
-for(auto it = mm1.rbegin(); it != mm1.rend(); ++it) {
-    cout &lt;&lt; it-&gt;first &lt;&lt; " " &lt;&lt; it-&gt;second &lt;&lt; endl;
-}</code></pre></div>
-<p>在刻度问题中，最自然的做法是把峰高作为 key、峰位作为 value，写成 <code>multimap&lt;Int_t, Double_t&gt;</code>。这样即使多个峰高度接近甚至相同，也都能保留下来；再通过反向遍历，就能按峰高从大到小提取候选峰。</p>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>保存与排序候选峰</h3><p><code>vector&lt;Double_t&gt;</code> 存候选位置，<code>push_back</code> 添加一个值。下面的 helper 用 <code>multimap&lt;Double_t,Double_t&gt;</code> 保存“峰高、峰位”，反向遍历得到峰高从大到小的序列；允许相同峰高，避免漏掉等高峰。实际对应哪条 α 谱线，还要结合能谱判断。</p><pre><code class="language-cpp">vector&lt;Double_t&gt; pe;
+pe.push_back(993.0);
+pe.push_back(1079.0);
+// 若要按位置从小到大排列：
+sort(pe.begin(),pe.end());</code></pre></div>
 </div>
 </div>
 </div>
@@ -8121,9 +8069,17 @@ for(auto it = mm1.rbegin(); it != mm1.rend(); ++it) {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%E5%AF%BB%E5%B3%B0%E5%87%BD%E6%95%B0-peaks.C">寻峰函数 peaks.C</h2><p>为了把自动找峰写成一个可复用步骤，可以把它整理成一个函数。输入是直方图名字，输出是一个 <code>vector&lt;Double_t&gt;</code>；其中峰位按峰高从大到小保存。函数内部用 <code>TSpectrum::Search</code> 寻峰，用 <code>multimap</code> 完成“峰高—峰位”的重排，并把峰位标到图上。</p>
-<div class="highlight"><pre><code class="language-cpp">TH1 *h = nullptr, *hb = nullptr;
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>可重复调用的寻峰函数</h3><p>函数只在直方图副本上扣本底，保留原始计数用于后面的峰拟合。<code>backsub=0</code> 表示输入已经扣过本底。</p><pre><code class="language-cpp">#include &lt;TSpectrum.h&gt;
+#include &lt;TH1.h&gt;
+#include &lt;TROOT.h&gt;
+#include &lt;TPolyMarker.h&gt;
+#include &lt;TLatex.h&gt;
+#include &lt;TString.h&gt;
+#include &lt;map&gt;
+#include &lt;vector&gt;
+#include &lt;iostream&gt;
+using namespace std;
+TH1 *h = nullptr, *hb = nullptr;
 
 void peaks(TString hname, vector&lt;Double_t&gt; &amp;pe, Double_t thres=0.05, int backsub=1)
 {
@@ -8147,13 +8103,16 @@ void peaks(TString hname, vector&lt;Double_t&gt; &amp;pe, Double_t thres=0.05, i
     h-&gt;Add(hb, -1);
   }
 
-  nfound = sp-&gt;Search(h, 2, "", thres);
+  // 本底已在上面处理，不再使用 Search 的默认本底扣除。
+  nfound = sp-&gt;Search(h, 2, "nobackground nodraw", thres);
+  h-&gt;Draw("hist");
 
   TPolyMarker *pm = (TPolyMarker*)h-&gt;GetListOfFunctions()-&gt;FindObject("TPolyMarker");
   if(pm) {
     pm-&gt;SetMarkerStyle(32);
     pm-&gt;SetMarkerColor(kGreen);
     pm-&gt;SetMarkerSize(0.4);
+    pm-&gt;Draw(); // HIST 不画附加对象，显式叠加候选峰标记
   }
 
   xpeaks = sp-&gt;GetPositionX();
@@ -8163,8 +8122,8 @@ void peaks(TString hname, vector&lt;Double_t&gt; &amp;pe, Double_t thres=0.05, i
     me.emplace(ypeaks[j], xpeaks[j]);
 
     TLatex *tex = new TLatex(xpeaks[j], ypeaks[j], Form("%.0f", xpeaks[j]));
-    tex-&gt;SetTextFont(13);
-    tex-&gt;SetTextSize(0.02);
+    tex-&gt;SetTextFont(42);
+    tex-&gt;SetTextSize(0.025);
     tex-&gt;SetTextAlign(12);
     tex-&gt;SetTextAngle(90);
     tex-&gt;SetTextColor(kRed);
@@ -8178,8 +8137,6 @@ void peaks(TString hname, vector&lt;Double_t&gt; &amp;pe, Double_t thres=0.05, i
 
   delete sp;
 }</code></pre></div>
-<p>这一步非常关键。<code>TSpectrum</code> 负责“找到所有可能峰”，<code>vector</code> 负责“保存个数不固定的结果”，<code>multimap</code> 负责“按峰高重新组织候选峰”。三者在这里第一次组成一个完整的分析单元。</p>
-</div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
@@ -8188,11 +8145,8 @@ void peaks(TString hname, vector&lt;Double_t&gt; &amp;pe, Double_t thres=0.05, i
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-c++"><pre><span></span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">hpeak</span><span class="o">-&gt;</span><span class="n">GetName</span><span class="p">()</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">hpeak</span><span class="o">-&gt;</span><span class="n">GetName</span><span class="p">()</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
 </pre></div>
-</div>
 </div>
 </div>
 </div>
@@ -8216,17 +8170,10 @@ void peaks(TString hname, vector&lt;Double_t&gt; &amp;pe, Double_t thres=0.05, i
 101.7 664539
 322.9 538447
 67.1 355974
-288.1 331300
-239.1 171454
-1217.1 167250
-688.3 161288
-843.9 152510
-356.1 139327
-265.9 136479
-968.3 127081
 71.9 117777
-946.3 100460
-406.7 53913</pre><img alt="3.1_DSSD_energy_calibration_1: cell 12, c1" src="figures/3.1_DSSD_energy_calibration_1/cell_12_c1.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
+63.3 71649.2
+96.7 61243.9
+59.5 57259.4</pre><img alt="3.1_DSSD_energy_calibration_1: cell 12, c1" src="figures/3.1_DSSD_energy_calibration_1/cell_12_c1.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -8258,13 +8205,10 @@ void peaks(TString hname, vector&lt;Double_t&gt; &amp;pe, Double_t thres=0.05, i
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-c++"><pre><span></span><span class="n">peaks</span><span class="p">(</span><span class="s">"hx1"</span><span class="p">,</span><span class="w"> </span><span class="n">pe</span><span class="p">);</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">peaks</span><span class="p">(</span><span class="s">"hx1"</span><span class="p">,</span><span class="w"> </span><span class="n">pe</span><span class="p">);</span>
 <span class="n">gPad</span><span class="o">-&gt;</span><span class="n">SetLogy</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
 <span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 </pre></div>
-</div>
 </div>
 </div>
 </div>
@@ -8276,7 +8220,8 @@ void peaks(TString hname, vector&lt;Double_t&gt; &amp;pe, Double_t thres=0.05, i
 1429 604
 1047 479.911
 277 238.968
-1405 133</pre><img alt="3.1_DSSD_energy_calibration_1: cell 15, c1" src="figures/3.1_DSSD_energy_calibration_1/cell_15_c1.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
+1405 133
+915 119.867</pre><img alt="3.1_DSSD_energy_calibration_1: cell 15, c1" src="figures/3.1_DSSD_energy_calibration_1/cell_15_c1.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -8323,15 +8268,12 @@ void peaks(TString hname, vector&lt;Double_t&gt; &amp;pe, Double_t thres=0.05, i
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-c++"><pre><span></span><span class="n">TGraph</span><span class="w"> </span><span class="o">*</span><span class="n">gr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TGraph</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">mpe</span><span class="p">,</span><span class="w"> </span><span class="n">e</span><span class="p">);</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">TGraph</span><span class="w"> </span><span class="o">*</span><span class="n">gr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TGraph</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">mpe</span><span class="p">,</span><span class="w"> </span><span class="n">e</span><span class="p">);</span>
 <span class="n">gr</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"A*"</span><span class="p">);</span>
 <span class="n">gr</span><span class="o">-&gt;</span><span class="n">Fit</span><span class="p">(</span><span class="s">"pol1"</span><span class="p">);</span>
 <span class="n">TF1</span><span class="w"> </span><span class="o">*</span><span class="n">f1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gr</span><span class="o">-&gt;</span><span class="n">GetFunction</span><span class="p">(</span><span class="s">"pol1"</span><span class="p">);</span>
 <span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 </pre></div>
-</div>
 </div>
 </div>
 </div>
@@ -8391,12 +8333,9 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-c++"><pre><span></span><span class="n">hx1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">hx1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"hist"</span><span class="p">);</span>
 <span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 </pre></div>
-</div>
 </div>
 </div>
 </div>
@@ -8413,6 +8352,9 @@ $$</p>
 <span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="mi">4</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">fg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TF1</span><span class="p">(</span><span class="n">Form</span><span class="p">(</span><span class="s">"fg%d"</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">),</span><span class="w"> </span><span class="s">"gaus"</span><span class="p">);</span>
 <span class="w">    </span><span class="n">fg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">SetParameters</span><span class="p">(</span><span class="n">cpe</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="w"> </span><span class="n">mpe</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span>
+<span class="w">    </span><span class="n">fg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">SetRange</span><span class="p">(</span><span class="n">mpe</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="mi">-5</span><span class="p">,</span><span class="n">mpe</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="mi">8</span><span class="p">);</span>
+<span class="w">    </span><span class="n">fg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">SetLineColor</span><span class="p">(</span><span class="n">kRed</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="n">fg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">SetLineWidth</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
 <span class="w">    </span><span class="n">fg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">SetParLimits</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mf">0.2</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">);</span><span class="c1">//constant,mean, sigma</span>
 <span class="w">    </span><span class="n">fr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hx1</span><span class="o">-&gt;</span><span class="n">Fit</span><span class="p">(</span><span class="n">fg</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="w"> </span><span class="s">"SQ+"</span><span class="p">,</span><span class="w"> </span><span class="s">""</span><span class="p">,</span><span class="w"> </span><span class="n">mpe</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="mi">-5</span><span class="p">,</span><span class="w"> </span><span class="n">mpe</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="mi">8</span><span class="p">);</span><span class="c1">//superimpose TF1 to hx1</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">(</span><span class="n">fr</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">fr</span><span class="p">.</span><span class="n">Get</span><span class="p">()</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">fr</span><span class="o">-&gt;</span><span class="n">IsValid</span><span class="p">())</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">"峰拟合失败"</span><span class="p">);</span>
@@ -8424,6 +8366,8 @@ $$</p>
 <span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">Form</span><span class="p">(</span><span class="s">"peaks = %4.1f, sigma = %.2f, chi2/ndf = %.2f"</span><span class="p">,</span><span class="w"> </span>
 <span class="w">                 </span><span class="n">par</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">par</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">par</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
 <span class="p">}</span>
+<span class="n">hx1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"hist"</span><span class="p">);</span>
+<span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">4</span><span class="p">;</span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="n">fg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"same"</span><span class="p">);</span>
 <span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 </pre></div>
 </div>
@@ -8479,7 +8423,7 @@ p1                        =   0.00716924   +/-   2.65536e-06</pre><img alt="3.1_
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [27]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="n">Form</span><span class="p">(</span><span class="s">"pe[1]*%f+%f&gt;&gt;hx1e(1000, -1, 10)"</span><span class="p">,</span><span class="w"> </span><span class="n">p1</span><span class="p">,</span><span class="w"> </span><span class="n">p0</span><span class="p">));</span><span class="c1">//单条</span>
-<span class="n">hx1e</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
+<span class="n">hx1e</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"hist"</span><span class="p">);</span>
 <span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span><span class="c1">// bin 宽度应与原始 ADC 步距和刻度斜率相称；不必随机改变道值。</span>
 </pre></div>
 </div>

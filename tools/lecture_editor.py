@@ -135,3 +135,22 @@ class Page:
         manifest.parent.mkdir(parents=True, exist_ok=True)
         manifest.write_text(json.dumps({'path':self.path,'code':code,'changed':sorted(self.changed)},ensure_ascii=False,indent=2))
         print('Revised', self.path, 'cells', sorted(self.changed))
+
+    def insert_before(self, i, items):
+        """Insert small Markdown/code cells; original indices stay valid until save."""
+        for kind, value in items:
+            if kind == 'md':
+                markup = '<div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput">'+value+'</div></div>'
+            else:
+                markup = '<div class="jp-Cell jp-CodeCell"><div class="jp-InputArea"><div class="jp-InputArea-editor">'+highlight(value.strip(), CppLexer(), HtmlFormatter())+'</div></div></div>'
+            self.cells[i].insert_before(fragment(markup))
+
+    def refresh(self):
+        self.cells = self.soup.select('.jp-Cell') or self.soup.select('.cell')
+
+    def rebuild(self, items):
+        """Replace a specifically approved supplement while retaining page assets."""
+        self.insert_before(0, items)
+        for cell in self.cells:
+            cell.decompose()
+        self.refresh()

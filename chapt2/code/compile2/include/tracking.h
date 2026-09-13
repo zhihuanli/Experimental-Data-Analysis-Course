@@ -56,9 +56,9 @@ tracking::tracking(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/Users/zhli/Desktop/course/code-new/data/chapt2/f8ppac001.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("../../f8ppac001.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("/Users/zhli/Desktop/course/code-new/data/chapt2/f8ppac001.root");
+         f = new TFile("../../f8ppac001.root");
       }
       f->GetObject("tree",tree);
 

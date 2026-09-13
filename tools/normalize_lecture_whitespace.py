@@ -13,4 +13,5 @@ for rel in paths:
     cleaned='\n'.join(line.rstrip() for line in text.splitlines())+'\n'
     if text!=cleaned:path.write_text(cleaned)
 for rel in PAGES+['chapt1/ROOT_tips.html']:
-    Page(rel,current=True).save()
+    if rel in paths:
+        Page(rel,current=True).save()

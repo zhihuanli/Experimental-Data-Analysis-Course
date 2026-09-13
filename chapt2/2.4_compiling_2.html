@@ -7837,38 +7837,17 @@ a.anchor-link {
 <a href="../index.html"><img alt="课程标志" src="../assets/images/course-logo.png"/></a>
 <div class="course-banner-title"><a href="../index.html">核物理实验数据处理</a>
 <span class="course-banner-en">Experimental Data Analysis in Nuclear Physics</span></div></div></header>
-
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="2.4-%E7%BC%96%E5%86%99%E5%8F%AF%E7%BC%96%E8%AF%91%E6%89%A7%E8%A1%8C%E7%9A%84%E5%88%86%E6%9E%90%E7%A8%8B%E5%BA%8F-(II)%EF%BC%9A">2.4 编写可编译执行的分析程序 (II)：</h1><p>在 2.3 节中，介绍了使用 ROOT 的 <code>tree-&gt;MakeClass("tracking")</code> 自动生成读取数据代码（<code>tracking.h</code> 和 <code>tracking.C</code>）的方法，并将自定义的物理分析代码直接编写在了 <code>tracking.C</code> 的 <code>Loop()</code> 函数中。</p>
-<p>然而，在核物理实验数据分析中，探测器的数量、TTree 中的 Branch 经常会发生变动。一旦数据结构改变，通常需要重新运行 <code>MakeClass</code>。此时，ROOT 自动生成的新文件会直接覆盖掉原有的物理分析代码。</p>
-<p><strong>解决方案：面向对象的“继承（Inheritance）”与“职责分离”</strong></p>
-<ul>
-<li><strong>保留自动生成的代码</strong>：由 <code>MakeClass</code> 生成的 <code>tracking</code> 类只负责底层的数据结构映射，应避免手动修改该文件。</li>
-<li><strong>类的继承（Inheritance）</strong>：建立自定义的分析类 <code>ana</code> 并继承 <code>tracking</code>。这样 <code>ana</code> 天然具备了读取探测器原始数据的能力，只需在 <code>ana</code> 中专注编写物理算法。</li>
-<li><strong>主程序的职责划分（I/O 解耦）</strong>：<code>ana</code> 类中应避免对物理文件进行创建操作（如 <code>new TFile</code>）。所有文件的打开、创建，以及相关参数的解析，应当全部交由主程序 <code>main.cpp</code> 来调度，并在 <code>ana</code> 类初始化时，将所需的参数和树指针直接传入。</li>
-</ul>
-<hr/>
-<h3 id="1.-%E6%96%87%E4%BB%B6%E5%92%8C%E7%9B%AE%E5%BD%95%E7%9A%84%E7%BB%84%E7%BB%87">1. 文件和目录的组织</h3><p>为了实现上述解耦，本例把工程目录划分为“自动生成”与“用户编写”两部分：</p>
-<div class="highlight"><pre><span></span>主目录: ./tracking
-├── main.cpp         (主程序，负责流程控制)
-├── Makefile         (编译脚本，负责自动化构建)
-├── include/
-│   ├── tracking.h   (MakeClass 生成的头文件)
-│   └── ana.h        (用户分析头文件)
-└── src/
-    ├── tracking.C   (MakeClass 生成的源文件)
-    └── ana.cpp      (用户分析源文件)
-</pre></div>
-<hr/>
-<h3 id="2.-%E4%BB%A3%E7%A0%81%E5%AE%8C%E6%95%B4%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%EF%BC%88%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E7%BB%93%E6%9E%84%EF%BC%89">2. 代码完整实现方案（自顶向下结构）</h3><h4 id="2.1-./tracking/main.cpp"><font color="Red">2.1 ./tracking/main.cpp</font></h4><p>作为程序的主入口，该文件负责解析终端输入的参数，动态生成文件名，创建读写流，并在初始化时将输入/输出树直接传入分析类。
-<em>(注：代码中的头文件引用采用 <code>#include "ana.h"</code>，相应的路径搜索将由 <code>Makefile</code> 统一管理。)</em></p>
-<div class="highlight"><pre><code class="language-cpp">#include &lt;TFile.h&gt;
+<div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><h1>2.4 编译执行：分开数据读取与分析代码</h1>
+<p>这一节保留 2.3 的 tracking 算法。区别是把它从 MakeClass 生成的文件中移到 <code>ana</code> 类。以后 branch 变化需要重新生成 reader 时，物理分析代码仍保留在自己的文件中。</p>
+<h2>1. 文件与继承关系</h2><p>本例位于 <code>code/compile2</code>。<code>tracking.h/C</code> 由 MakeClass 生成，负责读取 branch；<code>ana.h/ana.cpp</code> 是用户分析代码。<code>main.cpp</code> 仍负责打开文件和保存结果。</p><pre><code class="language-cpp">class ana : public tracking {
+public:
+    TTree *fOutTree;
+    ana(TTree *input, TTree *output)
+        : tracking(input), fOutTree(output) {}
+    void Analysis();
+    // xx、yy、tx 等计算变量及方法声明见完整 ana.h
+};</code></pre><p><code>: tracking(input)</code> 调用基类构造函数，绑定输入树；<code>fOutTree(output)</code> 保存输出树指针。<code>Analysis()</code> 中的 <code>GetEntry</code>、径迹拟合和 <code>Fill</code> 与上一节相同，不需要再复制一遍学习。</p></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><h2>2. 主程序：参数、文件、分析调用</h2><p><code>argc</code> 是参数个数，<code>argv[1]</code> 是 run 号。没有提供目录时，输入在章目录，输出在本例程序目录。下面代码与实际 main.cpp 一致；读取失败时返回非零值，供批处理脚本判断。</p><pre><code class="language-cpp">#include &lt;TFile.h&gt;
 #include &lt;TTree.h&gt;
 #include &lt;TString.h&gt;
 #include &lt;cstdlib&gt;
@@ -7880,15 +7859,29 @@ int main(int argc, char** argv) {
         std::cerr &lt;&lt; "Usage: ./tracking run [input_dir output_dir]\n";
         return 1;
     }
-    int run = std::atoi(argv[1]);
+    char* end = nullptr;
+    long parsed = std::strtol(argv[1], &amp;end, 10);
+    if (end==argv[1] || *end!='\0' || parsed&lt;0 || parsed&gt;999999) {
+        std::cerr &lt;&lt; "Invalid run number: " &lt;&lt; argv[1] &lt;&lt; '\n';
+        return 1;
+    }
+    int run = int(parsed);
     const char* inputDir = argc==4 ? argv[2] : "../..";
     const char* outputDir = argc==4 ? argv[3] : ".";
     TString inputName = Form("%s/f8ppac%03d.root",inputDir,run);
     TString outputName = Form("%s/out%03d.root",outputDir,run);
     TFile* input = TFile::Open(inputName);
-    if (!input || input-&gt;IsZombie()) return 1;
+    if (!input || input-&gt;IsZombie()) {
+        std::cerr &lt;&lt; "Cannot open " &lt;&lt; inputName &lt;&lt; '\n';
+        delete input;
+        return 1;
+    }
     TTree* tin = input-&gt;Get&lt;TTree&gt;("tree");
-    if (!tin) return 1;
+    if (!tin) {
+        std::cerr &lt;&lt; "Missing tree in " &lt;&lt; inputName &lt;&lt; '\n';
+        delete input;
+        return 1;
+    }
     TFile output(outputName,"RECREATE");
     if (output.IsZombie()) return 1;
     TTree* tout = new TTree("tree","PPAC tracking");
@@ -7900,265 +7893,23 @@ int main(int argc, char** argv) {
         output.Write();
     } // MakeClass 基类析构时释放输入文件；不再重复 delete input。
     return 0;
-}</code></pre></div>
-<h4 id="2.2-./tracking/include/ana.h"><font color="Red">2.2 ./tracking/include/ana.h</font></h4><p>在该头文件中，声明继承关系、物理变量以及存储输出树的指针。
-在实现继承时，子类的构造函数通过<strong>“初始化列表（Initializer List）”</strong>（即冒号 <code>:</code> 后面的部分）完成变量分配与数据交接：</p>
-<ul>
-<li><code>tracking(tree_in)</code>：将输入树直接传递给父类 <code>tracking</code> 的构造函数，完成原始数据读取的准备。</li>
-</ul>
-<div class="highlight"><pre><code class="language-cpp">#ifndef ANA_H
-#define ANA_H
-#include "tracking.h"
-#include &lt;TH2.h&gt;
-class ana : public tracking {
-public:
+}</code></pre></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><h2>3. Makefile：编译与链接</h2><pre><code class="language-cpp">CXX = c++
+CPPFLAGS = -Iinclude $(shell root-config --cflags)
+CXXFLAGS = -O2 -Wall
+LDLIBS = $(shell root-config --libs)
+SOURCES = main.cpp $(wildcard src/*.cpp src/*.C)
+HEADERS = $(wildcard include/*.h)
 
-   Double_t xx[3], xz[3], yy[3], yz[3], dx[3], dy[3];
-   Double_t xx2b[2], yy2b[2], xz2b, yz2b, anode2b;
-   Double_t tx,ty,theta_x,theta_y,sigma_tx,sigma_ty,sigma_thetax,sigma_thetay,c2nx,c2ny;
-   Long64_t source_entry;
-   void SetBranch(TTree *tree);
-   void TrackInit();
-   void SetTrace(TH2D *h, Double_t k, Double_t b, Int_t min, Int_t max);
+all: tracking
 
+tracking: $(SOURCES) $(HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(SOURCES) $(LDLIBS) -o $@
 
-    TTree *fOutTree;
-    ana(TTree *input,TTree *output) : tracking(input),fOutTree(output) {}
-    void Analysis();
-};
-#endif</code></pre></div>
-<p><strong>“初始化列表（Initializer List）”</strong></p>
-<h3 id="1.-tracking(tree_in)%EF%BC%9A%E8%B0%83%E7%94%A8%E7%88%B6%E7%B1%BB%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%EF%BC%88%E4%BC%A0%E9%80%92%E5%8F%82%E6%95%B0%EF%BC%89">1. <code>tracking(tree_in)</code>：调用父类构造函数（传递参数）</h3><ul>
-<li><strong>作用</strong>：因为 <code>ana</code> 继承自 <code>tracking</code>，在创建子类 <code>ana</code> 的对象时，必须先将父类 <code>tracking</code> 建立起来。</li>
-<li><strong>机制</strong>：这里的操作是<strong>“传递参数”</strong>。它相当于显式调用了父类的构造函数，把 <code>tree_in</code> 这个指针交给了父类，让父类去完成底层 ROOT 树分支（Branch）的绑定工作。</li>
-</ul>
-<h3 id="2.-run(run_number)-%E4%B8%8E-fOutTree(tree_out)%EF%BC%9A%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%EF%BC%88%E5%8A%9F%E8%83%BD%E7%AD%89%E5%90%8C%E4%BA%8E%E8%B5%8B%E5%80%BC%EF%BC%89">2. <code>run(run_number)</code> 与 <code>fOutTree(tree_out)</code>：成员变量初始化（功能等同于赋值）</h3><ul>
-<li><strong>作用</strong>：用来设定子类 <code>ana</code> 自身拥有的成员变量（<code>run</code> 和 <code>fOutTree</code>）的初始状态。</li>
-<li><strong>机制（初始化 vs 赋值）</strong>：虽然它的实际效果和在大括号里面写 <code>run = run_number;</code> 一样，但在 C++ 中，写在冒号后面的这部分叫做<strong>“初始化（Initialization）”</strong>，而写在大括号 <code>{}</code> 内部的叫做<strong>“赋值（Assignment）”</strong>。</li>
-</ul>
-<p><strong>为什么推荐用这种写法而不是在大括号里赋值？</strong>
-如果写成赋值的形式：</p>
-<div class="highlight"><pre><code class="language-cpp">ana(TTree* input, TTree* output) : tracking(input), fOutTree(output) {}</code></pre></div>
-<p>初始化列表直接初始化成员。内置类型若未初始化，值是不确定的，并不是编译器特意赋予的“随机值”；对引用、const 成员和基类，初始化列表尤其重要。</p>
-<h4 id="2.3-%E7%94%A8%E6%88%B7%E5%88%86%E6%9E%90%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0%EF%BC%9A./tracking/src/ana.cpp"><font color="Red">2.3 用户分析具体实现：./tracking/src/ana.cpp</font></h4><p>此处仅编写纯粹的物理逻辑。由于 <code>fOutTree</code> 已在对象初始化时保存为成员变量，内部函数可直接对其进行操作 (<code>Branch</code> 和 <code>Fill</code>)。</p>
-<div class="highlight"><pre><code class="language-cpp">#include "ana.h"
-#include &lt;TH2.h&gt;
-#include &lt;TStyle.h&gt;
-#include &lt;TCanvas.h&gt;
-#include &lt;TF1.h&gt;
-#include &lt;TGraphErrors.h&gt;   // 【修改】必须包含带有误差的图类
-#include &lt;TFitResult.h&gt;
-#include &lt;TMatrixDSym.h&gt;    // 【新增】用于接收协方差矩阵
-#include &lt;iostream&gt;
-#include &lt;cmath&gt;
-
-using namespace std;
-
-void ana::SetBranch(TTree *tree)
-{
-    tree-&gt;Branch("source_entry", &amp;source_entry, "source_entry/L");
-    tree-&gt;Branch("xx", xx, "xx[3]/D");
-    tree-&gt;Branch("xz", xz, "xz[3]/D");
-    tree-&gt;Branch("yy", yy, "yy[3]/D");
-    tree-&gt;Branch("yz", yz, "yz[3]/D");
-    tree-&gt;Branch("dx", dx, "dx[3]/D");
-    tree-&gt;Branch("dy", dy, "dy[3]/D");
-    tree-&gt;Branch("xx2b", xx2b, "xx2b[2]/D");
-    tree-&gt;Branch("yy2b", yy2b, "yy2b[2]/D");
-    tree-&gt;Branch("anode2b", &amp;anode2b, "anode2b/D");
-
-    // 【新增】注册所有运动学中心值及其物理误差
-    tree-&gt;Branch("tx", &amp;tx, "tx/D");
-    tree-&gt;Branch("ty", &amp;ty, "ty/D");
-    tree-&gt;Branch("theta_x", &amp;theta_x, "theta_x/D");
-    tree-&gt;Branch("theta_y", &amp;theta_y, "theta_y/D");
-    tree-&gt;Branch("sigma_tx", &amp;sigma_tx, "sigma_tx/D");
-    tree-&gt;Branch("sigma_ty", &amp;sigma_ty, "sigma_ty/D");
-    tree-&gt;Branch("sigma_thetax", &amp;sigma_thetax, "sigma_thetax/D");
-    tree-&gt;Branch("sigma_thetay", &amp;sigma_thetay, "sigma_thetay/D");
-
-    tree-&gt;Branch("c2nx", &amp;c2nx, "c2nx/D");
-    tree-&gt;Branch("c2ny", &amp;c2ny, "c2ny/D");
-    tree-&gt;Branch("beamTrig", &amp;beamTrig, "beamTrig/I");
-    tree-&gt;Branch("must2Trig", &amp;must2Trig, "must2Trig/I");
-    tree-&gt;Branch("targetX", &amp;targetX, "targetX/F");
-    tree-&gt;Branch("targetY", &amp;targetY, "targetY/F");
-}
-
-void ana::TrackInit()
-{
-    // 初始化所有计算变量为无效值，防止上一个事件的数据污染
-    tx = -999; ty = -999;
-    c2nx = -1; c2ny = -1;
-    for (int i=0;i&lt;3;++i) { dx[i]=-999; dy[i]=-999; }
-    theta_x = -999; theta_y = -999;
-    sigma_tx = -1; sigma_ty = -1;             // 误差初始化为负数代表无效
-    sigma_thetax = -1; sigma_thetay = -1;
-
-    xx[0] = PPACF8[0][0];  yy[0] = PPACF8[0][1];  xz[0] = PPACF8[0][2];  yz[0] = PPACF8[0][3];
-    xx[1] = PPACF8[2][0];  yy[1] = PPACF8[2][1];  xz[1] = PPACF8[2][2];  yz[1] = PPACF8[2][3];
-    xx[2] = PPACF8[4][0];  yy[2] = PPACF8[4][1];  xz[2] = PPACF8[4][2];  yz[2] = PPACF8[4][3];
-
-    xx2b[0] = PPACF8[3][0]; yy2b[0] = PPACF8[3][1];
-    xz2b    = PPACF8[3][2]; yz2b    = PPACF8[3][3];
-    anode2b = PPACF8[3][4];
-
-    xx2b[1] = -1000; yy2b[1] = -1000;
-}
-
-void ana::SetTrace(TH2D *h, Double_t k, Double_t b, Int_t min, Int_t max){
-    if(h == 0 || min &gt;= max) return;
-    for(int i = min; i &lt; max; i++){
-        h-&gt;Fill(i, i * k + b);
-    }
-}
-
-void ana::Analysis()
-{
-    TTree *tree = fOutTree;
-    if (fChain == 0) return;
-
-    SetBranch(tree);
-
-    TH2D *htf8xz = new TH2D("htf8xz", "X-Z Plane Trace; Z (mm); X (mm)", 2200, -2000, 200, 300, -150, 150);
-    TH2D *htf8yz = new TH2D("htf8yz", "Y-Z Plane Trace; Z (mm); Y (mm)", 2200, -2000, 200, 300, -150, 150);
-
-    // 【核心修改】使用 TGraphErrors 替代 TGraph，输入假设的单层位置误差
-    TGraphErrors *grx = new TGraphErrors(3);
-    TGraphErrors *gry = new TGraphErrors(3);
-    TF1 *fx = new TF1("fx", "pol1", -2000, 0);
-    TF1 *fy = new TF1("fy", "pol1", -2000, 0);
-
-    // 假设：所有PPAC每层的本征位置分辨率为 1.0 mm
-    const double det_resolution = 1.0;
-    const double z_target = 0.0; // 物理靶所在Z坐标位置
-
-    Long64_t nentries = fChain-&gt;GetEntriesFast();
-    Long64_t nbytes = 0, nb = 0;
-
-    for (Long64_t jentry = 0; jentry &lt; nentries; jentry++) {
-        Long64_t ientry = LoadTree(jentry);
-        if (ientry &lt; 0) break;
-        nb = fChain-&gt;GetEntry(jentry);   nbytes += nb;
-
-        source_entry = jentry;
-        TrackInit();
-
-        bool b1a = abs(xx[0]) &lt; 150 &amp;&amp; abs(yy[0]) &lt; 150;
-        bool b2a = abs(xx[1]) &lt; 150 &amp;&amp; abs(yy[1]) &lt; 150;
-        bool b3  = abs(xx[2]) &lt; 100 &amp;&amp; abs(yy[2]) &lt; 100;
-        if(!b1a || !b2a || !b3) continue;
-
-        // ================= X-Z 平面径迹拟合与误差计算 =================
-        for(int i=0; i&lt;3; i++) {
-            grx-&gt;SetPoint(i, xz[i], xx[i]);
-            grx-&gt;SetPointError(i, 0.0, det_resolution); // 关键：输入Z和X的误差
-        }
-
-        // 【核心修改】去除 "W" 选项。S=保存结果(以获取矩阵), Q=静默模式
-        TFitResultPtr rx = grx-&gt;Fit(fx, "SQN");
-
-        if (int(rx)==0 &amp;&amp; rx.Get() &amp;&amp; rx-&gt;IsValid()) {
-            double p0_x = fx-&gt;GetParameter(0);
-            double p1_x = fx-&gt;GetParameter(1);
-
-            // 提取中心值
-            xx2b[1] = fx-&gt;Eval(xz2b);
-            tx      = p0_x + p1_x * z_target;
-            theta_x = atan(p1_x); // 物理出射角 (rad)
-
-            // 提取协方差矩阵并计算严谨物理误差
-            TMatrixDSym cov_x = rx-&gt;GetCovarianceMatrix();
-            double var_p0 = cov_x(0, 0);
-            double var_p1 = cov_x(1, 1);
-            double cov_p0_p1 = cov_x(0, 1);
-
-            // 外推位置误差传递公式
-            double err2_tx = var_p0 + (z_target * z_target * var_p1) + (2.0 * z_target * cov_p0_p1);
-            sigma_tx = sqrt(err2_tx);
-
-            // 角度非线性误差传递公式
-            sigma_thetax = sqrt(var_p1) / (1.0 + p1_x * p1_x);
-
-            c2nx = rx-&gt;Chi2() / rx-&gt;Ndf();
-            if (jentry &lt; 10000) SetTrace(htf8xz, p1_x, p0_x, -1800, 0);
-            for(int i=0; i&lt;3; i++) dx[i] = xx[i] - fx-&gt;Eval(xz[i]);
-        }
-
-        // ================= Y-Z 平面径迹拟合与误差计算 =================
-        for(int i=0; i&lt;3; i++) {
-            gry-&gt;SetPoint(i, yz[i], yy[i]);
-            gry-&gt;SetPointError(i, 0.0, det_resolution);
-        }
-
-        TFitResultPtr ry = gry-&gt;Fit(fy, "SQN");
-
-        if (int(ry)==0 &amp;&amp; ry.Get() &amp;&amp; ry-&gt;IsValid()) {
-            double p0_y = fy-&gt;GetParameter(0);
-            double p1_y = fy-&gt;GetParameter(1);
-
-            yy2b[1] = fy-&gt;Eval(yz2b);
-            ty      = p0_y + p1_y * z_target;
-            theta_y = atan(p1_y);
-
-            TMatrixDSym cov_y = ry-&gt;GetCovarianceMatrix();
-            double var_p0 = cov_y(0, 0);
-            double var_p1 = cov_y(1, 1);
-            double cov_p0_p1 = cov_y(0, 1);
-
-            double err2_ty = var_p0 + (z_target * z_target * var_p1) + (2.0 * z_target * cov_p0_p1);
-            sigma_ty = sqrt(err2_ty);
-
-            sigma_thetay = sqrt(var_p1) / (1.0 + p1_y * p1_y);
-
-            c2ny = ry-&gt;Chi2() / ry-&gt;Ndf();
-            if (jentry &lt; 10000) SetTrace(htf8yz, p1_y, p0_y, -1800, 0);
-            for(int i=0; i&lt;3; i++) dy[i] = yy[i] - fy-&gt;Eval(yz[i]);
-        }
-
-        // 将本事件结果写入 Tree (包括新算出的误差)
-        if (c2nx&gt;=0 &amp;&amp; c2ny&gt;=0) tree-&gt;Fill();
-
-        if(jentry % 10000 == 0) cout &lt;&lt; "Processing Event: " &lt;&lt; jentry &lt;&lt; " / " &lt;&lt; nentries &lt;&lt; endl;
-    }
-
-    // 释放内存并保存结果
-    delete grx; delete gry;
-    delete fx;  delete fy;
-
-
-
-
-    cout &lt;&lt; "Input events=" &lt;&lt; nentries &lt;&lt; ", accepted reference tracks=" &lt;&lt; tree-&gt;GetEntries() &lt;&lt; endl;
-
-
-
-}</code></pre></div>
-<hr/>
-<h3 id="%E5%88%86%E7%A6%BB%E6%9E%B6%E6%9E%84%E7%9A%84%E4%BC%98%E5%8A%BF">分离架构的优势</h3><p>当 I/O 和参数解析剥离到 <code>main</code>，编译工作交由 <code>Makefile</code> 统筹后，程序即具备了<strong>自动化批处理（Batch Processing）</strong>的能力。
-在实验数据处理期间，只需编写一个简单的 Bash 脚本：</p>
-<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
-<span class="k">for</span><span class="w"> </span>run<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">{</span><span class="m">1</span>..100<span class="o">}</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
-<span class="w">    </span>./tracking<span class="w"> </span><span class="nv">$run</span>
-<span class="k">done</span>
-</pre></div>
-<p>即可自动处理海量数据。而核心物理分析代码 <code>ana.cpp</code> 无需做任何修改，这体现了软件工程思维在核物理数据分析中的应用价值。</p>
-<p>完整工程位于 <code>code/compile2</code>。tracking.h/C 保持 MakeClass 生成形式；ana 继承输入成员和 LoadTree，将与 2.3 相同的物理计算移入 Analysis。两种工程应对同一输入给出相同的输出事件和 tracking 参数。</p></div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="o">!</span><span class="n">make</span><span class="w"> </span><span class="o">-</span><span class="n">C</span><span class="w"> </span><span class="n">code</span><span class="o">/</span><span class="n">compile2</span>
+clean:
+	rm -f tracking</code></pre><p><code>root-config --cflags</code> 提供 ROOT 头文件及编译选项，<code>--libs</code> 提供链接库。包含头文件解决声明问题，链接解决函数实现问题，两者不能互相替代。修改源码后重新执行 <code>make</code>；编译失败先看第一条 error。</p></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><h2>4. 运行和核对</h2><p>在章目录执行下面两行。程序读取 <code>f8ppac001.root</code>，写出 <code>code/compile2/out001.root</code>。原始文件不变。使用同一输入与选择条件时，输出事例编号、靶点位置及拟合参数应与 2.2 一致，而不只是比较最终事例数。</p></div></div><div class="jp-Cell jp-CodeCell"><div class="jp-InputArea"><div class="jp-InputArea-editor"><div class="highlight"><pre><span></span><span class="o">!</span><span class="n">make</span><span class="w"> </span><span class="o">-</span><span class="n">C</span><span class="w"> </span><span class="n">code</span><span class="o">/</span><span class="n">compile2</span>
 <span class="o">!</span><span class="n">cd</span><span class="w"> </span><span class="n">code</span><span class="o">/</span><span class="n">compile2</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">.</span><span class="o">/</span><span class="n">tracking</span><span class="w"> </span><span class="mi">1</span>
 </pre></div>
-</div>
-</div>
-</div>
-<div class="verified-output"><pre>make: Nothing to be done for `all'.
+</div></div><div class="verified-output"><pre>c++ -Iinclude -stdlib=libc++ -pthread -std=c++17 -m64 -I/opt/homebrew/Cellar/root/6.40.02/include/root -O2 -Wall main.cpp src/ana.cpp src/tracking.C -L/opt/homebrew/Cellar/root/6.40.02/lib/root -lCore -lImt -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lROOTVecOps -lTree -lTreePlayer -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -lROOTNTuple -lROOTNTupleUtil -lMultiProc -lROOTDataFrame -stdlib=libc++ -Wl,-rpath,/opt/homebrew/Cellar/root/6.40.02/lib/root -lpthread -lm -ldl -o tracking
 Processing Event: 30000 / 739685
 Processing Event: 50000 / 739685
 Processing Event: 110000 / 739685
@@ -8184,7 +7935,16 @@ Processing Event: 630000 / 739685
 Processing Event: 640000 / 739685
 Processing Event: 650000 / 739685
 Input events=739685, accepted reference tracks=232180
-Input=739685, output=232180</pre></div></div>
+Input=739685, output=232180
+src/ana.cpp:94:14: warning: variable 'nbytes' set but not used [-Wunused-but-set-variable]
+   94 |     Long64_t nbytes = 0, nb = 0;
+      |              ^
+1 warning generated.
+src/tracking.C:36:13: warning: variable 'nbytes' set but not used [-Wunused-but-set-variable]
+   36 |    Long64_t nbytes = 0, nb = 0;
+      |             ^
+1 warning generated.
+ld: warning: search path '/usr/local/lib' is not a directory</pre></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><p>完整源码：<a href="code/compile2/main.cpp">main.cpp</a> · <a href="code/compile2/include/tracking.h">tracking.h</a> · <a href="code/compile2/src/tracking.C">tracking.C</a> · <a href="code/compile2/include/ana.h">ana.h</a> · <a href="code/compile2/src/ana.cpp">ana.cpp</a></p></div></div>
 </main>
 </body>
 </html>

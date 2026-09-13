@@ -7837,7 +7837,6 @@ a.anchor-link {
 <a href="../index.html"><img alt="课程标志" src="../assets/images/course-logo.png"/></a>
 <div class="course-banner-title"><a href="../index.html">核物理实验数据处理</a>
 <span class="course-banner-en">Experimental Data Analysis in Nuclear Physics</span></div></div></header>
-
 <main>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -7847,7 +7846,7 @@ a.anchor-link {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="3.7-DSSD-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">3.7 DSSD 数据分析</h2><ul>
 <li>根据 3.6 节分析结果，重新组织事件结构。 对每个 DSSD，先完成单片内部的 x-y 配对与 multiplicity 事例重建，再给出每个入射粒子的入射位置 <code>(x,y)</code> 和能量 <code>e</code>。</li>
-<li><code>hit</code> 表示该探测器中在当前配对规则下重建出的粒子数，<code>e</code> 表示分配给该粒子的重建能量。3.6 节已经完成单片内部的相对刻度统一与 multiplicity 相关能量偏移修正，因此本节可以直接在粒子层面讨论探测器间关联。</li>
+<li><code>hit</code> 表示该探测器中在当前配对规则下重建出的粒子数，<code>e</code> 表示分配给该粒子的重建能量。本节使用提供的完整参考重建文件 evt_16C.root，在单片相对幅度尺度上讨论层间关联。3.6 的可运行实例只覆盖一种拓扑，不是该完整参考文件的全部生成算法。</li>
 </ul>
 <div class="highlight"><pre><span></span><span class="c1">// det1</span>
 <span class="n">Int_t</span><span class="w"> </span><span class="n">hit1</span><span class="p">;</span>
@@ -7890,12 +7889,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="%E5%85%A8%E9%83%A8%E4%BA%8B%E4%BB%B6">全部事件</h3><ul>
-<li>将相邻探测器的重建能量作二维关联，可以看到望远镜中的 dE-E 结构。</li>
-<li>这些二维关联一方面反映了不同粒子的能量损失规律，另一方面也混有粒子在探测器中发生散射或反应形成的连续本底。</li>
-</ul>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h2>1. 相邻探测器的幅度关联</h2><p>先看所有事例，再选择每层一个或两个 hit。这里 <code>Draw("e1:e2")</code> 按数组下标组成点，不会判断是否来自同一个粒子。图中连续分布可能含误配、散射、反应或电荷收集不完整，不能只从二维图决定来源。</p></div>
 </div>
 </div>
 </div>
@@ -7969,11 +7963,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="%E4%B8%A4%E4%B8%AA%E7%B2%92%E5%AD%90%E5%85%A5%E5%B0%84">两个粒子入射</h3><ul>
-<li>相邻探测器之间已经形成较清晰的二维 dE-E 关联，但仍可以看到粒子在探测器中发生反应后形成的连续本底。</li>
-</ul>
-<p>此处 Draw 对两个数组按同一下标组成点，并没有完成跨探测器的粒子配对。这些图用于观察未经重新配对的关联；后文再检查能量排序导致的误配。</p></div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>每层各两个 hit</h3><p>两个粒子在不同厚度的探测器内沉积能量的大小次序可能不同。因此两层各自按能量排序后，第 0 个 hit 不一定属于同一个粒子。先画未经重配的图，后面用位置检查两种对应关系。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
@@ -8004,9 +7994,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="%E4%B8%A4%E4%B8%AA%E7%9B%B8%E9%82%BB%E6%8E%A2%E6%B5%8B%E5%99%A8%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%A5%E5%B0%84%E7%B2%92%E5%AD%90%E4%BD%8D%E7%BD%AE%E5%85%B3%E8%81%94%EF%BC%9A%E4%B8%80%E7%B2%92%E5%AD%90%E5%85%A5%E5%B0%84">两个相邻探测器之间的入射粒子位置关联：一粒子入射</h3><h3 id="%E4%B8%80%E4%B8%AA%E7%B2%92%E5%AD%90%E5%85%A5%E5%B0%84">一个粒子入射</h3>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h2>2. 位置关联</h2><h3>每层一个 hit</h3></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
@@ -8069,12 +8057,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="%E9%80%89%E6%8B%A9%E6%9C%AA%E5%9C%A8%E6%8E%A2%E6%B5%8B%E5%99%A8%E5%8F%8D%E5%BA%94%E4%BA%8B%E4%BB%B6">选择位置相容的候选事件</h3><ul>
-<li>可以去除大量连续本底</li>
-</ul>
-<h3 id="%E4%B8%80%E4%B8%AA%E7%B2%92%E5%AD%90%E5%85%A5%E5%B0%84">一个粒子入射</h3>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>位置相容选择后的幅度关联</h3><p>先看每层一个 hit 的样本，观察位置条件对连续分布的影响。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
@@ -8100,9 +8083,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="%E4%B8%A4%E4%B8%AA%E7%B2%92%E5%AD%90%E5%85%A5%E5%B0%84">两个粒子入射</h3>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>每层两个 hit：仍按原下标筛选</h3><p>下面的数组 cut 可逐对保留当前下标下的位置相容点；它没有尝试交换配对，也没有保证一个事例的两个粒子都已匹配。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
@@ -8130,30 +8111,57 @@ a.anchor-link {
 </div>
 </div>
 <div class="verified-output"><img alt="3.7_DSSD_data_analysis: cell 17, c1" src="figures/3.7_DSSD_data_analysis/cell_17_c1.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
+<div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><h2>3. 明确完成两粒子的层间配对</h2>
+<p>以 DSSD2–DSSD3 为例，一个事例只有两种一一对应：直接 $(0\to0,1\to1)$ 与交换 $(0\to1,1\to0)$。每种对应都要求<strong>两个粒子</strong>在两个方向的条号差不超过 2；同一个下游 hit 不重复分配。</p>
+<p>这个位置范围沿用前面单击样本的观察，是本例的几何相容条件。实际装置若有平移、旋转或较大入射角，应先把 strip 坐标转成实验室坐标，再按实际几何预测位置，不能把 ±2 条当作普适条件。</p></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><pre><code class="language-cpp">inline int PairLayers(const int x2[2], const int y2[2],
+                      const int x3[2], const int y3[2], int maxDelta=2) {
+    bool direct=true, swapped=true;
+    for (int i=0; i&lt;2; ++i) {
+        direct &amp;= std::abs(x2[i]-x3[i])&lt;=maxDelta &amp;&amp; std::abs(y2[i]-y3[i])&lt;=maxDelta;
+        swapped &amp;= std::abs(x2[i]-x3[1-i])&lt;=maxDelta &amp;&amp; std::abs(y2[i]-y3[1-i])&lt;=maxDelta;
+    }
+    if (direct &amp;&amp; swapped) return -2;
+    if (direct) return 0;
+    if (swapped) return 1;
+    return -1;
+}</code></pre><p>返回 0 或 1 时采用对应排列；返回 −1 表示无相容解，−2 表示两种都相容。能量接近或位置过近的粒子可能多解，不能仅为保留事例而强行指定。</p></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><h3>运行事件循环并保留对应关系</h3><p><a href="match_dssd_layers.C">match_dssd_layers.C</a> 使用上面的函数，输出 <code>matched_layers23.root</code>。保存输入文件的行号、原 <code>jentry</code>、状态和 <code>partner[i]</code>，其中 partner 是 DSSD2 第 i 个粒子对应的 DSSD3 下标。所有输入事例都保留；不属于本例 two-by-two 类的状态为 −3。</p></div></div><div class="jp-Cell jp-CodeCell"><div class="jp-InputArea"><div class="jp-InputArea-editor"><div class="highlight"><pre><span></span><span class="n">gROOT</span><span class="o">-&gt;</span><span class="n">ProcessLine</span><span class="p">(</span><span class="s">".L match_dssd_layers.C"</span><span class="p">);</span>
+<span class="n">gROOT</span><span class="o">-&gt;</span><span class="n">ProcessLine</span><span class="p">(</span><span class="s">"match_dssd_layers(2);"</span><span class="p">);</span>
+<span class="n">TFile</span><span class="w"> </span><span class="o">*</span><span class="n">fMatched</span><span class="o">=</span><span class="k">new</span><span class="w"> </span><span class="n">TFile</span><span class="p">(</span><span class="s">"matched_layers23.root"</span><span class="p">);</span>
+<span class="n">TTree</span><span class="w"> </span><span class="o">*</span><span class="n">matched</span><span class="o">=</span><span class="n">fMatched</span><span class="o">-&gt;</span><span class="n">Get</span><span class="o">&lt;</span><span class="n">TTree</span><span class="o">&gt;</span><span class="p">(</span><span class="s">"tree"</span><span class="p">);</span>
+<span class="n">matched</span><span class="o">-&gt;</span><span class="n">Scan</span><span class="p">(</span><span class="s">"file_entry:source_entry:status:partner:de:ee"</span><span class="p">,</span><span class="s">"status==1"</span><span class="p">,</span><span class="s">""</span><span class="p">,</span><span class="mi">3</span><span class="p">);</span>
+</pre></div>
+</div></div><div class="verified-output"><pre>Swapped example: file entry=674, original entry=2283
+D2[0] (17,17) -&gt; D3[1] (16,19)
+D2[1] (18,16) -&gt; D3[0] (18,16)
+Input=510525, tested two-by-two=41702
+Direct=7278, swapped=3585, ambiguous=623, no match=30216, saved rows=510525
+***********************************************************************************************
+*    Row   * Instance * file_entr * source_en *    status *   partner *        de *        ee *
+***********************************************************************************************
+***********************************************************************************************
+==&gt; 0 selected entries</pre></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><h3>用同一批事例比较配对前后</h3><p>两图都只使用得到唯一几何解的事例，每个事例都画两个点。左图按原数组下标，右图使用 partner 重新对应，因此图的差别来自重配，不是额外删去某些点。其他类、多解与无解的计数已在上面单列。</p></div></div><div class="jp-Cell jp-CodeCell"><div class="jp-InputArea"><div class="jp-InputArea-editor"><div class="highlight"><pre><span></span><span class="n">TCanvas</span><span class="w"> </span><span class="o">*</span><span class="n">cMatched</span><span class="o">=</span><span class="k">new</span><span class="w"> </span><span class="n">TCanvas</span><span class="p">(</span><span class="s">"cMatched"</span><span class="p">,</span><span class="s">"Layer matching comparison"</span><span class="p">,</span><span class="mi">1000</span><span class="p">,</span><span class="mi">430</span><span class="p">);</span>
+<span class="n">cMatched</span><span class="o">-&gt;</span><span class="n">Divide</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">cMatched</span><span class="o">-&gt;</span><span class="n">cd</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="n">fMatched</span><span class="o">-&gt;</span><span class="n">Get</span><span class="o">&lt;</span><span class="n">TH2</span><span class="o">&gt;</span><span class="p">(</span><span class="s">"hBefore"</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"colz"</span><span class="p">);</span><span class="w"> </span><span class="n">gPad</span><span class="o">-&gt;</span><span class="n">SetLogz</span><span class="p">();</span>
+<span class="n">cMatched</span><span class="o">-&gt;</span><span class="n">cd</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span><span class="w"> </span><span class="n">fMatched</span><span class="o">-&gt;</span><span class="n">Get</span><span class="o">&lt;</span><span class="n">TH2</span><span class="o">&gt;</span><span class="p">(</span><span class="s">"hAfter"</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"colz"</span><span class="p">);</span><span class="w"> </span><span class="n">gPad</span><span class="o">-&gt;</span><span class="n">SetLogz</span><span class="p">();</span>
+<span class="n">cMatched</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
+</pre></div>
+</div></div><div class="verified-output"><img alt="3.7_DSSD_data_analysis: cell 23, cMatched" src="figures/3.7_DSSD_data_analysis/cell_23_cMatched.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div><div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h2>4. 绝对能量刻度</h2><p>目前坐标仍是各层自己的相对幅度 $a_d$。对每个粒子，前面的共同 offset 已按条数修正并加和，理想线性模型下还需确定各层共同增益，使 $E_d=k_d a_d$；如果重新引入非零 offset，要说明它作用于单条还是重建粒子，不能重复修正。</p>
+<p>用已知粒子种类、有效硅厚度和入射方向计算理论 ΔE–E 曲线，再与经过配对的实验条带比较，可以约束增益。峰位标准、已知入射能量或独立厚度测量提供额外约束；不要把能量增益、厚度、粒子种类都任意浮动后认作唯一刻度。</p>
+<p>本节完成层间关联的实例，没有从未知粒子混合条带直接给出 MeV 参数。相对幅度可以先用于观察和筛选；需要报告绝对能量或与能量损失计算作定量比较时，再使用独立验证的绝对刻度。</p></div>
+</div>
+</div>
+</div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="%E7%BB%9D%E5%AF%B9%E8%83%BD%E9%87%8F%E5%88%BB%E5%BA%A6">绝对能量刻度</h3><ul>
-<li>3.6 节完成的是各探测器内部的相对刻度，只统一了同一片 DSSD 内不同条带的响应，并修正了 multiplicity 相关的能量偏移。 要进行实际的物理量提取，还需要进一步完成绝对能量刻度。</li>
-<li>将实验得到的 <code>e1-e2</code>、<code>e2-e3</code> 二维关联，与根据能量损失规律计算得到的理论 dE-E 关联进行比较和拟合，从而确定各层探测器的实际能量刻度系数。</li>
-<li>后面凡是需要利用能量信息进行粒子鉴别、事例选择和物理量提取的步骤，都应建立在绝对能量刻度已经完成的基础上。</li>
-<li><img alt="" src="fig/pid_calibration.png" width="400"/></li>
-</ul>
-<p>绝对刻度还依赖粒子种类、有效探测器厚度和能量损失模型。相对幅度图本身可以先用于关联检查，但不能直接把坐标标为 MeV。</p></div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="%E4%B8%8D%E5%90%8C%E6%8E%A2%E6%B5%8B%E5%99%A8%E4%B9%8B%E9%97%B4%E7%9A%84%E4%BA%8B%E4%BB%B6%E5%AF%B9%E5%BA%94%E5%85%B3%E7%B3%BB">不同探测器之间的事件对应关系</h3>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><h3>回看原始重建记录</h3><p>抽查几行，确认条号、幅度与数组顺序。上面的事件循环已打印一个实际需要交换的事例及其对应位置。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
@@ -8162,52 +8170,22 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [21]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-c++"><pre><span></span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">Scan</span><span class="p">(</span><span class="s">"x2:x3:y2:y3:int(e2):int(e3)"</span><span class="p">,</span><span class="s">" hit2==2 &amp;&amp; hit3==2 "</span><span class="p">,</span><span class="s">""</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">Scan</span><span class="p">(</span><span class="s">"x2:x3:y2:y3:int(e2):int(e3)"</span><span class="p">,</span><span class="s">" hit2==2 &amp;&amp; hit3==2 "</span><span class="p">,</span><span class="s">""</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
 </pre></div>
-</div>
 </div>
 </div>
 </div>
 <div class="verified-output"><pre>***********************************************************************************************
 *    Row   * Instance *        x2 *        x3 *        y2 *        y3 *   int(e2) *   int(e3) *
 ***********************************************************************************************
-*        7 *        0 *         7 *         5 *        19 *        21 *       868 *      1445 *
-*        7 *        1 *         6 *         3 *        17 *        17 *       562 *      1353 *
-*       22 *        0 *        19 *        20 *        14 *        14 *       781 *      1720 *
-*       22 *        1 *        16 *        15 *        10 *         7 *       176 *       378 *
-*       36 *        0 *        12 *        13 *        11 *         4 *       689 *       523 *
-*       36 *        1 *        11 *        11 *         7 *        16 *       232 *       141 *
-*       44 *        0 *        22 *        12 *        12 *        16 *      1879 *      1979 *
-*       44 *        1 *        17 *        23 *        14 *        12 *       788 *      1859 *
-*       53 *        0 *        15 *        17 *        10 *         8 *       639 *      2054 *
-*       53 *        1 *        17 *        22 *         6 *         1 *       163 *       371 *
-*       69 *        0 *         6 *         2 *        14 *        15 *      1110 *       701 *
-*       69 *        1 *         8 *         5 *         9 *         5 *       213 *       495 *
-*       92 *        0 *        20 *        23 *         9 *         5 *       518 *      1216 *
-*       92 *        1 *        15 *        13 *         7 *         1 *       168 *       339 *
 ***********************************************************************************************
-==&gt; 14 selected entries</pre></div></div>
+==&gt; 0 selected entries</pre></div></div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<ul>
-<li>如事件 36 所示，<code>y2-y3</code> 的匹配关系可能是错误的。这是因为 DSSD2 和 DSSD3 中各自重建出的事件顺序，是按能量从高到低排列的；但两个探测器之间对应粒子的先后顺序，并不一定满足相同的能量排序。</li>
-<li>实际上，粒子在 DSSD2 和 DSSD3 中的能量关系，取决于粒子种类、入射能量以及两个探测器的厚度。因此，仅按各探测器内部的能量大小排序，不能唯一确定不同探测器之间的正确对应关系；错误匹配会在 dE-E 图上形成落在正确关联关系之外的散点。</li>
-</ul>
-<ul>
-<li>因此，不同探测器之间的匹配需要同时考虑几何关系和能量关系，当存在多个候选排列时：<ul>
-<li>几何关系上，应选择由靶后多个探测器位置外推出的靶上位置，与由靶前 PPAC 计算得到的靶上位置更接近的组合；</li>
-<li>能量关系上，应选择更符合相邻探测器之间正确 dE-E / PID 关系的组合；而这一步需要建立在绝对能量刻度已经完成的基础上。</li>
-</ul>
-</li>
-</ul>
-<p><strong>在完成不同探测器之间的事件匹配之后，便可在此基础上开展更进一步的物理分析，例如分析反应类型、构建不变质量谱等。</strong></p>
-</div>
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown"><p>跨层位置条件提供了本节可直接使用的约束。若仍有多个候选，可在完成能量刻度后加入已知粒子的 ΔE–E 关系，或加入同一实验中独立测得的靶点约束。第二章 PPAC 与这里不是同一组逐事件数据，不能把两个文件直接拼接进行这项验证。</p></div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">

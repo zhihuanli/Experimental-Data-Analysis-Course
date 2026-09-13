@@ -61,7 +61,6 @@ figs.mkdir(parents=True,exist_ok=True)
 logs=BASE/'work/logs'/path.stem
 logs.mkdir(parents=True,exist_ok=True)
 extra={
- 13:{18:['c_res_fity'],20:['c_res_fitx'],22:['c_res_fity'],28:['c_check']},
  14:{11:['cVal']},
 }
 
@@ -76,7 +75,7 @@ for key,source in manifest['code'].items():
         # Only the inspected build/run cells of these two lessons are shell cells.
         if number not in (6,7):
             raise RuntimeError('Shell cell needs explicit review')
-        commands='\n'.join(line[1:] for line in code.splitlines() if line.startswith('!'))
+        commands='set -e\n'+'\n'.join(line[1:] for line in code.splitlines() if line.startswith('!'))
         completed=subprocess.run(commands,cwd=path.parent,shell=True,executable='/bin/bash',capture_output=True,text=True)
         log.write_text(completed.stdout+completed.stderr)
         err.value=completed.returncode

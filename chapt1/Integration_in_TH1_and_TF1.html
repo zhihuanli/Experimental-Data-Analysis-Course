@@ -13104,213 +13104,106 @@ div#notebook {
 <a href="../index.html"><img alt="课程标志" src="../assets/images/course-logo.png"/></a>
 <div class="course-banner-title"><a href="../index.html">核物理实验数据处理</a>
 <span class="course-banner-en">Experimental Data Analysis in Nuclear Physics</span></div></div></header>
-
 <div class="border-box-sizing" id="notebook" tabindex="-1">
 <div class="container" id="notebook-container">
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Integration-in-TH1-and-TF1">Integration in TH1 and TF1</h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [1]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-c++"><pre><span></span><span class="c1">//%jsroot on</span>
-<span class="k">auto</span> <span class="n">c1</span><span class="o">=</span><span class="k">new</span> <span class="n">TCanvas</span><span class="p">;</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Create-TH1">Create TH1</h4>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [2]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-c++"><pre><span></span><span class="n">TH1D</span> <span class="o">*</span> <span class="n">h</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TH1D</span><span class="p">(</span><span class="s">"h"</span><span class="p">,</span><span class="s">"h"</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">);</span>
-<span class="n">Double_t</span> <span class="n">count</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mf">1.5</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mf">2.5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mf">3.5</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mf">2.5</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.5</span><span class="p">};</span>
-<span class="n">h</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="c1">//underflow</span>
-<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">12</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">h</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="n">i</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span><span class="n">count</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
-<span class="n">h</span><span class="o">-&gt;</span><span class="n">Fill</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="c1">//overflow</span>
+<div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><h1>TH1 与 TF1 的积分：定义与实例</h1><p>直方图保存每个 bin 的内容，函数描述连续曲线。计算峰区计数时，两者的积分需要使用相同区间和相同归一化。本页先用一个可手算的例子说明，再用峰加本底的谱作比较。</p><h2>1. Bin content、区间与积分</h2><p>下面人为设置 12 个 bin 的高度，用来检查积分定义，不把这些高度解释成一次 Poisson 计数实验。</p></div></div><div class="jp-Cell jp-CodeCell"><div class="jp-InputArea"><div class="jp-InputArea-editor"><div class="highlight"><pre><span></span><span class="n">TCanvas</span><span class="w"> </span><span class="o">*</span><span class="n">c1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TCanvas</span><span class="p">(</span><span class="s">"c1"</span><span class="p">,</span><span class="w"> </span><span class="s">"Histogram and function"</span><span class="p">,</span><span class="w"> </span><span class="mi">760</span><span class="p">,</span><span class="w"> </span><span class="mi">440</span><span class="p">);</span>
+<span class="n">TH1D</span><span class="w"> </span><span class="o">*</span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TH1D</span><span class="p">(</span><span class="s">"h"</span><span class="p">,</span><span class="w"> </span><span class="s">"Integration example;x;Bin content"</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">);</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">height</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mf">1.5</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mf">2.5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mf">3.5</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mf">2.5</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.5</span><span class="p">};</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">bin</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">bin</span><span class="o">&lt;=</span><span class="mi">12</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">bin</span><span class="p">)</span><span class="w"> </span><span class="n">h</span><span class="o">-&gt;</span><span class="n">SetBinContent</span><span class="p">(</span><span class="n">bin</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="p">[</span><span class="n">bin</span><span class="mi">-1</span><span class="p">]);</span>
+<span class="n">h</span><span class="o">-&gt;</span><span class="n">SetBinContent</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w">   </span><span class="c1">// underflow</span>
+<span class="n">h</span><span class="o">-&gt;</span><span class="n">SetBinContent</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w">  </span><span class="c1">// overflow</span>
+<span class="n">h</span><span class="o">-&gt;</span><span class="n">SetStats</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
 <span class="n">h</span><span class="o">-&gt;</span><span class="n">SetMinimum</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
 <span class="n">h</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"hist"</span><span class="p">);</span>
 <span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 </pre></div>
-</div>
-</div>
-</div>
-<div class="verified-output"><pre>input_line_46:3:1: warning: 'count' shadows a declaration with the same name in the 'std' namespace; use '::count' to reference this declaration
-Double_t count[12]={1,1.5,2,2.5,3,3.5,4,3,2.5,2,1,0.5};
-^</pre><img alt="Integration_in_TH1_and_TF1: cell 3, c1" src="figures/Integration_in_TH1_and_TF1/cell_03_c1.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="For-all-histogram-types:-nbins,-xlow,-xup">For all histogram types: nbins, xlow, xup</h3><div class="highlight"><pre><span></span><span class="n">bin</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">underflow</span> <span class="n">bin</span>
-<span class="n">bin</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">first</span> <span class="n">bin</span> <span class="n">with</span> <span class="n">low</span><span class="o">-</span><span class="n">edge</span> <span class="n">xlow</span> <span class="n">INCLUDED</span>
-<span class="n">bin</span> <span class="o">=</span> <span class="n">nbins</span><span class="p">;</span> <span class="n">last</span> <span class="n">bin</span> <span class="n">with</span> <span class="n">upper</span><span class="o">-</span><span class="n">edge</span> <span class="n">xup</span> <span class="n">EXCLUDED</span>
-<span class="n">bin</span> <span class="o">=</span> <span class="n">nbins</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span> <span class="n">overflow</span> <span class="n">bin</span>
+</div></div><div class="verified-output"><img alt="Integration_in_TH1_and_TF1: cell 1, c1" src="figures/Integration_in_TH1_and_TF1/cell_01_c1.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><p>普通 bin 编号为 1 到 N；0 和 N+1 是 underflow、overflow。bin 包含左边界，不包含右边界。默认积分只包含普通 bin；若要包含溢出内容，应显式给出相应编号。</p></div></div><div class="jp-Cell jp-CodeCell"><div class="jp-InputArea"><div class="jp-InputArea-editor"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">firstBin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">lastBin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">xmin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinLowEdge</span><span class="p">(</span><span class="n">firstBin</span><span class="p">);</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">xmax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinLowEdge</span><span class="p">(</span><span class="n">lastBin</span><span class="p">)</span><span class="o">+</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinWidth</span><span class="p">(</span><span class="n">lastBin</span><span class="p">);</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Bin 7: center="</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinCenter</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="w">     </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", content="</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinContent</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Bins 1..7 cover ["</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">xmin</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">xmax</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">")"</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Sum of contents = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">h</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="n">firstBin</span><span class="p">,</span><span class="n">lastBin</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Height times width = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">h</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="n">firstBin</span><span class="p">,</span><span class="n">lastBin</span><span class="p">,</span><span class="s">"width"</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"All bins including flows = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">h</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">13</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
 </pre></div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [3]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-c++"><pre><span></span><span class="n">h</span><span class="o">-&gt;</span><span class="n">Print</span><span class="p">(</span><span class="s">"all"</span><span class="p">);</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="verified-output"><pre>TH1.Print Name  = h, Entries= 14, Total sum= 26.5
- fSumw[0]=1, x=-0.25, error=1
- fSumw[1]=1, x=0.25, error=1
- fSumw[2]=1.5, x=0.75, error=1.5
- fSumw[3]=2, x=1.25, error=2
- fSumw[4]=2.5, x=1.75, error=2.5
- fSumw[5]=3, x=2.25, error=3
- fSumw[6]=3.5, x=2.75, error=3.5
- fSumw[7]=4, x=3.25, error=4
- fSumw[8]=3, x=3.75, error=3
- fSumw[9]=2.5, x=4.25, error=2.5
- fSumw[10]=2, x=4.75, error=2
- fSumw[11]=1, x=5.25, error=1
- fSumw[12]=0.5, x=5.75, error=0.5
- fSumw[13]=2, x=6.25, error=2</pre></div></div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="1.-Edge-and-content-of-a-bin-in-TH1">1. Edge and content of a bin in TH1</h3>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [4]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-c++"><pre><span></span><span class="n">Double_t</span> <span class="n">bin7cen</span><span class="o">=</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinCenter</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
-<span class="n">Double_t</span> <span class="n">bin7con</span><span class="o">=</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinContent</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
-<span class="n">Double_t</span> <span class="n">bin7low</span><span class="o">=</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinLowEdge</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
-<span class="n">Double_t</span> <span class="n">bin7width</span><span class="o">=</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinWidth</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
-<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">"GetBinCenter(7)="</span><span class="o">&lt;&lt;</span><span class="n">bin7cen</span><span class="o">&lt;&lt;</span><span class="s">"; GetBinContent(7)="</span><span class="o">&lt;&lt;</span><span class="n">bin7con</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">"GetBinLowEdge(7)="</span><span class="o">&lt;&lt;</span><span class="n">bin7low</span><span class="o">&lt;&lt;</span><span class="s">"; GetBinWidth(7)="</span><span class="o">&lt;&lt;</span><span class="n">bin7width</span><span class="o">&lt;&lt;</span><span class="s">"; BinUpperEdge(7)="</span><span class="o">&lt;&lt;</span><span class="n">bin7low</span><span class="o">+</span><span class="n">bin7width</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="verified-output"><pre>GetBinCenter(7)=3.25; GetBinContent(7)=4
-GetBinLowEdge(7)=3; GetBinWidth(7)=0.5; BinUpperEdge(7)=3.5</pre></div></div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Create-TF1">Create TF1</h4>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [5]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-c++"><pre><span></span><span class="n">TF1</span> <span class="o">*</span> <span class="n">f</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TF1</span><span class="p">(</span><span class="s">"f"</span><span class="p">,</span><span class="s">"pol1"</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">);</span>
-<span class="n">f</span><span class="o">-&gt;</span><span class="n">SetParameters</span><span class="p">(</span><span class="mf">0.75</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+</div></div><div class="verified-output"><pre>Bin 7: center=3.25, content=4
+Bins 1..7 cover [0, 3.5)
+Sum of contents = 17.5
+Height times width = 8.75
+All bins including flows = 29.5</pre></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><h2>2. 连续函数积分与 bin width</h2><p>前七个 bin 的中心值恰好落在 f(x)=0.75+x 上。将函数与直方图叠加，比较同一个完整 bin 区间。这里 f 表示每个等宽 bin 的高度，所以函数积分还要除以 bin width，才能与 bin content 的和比较。</p></div></div><div class="jp-Cell jp-CodeCell"><div class="jp-InputArea"><div class="jp-InputArea-editor"><div class="highlight"><pre><span></span><span class="n">TF1</span><span class="w"> </span><span class="o">*</span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TF1</span><span class="p">(</span><span class="s">"f"</span><span class="p">,</span><span class="w"> </span><span class="s">"0.75+x"</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">);</span>
+<span class="n">f</span><span class="o">-&gt;</span><span class="n">SetLineColor</span><span class="p">(</span><span class="n">kRed</span><span class="p">);</span>
 <span class="n">h</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"hist"</span><span class="p">);</span>
 <span class="n">f</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"same"</span><span class="p">);</span>
 <span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinWidth</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"TH1 sum = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">h</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="n">firstBin</span><span class="p">,</span><span class="n">lastBin</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"TF1 integral / bin width = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">f</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span><span class="n">xmax</span><span class="p">)</span><span class="o">/</span><span class="n">width</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
 </pre></div>
-</div>
-</div>
-</div>
-<div class="verified-output"><img alt="Integration_in_TH1_and_TF1: cell 9, c1" src="figures/Integration_in_TH1_and_TF1/cell_09_c1.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="2.-Integration-in-TH1-&amp;-TF1">2. Integration in TH1 &amp; TF1</h3><ol>
-<li>bin(TH1)-&gt;x(TF1)</li>
-</ol>
-<p>TH1::Integral 累加 bin content；TF1::Integral 积分连续函数。只有当函数表示“每个等宽 bin 的期望计数”时，后者才除以 bin width 来换算计数。若函数本来是计数密度，直接积分；变宽 bin 应逐 bin 处理。此例只比较积分定义，不是从这些点拟合得到 f。</p></div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [6]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-c++"><pre><span></span><span class="kt">int</span> <span class="n">bin1</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
-<span class="kt">int</span> <span class="n">bin2</span><span class="o">=</span><span class="mi">7</span><span class="p">;</span>
-<span class="n">Double_t</span> <span class="n">sumH</span><span class="o">=</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="n">bin1</span><span class="p">,</span><span class="n">bin2</span><span class="p">);</span>
-
-<span class="n">Double_t</span> <span class="n">x1</span><span class="o">=</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinLowEdge</span><span class="p">(</span><span class="n">bin1</span><span class="p">);</span>
-<span class="n">Double_t</span> <span class="n">x2</span><span class="o">=</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinLowEdge</span><span class="p">(</span><span class="n">bin2</span><span class="p">)</span><span class="o">+</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinWidth</span><span class="p">(</span><span class="n">bin2</span><span class="p">);</span>
-<span class="n">Double_t</span> <span class="n">sumF</span><span class="o">=</span><span class="n">f</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">)</span><span class="o">/</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinWidth</span><span class="p">(</span><span class="n">bin2</span><span class="p">);</span><span class="c1">//!!!!!!!!!</span>
-
-<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">"Integraion in TH1: "</span><span class="o">&lt;&lt;</span><span class="n">bin1</span><span class="o">&lt;&lt;</span><span class="s">"-"</span><span class="o">&lt;&lt;</span><span class="n">bin2</span><span class="o">&lt;&lt;</span><span class="s">"   "</span><span class="o">&lt;&lt;</span><span class="n">sumH</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">"Integraion in TF1: "</span><span class="o">&lt;&lt;</span><span class="n">x1</span><span class="o">&lt;&lt;</span><span class="s">"-"</span><span class="o">&lt;&lt;</span><span class="n">x2</span><span class="o">&lt;&lt;</span><span class="s">" "</span><span class="o">&lt;&lt;</span><span class="n">sumF</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</div></div><div class="verified-output"><pre>TH1 sum = 17.5
+TF1 integral / bin width = 17.5</pre><img alt="Integration_in_TH1_and_TF1: cell 5, c1" src="figures/Integration_in_TH1_and_TF1/cell_05_c1.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><p>若函数本身表示计数密度（例如 counts/MeV），直接积分就是计数，不再除以 bin width。<code>Integral("width")</code> 则是把每个 bin content 乘以宽度后累加。变宽 bin 不能统一除以一个宽度。</p><h3>从坐标区间找到完整 bin</h3><p>例如希望考察 [0,3.4]，3.4 落在 [3.0,3.5) 这个 bin 内。直方图无法告诉我们该 bin 内有多少事例位于 3.4 以下。本例选择纳入整个 bin，因此实际比较区间为 [0,3.5)。若要求精确坐标 cut，应回到逐事例数据。</p></div></div><div class="jp-Cell jp-CodeCell"><div class="jp-InputArea"><div class="jp-InputArea-editor"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="n">requestedMax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.4</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">endBin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="o">-&gt;</span><span class="n">FindBin</span><span class="p">(</span><span class="n">requestedMax</span><span class="p">);</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">coveredMax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinLowEdge</span><span class="p">(</span><span class="n">endBin</span><span class="p">)</span><span class="o">+</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinWidth</span><span class="p">(</span><span class="n">endBin</span><span class="p">);</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Requested upper edge="</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">requestedMax</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", covered edge="</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">coveredMax</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"TH1="</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">h</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">endBin</span><span class="p">)</span>
+<span class="w">     </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", TF1/width="</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">f</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">coveredMax</span><span class="p">)</span><span class="o">/</span><span class="n">width</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
 </pre></div>
-</div>
-</div>
-</div>
-<div class="verified-output"><pre>Integraion in TH1: 1-7   17.5
-Integraion in TF1: 0-3.5 17.5</pre></div></div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<ol>
-<li>x(TF1)-&gt;bin(TH1)</li>
-</ol>
-<ul>
-<li>x-&gt;Bin-&gt;fx</li>
-</ul>
-<p>这里把任意 x 区间扩展到完整 bin 的外边缘。FindBin 返回包含 x 的 bin；恰在边界时需先决定采用闭区间还是半开区间，不默认取部分 bin 计数。</p></div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [7]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-c++"><pre><span></span><span class="n">Double_t</span> <span class="n">x1</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="n">Double_t</span> <span class="n">x2</span><span class="o">=</span><span class="mf">3.4</span><span class="p">;</span>
-<span class="kt">int</span> <span class="n">bin1</span><span class="o">=</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">FindBin</span><span class="p">(</span><span class="n">x1</span><span class="p">);</span>
-<span class="kt">int</span> <span class="n">bin2</span><span class="o">=</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">FindBin</span><span class="p">(</span><span class="n">x2</span><span class="p">);</span>
-<span class="kt">double</span> <span class="n">fx1</span><span class="o">=</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinLowEdge</span><span class="p">(</span><span class="n">bin1</span><span class="p">);</span>
-<span class="kt">double</span> <span class="n">fx2</span><span class="o">=</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinLowEdge</span><span class="p">(</span><span class="n">bin2</span><span class="p">)</span><span class="o">+</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinWidth</span><span class="p">(</span><span class="n">bin2</span><span class="p">);</span>
-<span class="n">Double_t</span> <span class="n">sumF</span><span class="o">=</span><span class="n">f</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="n">fx1</span><span class="p">,</span><span class="n">fx2</span><span class="p">)</span><span class="o">/</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">GetBinWidth</span><span class="p">(</span><span class="n">bin2</span><span class="p">);</span>
-<span class="n">Double_t</span> <span class="n">sumH</span><span class="o">=</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="n">bin1</span><span class="p">,</span><span class="n">bin2</span><span class="p">);</span>
-<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">"Original xrange:   "</span><span class="o">&lt;&lt;</span><span class="n">x1</span><span class="o">&lt;&lt;</span><span class="s">"-"</span><span class="o">&lt;&lt;</span><span class="n">x2</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">"Integraion in TF1: "</span><span class="o">&lt;&lt;</span><span class="n">fx1</span><span class="o">&lt;&lt;</span><span class="s">"-"</span><span class="o">&lt;&lt;</span><span class="n">fx2</span><span class="o">&lt;&lt;</span><span class="s">" "</span><span class="o">&lt;&lt;</span><span class="n">sumF</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-<span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">"Integraion in TH1: "</span><span class="o">&lt;&lt;</span><span class="n">bin1</span><span class="o">&lt;&lt;</span><span class="s">"-"</span><span class="o">&lt;&lt;</span><span class="n">bin2</span><span class="o">&lt;&lt;</span><span class="s">"   "</span><span class="o">&lt;&lt;</span><span class="n">sumH</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
+</div></div><div class="verified-output"><pre>Requested upper edge=3.4, covered edge=3.5
+TH1=17.5, TF1/width=17.5</pre></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><h2 id="signal-example">3. 积分实例：峰与线性本底</h2><p>模拟一个 Gaussian 峰叠加在线性本底上的计数谱。signal 和 background 分别产生 2000 和 100000 个事例。函数形状先按这些计数及 bin width 归一化，因此图中的函数高度可直接与直方图比较。</p></div></div><div class="jp-Cell jp-CodeCell"><div class="jp-InputArea"><div class="jp-InputArea-editor"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">binWidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.1</span><span class="p">;</span>
+<span class="n">TF1</span><span class="w"> </span><span class="o">*</span><span class="n">fB</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TF1</span><span class="p">(</span><span class="s">"fB"</span><span class="p">,</span><span class="w"> </span><span class="s">"pol1"</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+<span class="n">TF1</span><span class="w"> </span><span class="o">*</span><span class="n">fS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TF1</span><span class="p">(</span><span class="s">"fS"</span><span class="p">,</span><span class="w"> </span><span class="s">"gaus"</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+<span class="n">fB</span><span class="o">-&gt;</span><span class="n">SetParameters</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span><span class="mi">70</span><span class="p">);</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">scaleB</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100000</span><span class="o">*</span><span class="n">binWidth</span><span class="o">/</span><span class="n">fB</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
+<span class="n">fB</span><span class="o">-&gt;</span><span class="n">SetParameters</span><span class="p">(</span><span class="mi">600</span><span class="o">*</span><span class="n">scaleB</span><span class="p">,</span><span class="mi">70</span><span class="o">*</span><span class="n">scaleB</span><span class="p">);</span>
+<span class="n">fS</span><span class="o">-&gt;</span><span class="n">SetParameters</span><span class="p">(</span><span class="mi">2000</span><span class="o">*</span><span class="n">binWidth</span><span class="o">/</span><span class="p">(</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">TMath</span><span class="o">::</span><span class="n">Pi</span><span class="p">())</span><span class="o">*</span><span class="mf">0.2</span><span class="p">),</span><span class="mi">5</span><span class="p">,</span><span class="mf">0.2</span><span class="p">);</span>
+<span class="n">TF1</span><span class="w"> </span><span class="o">*</span><span class="n">fSB</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TF1</span><span class="p">(</span><span class="s">"fSB"</span><span class="p">,</span><span class="w"> </span><span class="s">"pol1(0)+gaus(2)"</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+<span class="n">fSB</span><span class="o">-&gt;</span><span class="n">SetParameters</span><span class="p">(</span><span class="n">fB</span><span class="o">-&gt;</span><span class="n">GetParameter</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="n">fB</span><span class="o">-&gt;</span><span class="n">GetParameter</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">fS</span><span class="o">-&gt;</span><span class="n">GetParameter</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="mi">5</span><span class="p">,</span><span class="mf">0.2</span><span class="p">);</span>
+<span class="n">fSB</span><span class="o">-&gt;</span><span class="n">SetTitle</span><span class="p">(</span><span class="s">"Expected spectrum;x;Counts / 0.1"</span><span class="p">);</span>
+<span class="n">fSB</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
+<span class="n">fB</span><span class="o">-&gt;</span><span class="n">SetLineColor</span><span class="p">(</span><span class="n">kBlue</span><span class="p">);</span><span class="w"> </span><span class="n">fB</span><span class="o">-&gt;</span><span class="n">SetLineStyle</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span><span class="w"> </span><span class="n">fB</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"same"</span><span class="p">);</span>
+<span class="n">fS</span><span class="o">-&gt;</span><span class="n">SetLineColor</span><span class="p">(</span><span class="n">kGreen</span><span class="o">+</span><span class="mi">2</span><span class="p">);</span><span class="w"> </span><span class="n">fS</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"same"</span><span class="p">);</span>
+<span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 </pre></div>
-</div>
-</div>
-</div>
-<div class="verified-output"><pre>Original xrange:   0-3.4
-Integraion in TF1: 0-3.5 17.5
-Integraion in TH1: 1-7   17.5</pre></div></div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class="highlight hl-c++"><pre><span></span>
+</div></div><div class="verified-output"><img alt="Integration_in_TH1_and_TF1: cell 9, c1" src="figures/Integration_in_TH1_and_TF1/cell_09_c1.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><p><code>FillRandom</code> 按函数的形状抽样；第二个参数决定生成的事例数。保存两部分独立直方图只是为了在模拟中检查答案，真实实验只观测到它们的总谱。</p></div></div><div class="jp-Cell jp-CodeCell"><div class="jp-InputArea"><div class="jp-InputArea-editor"><div class="highlight"><pre><span></span><span class="n">TH1D</span><span class="w"> </span><span class="o">*</span><span class="n">hB</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TH1D</span><span class="p">(</span><span class="s">"hB"</span><span class="p">,</span><span class="s">"Background"</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
+<span class="n">TH1D</span><span class="w"> </span><span class="o">*</span><span class="n">hS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TH1D</span><span class="p">(</span><span class="s">"hS"</span><span class="p">,</span><span class="s">"Signal"</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
+<span class="n">TH1D</span><span class="w"> </span><span class="o">*</span><span class="n">hSB</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TH1D</span><span class="p">(</span><span class="s">"hSB"</span><span class="p">,</span><span class="s">"Signal + background;x;Counts / 0.1"</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
+<span class="n">gRandom</span><span class="o">-&gt;</span><span class="n">SetSeed</span><span class="p">(</span><span class="mi">1901</span><span class="p">);</span>
+<span class="n">hB</span><span class="o">-&gt;</span><span class="n">FillRandom</span><span class="p">(</span><span class="s">"fB"</span><span class="p">,</span><span class="mi">100000</span><span class="p">);</span>
+<span class="n">hS</span><span class="o">-&gt;</span><span class="n">FillRandom</span><span class="p">(</span><span class="s">"fS"</span><span class="p">,</span><span class="mi">2000</span><span class="p">);</span>
+<span class="n">hSB</span><span class="o">-&gt;</span><span class="n">Add</span><span class="p">(</span><span class="n">hB</span><span class="p">,</span><span class="n">hS</span><span class="p">);</span>
+<span class="n">hSB</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"hist"</span><span class="p">);</span>
+<span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
 </pre></div>
-</div>
-</div>
-</div>
-</div>
+</div></div><div class="verified-output"><img alt="Integration_in_TH1_and_TF1: cell 11, c1" src="figures/Integration_in_TH1_and_TF1/cell_11_c1.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><h3>联合拟合与分量提取</h3><p>在 [3.5,6.5] 内拟合 Gaussian + 线性本底，再将拟合参数交给两个分量函数。S 保存拟合结果，R 使用函数区间，I 按 bin 内的函数平均值比较计数。初值、sideband 与峰面积协方差的完整例子见 <a href="https://zhihuanli.github.io/Experimental-Method-in-Nuclear-Physics/tutorial/ROOT/ROOT_Tutorial_I_CPP.html">ROOT Tutorial I</a>。</p></div></div><div class="jp-Cell jp-CodeCell"><div class="jp-InputArea"><div class="jp-InputArea-editor"><div class="highlight"><pre><span></span><span class="n">fSB</span><span class="o">-&gt;</span><span class="n">SetRange</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span><span class="mf">6.5</span><span class="p">);</span>
+<span class="n">TFitResultPtr</span><span class="w"> </span><span class="n">fitResult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hSB</span><span class="o">-&gt;</span><span class="n">Fit</span><span class="p">(</span><span class="n">fSB</span><span class="p">,</span><span class="s">"SRIQ"</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">(</span><span class="n">fitResult</span><span class="p">)</span><span class="o">!=</span><span class="mi">0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">fitResult</span><span class="o">-&gt;</span><span class="n">IsValid</span><span class="p">())</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="n">runtime_error</span><span class="p">(</span><span class="s">"Fit failed"</span><span class="p">);</span>
+<span class="n">fB</span><span class="o">-&gt;</span><span class="n">SetParameters</span><span class="p">(</span><span class="n">fSB</span><span class="o">-&gt;</span><span class="n">GetParameter</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="n">fSB</span><span class="o">-&gt;</span><span class="n">GetParameter</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+<span class="n">fS</span><span class="o">-&gt;</span><span class="n">SetParameters</span><span class="p">(</span><span class="n">fSB</span><span class="o">-&gt;</span><span class="n">GetParameter</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span><span class="n">fSB</span><span class="o">-&gt;</span><span class="n">GetParameter</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span><span class="n">fSB</span><span class="o">-&gt;</span><span class="n">GetParameter</span><span class="p">(</span><span class="mi">4</span><span class="p">));</span>
+<span class="n">hSB</span><span class="o">-&gt;</span><span class="n">GetXaxis</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">SetRangeUser</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span><span class="mf">6.5</span><span class="p">);</span>
+<span class="n">hSB</span><span class="o">-&gt;</span><span class="n">SetMinimum</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"> </span><span class="c1">// 让单独的 signal 分量也能显示</span>
+<span class="n">hSB</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"hist"</span><span class="p">);</span>
+<span class="n">fSB</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"same"</span><span class="p">);</span><span class="w"> </span><span class="n">fB</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"same"</span><span class="p">);</span><span class="w"> </span><span class="n">fS</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"same"</span><span class="p">);</span>
+<span class="n">hS</span><span class="o">-&gt;</span><span class="n">SetLineColor</span><span class="p">(</span><span class="n">kGreen</span><span class="o">+</span><span class="mi">2</span><span class="p">);</span><span class="w"> </span><span class="n">hS</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">(</span><span class="s">"hist same"</span><span class="p">);</span>
+<span class="n">c1</span><span class="o">-&gt;</span><span class="n">Draw</span><span class="p">();</span>
+</pre></div>
+</div></div><div class="verified-output"><img alt="Integration_in_TH1_and_TF1: cell 13, c1" src="figures/Integration_in_TH1_and_TF1/cell_13_c1.png" style="max-width:100%;height:auto;max-height:1100px;object-fit:contain"/></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><h3>在同一区间内比较计数</h3><p>下例以 bin 37 到 63 的完整边界定义积分区间，不把坐标上界误当作应包含的下一个 bin。比较：模拟已知 signal、拟合 signal 积分、总计数减拟合本底。后两种估计来自同一份数据，不是独立测量。</p></div></div><div class="jp-Cell jp-CodeCell"><div class="jp-InputArea"><div class="jp-InputArea-editor"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">roiFirst</span><span class="o">=</span><span class="mi">37</span><span class="p">,</span><span class="w"> </span><span class="n">roiLast</span><span class="o">=</span><span class="mi">63</span><span class="p">;</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">lo</span><span class="o">=</span><span class="n">hSB</span><span class="o">-&gt;</span><span class="n">GetBinLowEdge</span><span class="p">(</span><span class="n">roiFirst</span><span class="p">);</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">hi</span><span class="o">=</span><span class="n">hSB</span><span class="o">-&gt;</span><span class="n">GetBinLowEdge</span><span class="p">(</span><span class="n">roiLast</span><span class="p">)</span><span class="o">+</span><span class="n">hSB</span><span class="o">-&gt;</span><span class="n">GetBinWidth</span><span class="p">(</span><span class="n">roiLast</span><span class="p">);</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">countError</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">totalCount</span><span class="o">=</span><span class="n">hSB</span><span class="o">-&gt;</span><span class="n">IntegralAndError</span><span class="p">(</span><span class="n">roiFirst</span><span class="p">,</span><span class="n">roiLast</span><span class="p">,</span><span class="n">countError</span><span class="p">);</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">backgroundCount</span><span class="o">=</span><span class="n">fB</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="n">lo</span><span class="p">,</span><span class="n">hi</span><span class="p">)</span><span class="o">/</span><span class="n">binWidth</span><span class="p">;</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">signalCount</span><span class="o">=</span><span class="n">fS</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="n">lo</span><span class="p">,</span><span class="n">hi</span><span class="p">)</span><span class="o">/</span><span class="n">binWidth</span><span class="p">;</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"ROI ["</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">lo</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">hi</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">")"</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Known signal = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">hS</span><span class="o">-&gt;</span><span class="n">Integral</span><span class="p">(</span><span class="n">roiFirst</span><span class="p">,</span><span class="n">roiLast</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Fitted signal = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">signalCount</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Total - fitted background = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">totalCount</span><span class="o">-</span><span class="n">backgroundCount</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Raw ROI counts = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">totalCount</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">" +/- "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">countError</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+</pre></div>
+</div></div><div class="verified-output"><pre>ROI [3.6, 6.3)
+Known signal = 2000
+Fitted signal = 2014.41
+Total - fitted background = 2041.88
+Raw ROI counts = 29001 +/- 170.297</pre></div></div><div class="jp-Cell jp-MarkdownCell"><div class="jp-RenderedMarkdown jp-MarkdownOutput"><p><code>IntegralAndError</code> 按已存储的 bin errors 传播求和误差，假定不同 bin 不相关。最后打印的是总谱 ROI 计数误差，不是扣本底后的净计数误差。拟合峰面积还需传播拟合参数的 covariance；不能把总谱与同一数据拟合出的本底当成独立量直接相加误差。</p><p>参考：<a href="https://root.cern.ch/doc/master/classTH1.html">TH1::Integral / IntegralAndError</a> · <a href="https://root.cern.ch/doc/master/classTF1.html">TF1::Integral / IntegralError</a>。</p></div></div>
 </div>
 </div>
 </body>

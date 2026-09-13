@@ -3,6 +3,7 @@ from pathlib import Path
 from urllib.parse import urlparse, unquote
 import os
 import shutil
+import sys
 import mistune
 from bs4 import BeautifulSoup
 from lecture_editor import ROOT, PAGES
@@ -24,9 +25,13 @@ soup=BeautifulSoup(body,'html.parser')
 for a in soup.find_all('a',href=True):
     if a['href'].startswith(DATA): a['href']=a['href'][len(DATA):]
 for h in soup.select('h2'):
-    if h.get_text()=='课前准备': h['id']='preparation'
+    if h.get_text() in ('课前准备', 'ROOT 基础'): h['id']='preparation'
     if h.get_text().startswith('chapter 1.'): h['id']='lectures'
 (ROOT/'index.html').write_text('<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>核物理实验数据处理</title><link rel="stylesheet" href="assets/css/course-header.css"></head><body class="course-home-body">'+header('')+'<main class="course-home">'+str(soup)+'</main></body></html>')
+
+if '--index-only' in sys.argv:
+    print('Course index updated; lecture pages unchanged.')
+    raise SystemExit(0)
 
 # Keep old URLs useful, but maintain the common introductory text in one place.
 redirects={
