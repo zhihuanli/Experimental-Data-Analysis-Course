@@ -8,7 +8,9 @@ from bs4 import BeautifulSoup
 from lecture_editor import ROOT,PAGES
 
 errors=[]
-pages=['index.html']+PAGES+['chapt1/ROOT_tips.html']
+# Website 4.7 is intentionally a Geant4 project outline, not a runnable notebook.
+snippet_pages=['chapt7/7.7 Geant4 simulation.html']
+pages=['index.html']+PAGES+['chapt1/ROOT_tips.html']+snippet_pages
 for rel in pages:
     path=ROOT/rel
     soup=BeautifulSoup(path.read_text(),'html.parser')
@@ -70,7 +72,7 @@ for rel in pages:
 
 # Compare semantic notebook content of later chapters, not serialization.
 for rel in subprocess.check_output(['git','diff','--name-only'],cwd=ROOT,text=True).splitlines():
-    if rel in PAGES:continue
+    if rel in PAGES or rel in snippet_pages:continue
     if not rel.startswith(('chapt4/','chapt5/','chapt6/','chapt7/')) or not rel.endswith('.html'):continue
     old=BeautifulSoup(subprocess.check_output(['git','show','HEAD:'+rel],cwd=ROOT),'html.parser')
     new=BeautifulSoup((ROOT/rel).read_text(),'html.parser')

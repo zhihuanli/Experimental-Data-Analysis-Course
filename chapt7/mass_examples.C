@@ -1,29 +1,30 @@
-// Section 4.3: run from the directory containing the input ROOT files.
+// Generated from invariant_mass.ipynb by tools/export_kinematics_macros.py.
+// Run from chapt7; figures are drawn by ROOT, not replaced with image files.
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <cmath>
 #include <algorithm>
 #include <stdexcept>
-#include "TFile.h"
-#include "TTree.h"
-#include "TParameter.h"
-#include "TGenPhaseSpace.h"
-#include "TLorentzVector.h"
-#include "TVector3.h"
-#include "TMath.h"
-#include "TRandom3.h"
-#include "TCanvas.h"
-#include "TH1D.h"
-#include "TH2D.h"
-#include "TH1F.h"
-#include "TH2F.h"
-#include "TLegend.h"
-#include "TLine.h"
-#include "TStyle.h"
+#include <TROOT.h>
+#include <TFile.h>
+#include <TTree.h>
+#include <TParameter.h>
+#include <TGenPhaseSpace.h>
+#include <TLorentzVector.h>
+#include <TVector3.h>
+#include <TMath.h>
+#include <TRandom3.h>
+#include <TCanvas.h>
+#include <TH1D.h>
+#include <TH2D.h>
+#include <TH1F.h>
+#include <TH2F.h>
+#include <TLegend.h>
+#include <TLine.h>
+#include <TStyle.h>
 
-TCanvas *c = new TCanvas("c", "c", 700, 500);
-c->SetLeftMargin(0.15);
+TCanvas *c = nullptr;
 
 const double m_alpha = 3.727379378;      // GeV
 
@@ -51,6 +52,8 @@ TLorentzVector MakeAlphaP4(double T_mev, double theta_deg, double phi_deg)
 
 void excitation_energy_12c_from_3alpha()
 {
+    c = new TCanvas("c", "Invariant and missing mass", 700, 500);
+    c->SetLeftMargin(0.15);
     TFile *f = TFile::Open("direct_3alpha.root");
     if (!f || f->IsZombie()) throw std::runtime_error("Run Section 4.2 first: input file missing");
     TTree *tr = (TTree*)f->Get("events");
@@ -75,7 +78,6 @@ void excitation_energy_12c_from_3alpha()
     double maxMomentum = 0.0;    // MeV/c: total momentum in the parent rest frame
 
     Long64_t nentries = tr->GetEntries();
-
     for (Long64_t i = 0; i < nentries; ++i) {
         tr->GetEntry(i);
 
@@ -130,7 +132,6 @@ void missing_mass_excitation_energy_be8()
     tr1->SetBranchAddress("weight", &weight);
 
     Long64_t n1 = tr1->GetEntries();
-
     for (Long64_t i = 0; i < n1; ++i) {
         tr1->GetEntry(i);
 
@@ -154,7 +155,6 @@ void missing_mass_excitation_energy_be8()
     tr2->SetBranchAddress("weight", &weight);
 
     Long64_t n2 = tr2->GetEntries();
-
     for (Long64_t i = 0; i < n2; ++i) {
         tr2->GetEntry(i);
 
@@ -182,7 +182,9 @@ void missing_mass_excitation_energy_be8()
     h_dir->SetLineColor(kBlue);
     h_seq->SetLineColor(kRed);
 
-    c->Clear();
+    c->Close();
+    c = new TCanvas("cMissing", "Missing mass", 700, 500);
+    c->SetLeftMargin(0.15);
     gStyle->SetOptStat(0);
 
     h_seq->Draw("hist");
@@ -230,7 +232,6 @@ void dalitz_plot_3alpha()
     tr1->SetBranchAddress("weight", &weight);
 
     Long64_t n1 = tr1->GetEntries();
-
     for (Long64_t i = 0; i < n1; ++i) {
         tr1->GetEntry(i);
 
@@ -238,7 +239,6 @@ void dalitz_plot_3alpha()
         double T2 = T_rest[1];
         double T3 = T_rest[2];
         double Tsum = T1 + T2 + T3;
-
         if (Tsum <= 0.0) continue;
 
         double e1 = T1 / Tsum;
@@ -257,7 +257,6 @@ void dalitz_plot_3alpha()
     tr2->SetBranchAddress("weight", &weight);
 
     Long64_t n2 = tr2->GetEntries();
-
     for (Long64_t i = 0; i < n2; ++i) {
         tr2->GetEntry(i);
 
@@ -265,7 +264,6 @@ void dalitz_plot_3alpha()
         double T2 = T_rest[1];
         double T3 = T_rest[2];
         double Tsum = T1 + T2 + T3;
-
         if (Tsum <= 0.0) continue;
 
         double e1 = T1 / Tsum;
@@ -280,11 +278,9 @@ void dalitz_plot_3alpha()
     gStyle->SetOptStat(0);
     gStyle->SetPadLeftMargin(0.14);
     gStyle->SetPadRightMargin(0.15);
-
     if (c) { delete c; c = nullptr; }
     TCanvas *c1 = new TCanvas("c1", "Dalitz direct", 700, 700);
     h_dir->Draw("colz");
-
 
     TCanvas *c2 = new TCanvas("c2", "Dalitz sequential", 700, 700);
     h_seq->Draw("colz");
@@ -292,16 +288,13 @@ void dalitz_plot_3alpha()
 
 void mass_examples()
 {
-gROOT->SetBatch(kTRUE);
-gStyle->SetOptStat(0);
-gSystem->mkdir("chapter4_figures", kTRUE);
-excitation_energy_12c_from_3alpha();
-((TCanvas*)gROOT->FindObject("c"))->SaveAs("chapter4_figures/mass_c12.png");
-missing_mass_excitation_energy_be8();
-((TCanvas*)gROOT->FindObject("c"))->SaveAs("chapter4_figures/mass_missing_pairs.png");
-dalitz_plot_3alpha();
-((TCanvas*)gROOT->FindObject("c1"))->Draw();
-((TCanvas*)gROOT->FindObject("c1"))->SaveAs("chapter4_figures/mass_dalitz_direct.png");
-((TCanvas*)gROOT->FindObject("c2"))->Draw();
-((TCanvas*)gROOT->FindObject("c2"))->SaveAs("chapter4_figures/mass_dalitz_sequential.png");
+    excitation_energy_12c_from_3alpha();
+
+    missing_mass_excitation_energy_be8();
+
+    dalitz_plot_3alpha();
+
+    gROOT->GetListOfCanvases()->FindObject("c1")->Draw();
+
+    gROOT->GetListOfCanvases()->FindObject("c2")->Draw();
 }

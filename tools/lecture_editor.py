@@ -38,6 +38,13 @@ PAGES = [
  'chapt5/5.1_Decay_analysis_I.html',
  'chapt5/5.2_Decay_analysis_II.html',
  'chapt5/fitting_LS_LH.html',
+ # Website chapter 4 retains its historical chapt7 directory (index.html).
+ 'chapt7/Relativistic_Kinematics.html',
+ 'chapt7/phasespace.html',
+ 'chapt7/invariant_mass.html',
+ 'chapt7/7.4 14C_reaction_sim.html',
+ 'chapt7/7.5 Reaction Q-Reconstruction.html',
+ 'chapt7/7.6 Invariant mass reconstruction.html',
 ]
 
 def fragment(s):

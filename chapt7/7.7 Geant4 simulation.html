@@ -7843,7 +7843,6 @@ a.anchor-link {
 <a href="../index.html"><img alt="课程标志" src="../assets/images/course-logo.png"/></a>
 <div class="course-banner-title"><a href="../index.html">核物理实验数据处理</a>
 <span class="course-banner-en">Experimental Data Analysis in Nuclear Physics</span></div></div></header>
-
 <main>
 <nav class="chapter-nav"><a href="../">课程主页</a> · <a href="7.6 Invariant mass reconstruction.html">上一节：4.6</a></nav><div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a59786dc-7168-49d8-8ff2-d35b85ad9fdc">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -7860,7 +7859,7 @@ $$\frac{d\sigma}{d\Omega^*}\propto\exp(-\theta^*/\alpha).$$
 <p>几何背景参见 <a href="https://www.nature.com/articles/s42005-023-01342-6#Sec9">Han et al., <em>Communications Physics</em> <strong>6</strong>, 220 (2023), Methods</a>。</p>
 <p>这里需要强调，Geant4 内部并不具备本实验所需的专用反应机制。Geant4 可以处理粒子在材料中的输运，但不会自动产生“指定 $^{14}\mathrm C^\ast$ 激发态、指定分支比、指定角分布、再顺序衰变”的信号事件。因此，本节采用如下近似方法：</p>
 <p>首先，在 <code>PrimaryGeneratorAction</code> 中由用户自定义信号反应发生器，生成该事件的真值四动量；然后，将生成的反冲质子、$\alpha$ 和 $^{10}\mathrm{Be}$ 作为 primary 交给 Geant4；最后，由 Geant4 处理这些粒子在靶、死层和探测器中的真实输运与能量沉积。</p>
-<p>可复用 4.4 中“给定初态与各核质量，生成一次级联衰变”的部分。不要把 <code>Simulation()</code> 连同读出展宽一起搬入 <code>PrimaryGeneratorAction</code>：本节的能量沉积已经由 Geant4 产生，读出展宽应只在后续通道整理时施加一次。若改用了经验散射角抽样，就替换第一步各向同性方向，不要再叠加一套互不相容的方向抽样。</p>
+<p>可复用 4.4 中“给定初态与各核质量，生成一次级联衰变”的部分。不要把 4.4 的整个事件生成循环 连同读出展宽一起搬入 <code>PrimaryGeneratorAction</code>：本节的能量沉积已经由 Geant4 产生，读出展宽应只在后续通道整理时施加一次。若改用了经验散射角抽样，就替换第一步各向同性方向，不要再叠加一套互不相容的方向抽样。</p>
 <hr/>
 <h2 id="3-%E6%9D%9F%E6%B5%81%E3%80%81%E9%9D%B6%E5%92%8C%E6%8E%A2%E6%B5%8B%E5%99%A8%E5%87%A0%E4%BD%95">3 束流、靶和探测器几何<a class="anchor-link" href="#3-%E6%9D%9F%E6%B5%81%E3%80%81%E9%9D%B6%E5%92%8C%E6%8E%A2%E6%B5%8B%E5%99%A8%E5%87%A0%E4%BD%95">¶</a></h2><p>PPAC 数据提供束流位置与方向的相关分布。若输入树中保存的是已重建的实验轨迹，抽样这些记录已经包含测量分辨，不再额外叠加同一 PPAC 分辨。若从理想束流真值生成 PPAC 读数，才需要加入独立规定的测量误差；例如可用 $\sigma_x=\sigma_y=0.65$ mm 作教学假设，但本节不把它当作已验证的实测参数。</p>
 <p>本例的 <code>x,y</code> 定义在靶中心平面，单位 mm；<code>tx,ty</code> 是无量纲斜率。读取实验文件时先核对其参考平面和单位。保持同一条轨迹的四个量一起抽样，才能保留束斑与发散角的相关性。</p>
@@ -7972,37 +7971,42 @@ $$
 <p>对于 $T_2$，将角度改为 <code>68.5*deg</code> 即可。DSSD、SSD 和 CsI 依次沿望远镜法向方向排布。</p>
 <hr/>
 <h2 id="6-PrimaryGeneratorAction.cc%EF%BC%9A%E6%9D%9F%E6%B5%81%E3%80%81%E5%8F%8D%E5%BA%94%E7%82%B9%E4%B8%8E%E5%8F%8D%E5%BA%94%E5%AD%A6%E7%94%9F%E6%88%90">6 <code>PrimaryGeneratorAction.cc</code>：束流、反应点与反应学生成<a class="anchor-link" href="#6-PrimaryGeneratorAction.cc%EF%BC%9A%E6%9D%9F%E6%B5%81%E3%80%81%E5%8F%8D%E5%BA%94%E7%82%B9%E4%B8%8E%E5%8F%8D%E5%BA%94%E5%AD%A6%E7%94%9F%E6%88%90">¶</a></h2><h3 id="1.-%E6%9D%9F%E6%B5%81%E8%BE%93%E5%85%A5">1. 束流输入<a class="anchor-link" href="#1.-%E6%9D%9F%E6%B5%81%E8%BE%93%E5%85%A5">¶</a></h3><p>束流信息从 <code>beam_ppac.root</code> 中读取。<code>PrimaryGeneratorAction.hh</code> 中应保存输入文件与输入树，并建立对应的 branch address。</p>
-<div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">"TFile.h"</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">"TTree.h"</span>
+<div class="highlight"><pre><code class="language-cpp">#include "TFile.h"
+#include "TTree.h"
+#include &lt;stdexcept&gt;
 
-<span class="k">class</span><span class="w"> </span><span class="nc">PrimaryGeneratorAction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">G4VUserPrimaryGeneratorAction</span><span class="w"> </span><span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
-<span class="w">    </span><span class="n">PrimaryGeneratorAction</span><span class="p">();</span>
-<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">GeneratePrimaries</span><span class="p">(</span><span class="n">G4Event</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction {
+public:
+    PrimaryGeneratorAction();
+    virtual void GeneratePrimaries(G4Event*) override;
 
-<span class="k">private</span><span class="o">:</span>
-<span class="w">    </span><span class="n">TFile</span><span class="o">*</span><span class="w"> </span><span class="n">fBeamFile</span><span class="p">;</span>
-<span class="w">    </span><span class="n">TTree</span><span class="o">*</span><span class="w"> </span><span class="n">fBeamTree</span><span class="p">;</span>
+private:
+    TFile* fBeamFile = nullptr;
+    TTree* fBeamTree = nullptr;
 
-<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">bx</span><span class="p">,</span><span class="w"> </span><span class="n">by</span><span class="p">,</span><span class="w"> </span><span class="n">btx</span><span class="p">,</span><span class="w"> </span><span class="n">bty</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="n">nBeamEntries</span><span class="p">;</span>
+    double bx, by, btx, bty;
+    Long64_t nBeamEntries = 0; // 与 Tree 的 entry 类型一致
 
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SampleBeam</span><span class="p">(</span><span class="kt">double</span><span class="o">&amp;</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&amp;</span><span class="w"> </span><span class="n">y</span><span class="p">,</span>
-<span class="w">                    </span><span class="kt">double</span><span class="o">&amp;</span><span class="w"> </span><span class="n">tx</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ty</span><span class="p">,</span>
-<span class="w">                    </span><span class="kt">double</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ekin</span><span class="p">);</span>
-<span class="p">};</span>
-</pre></div>
+    void SampleBeam(double&amp; x, double&amp; y,
+                    double&amp; tx, double&amp; ty,
+                    double&amp; ekin);
+};
+</code></pre></div>
 <p>构造函数中读取束流树：</p>
-<div class="highlight"><pre><span></span><span class="n">fBeamFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TFile</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="s">"beam_ppac.root"</span><span class="p">);</span>
-<span class="n">fBeamTree</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">TTree</span><span class="o">*</span><span class="p">)</span><span class="n">fBeamFile</span><span class="o">-&gt;</span><span class="n">Get</span><span class="p">(</span><span class="s">"beam"</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-cpp">fBeamFile = TFile::Open("data/beam_ppac.root");
+if (!fBeamFile || fBeamFile-&gt;IsZombie())
+    throw std::runtime_error("Cannot open data/beam_ppac.root");
+fBeamTree = fBeamFile-&gt;Get&lt;TTree&gt;("beam");
+if (!fBeamTree || fBeamTree-&gt;GetEntries()==0)
+    throw std::runtime_error("Missing or empty beam Tree");
 
-<span class="n">fBeamTree</span><span class="o">-&gt;</span><span class="n">SetBranchAddress</span><span class="p">(</span><span class="s">"x"</span><span class="p">,</span><span class="w">  </span><span class="o">&amp;</span><span class="n">bx</span><span class="p">);</span>
-<span class="n">fBeamTree</span><span class="o">-&gt;</span><span class="n">SetBranchAddress</span><span class="p">(</span><span class="s">"y"</span><span class="p">,</span><span class="w">  </span><span class="o">&amp;</span><span class="n">by</span><span class="p">);</span>
-<span class="n">fBeamTree</span><span class="o">-&gt;</span><span class="n">SetBranchAddress</span><span class="p">(</span><span class="s">"tx"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">btx</span><span class="p">);</span>
-<span class="n">fBeamTree</span><span class="o">-&gt;</span><span class="n">SetBranchAddress</span><span class="p">(</span><span class="s">"ty"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">bty</span><span class="p">);</span>
+fBeamTree-&gt;SetBranchAddress("x",  &amp;bx);
+fBeamTree-&gt;SetBranchAddress("y",  &amp;by);
+fBeamTree-&gt;SetBranchAddress("tx", &amp;btx);
+fBeamTree-&gt;SetBranchAddress("ty", &amp;bty);
 
-<span class="n">nBeamEntries</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fBeamTree</span><span class="o">-&gt;</span><span class="n">GetEntries</span><span class="p">();</span>
-</pre></div>
+nBeamEntries = fBeamTree-&gt;GetEntries();
+</code></pre></div>
 <p>逐事件读取同一条束流记录，位置乘以单位 mm，能量沿用本练习的 Gaussian 输入：</p>
 <div class="highlight"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">PrimaryGeneratorAction::SampleBeam</span><span class="p">(</span><span class="kt">double</span><span class="o">&amp;</span><span class="w"> </span><span class="n">x</span><span class="p">,</span>
 <span class="w">                                        </span><span class="kt">double</span><span class="o">&amp;</span><span class="w"> </span><span class="n">y</span><span class="p">,</span>
@@ -8357,18 +8361,17 @@ $$</p>
 <span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">g4sim</span><span class="w"> </span><span class="o">${</span><span class="nv">Geant4_LIBRARIES</span><span class="o">}</span><span class="w"> </span><span class="o">${</span><span class="nv">ROOT_LIBRARIES</span><span class="o">}</span><span class="p">)</span>
 </pre></div>
 <p>编译过程为</p>
-<div class="highlight"><pre><span></span>mkdir<span class="w"> </span>build
-<span class="nb">cd</span><span class="w"> </span>build
-cmake<span class="w"> </span>..
-make<span class="w"> </span>-j4
-</pre></div>
+<div class="highlight"><pre><code class="language-bash"># 以下命令均在工程根目录运行
+cmake -S . -B build
+cmake --build build -j4
+</code></pre></div>
 <p>准备运行宏文件 <code>run.mac</code>：</p>
 <div class="highlight"><pre><span></span>/run/initialize
 /run/beamOn 100000
 </pre></div>
 <p>随后执行</p>
-<div class="highlight"><pre><span></span>./g4sim<span class="w"> </span>run.mac
-</pre></div>
+<div class="highlight"><pre><code class="language-bash">./build/g4sim run.mac
+</code></pre></div>
 <p>上述命令适用于已补齐用户类、数据路径与完整几何的工程。在只有本页片段的情况下不能直接编译运行；这也不代表已经生成了可验证的实验模拟结果。</p>
 <h2 id="11-RunAction.cc-%E4%B8%8E-ROOT-%E6%96%87%E4%BB%B6%E8%BE%93%E5%87%BA">11 <code>RunAction.cc</code> 与 ROOT 文件输出<a class="anchor-link" href="#11-RunAction.cc-%E4%B8%8E-ROOT-%E6%96%87%E4%BB%B6%E8%BE%93%E5%87%BA">¶</a></h2><p>Geant4 事件在 <code>EventAction.cc</code> 中已经被整理为实验事件级量。接下来的任务，是将这些量写入 ROOT 文件，供后续离线分析直接读取。这里不输出 step 级原始信息，而输出与实验分析兼容的事件树。</p>
 <p>程序中可将 ROOT 文件的创建、树的建立和分支定义集中在一个单独的类中，例如 <code>RootIO</code>，再由 <code>RunAction</code> 在每一轮运行开始和结束时负责打开、写入和关闭文件。</p>
@@ -8533,10 +8536,12 @@ make<span class="w"> </span>-j4
 <div class="highlight"><pre><span></span>root<span class="w"> </span>-l<span class="w"> </span>g4sim.root
 </pre></div>
 <p>进入 ROOT 之后，首先读取文件和树：</p>
-<div class="highlight"><pre><span></span><span class="n">TFile</span><span class="w"> </span><span class="o">*</span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TFile</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="s">"g4sim.root"</span><span class="p">);</span>
-<span class="n">TTree</span><span class="w"> </span><span class="o">*</span><span class="n">tr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">TTree</span><span class="o">*</span><span class="p">)</span><span class="n">f</span><span class="o">-&gt;</span><span class="n">Get</span><span class="p">(</span><span class="s">"evt"</span><span class="p">);</span>
-<span class="n">tr</span><span class="o">-&gt;</span><span class="n">Print</span><span class="p">();</span>
-</pre></div>
+<div class="highlight"><pre><code class="language-cpp">TFile *f = TFile::Open("g4sim.root");
+if (!f || f-&gt;IsZombie()) throw std::runtime_error("Cannot open g4sim.root");
+TTree *tr = f-&gt;Get&lt;TTree&gt;("evt");
+if (!tr) throw std::runtime_error("Missing evt Tree");
+tr-&gt;Print();
+</code></pre></div>
 <p>这样即可查看树中包含的分支。</p>
 <p>如果希望直接在 ROOT 命令行中检查事件数，可写为</p>
 <div class="highlight"><pre><span></span><span class="n">tr</span><span class="o">-&gt;</span><span class="n">GetEntries</span><span class="p">();</span>

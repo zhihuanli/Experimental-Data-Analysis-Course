@@ -1,15 +1,16 @@
 #include "ana.h"
+#include <cmath>
 using namespace std;
 
 void ana::SetBranchInput()
 {
   ipt->SetBranchAddress("source_entry", &source_entry);
-  br_x1v = NULL; //给指针初始化, 这一步必需。
-  br_x2v = NULL;
-  br_x3v = NULL;
-  br_y1v = NULL;
-  br_y2v = NULL;
-  br_y3v = NULL;
+  br_x1v = nullptr; // ROOT 读入后使指针指向对应的 vector
+  br_x2v = nullptr;
+  br_x3v = nullptr;
+  br_y1v = nullptr;
+  br_y2v = nullptr;
+  br_y3v = nullptr;
   ipt->SetBranchAddress("x1v", &br_x1v); //将变量指向对应Branch的地址
   ipt->SetBranchAddress("x2v", &br_x2v);
   ipt->SetBranchAddress("x3v", &br_x3v);
@@ -39,29 +40,27 @@ bool SortDS(const dssd &a,const dssd &b)
 
 void ana::GetDSSD(vector<dssd> *x, vector<dssd> *y, vector<DSSD> &xy)
 {
- size_t hit=std::min(x->size(),y->size());
- xy.clear();
- DSSD dxy;
- for(size_t i=0;i<hit;i++) {
-     double xe=(*x)[i].e;//按照下标读取vector内的值
-     double ye=(*y)[i].e;
-     int ix=(*x)[i].id;
-     int iy=(*y)[i].id;
-     if(abs(xe-ye)<50) {
-         dxy.xe=xe;
-         dxy.ye=ye;
-         dxy.xid=ix;
-         dxy.yid=iy;
-         xy.push_back(dxy);
-     }
- }
+    xy.clear();
+    const size_t nPairs=std::min(x->size(),y->size());
+    for(size_t i=0; i<nPairs; ++i) {
+        const dssd &xhit=(*x)[i]; // 引用完整 hit，条号和幅度保持对应
+        const dssd &yhit=(*y)[i];
+        if(std::abs(xhit.e-yhit.e)<50) {
+            DSSD pair;
+            pair.xid=xhit.id;
+            pair.yid=yhit.id;
+            pair.xe=xhit.e;
+            pair.ye=yhit.e;
+            xy.push_back(pair);
+        }
+    }
 }
 
 void ana::Analysis()
 {
+  if (ipt == 0) return;
   SetBranchInput();
   BranchOutput();
-  if (ipt == 0) return;
   Long64_t nentries = ipt->GetEntriesFast();
   for (Long64_t jentry=0; jentry<nentries;jentry++) {
     ipt->GetEntry(jentry);

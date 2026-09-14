@@ -1,41 +1,28 @@
-// Section 4.5: run from the directory containing the input ROOT files.
+// Generated from 7.5 Reaction Q-Reconstruction.ipynb by tools/export_kinematics_macros.py.
+// Run from chapt7; figures are drawn by ROOT, not replaced with image files.
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <cmath>
 #include <algorithm>
 #include <stdexcept>
-#include "TFile.h"
-#include "TTree.h"
-#include "TParameter.h"
-#include "TGenPhaseSpace.h"
-#include "TLorentzVector.h"
-#include "TVector3.h"
-#include "TMath.h"
-#include "TRandom3.h"
-#include "TCanvas.h"
-#include "TH1D.h"
-#include "TH2D.h"
-#include "TH1F.h"
-#include "TH2F.h"
-#include "TLegend.h"
-#include "TLine.h"
-#include "TStyle.h"
-
-#include <cmath>
-#include <algorithm>
-#include "TFile.h"
-#include "TTree.h"
-#include "TParameter.h"
-#include "TMath.h"
-#include "TVector3.h"
-#include "TLorentzVector.h"
-#include "TCanvas.h"
-#include "TH1F.h"
-#include "TH2F.h"
-#include "TLegend.h"
-#include "TLine.h"
-#include "TStyle.h"
+#include <TROOT.h>
+#include <TFile.h>
+#include <TTree.h>
+#include <TParameter.h>
+#include <TGenPhaseSpace.h>
+#include <TLorentzVector.h>
+#include <TVector3.h>
+#include <TMath.h>
+#include <TRandom3.h>
+#include <TCanvas.h>
+#include <TH1D.h>
+#include <TH2D.h>
+#include <TH1F.h>
+#include <TH2F.h>
+#include <TLegend.h>
+#include <TLine.h>
+#include <TStyle.h>
 
 // 以下两个画布在后面的显示单元中继续使用。
 TCanvas *c1 = nullptr;
@@ -46,43 +33,49 @@ struct Kine {
 
     double mRecoil(int pid) const { return pid == 1 ? mH1 : mC12; }
     double Qgs(int pid) const { return mC14 - mHe4 - mBe10; }
-    double P(double ek, double m) const { return std::sqrt(ek*ek + 2*m*ek); }
+    double MomentumMagnitude(double ek, double m) const { return std::sqrt(ek*ek + 2*m*ek); }
 
-    double m(int pid, int i, double ex) const {
+    double ParticleMass(int pid, int i, double ex) const {
         double mass[] = {mHe4, mBe10, mRecoil(pid), mBe10 + ex};
         return mass[i];
     }
 
-    TVector3 pv(int pid, int i, double ek[], double th[], double ph[], double ex) const {
+    TVector3 MomentumVector(int pid, int i, double ek[], double th[], double ph[], double ex) const {
         TVector3 v;
-        v.SetMagThetaPhi(P(ek[i], m(pid,i,ex)), th[i]*TMath::DegToRad(), ph[i]*TMath::DegToRad());
+        v.SetMagThetaPhi(MomentumMagnitude(ek[i], ParticleMass(pid,i,ex)), th[i]*TMath::DegToRad(), ph[i]*TMath::DegToRad());
         return v;
     }
 
-    TLorentzVector lv(int pid, int i, double ek[], double th[], double ph[], double ex) const {
-        return TLorentzVector(pv(pid,i,ek,th,ph,ex), ek[i] + m(pid,i,ex));
+    TLorentzVector FourMomentum(int pid, int i, double ek[], double th[], double ph[], double ex) const {
+        return TLorentzVector(MomentumVector(pid,i,ek,th,ph,ex), ek[i] + ParticleMass(pid,i,ex));
     }
 
     double Qevt(double ek[], double ekBeam) const { return ek[0]+ek[1]+ek[2] - ekBeam; }
     double Qmean(double ek[]) const { return ek[0]+ek[1]+ek[2] - ekBeamMean; }
 
     double Q3(int pid, double ek[], double th[], double ph[], double ex) const {
-        TVector3 p = pv(pid,0,ek,th,ph,ex) + pv(pid,1,ek,th,ph,ex) + pv(pid,2,ek,th,ph,ex);
+        TVector3 p = MomentumVector(pid,0,ek,th,ph,ex) + MomentumVector(pid,1,ek,th,ph,ex) + MomentumVector(pid,2,ek,th,ph,ex);
         return ek[0]+ek[1]+ek[2] - (std::sqrt(mC14*mC14 + p.Mag2()) - mC14);
     }
 
     double Q2(int pid, double ek[], double th[], double ph[], double ex) const {
-        TVector3 pR = TVector3(0,0,P(ekBeamMean,mC14)) - pv(pid,0,ek,th,ph,ex) - pv(pid,1,ek,th,ph,ex);
+        TVector3 pR = TVector3(0,0,MomentumMagnitude(ekBeamMean,mC14)) - MomentumVector(pid,0,ek,th,ph,ex) - MomentumVector(pid,1,ek,th,ph,ex);
         double mR = mRecoil(pid);
         return ek[0]+ek[1] + (std::sqrt(mR*mR + pR.Mag2()) - mR) - ekBeamMean;
     }
 
     double ExInv(int pid, double ek[], double th[], double ph[], double ex) const {
-        return (lv(pid,0,ek,th,ph,ex) + lv(pid,1,ek,th,ph,ex)).M() - mC14;
+        return (FourMomentum(pid,0,ek,th,ph,ex) + FourMomentum(pid,1,ek,th,ph,ex)).M() - mC14;
     }
 };
 
-void DrawQAnalysis()
+int colH = kBlue+1, colC = kRed+1;
+void vline(double x, double y1, double y2, int col, int sty=2) {
+    TLine *l = new TLine(x,y1,x,y2);
+    l->SetLineColor(col); l->SetLineStyle(sty); l->Draw();
+}
+
+void q_reconstruction()
 {
     TFile *f = TFile::Open("C14_CHn_He4Be10x.root");
     if (!f || f->IsZombie()) throw std::runtime_error("Run Section 4.4 first");
@@ -134,6 +127,7 @@ void DrawQAnalysis()
 
         double q3 = K.Q3(pid, ek, th, ph, exBe10);
         double q2 = K.Q2(pid, ek, th, ph, exBe10);
+        double exInv = K.ExInv(pid, ek, th, ph, exBe10);
         hQ[0][j]->Fill(K.Qevt(ek, ekBeam), w);
         hQ[1][j]->Fill(K.Qmean(ek), w);
         hQ[2][j]->Fill(q3, w);
@@ -143,20 +137,14 @@ void DrawQAnalysis()
         hEx[1][j]->Fill(K.Qgs(pid) - q3, w);
         hEx[2][j]->Fill(K.Qgs(pid) - q2, w);
 
-        hInvQ[j]->Fill(q3, K.ExInv(pid, ek, th, ph, exBe10), w);
-        hInvQ2[j]->Fill(q2, K.ExInv(pid, ek, th, ph, exBe10), w);
+        hInvQ[j]->Fill(q3, exInv, w);
+        hInvQ2[j]->Fill(q2, exInv, w);
     }
 
     std::cout << "Qgs = " << K.Qgs(1) << " MeV; events = " << t->GetEntries() << std::endl;
 
     // 画图
     gStyle->SetOptStat(0);
-    int colH = kBlue+1, colC = kRed+1;
-
-    auto vline = [](double x, double y1, double y2, int col, int sty=2) {
-        TLine *l = new TLine(x,y1,x,y2);
-        l->SetLineColor(col); l->SetLineStyle(sty); l->Draw();
-    };
 
     // ================ c1: Q 值谱对比 (2x2, logy) ================
     c1 = new TCanvas("c1","Q",900,900);
@@ -179,6 +167,9 @@ void DrawQAnalysis()
     }
 
     // ================ c2: 激发能验证 + 不变质量关联 (3x2) ================
+
+    c1->Draw();
+
     c2 = new TCanvas("c2","Ex",900,1200);
     c2->Divide(2,3);
 
@@ -212,18 +203,5 @@ void DrawQAnalysis()
         int p = j+1;
         vline(K.Qgs(p), 8, 22, kWhite); vline(K.Qgs(p)-3.368, 8, 22, kMagenta+1);
     }
-
-
-}
-
-void q_reconstruction()
-{
-gROOT->SetBatch(kTRUE);
-gStyle->SetOptStat(0);
-gSystem->mkdir("chapter4_figures", kTRUE);
-DrawQAnalysis();
-((TCanvas*)gROOT->FindObject("c1"))->Draw();
-((TCanvas*)gROOT->FindObject("c1"))->SaveAs("chapter4_figures/q_methods.png");
-((TCanvas*)gROOT->FindObject("c2"))->Draw();
-((TCanvas*)gROOT->FindObject("c2"))->SaveAs("chapter4_figures/q_excitation.png");
+    c2->Draw();
 }

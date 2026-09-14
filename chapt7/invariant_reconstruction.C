@@ -1,26 +1,37 @@
-// Section 4.6: run from the directory containing the input ROOT files.
+// Generated from 7.6 Invariant mass reconstruction.ipynb by tools/export_kinematics_macros.py.
+// Run from chapt7; figures are drawn by ROOT, not replaced with image files.
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <cmath>
 #include <algorithm>
 #include <stdexcept>
-#include "TFile.h"
-#include "TTree.h"
-#include "TParameter.h"
-#include "TGenPhaseSpace.h"
-#include "TLorentzVector.h"
-#include "TVector3.h"
-#include "TMath.h"
-#include "TRandom3.h"
-#include "TCanvas.h"
-#include "TH1D.h"
-#include "TH2D.h"
-#include "TH1F.h"
-#include "TH2F.h"
-#include "TLegend.h"
-#include "TLine.h"
-#include "TStyle.h"
+#include <TROOT.h>
+#include <TFile.h>
+#include <TTree.h>
+#include <TParameter.h>
+#include <TGenPhaseSpace.h>
+#include <TLorentzVector.h>
+#include <TVector3.h>
+#include <TMath.h>
+#include <TRandom3.h>
+#include <TCanvas.h>
+#include <TH1D.h>
+#include <TH2D.h>
+#include <TH1F.h>
+#include <TH2F.h>
+#include <TLegend.h>
+#include <TLine.h>
+#include <TStyle.h>
+
+TVector3 MeasuredMomentum(double kineticEnergy, double mass,
+                          double thetaDeg, double phiDeg)
+{
+    double p = std::sqrt(kineticEnergy*kineticEnergy + 2.0*kineticEnergy*mass);
+    TVector3 momentum;
+    momentum.SetMagThetaPhi(p, thetaDeg*TMath::DegToRad(), phiDeg*TMath::DegToRad());
+    return momentum; // MeV/c；动能与质量均用 MeV
+}
 
 void TargetID_CHn()
 {
@@ -64,18 +75,10 @@ void TargetID_CHn()
         tree->GetEntry(i);
 
         // alpha
-        double pAlpha = std::sqrt(ek[0]*ek[0] + 2.0*ek[0]*mHe4);
-        TVector3 pvAlpha;
-        pvAlpha.SetMagThetaPhi(pAlpha,
-                               theta[0] * TMath::DegToRad(),
-                               phi[0]   * TMath::DegToRad());
+        TVector3 pvAlpha = MeasuredMomentum(ek[0], mHe4, theta[0], phi[0]);
 
         // final 10Be
-        double pBe = std::sqrt(ek[1]*ek[1] + 2.0*ek[1]*mBe10);
-        TVector3 pvBe;
-        pvBe.SetMagThetaPhi(pBe,
-                            theta[1] * TMath::DegToRad(),
-                            phi[1]   * TMath::DegToRad());
+        TVector3 pvBe = MeasuredMomentum(ek[1], mBe10, theta[1], phi[1]);
 
         // missing recoil momentum
         double pRec = (pvBeam - pvAlpha - pvBe).Mag();
@@ -161,20 +164,10 @@ void MassSpectrum_CHn()
     for (Long64_t i = 0; i < nentries; ++i) {
         tree->GetEntry(i);
 
-        // ------------------------------------------------
         // step 1: use final alpha + final 10Be to do H gate
-        // ------------------------------------------------
-        double pAlpha0 = std::sqrt(ek[0]*ek[0] + 2.0*ek[0]*mHe4);
-        TVector3 pvAlpha0;
-        pvAlpha0.SetMagThetaPhi(pAlpha0,
-                                theta[0] * TMath::DegToRad(),
-                                phi[0]   * TMath::DegToRad());
+        TVector3 pvAlpha0 = MeasuredMomentum(ek[0], mHe4, theta[0], phi[0]);
 
-        double pBe0 = std::sqrt(ek[1]*ek[1] + 2.0*ek[1]*mBe10);
-        TVector3 pvBe0;
-        pvBe0.SetMagThetaPhi(pBe0,
-                             theta[1] * TMath::DegToRad(),
-                             phi[1]   * TMath::DegToRad());
+        TVector3 pvBe0 = MeasuredMomentum(ek[1], mBe10, theta[1], phi[1]);
 
         double pRec = (pvBeam - pvAlpha0 - pvBe0).Mag();
 
@@ -188,31 +181,18 @@ void MassSpectrum_CHn()
         // reconstructed Q from x-y band
         double Q = k*x - y;
 
-        // ------------------------------------------------
         // step 2: choose 10Be mass according to Q branch
-        // ------------------------------------------------
         double mBeUse = -1.0;
-
         if (Q < -14.5) mBeUse = mBe10 + 3.368; // 10Be*(3.368)
         if (Q > -13.5) mBeUse = mBe10;         // 10Be(gs)
 
         // skip the transition region
         if (mBeUse < 0.0) continue;
 
-        // ------------------------------------------------
         // step 3: build two-body invariant mass
-        // ------------------------------------------------
-        double pAlpha = std::sqrt(ek[0]*ek[0] + 2.0*ek[0]*mHe4);
-        TVector3 pvAlpha;
-        pvAlpha.SetMagThetaPhi(pAlpha,
-                               theta[0] * TMath::DegToRad(),
-                               phi[0]   * TMath::DegToRad());
+        TVector3 pvAlpha = MeasuredMomentum(ek[0], mHe4, theta[0], phi[0]);
 
-        double pBe = std::sqrt(ek[1]*ek[1] + 2.0*ek[1]*mBeUse);
-        TVector3 pvBe;
-        pvBe.SetMagThetaPhi(pBe,
-                            theta[1] * TMath::DegToRad(),
-                            phi[1]   * TMath::DegToRad());
+        TVector3 pvBe = MeasuredMomentum(ek[1], mBe10, theta[1], phi[1]);
 
         TLorentzVector lvAlpha(pvAlpha, ek[0] + mHe4);
         TLorentzVector lvBe   (pvBe,    ek[1] + mBeUse);
@@ -231,7 +211,6 @@ void MassSpectrum_CHn()
         hEx->Fill(exC14, weight_total);
         hExQ->Fill(exC14, Q, weight_total);
     }
-
     if (selectedWeight > 0) {
         std::cout << "H fraction after both gates = " << hWeight/selectedWeight << std::endl;
         std::cout << "Correct branch fraction = " << correctBranchWeight/selectedWeight << std::endl;
@@ -259,11 +238,7 @@ void MassSpectrum_CHn()
 
 void invariant_reconstruction()
 {
-gROOT->SetBatch(kTRUE);
-gStyle->SetOptStat(0);
-gSystem->mkdir("chapter4_figures", kTRUE);
-TargetID_CHn();
-((TCanvas*)gROOT->FindObject("c1"))->SaveAs("chapter4_figures/target_identification.png");
-MassSpectrum_CHn();
-((TCanvas*)gROOT->FindObject("c2"))->SaveAs("chapter4_figures/mass_reconstruction.png");
+    TargetID_CHn();
+
+    MassSpectrum_CHn();
 }

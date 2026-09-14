@@ -28,7 +28,7 @@ class ana : public test //从test类中继承其成员变量和成员函数
   virtual ~ana() {};
   virtual void     Analysis();//分析函数，作用等价于原Loop函数
   virtual void     SetOutBranch();
-  virtual void     ProcessDS(Double_t ee[32], vector<dssd> &vec);
+  virtual void     ProcessDS(const Double_t ee[32], vector<dssd> &vec);
 
 };
 #endif

@@ -9,6 +9,8 @@ void match_dssd_layers(int maxDelta=2) {
     TFile input("data/evt_16C.root");
     TTree* tin=input.Get<TTree>("tree");
     if(!tin) throw std::runtime_error("missing evt_16C tree");
+    if(tin->GetMaximum("hit2")>32 || tin->GetMaximum("hit3")>32)
+        throw std::runtime_error("hit count exceeds array capacity 32");
     int hit2,hit3,x2[32],y2[32],x3[32],y3[32];
     double e2[32],e3[32];
     Long64_t original_entry;
@@ -34,7 +36,8 @@ void match_dssd_layers(int maxDelta=2) {
     TH2D after("hAfter","Same accepted events, geometric pairing;DSSD3 (rel. amplitude);DSSD2 (rel. amplitude)",600,0,9000,600,0,8000);
     Long64_t tested=0,direct=0,swapped=0,ambiguous=0,none=0;
     bool printed=false;
-    for(file_entry=0;file_entry<tin->GetEntries();++file_entry) {
+    const Long64_t nEntries=tin->GetEntries();
+    for(file_entry=0;file_entry<nEntries;++file_entry) {
         tin->GetEntry(file_entry);
         status=-3; nMatched=0; // -3: 不属于本例的 two-by-two 类
         if(hit2==2 && hit3==2) {

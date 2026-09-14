@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="zh-CN">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Relativistic Kinematics</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
@@ -53,45 +53,6 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .highlight .s1 { color: var(--jp-mirror-editor-string-color) } /* Literal.String.Single */
 .highlight .ss { color: var(--jp-mirror-editor-string-color) } /* Literal.String.Symbol */
 .highlight .il { color: var(--jp-mirror-editor-number-color) } /* Literal.Number.Integer.Long */
-  </style>
-<style type="text/css">
-    /* JupyROOT CSS */
-
-div#ipython_notebook img {
-display:block;
-background: url(root-banner_99x33.jpg) no-repeat;
-width: 99px;
-height: 33px;
-padding-left: 99px;
--moz-box-sizing: border-box;
-box-sizing: border-box;
-}
-
-span#login_widget {
-padding-left: 2px;
-}
-
-span#kernel_logo_widget img {
-display: block;
-background: url(root-logo-darkblue_33x33.png) no-repeat;
-width: 33px;
-height: 33px;
-padding-left: 33px;
--moz-box-sizing: border-box;
-box-sizing: border-box;
-}
-
-div#root_banner {
-padding-top: 15px;
-padding-bottom: 10px;
-}
-
-div#root_banner img {
-display: block;
-margin: 0 auto;
-}
-
-
   </style>
 <style type="text/css">
 /*-----------------------------------------------------------------------------
@@ -7832,27 +7793,19 @@ a.anchor-link {
     white-space: normal;
   }
 </style>
-<!-- End of mermaid configuration --><style>.chapter-nav,.chapter-explanation {margin:1em 4%;line-height:1.75}
-.chapter-explanation {max-width:1050px}
-.jp-RenderedHTMLCommon img,.jp-OutputArea-output img {max-width:min(100%,820px);height:auto}
-.chapter-result img {display:block;max-width:min(100%,820px);height:auto;margin:12px 0}
-.chapter-result pre {white-space:pre-wrap}
-.chapter-result {margin:12px 4%;line-height:1.6}
-</style><link data-course-header="true" href="../assets/css/course-header.css" rel="stylesheet"/></head>
-<body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light"><header class="course-banner"><div class="course-banner-inner">
+<!-- End of mermaid configuration --><link data-course-header="true" href="../assets/css/course-header.css" rel="stylesheet"/><link data-lecture-layout="true" href="../assets/css/lecture-layout.css" rel="stylesheet"/></head>
+<body class="jp-Notebook lecture-review" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light"><header class="course-banner"><div class="course-banner-inner">
 <a href="../index.html"><img alt="课程标志" src="../assets/images/course-logo.png"/></a>
 <div class="course-banner-title"><a href="../index.html">核物理实验数据处理</a>
 <span class="course-banner-en">Experimental Data Analysis in Nuclear Physics</span></div></div></header>
-
 <main>
-<nav class="chapter-nav"><a href="../">课程主页</a> · <a href="phasespace.html">下一节：4.2</a> · <a href="kinematics_examples.C">完整 ROOT C++ macro</a></nav><div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b8ef9431">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4e8a2e24">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Relativistic-Kinematics">Relativistic Kinematics<a class="anchor-link" href="#Relativistic-Kinematics">¶</a></h1><p>This section builds the tools used to reconstruct reaction events: energy and momentum, Lorentz boosts, and four-vectors. The examples use ROOT C++. Read them in order: first construct one particle, then add particles, and finally change the reference frame. We use $c=1$; a value in GeV must never be added to one in MeV.</p>
-<h3 id="Lorentz-Transformation">Lorentz Transformation<a class="anchor-link" href="#Lorentz-Transformation">¶</a></h3><p>In special relativity, the space-time coordinates of an event depend on the inertial frame in which they are measured. Consider two inertial frames: $S$, and $S'$, where $S'$ moves with velocity $v$ along the $+z$-axis relative to $S$. The Lorentz transformation relates the coordinates $(ct,x,y,z)$ and $(ct',x',y',z')$ by</p>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h1 id="Relativistic-Kinematics">Relativistic Kinematics</h1><p>This section builds the tools used to reconstruct reaction events: energy and momentum, Lorentz boosts, and four-vectors. The examples use ROOT C++. Read them in order: first construct one particle, then add particles, and finally change the reference frame. We use $c=1$; a value in GeV must never be added to one in MeV.</p>
+<h3 id="Lorentz-Transformation">Lorentz Transformation</h3><p>In special relativity, the space-time coordinates of an event depend on the inertial frame in which they are measured. Consider two inertial frames: $S$, and $S'$, where $S'$ moves with velocity $v$ along the $+z$-axis relative to $S$. The Lorentz transformation relates the coordinates $(ct,x,y,z)$ and $(ct',x',y',z')$ by</p>
 <p>$$
 \begin{align}
 x' &amp;= x, &amp; x &amp;= x' \\
@@ -7885,7 +7838,7 @@ $$</p>
 <li><strong>time dilation</strong> for moving clocks.</li>
 </ul>
 <p>If a particle has proper lifetime $\tau$ in its rest frame, then in a frame where it moves with Lorentz factor $\gamma$, its average observed lifetime is $\gamma \tau$. This is directly relevant in detector-based reconstruction of unstable particles.</p>
-<h3 id="Relativistic-Energy-and-Momentum">Relativistic Energy and Momentum<a class="anchor-link" href="#Relativistic-Energy-and-Momentum">¶</a></h3><p>For a particle with rest mass $m$ and velocity $v$,</p>
+<h3 id="Relativistic-Energy-and-Momentum">Relativistic Energy and Momentum</h3><p>For a particle with rest mass $m$ and velocity $v$,</p>
 <p>$$
 \vec{p}=\gamma m \vec{v},
 \qquad
@@ -7927,7 +7880,7 @@ $$</p>
 E = pc.
 $$</p>
 <p>For highly relativistic particles with $E \gg mc^2$, the approximation $E \approx pc$ becomes accurate.</p>
-<h3 id="Natural-Units">Natural Units<a class="anchor-link" href="#Natural-Units">¶</a></h3><p>In nuclear and particle physics, it is standard to use natural units with $c=1$. In this convention, energy, mass, and momentum are all expressed in units such as MeV or GeV, and many formulas simplify:</p>
+<h3 id="Natural-Units">Natural Units</h3><p>In nuclear and particle physics, it is standard to use natural units with $c=1$. In this convention, energy, mass, and momentum are all expressed in units such as MeV or GeV, and many formulas simplify:</p>
 <p>$$
 E^2 = p^2 + m^2,
 \qquad
@@ -7939,7 +7892,7 @@ p^2 = T^2 + 2mT.
 $$</p>
 <p>This convention will be used throughout the remainder of the chapter unless otherwise noted.</p>
 <p>Published experimental papers still often write masses in GeV/$c^2$ and momenta in GeV/$c$ to make dimensions explicit. In analysis code, however, one usually works in natural units and omits the factors of $c$, as long as units are handled consistently.</p>
-<h3 id="Example">Example<a class="anchor-link" href="#Example">¶</a></h3><p>Consider a $K_S$ meson with rest mass $m_{K_S}=0.4977$ GeV moving along the $+z$-axis with $v=0.95c$. Then</p>
+<h3 id="Example">Example</h3><p>Consider a $K_S$ meson with rest mass $m_{K_S}=0.4977$ GeV moving along the $+z$-axis with $v=0.95c$. Then</p>
 <p>$$
 \gamma = \frac{1}{\sqrt{1-0.95^2}} = 3.2026,
 $$</p>
@@ -7958,8 +7911,8 @@ $$</p>
 <p>which reproduces the rest mass.</p>
 <p>This is a simple but important check: in practical analysis, whenever a 4-vector is constructed, one should be able to recover the particle mass from $E^2-p^2$, up to numerical precision and detector resolution.</p>
 <hr/>
-<h2 id="Vectors-and-Lorentz-Transformations">Vectors and Lorentz Transformations<a class="anchor-link" href="#Vectors-and-Lorentz-Transformations">¶</a></h2><p>The 4-vector formalism provides the natural language for relativistic analysis. It unifies energy and momentum into one object and makes invariant quantities explicit.</p>
-<h3 id="Definition-of-4-Vectors">Definition of 4-Vectors<a class="anchor-link" href="#Definition-of-4-Vectors">¶</a></h3><p>A 4-vector combines one time-like component with three spatial components. Two examples are used repeatedly in relativistic mechanics:</p>
+<h2 id="Vectors-and-Lorentz-Transformations">Vectors and Lorentz Transformations</h2><p>The 4-vector formalism provides the natural language for relativistic analysis. It unifies energy and momentum into one object and makes invariant quantities explicit.</p>
+<h3 id="Definition-of-4-Vectors">Definition of 4-Vectors</h3><p>A 4-vector combines one time-like component with three spatial components. Two examples are used repeatedly in relativistic mechanics:</p>
 <ul>
 <li><p>space-time 4-vector:
 $$
@@ -7989,7 +7942,7 @@ $$</p>
 P^2 = E^2 - p^2 = m^2
 $$</p>
 <p>in natural units. This is the origin of invariant mass.</p>
-<h3 id="Lorentz-Transformation-of-4-Vectors">Lorentz Transformation of 4-Vectors<a class="anchor-link" href="#Lorentz-Transformation-of-4-Vectors">¶</a></h3><p>A Lorentz transformation maps one 4-vector to another in a different inertial frame while preserving the Minkowski norm. This is why the quantity $P^2=m^2$ is frame-independent.</p>
+<h3 id="Lorentz-Transformation-of-4-Vectors">Lorentz Transformation of 4-Vectors</h3><p>A Lorentz transformation maps one 4-vector to another in a different inertial frame while preserving the Minkowski norm. This is why the quantity $P^2=m^2$ is frame-independent.</p>
 <p>In the particle rest frame,</p>
 <p>$$
 P^\mu = (m,0,0,0),
@@ -8000,7 +7953,7 @@ P^2 = m^2.
 $$</p>
 <p>In any boosted frame, the components $E$ and $\vec{p}$ change, but the invariant mass does not.</p>
 <p>This fact is fundamental in data analysis. Peak structures in invariant-mass spectra are meaningful precisely because invariant mass is independent of the reference frame used to describe the event.</p>
-<h3 id="Multi-Particle-Systems">Multi-Particle Systems<a class="anchor-link" href="#Multi-Particle-Systems">¶</a></h3><p>For a system of particles, the total 4-momentum is</p>
+<h3 id="Multi-Particle-Systems">Multi-Particle Systems</h3><p>For a system of particles, the total 4-momentum is</p>
 <p>$$
 P^\mu_{\text{tot}} = \sum_i P^\mu_i.
 $$</p>
@@ -8015,7 +7968,7 @@ $$</p>
 \pi^0\rightarrow \gamma\gamma,
 $$</p>
 <p>the invariant mass of the two photons should peak near the $\pi^0$ mass.</p>
-<h3 id="Conservation-in-Reactions">Conservation in Reactions<a class="anchor-link" href="#Conservation-in-Reactions">¶</a></h3><p>For decays and scattering reactions, 4-momentum conservation is written compactly as</p>
+<h3 id="Conservation-in-Reactions">Conservation in Reactions</h3><p>For decays and scattering reactions, 4-momentum conservation is written compactly as</p>
 <p>$$
 P^\mu_{\text{initial}} = P^\mu_{\text{final}}.
 $$</p>
@@ -8039,18 +7992,30 @@ $$</p>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=fa302d33">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=ea36dea9">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-c++"><pre><span></span><span class="o">%</span><span class="n">jsroot</span><span class="w"> </span><span class="n">on</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7cd1a548">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <hr/>
-<h2 id="Physics-Vectors">Physics Vectors<a class="anchor-link" href="#Physics-Vectors">¶</a></h2><p>Vectors are used throughout physics analysis to describe positions, directions, momenta, and relativistic 4-momenta. In ROOT, dedicated vector classes make these quantities easy to construct, manipulate, and interpret in a way that matches standard analysis practice.</p>
-<h3 id="Coordinate-Representations">Coordinate Representations<a class="anchor-link" href="#Coordinate-Representations">¶</a></h3><p>A physical vector can be expressed in different coordinate systems depending on the problem. In collider physics, the variables $(p_T,\eta,\phi,m)$ are often convenient. In many nuclear-physics and fixed-target applications, however, the Cartesian form $(p_x,p_y,p_z,E)$ is usually the most transparent because it connects directly to momentum conservation and reaction kinematics.</p>
+<h2 id="Physics-Vectors">Physics Vectors</h2><p>Vectors are used throughout physics analysis to describe positions, directions, momenta, and relativistic 4-momenta. In ROOT, dedicated vector classes make these quantities easy to construct, manipulate, and interpret in a way that matches standard analysis practice.</p>
+<h3 id="Coordinate-Representations">Coordinate Representations</h3><p>A physical vector can be expressed in different coordinate systems depending on the problem. In collider physics, the variables $(p_T,\eta,\phi,m)$ are often convenient. In many nuclear-physics and fixed-target applications, however, the Cartesian form $(p_x,p_y,p_z,E)$ is usually the most transparent because it connects directly to momentum conservation and reaction kinematics.</p>
 <p>For the present chapter, Cartesian 4-vectors are the most natural choice. They are especially convenient for writing conservation laws, constructing invariant masses, and performing explicit boosts between the laboratory and center-of-mass frames.</p>
-<h2 id="TVector3"><code>TVector3</code><a class="anchor-link" href="#TVector3">¶</a></h2><p><code>TVector3</code> stores a three-vector</p>
+<h2 id="TVector3"><code>TVector3</code></h2><p><code>TVector3</code> stores a three-vector</p>
 <p>$$
 \vec v=(x,y,z).
 $$</p>
@@ -8078,20 +8043,21 @@ $$</p>
 </pre></div>
 <p>Angles are in radians.</p>
 <hr/>
-<h2 id="TVector3-Example:-Momentum-Direction"><code>TVector3</code> Example: Momentum Direction<a class="anchor-link" href="#TVector3-Example:-Momentum-Direction">¶</a></h2><ul>
+<h2 id="TVector3-Example:-Momentum-Direction"><code>TVector3</code> Example: Momentum Direction</h2><ul>
 <li><code>Unit()</code> gives the direction without changing the momentum magnitude.</li>
 </ul>
 <p>The components of a <code>TVector3</code> have the units you assign to them. Here they are momenta in GeV/$c$, not detector positions. <code>Unit()</code> returns a <strong>new</strong> unit vector; the original momentum is unchanged. <code>Theta()</code>, <code>Phi()</code>, and <code>Angle()</code> return radians; multiply by <code>TMath::RadToDeg()</code> only when printing degrees.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=8e9ce453-a3c6-488c-9f87-daf3f8790769">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=282e75c3">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="p">{</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-c++"><pre><span></span><span class="p">{</span>
 <span class="n">TVector3</span><span class="w"> </span><span class="nf">p</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span><span class="w"> </span><span class="mf">0.4</span><span class="p">,</span><span class="w"> </span><span class="mf">1.2</span><span class="p">);</span><span class="w"> </span><span class="c1">// GeV</span>
 
 <span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"px = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">X</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
@@ -8116,31 +8082,44 @@ $$</p>
 </div>
 </div>
 </div>
-<div class="chapter-result"><pre>px = 0.3
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>px = 0.3
 py = 0.4
 pz = 1.2
 |p| = 1.3 GeV
 pT  = 0.5 GeV
 theta = 22.6199 deg
 phi = 53.1301 deg
-|dir| = 1</pre></div></div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b57e001a-c280-4f04-a05a-93fdf204f32d">
+|dir| = 1
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2a317a17">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="TVector3-Example:-Opening-Angle"><code>TVector3</code> Example: Opening Angle<a class="anchor-link" href="#TVector3-Example:-Opening-Angle">¶</a></h3>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="TVector3-Example:-Opening-Angle"><code>TVector3</code> Example: Opening Angle</h3>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=9c379571-e489-4b53-9591-807a4ff35df9">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=23ef3c94">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="p">{</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-c++"><pre><span></span><span class="p">{</span>
 <span class="n">TVector3</span><span class="w"> </span><span class="nf">p1</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span><span class="w"> </span><span class="mf">0.1</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">);</span>
 <span class="w">    </span><span class="n">TVector3</span><span class="w"> </span><span class="nf">p2</span><span class="p">(</span><span class="mf">-0.1</span><span class="p">,</span><span class="w"> </span><span class="mf">0.3</span><span class="p">,</span><span class="w"> </span><span class="mf">0.8</span><span class="p">);</span>
 
@@ -8158,14 +8137,26 @@ phi = 53.1301 deg
 </div>
 </div>
 </div>
-<div class="chapter-result"><pre>opening angle = 23.2323 deg
-p1 dot p2 = 0.81</pre></div></div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=6a49c2e5-f266-4903-baa4-0fbca20d16f1">
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>opening angle = 23.2323 deg
+p1 dot p2 = 0.81
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b82f8bac">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p>Mathematically,</p>
 <p>$$
 \cos\theta=
@@ -8176,14 +8167,13 @@ $$</p>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=d1d5ed56-0dbf-4dcf-94e4-3c908a3ca8ad">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=53c1efdd">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <hr/>
-<h2 id="TLorentzVector"><code>TLorentzVector</code><a class="anchor-link" href="#TLorentzVector">¶</a></h2><p><code>TLorentzVector</code> stores a four-vector in the form</p>
+<h2 id="TLorentzVector"><code>TLorentzVector</code></h2><p><code>TLorentzVector</code> stores a four-vector in the form</p>
 <p>$$
 (p_x,p_y,p_z,E).
 $$</p>
@@ -8212,18 +8202,19 @@ $$</p>
 M=\sqrt{E^2-p^2}.
 $$</p>
 <hr/>
-<h3 id="TLorentzVector-Example:-$K_S$"><code>TLorentzVector</code> Example: $K_S$<a class="anchor-link" href="#TLorentzVector-Example:-$K_S$">¶</a></h3>
+<h3 id="TLorentzVector-Example:-$K_S$"><code>TLorentzVector</code> Example: $K_S$</h3>
 <p>In equations we write $(E,\vec p)$, but the ROOT constructor takes <strong><code>(px, py, pz, E)</code></strong>. Its last argument is total energy, not kinetic energy. <code>M2()</code> returns $E^2-\vec p^{\,2}$; for a physical massive particle it should be nonnegative. If measured inputs give <code>M2()&lt;0</code>, inspect the units, energy definition, and reconstruction rather than taking an absolute value.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=992869b7">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=653fb303">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="p">{</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-c++"><pre><span></span><span class="p">{</span>
 <span class="n">TLorentzVector</span><span class="w"> </span><span class="n">ks</span><span class="p">;</span>
 <span class="w">    </span><span class="n">ks</span><span class="p">.</span><span class="n">SetPxPyPzE</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.5142</span><span class="p">,</span><span class="w"> </span><span class="mf">1.5939</span><span class="p">);</span>
 
@@ -8237,18 +8228,30 @@ $$</p>
 </div>
 </div>
 </div>
-<div class="chapter-result"><pre>E  = 1.5939 GeV
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>E  = 1.5939 GeV
 pz = 1.5142 GeV
 M  = 0.49771 GeV
 beta  = 0.949997
-gamma = 3.20247</pre></div></div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ee8e91fa-6450-499e-9e33-b93087985470">
+gamma = 3.20247
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e6c2473f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Constructing-a-Four-Vector-from-Momentum-and-Mass">Constructing a Four-Vector from Momentum and Mass<a class="anchor-link" href="#Constructing-a-Four-Vector-from-Momentum-and-Mass">¶</a></h2><p>If the momentum and particle mass are known, use</p>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Constructing-a-Four-Vector-from-Momentum-and-Mass">Constructing a Four-Vector from Momentum and Mass</h2><p>If the momentum and particle mass are known, use</p>
 <div class="highlight"><pre><span></span><span class="n">SetXYZM</span><span class="p">(</span><span class="n">px</span><span class="p">,</span><span class="n">py</span><span class="p">,</span><span class="n">pz</span><span class="p">,</span><span class="n">m</span><span class="p">)</span>
 </pre></div>
 <p>ROOT calculates</p>
@@ -8260,13 +8263,14 @@ $$</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=c6cb13ba-876a-4736-9eb9-88d89cbd3710">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=79b9c5e0">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="p">{</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-c++"><pre><span></span><span class="p">{</span>
 <span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">mpi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.13957</span><span class="p">;</span><span class="w"> </span><span class="c1">// GeV</span>
 
 <span class="w">    </span><span class="n">TLorentzVector</span><span class="w"> </span><span class="n">pion</span><span class="p">;</span>
@@ -8279,15 +8283,27 @@ $$</p>
 </div>
 </div>
 </div>
-<div class="chapter-result"><pre>E = 0.438155 GeV
-M = 0.13957 GeV</pre></div></div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=19ee4225-d302-4c3d-9402-0c21bb7d8326">
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>E = 0.438155 GeV
+M = 0.13957 GeV
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=88f6f437">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Constructing-a-Four-Vector-from-Kinetic-Energy">Constructing a Four-Vector from Kinetic Energy<a class="anchor-link" href="#Constructing-a-Four-Vector-from-Kinetic-Energy">¶</a></h2><p>If kinetic energy $T$, mass $m$, and direction $(\theta,\phi)$ are known,</p>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Constructing-a-Four-Vector-from-Kinetic-Energy">Constructing a Four-Vector from Kinetic Energy</h2><p>If kinetic energy $T$, mass $m$, and direction $(\theta,\phi)$ are known,</p>
 <p>$$
 E=T+m,
 $$</p>
@@ -8299,13 +8315,14 @@ $$</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=19618c93-039b-4306-9597-92ba9e0b6d4a">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=0b187377">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="p">{</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-c++"><pre><span></span><span class="p">{</span>
 <span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">mAlpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3727.38</span><span class="p">;</span><span class="w"> </span><span class="c1">// MeV</span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">5.0</span><span class="p">;</span><span class="w">          </span><span class="c1">// MeV</span>
 
@@ -8327,14 +8344,26 @@ $$</p>
 </div>
 </div>
 </div>
-<div class="chapter-result"><pre>M = 3727.38 MeV</pre></div></div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=42efcfab-e0d0-4f40-a1ae-c272b7ab5d59">
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>M = 3727.38 MeV
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b274b58a">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Invariant-Mass-with-TLorentzVector">Invariant Mass with <code>TLorentzVector</code><a class="anchor-link" href="#Invariant-Mass-with-TLorentzVector">¶</a></h2><p>For two particles,</p>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Invariant-Mass-with-TLorentzVector">Invariant Mass with <code>TLorentzVector</code></h2><p>For two particles,</p>
 <div class="highlight"><pre><span></span><span class="n">TLorentzVector</span><span class="w"> </span><span class="n">pair</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">p2</span><span class="p">;</span>
 <span class="kt">double</span><span class="w"> </span><span class="n">mass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pair</span><span class="p">.</span><span class="n">M</span><span class="p">();</span>
 </pre></div>
@@ -8349,13 +8378,14 @@ $$</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=2141e015-98c8-49fa-bffc-f5af2979721b">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=11bc35b2">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="p">{</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-c++"><pre><span></span><span class="p">{</span>
 <span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">mpi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.13957</span><span class="p">;</span><span class="w"> </span><span class="c1">// GeV</span>
 
 <span class="w">    </span><span class="n">TLorentzVector</span><span class="w"> </span><span class="n">piPlus</span><span class="p">;</span>
@@ -8374,14 +8404,26 @@ $$</p>
 </div>
 </div>
 </div>
-<div class="chapter-result"><pre>M(pi+ pi-) = 0.472771 GeV</pre></div></div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=20098346">
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>M(pi+ pi-) = 0.472771 GeV
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=019a187e">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="17.-Boosts-in-ROOT">Boosts in ROOT<a class="anchor-link" href="#17.-Boosts-in-ROOT">¶</a></h2><p>Suppose a parent particle $A$ moves in the lab frame and a daughter particle $b$ is observed either in the parent rest frame or in the lab frame.</p>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="17.-Boosts-in-ROOT">Boosts in ROOT</h2><p>Suppose a parent particle $A$ moves in the lab frame and a daughter particle $b$ is observed either in the parent rest frame or in the lab frame.</p>
 <p>We store the parent four-momentum in the lab frame as</p>
 <div class="highlight"><pre><span></span><span class="n">TLorentzVector</span><span class="w"> </span><span class="n">parent_lab</span><span class="p">;</span>
 </pre></div>
@@ -8412,7 +8454,7 @@ This <code>beta</code> connects two frames:</p>
 <li><code>Boost(-beta)</code>: lab frame $\rightarrow$ parent rest frame.</li>
 </ul>
 <hr/>
-<h2 id="18.-Example">Example: boost and inverse boost<a class="anchor-link" href="#18.-Example">¶</a></h2><p>The parent particle has mass</p>
+<h2 id="18.-Example">Example: boost and inverse boost</h2><p>The parent particle has mass</p>
 <p>$$
 M = 1.0\ \text{GeV}
 $$</p>
@@ -8425,13 +8467,14 @@ $$</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=acdf9db9">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=9472c8bd">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="p">{</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-c++"><pre><span></span><span class="p">{</span>
 <span class="c1">// Parent four-vector in the lab frame</span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">M</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">;</span><span class="w">   </span><span class="c1">// GeV</span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">pz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2.0</span><span class="p">;</span><span class="w">   </span><span class="c1">// GeV</span>
@@ -8457,58 +8500,51 @@ $$</p>
 <span class="w">    </span><span class="n">TLorentzVector</span><span class="w"> </span><span class="n">daughter_back</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">daughter_lab</span><span class="p">;</span>
 <span class="w">    </span><span class="n">daughter_back</span><span class="p">.</span><span class="n">Boost</span><span class="p">(</span><span class="o">-</span><span class="n">beta</span><span class="p">);</span>
 
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Daughter in parent rest frame:</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"  E  = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_rest</span><span class="p">.</span><span class="n">E</span><span class="p">()</span><span class="w">  </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"  px = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_rest</span><span class="p">.</span><span class="n">Px</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"  py = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_rest</span><span class="p">.</span><span class="n">Py</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"  pz = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_rest</span><span class="p">.</span><span class="n">Pz</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"  M  = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_rest</span><span class="p">.</span><span class="n">M</span><span class="p">()</span><span class="w">  </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n\n</span><span class="s">"</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Daughter in parent rest frame:</span><span class="se">\n</span><span class="s">"</span>
+<span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"  (E, px, py, pz) = ("</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_rest</span><span class="p">.</span><span class="n">E</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", "</span>
+<span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_rest</span><span class="p">.</span><span class="n">Px</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_rest</span><span class="p">.</span><span class="n">Py</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", "</span>
+<span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_rest</span><span class="p">.</span><span class="n">Pz</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"); M = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_rest</span><span class="p">.</span><span class="n">M</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">" GeV"</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Daughter in lab frame:</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"  E  = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_lab</span><span class="p">.</span><span class="n">E</span><span class="p">()</span><span class="w">  </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"  px = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_lab</span><span class="p">.</span><span class="n">Px</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"  py = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_lab</span><span class="p">.</span><span class="n">Py</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"  pz = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_lab</span><span class="p">.</span><span class="n">Pz</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"  M  = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_lab</span><span class="p">.</span><span class="n">M</span><span class="p">()</span><span class="w">  </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n\n</span><span class="s">"</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Daughter in lab frame:</span><span class="se">\n</span><span class="s">"</span>
+<span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"  (E, px, py, pz) = ("</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_lab</span><span class="p">.</span><span class="n">E</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", "</span>
+<span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_lab</span><span class="p">.</span><span class="n">Px</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_lab</span><span class="p">.</span><span class="n">Py</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", "</span>
+<span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_lab</span><span class="p">.</span><span class="n">Pz</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"); M = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_lab</span><span class="p">.</span><span class="n">M</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">" GeV"</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Boosted back to parent rest frame:</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"  E  = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_back</span><span class="p">.</span><span class="n">E</span><span class="p">()</span><span class="w">  </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"  px = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_back</span><span class="p">.</span><span class="n">Px</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"  py = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_back</span><span class="p">.</span><span class="n">Py</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"  pz = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_back</span><span class="p">.</span><span class="n">Pz</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"  M  = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_back</span><span class="p">.</span><span class="n">M</span><span class="p">()</span><span class="w">  </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Boosted back to parent rest frame:</span><span class="se">\n</span><span class="s">"</span>
+<span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"  (E, px, py, pz) = ("</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_back</span><span class="p">.</span><span class="n">E</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", "</span>
+<span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_back</span><span class="p">.</span><span class="n">Px</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_back</span><span class="p">.</span><span class="n">Py</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">", "</span>
+<span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_back</span><span class="p">.</span><span class="n">Pz</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"); M = "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">daughter_back</span><span class="p">.</span><span class="n">M</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">" GeV"</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="chapter-result"><pre>Daughter in parent rest frame:
-  E  = 0.360555
-  px = 0.3
-  py = 0
-  pz = 0
-  M  = 0.2
-
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Daughter in parent rest frame:
+  (E, px, py, pz) = (0.360555, 0.3, 0, 0); M = 0.2 GeV
 Daughter in lab frame:
-  E  = 0.806226
-  px = 0.3
-  py = 0
-  pz = 0.72111
-  M  = 0.2
-
+  (E, px, py, pz) = (0.806226, 0.3, 0, 0.72111); M = 0.2 GeV
 Boosted back to parent rest frame:
-  E  = 0.360555
-  px = 0.3
-  py = 0
-  pz = 1.35992e-16
-  M  = 0.2</pre></div></div><div class="chapter-explanation"><p>This final example starts with a daughter measured in the laboratory. The parent laboratory four-vector defines the rest frame to which it is transformed. The angle is now relative to the same coordinate axes, expressed in that rest frame.</p>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=1c3e7ac3-8f34-4eaa-abf6-aede8b9570dc">
+  (E, px, py, pz) = (0.360555, 0.3, 0, 1.35992e-16); M = 0.2 GeV
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=0229608b">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span><span class="p">{</span>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-c++"><pre><span></span><span class="p">{</span>
 <span class="c1">// Parent four-vector in the lab frame</span>
 <span class="w">    </span><span class="n">TLorentzVector</span><span class="w"> </span><span class="n">parent_lab</span><span class="p">;</span>
 <span class="w">    </span><span class="n">parent_lab</span><span class="p">.</span><span class="n">SetPxPyPzE</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">5.0</span><span class="p">));</span>
@@ -8536,15 +8572,17 @@ Boosted back to parent rest frame:
 </div>
 </div>
 </div>
-<div class="chapter-result"><pre>daughter mass = 0.2 GeV
-theta in parent rest frame = 83.5602 deg</pre></div></div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=42226f10-3b5f-4d85-b71b-3c9d2bbaabfe">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline"><div class="highlight"><pre><span></span>
-</pre></div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>daughter mass = 0.2 GeV
+theta in parent rest frame = 83.5602 deg
+</pre>
+</div>
 </div>
 </div>
 </div>

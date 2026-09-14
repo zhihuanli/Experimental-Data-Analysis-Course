@@ -1,3 +1,4 @@
+
 #include <iostream>
 
 const int MAXHIT = 1024;
@@ -28,19 +29,14 @@ TF1 *f_dt_cluster_allE[NCLUSTER] = {0};
 TF1 *f_dt_all = 0;
 TF1 *f_dt_all_allE = 0;
 
-
-// ------------------------------------------------------------
 // Make corrected walk plots and time-difference spectra
-// ------------------------------------------------------------
 void make_corrected_cluster_walk(
     const char *filename = "eurica_time_pair.root",
     double EminTarget = 30.0,
     double EminRef = 600.0)
 {
   TH1::AddDirectory(kFALSE);
-
   for (int c = 0; c < NCLUSTER; c++) {
-
     if (h_walk_cluster[c]) {
       delete h_walk_cluster[c];
       h_walk_cluster[c] = 0;
@@ -54,7 +50,6 @@ void make_corrected_cluster_walk(
                130, 0, 1300);
 
     h_walk_cluster[c]->SetDirectory(0);
-
     if (h_walk_cluster_allE[c]) {
       delete h_walk_cluster_allE[c];
       h_walk_cluster_allE[c] = 0;
@@ -68,7 +63,6 @@ void make_corrected_cluster_walk(
                130, 0, 1300);
 
     h_walk_cluster_allE[c]->SetDirectory(0);
-
     if (h_dt_cluster[c]) {
       delete h_dt_cluster[c];
       h_dt_cluster[c] = 0;
@@ -81,7 +75,6 @@ void make_corrected_cluster_walk(
                240, -600, 600);
 
     h_dt_cluster[c]->SetDirectory(0);
-
     if (h_dt_cluster_allE[c]) {
       delete h_dt_cluster_allE[c];
       h_dt_cluster_allE[c] = 0;
@@ -95,7 +88,6 @@ void make_corrected_cluster_walk(
 
     h_dt_cluster_allE[c]->SetDirectory(0);
   }
-
   if (h_dt_all) {
     delete h_dt_all;
     h_dt_all = 0;
@@ -107,7 +99,6 @@ void make_corrected_cluster_walk(
              240, -600, 600);
 
   h_dt_all->SetDirectory(0);
-
   if (h_dt_all_allE) {
     delete h_dt_all_allE;
     h_dt_all_allE = 0;
@@ -138,41 +129,35 @@ void make_corrected_cluster_walk(
   double ge[MAXHIT];
   double gt[MAXHIT];
 
+  if (tree->GetMaximum("ghit") > MAXHIT)
+    throw std::runtime_error("Increase MAXHIT before reading branches");
   tree->SetBranchAddress("ghit", &ghit);
   tree->SetBranchAddress("gid", gid);
   tree->SetBranchAddress("ge", ge);
   tree->SetBranchAddress("gt", gt);
 
   Long64_t nentries = tree->GetEntries();
-
   for (Long64_t ientry = 0; ientry < nentries; ientry++) {
 
     tree->GetEntry(ientry);
-
     for (int a = 0; a < ghit; a++) {
 
       int cluster_a = gid[a] / 7;
       int seg_a = gid[a] % 7;
-
       if (cluster_a < 0 || cluster_a >= NCLUSTER) continue;
       if (seg_a < 0 || seg_a >= NSEG) continue;
-
       for (int b = 0; b < ghit; b++) {
-
         if (a == b) continue;
 
         int cluster_b = gid[b] / 7;
         int seg_b = gid[b] % 7;
-
         if (cluster_b != cluster_a) continue;
         if (seg_b < 0 || seg_b >= NSEG) continue;
         if (seg_b == seg_a) continue;
 
         double dt = gt[a] - gt[b];
 
-        // ----------------------------------------------------
         // Walk plots
-        // ----------------------------------------------------
 
         // all-energy walk: no energy gate
         h_walk_cluster_allE[cluster_a]->Fill(dt, ge[a]);
@@ -183,9 +168,7 @@ void make_corrected_cluster_walk(
           h_walk_cluster[cluster_a]->Fill(dt, ge[a]);
         }
 
-        // ----------------------------------------------------
         // Time-difference spectra
-        // ----------------------------------------------------
         // Fill each detector pair once.
         // Use gid ordering, not array ordering.
         if (gid[a] >= gid[b]) continue;
@@ -204,7 +187,6 @@ void make_corrected_cluster_walk(
   }
 
   fin->Close();
-
   for (int c = 0; c < NCLUSTER; c++) {
     std::cout << "cluster " << c
               << " high-ref walk entries = "
@@ -227,10 +209,7 @@ void make_corrected_cluster_walk(
             << std::endl;
 }
 
-
-// ------------------------------------------------------------
 // Draw corrected walk plots: high-reference version
-// ------------------------------------------------------------
 void draw_corrected_cluster_walk()
 {
   TCanvas *c_old = (TCanvas*)gROOT->FindObject("c_corr_cluster_walk");
@@ -242,11 +221,9 @@ void draw_corrected_cluster_walk()
 
   c->Divide(4, 3);
   gStyle->SetOptStat(0);
-
   for (int ic = 0; ic < NCLUSTER; ic++) {
     c->cd(ic + 1);
     gPad->SetLogz(0);
-
     if (h_walk_cluster[ic]) {
       h_walk_cluster[ic]->Draw("colz");
     }
@@ -255,10 +232,7 @@ void draw_corrected_cluster_walk()
   c->Draw();
 }
 
-
-// ------------------------------------------------------------
 // Draw corrected walk plots: all-energy version
-// ------------------------------------------------------------
 void draw_corrected_cluster_walk_allE()
 {
   TCanvas *c_old = (TCanvas*)gROOT->FindObject("c_corr_cluster_walk_allE");
@@ -270,11 +244,9 @@ void draw_corrected_cluster_walk_allE()
 
   c->Divide(4, 3);
   gStyle->SetOptStat(0);
-
   for (int ic = 0; ic < NCLUSTER; ic++) {
     c->cd(ic + 1);
     gPad->SetLogz(0);
-
     if (h_walk_cluster_allE[ic]) {
       h_walk_cluster_allE[ic]->Draw("colz");
     }
@@ -283,10 +255,7 @@ void draw_corrected_cluster_walk_allE()
   c->Draw();
 }
 
-
-// ------------------------------------------------------------
 // Draw high-energy time-difference spectra by cluster
-// ------------------------------------------------------------
 void draw_corrected_dt_by_cluster()
 {
   TCanvas *c_old = (TCanvas*)gROOT->FindObject("c_corr_dt_cluster");
@@ -298,21 +267,17 @@ void draw_corrected_dt_by_cluster()
 
   c->Divide(4, 3);
   gStyle->SetOptStat(0);
-
   for (int ic = 0; ic < NCLUSTER; ic++) {
 
     c->cd(ic + 1);
     gPad->SetLogy(0);
-
     if (!h_dt_cluster[ic]) continue;
-
     if (f_dt_cluster[ic]) {
       delete f_dt_cluster[ic];
       f_dt_cluster[ic] = 0;
     }
-
     if (h_dt_cluster[ic]->GetEntries() < 20) {
-      h_dt_cluster[ic]->Draw();
+      h_dt_cluster[ic]->Draw("hist");
       continue;
     }
 
@@ -331,7 +296,7 @@ void draw_corrected_dt_by_cluster()
 
     h_dt_cluster[ic]->Fit(f_dt_cluster[ic], "RQ0");
 
-    h_dt_cluster[ic]->Draw();
+    h_dt_cluster[ic]->Draw("hist");
     f_dt_cluster[ic]->SetLineColor(kRed);
     f_dt_cluster[ic]->Draw("same");
 
@@ -345,10 +310,7 @@ void draw_corrected_dt_by_cluster()
   c->Draw();
 }
 
-
-// ------------------------------------------------------------
 // Draw all-energy time-difference spectra by cluster
-// ------------------------------------------------------------
 void draw_corrected_dt_by_cluster_allE()
 {
   TCanvas *c_old = (TCanvas*)gROOT->FindObject("c_corr_dt_cluster_allE");
@@ -360,21 +322,17 @@ void draw_corrected_dt_by_cluster_allE()
 
   c->Divide(4, 3);
   gStyle->SetOptStat(0);
-
   for (int ic = 0; ic < NCLUSTER; ic++) {
 
     c->cd(ic + 1);
     gPad->SetLogy(0);
-
     if (!h_dt_cluster_allE[ic]) continue;
-
     if (f_dt_cluster_allE[ic]) {
       delete f_dt_cluster_allE[ic];
       f_dt_cluster_allE[ic] = 0;
     }
-
     if (h_dt_cluster_allE[ic]->GetEntries() < 20) {
-      h_dt_cluster_allE[ic]->Draw();
+      h_dt_cluster_allE[ic]->Draw("hist");
       continue;
     }
 
@@ -384,8 +342,8 @@ void draw_corrected_dt_by_cluster_allE()
     f_dt_cluster_allE[ic] =
       new TF1(Form("f_dt_cluster_allE_%d", ic),
               "gaus",
-              x0 - 50.0,
-              x0 + 50.0);
+              x0 - 100.0,
+              x0 + 100.0);
 
     f_dt_cluster_allE[ic]->SetParameter(0, h_dt_cluster_allE[ic]->GetMaximum());
     f_dt_cluster_allE[ic]->SetParameter(1, x0);
@@ -393,7 +351,7 @@ void draw_corrected_dt_by_cluster_allE()
 
     h_dt_cluster_allE[ic]->Fit(f_dt_cluster_allE[ic], "RQ0");
 
-    h_dt_cluster_allE[ic]->Draw();
+    h_dt_cluster_allE[ic]->Draw("hist");
     f_dt_cluster_allE[ic]->SetLineColor(kRed);
     f_dt_cluster_allE[ic]->Draw("same");
 
@@ -407,10 +365,7 @@ void draw_corrected_dt_by_cluster_allE()
   c->Draw();
 }
 
-
-// ------------------------------------------------------------
 // Draw cumulative high-energy time-difference spectrum
-// ------------------------------------------------------------
 void draw_corrected_dt_all()
 {
   TCanvas *c_old = (TCanvas*)gROOT->FindObject("c_corr_dt_all");
@@ -420,21 +375,18 @@ void draw_corrected_dt_all()
                            "cumulative high-energy time difference",
                            800, 600);
 
-  c->SetLogy(0);
-
+  c->SetLogy();
   if (!h_dt_all) {
     std::cout << "h_dt_all does not exist. Run make_corrected_cluster_walk() first."
               << std::endl;
     return;
   }
-
   if (f_dt_all) {
     delete f_dt_all;
     f_dt_all = 0;
   }
-
   if (h_dt_all->GetEntries() < 20) {
-    h_dt_all->Draw();
+    h_dt_all->Draw("hist");
     c->Draw();
     return;
   }
@@ -445,8 +397,8 @@ void draw_corrected_dt_all()
   f_dt_all =
     new TF1("f_dt_all",
             "gaus",
-            x0 - 50.0,
-            x0 + 50.0);
+            x0 - 100.0,
+            x0 + 100.0);
 
   f_dt_all->SetParameter(0, h_dt_all->GetMaximum());
   f_dt_all->SetParameter(1, x0);
@@ -454,7 +406,7 @@ void draw_corrected_dt_all()
 
   h_dt_all->Fit(f_dt_all, "RQ0");
 
-  h_dt_all->Draw();
+  h_dt_all->Draw("hist");
   f_dt_all->SetLineColor(kRed);
   f_dt_all->Draw("same");
 
@@ -467,10 +419,7 @@ void draw_corrected_dt_all()
             << std::endl;
 }
 
-
-// ------------------------------------------------------------
 // Draw cumulative all-energy time-difference spectrum
-// ------------------------------------------------------------
 void draw_corrected_dt_all_allE()
 {
   TCanvas *c_old = (TCanvas*)gROOT->FindObject("c_corr_dt_all_allE");
@@ -480,21 +429,18 @@ void draw_corrected_dt_all_allE()
                            "cumulative all-energy time difference",
                            800, 600);
 
-  c->SetLogy(0);
-
+  c->SetLogy();
   if (!h_dt_all_allE) {
     std::cout << "h_dt_all_allE does not exist. Run make_corrected_cluster_walk() first."
               << std::endl;
     return;
   }
-
   if (f_dt_all_allE) {
     delete f_dt_all_allE;
     f_dt_all_allE = 0;
   }
-
   if (h_dt_all_allE->GetEntries() < 20) {
-    h_dt_all_allE->Draw();
+    h_dt_all_allE->Draw("hist");
     c->Draw();
     return;
   }
@@ -505,8 +451,8 @@ void draw_corrected_dt_all_allE()
   f_dt_all_allE =
     new TF1("f_dt_all_allE",
             "gaus",
-            x0 - 50.0,
-            x0 + 50.0);
+            x0 - 200.0,
+            x0 + 200.0);
 
   f_dt_all_allE->SetParameter(0, h_dt_all_allE->GetMaximum());
   f_dt_all_allE->SetParameter(1, x0);
@@ -514,8 +460,9 @@ void draw_corrected_dt_all_allE()
 
   h_dt_all_allE->Fit(f_dt_all_allE, "RQ0");
 
-  h_dt_all_allE->Draw();
+  h_dt_all_allE->Draw("hist");
   f_dt_all_allE->SetLineColor(kRed);
+
   f_dt_all_allE->Draw("same");
 
   c->Draw();

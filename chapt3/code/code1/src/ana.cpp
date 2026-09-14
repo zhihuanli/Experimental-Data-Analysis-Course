@@ -18,27 +18,26 @@ void ana::SetOutBranch()
 
 }
 
-void ana::ProcessDS(Double_t ee[32], vector<dssd> &vec)
+void ana::ProcessDS(const Double_t ee[32], vector<dssd> &vec)
 {
-   vec.clear();
-    dssd ds;
-    for(int i=0;i<32;i++) {
-      if(ee[i]<1) continue;
-	ds.id=i;
-	ds.e=ee[i];
-	vec.push_back(ds);
+    vec.clear(); // 每个事件重新建立 hit 列表
+    for(int i=0; i<32; ++i) {
+        if(ee[i]<1) continue;
+        dssd hit;
+        hit.id=i;
+        hit.e=ee[i];
+        vec.push_back(hit); // t 保持 NaN，输入没有时间信息
     }
 }
 void ana::Analysis()
 {
-  SetOutBranch();
   if (fChain == 0) return;
+  SetOutBranch();
   Long64_t nentries = fChain->GetEntriesFast();
-  Long64_t nbytes = 0, nb = 0;
   for (Long64_t jentry=0; jentry<nentries;jentry++) {
     Long64_t ientry = LoadTree(jentry);
     if (ientry < 0) break;
-    nb = fChain->GetEntry(jentry);   nbytes += nb;
+    fChain->GetEntry(jentry);
     ProcessDS(d1x,x1v);
     ProcessDS(d1y,y1v);
     ProcessDS(d2x,x2v);

@@ -1,41 +1,28 @@
-// Section 4.2: run from the directory containing the input ROOT files.
+// Generated from phasespace.ipynb by tools/export_kinematics_macros.py.
+// Run from chapt7; figures are drawn by ROOT, not replaced with image files.
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <cmath>
 #include <algorithm>
 #include <stdexcept>
-#include "TFile.h"
-#include "TTree.h"
-#include "TParameter.h"
-#include "TGenPhaseSpace.h"
-#include "TLorentzVector.h"
-#include "TVector3.h"
-#include "TMath.h"
-#include "TRandom3.h"
-#include "TCanvas.h"
-#include "TH1D.h"
-#include "TH2D.h"
-#include "TH1F.h"
-#include "TH2F.h"
-#include "TLegend.h"
-#include "TLine.h"
-#include "TStyle.h"
-
-#include "TFile.h"
-#include "TTree.h"
-#include "TGenPhaseSpace.h"
-#include "TLorentzVector.h"
-#include "TVector3.h"
-#include "TMath.h"
-#include "TRandom3.h"
-#include "TCanvas.h"
-#include "TH1D.h"
-#include "TH2D.h"
-#include "TStyle.h"
-
-#include <iostream>
-#include <cmath>
+#include <TROOT.h>
+#include <TFile.h>
+#include <TTree.h>
+#include <TParameter.h>
+#include <TGenPhaseSpace.h>
+#include <TLorentzVector.h>
+#include <TVector3.h>
+#include <TMath.h>
+#include <TRandom3.h>
+#include <TCanvas.h>
+#include <TH1D.h>
+#include <TH2D.h>
+#include <TH1F.h>
+#include <TH2F.h>
+#include <TLegend.h>
+#include <TLine.h>
+#include <TStyle.h>
 
 double PhiDeg(const TLorentzVector &p)
 {
@@ -46,7 +33,6 @@ double PhiDeg(const TLorentzVector &p)
 
 void gen_direct_3alpha(Long64_t N = 500000)
 {
-    // ------------------------------------------------------------
     // Units:
     //   internal calculation: GeV
     //   stored kinetic energy: MeV
@@ -57,9 +43,8 @@ void gen_direct_3alpha(Long64_t N = 500000)
     //
     // The three alpha particles are stored in the order returned by
     // TGenPhaseSpace. No event-by-event reordering is applied.
-    // ------------------------------------------------------------
 
-    gRandom->SetSeed(4201); // reproducible phase-space sequence
+    gRandom->SetSeed(4201); // Generate 使用 gRandom；固定种子复现相同事件
 
     const double mp     = 0.9382720813;  // GeV
     const double mAlpha = 3.727379378;   // GeV
@@ -80,7 +65,6 @@ void gen_direct_3alpha(Long64_t N = 500000)
 
     TGenPhaseSpace gen;
     double masses[3] = {mAlpha, mAlpha, mAlpha};
-
     if (!gen.SetDecay(C12_rest, 3, masses)) {
         std::cerr << "SetDecay failed for direct decay." << std::endl;
         return;
@@ -102,11 +86,9 @@ void gen_direct_3alpha(Long64_t N = 500000)
     tree->Branch("phi_move",   phi_move,   "phi_move[3]/D");
 
     tree->Branch("weight",     &weight,    "weight/D");
-
     for (Long64_t iev = 0; iev < N; ++iev) {
 
         weight = gen.Generate();
-
         for (int i = 0; i < 3; ++i) {
 
             TLorentzVector aRest = *gen.GetDecay(i);
@@ -136,7 +118,6 @@ void gen_direct_3alpha(Long64_t N = 500000)
 
 void gen_sequential_3alpha(Long64_t N = 500000)
 {
-    // ------------------------------------------------------------
     // Units:
     //   internal calculation: GeV
     //   stored kinetic energy: MeV
@@ -151,7 +132,6 @@ void gen_sequential_3alpha(Long64_t N = 500000)
     // alpha[1], alpha[2] = two alphas from 8Be decay
     //
     // Randomly permute the final labels before storing the event.
-    // ------------------------------------------------------------
 
     const double mp     = 0.9382720813;  // GeV
     const double mAlpha = 3.727379378;   // GeV
@@ -180,8 +160,8 @@ void gen_sequential_3alpha(Long64_t N = 500000)
 
     TGenPhaseSpace gen1;
     TGenPhaseSpace gen2;
-    TRandom3 rng(4202); // intermediate mass and label permutation
-    gRandom->SetSeed(4203); // TGenPhaseSpace uses gRandom
+    TRandom3 rng(4202); // 抽样中间态质量、打乱三个 alpha 的标签
+    gRandom->SetSeed(4203); // 两级 TGenPhaseSpace 使用的随机数序列
 
     TFile *fout = new TFile("sequential_3alpha.root", "RECREATE");
     TTree *tree = new TTree("events", "Sequential 3alpha decay");
@@ -199,23 +179,19 @@ void gen_sequential_3alpha(Long64_t N = 500000)
     tree->Branch("phi_move",   phi_move,   "phi_move[3]/D");
 
     tree->Branch("weight",     &weight,    "weight/D");
-
     for (Long64_t iev = 0; iev < N; ++iev) {
 
         // Sample 8Be(2+) mass with a truncated Breit-Wigner distribution
         double m8 = 0.0;
-
         while (true) {
             double u = rng.Uniform();
             m8 = m8_mean + 0.5 * Gamma8_2plus * std::tan(TMath::Pi() * (u - 0.5));
-
             if (m8 > m8_min && m8 < m8_max) break;
         }
 
         // First decay:
         // 12C* -> alpha0 + 8Be
         double masses1[2] = {mAlpha, m8};
-
         if (!gen1.SetDecay(C12_rest, 2, masses1)) {
             --iev;
             continue;
@@ -231,7 +207,6 @@ void gen_sequential_3alpha(Long64_t N = 500000)
         // Second decay:
         // 8Be -> alpha1 + alpha2
         double masses2[2] = {mAlpha, mAlpha};
-
         if (!gen2.SetDecay(be8, 2, masses2)) {
             --iev;
             continue;
@@ -243,16 +218,13 @@ void gen_sequential_3alpha(Long64_t N = 500000)
         alpha[2] = *gen2.GetDecay(1);
 
         weight = w1 * w2;
-        // --------------------------------------------------------
         // Random permutation to erase generator labels
-        // --------------------------------------------------------
         for (int k = 2; k > 0; --k) {
             int j = int(rng.Uniform() * (k + 1));
             TLorentzVector tmp = alpha[k];
             alpha[k] = alpha[j];
             alpha[j] = tmp;
         }
-
         for (int i = 0; i < 3; ++i) {
 
             TLorentzVector aRest = alpha[i];
@@ -292,7 +264,6 @@ void plot_3alpha_correlations(const char *filename, const char *tag)
     gStyle->SetOptStat(0);
     gStyle->SetPadLeftMargin(0.15);
     gStyle->SetPadRightMargin(0.14);
-
     if (c) {
         delete c;
         c = nullptr;
@@ -312,7 +283,6 @@ void plot_3alpha_correlations(const char *filename, const char *tag)
     tree->Draw(
         Form("T_rest[1]:T_rest[0]>>h_rest_01_%s", tag), "weight", "colz");
 
-
     c->cd(2);
     gPad->SetRightMargin(0.14);
 
@@ -322,7 +292,6 @@ void plot_3alpha_correlations(const char *filename, const char *tag)
 
     tree->Draw(
         Form("T_move[1]:T_move[0]>>h_move_01_%s", tag), "weight", "colz");
-
 
     c->Draw();
 }
@@ -337,7 +306,6 @@ void plot_all_alpha_spectra(const char *filename, const char *tag)
     gStyle->SetOptStat(0);
     gStyle->SetPadLeftMargin(0.15);
     gStyle->SetPadRightMargin(0.14);
-
     if (c) {
         delete c;
         c = nullptr;
@@ -370,17 +338,14 @@ void plot_all_alpha_spectra(const char *filename, const char *tag)
 
 void phase_space_examples()
 {
-gROOT->SetBatch(kTRUE);
-gStyle->SetOptStat(0);
-gSystem->mkdir("chapter4_figures", kTRUE);
-gen_direct_3alpha();
-gen_sequential_3alpha();
-plot_all_alpha_spectra("direct_3alpha.root", "Direct");
-((TCanvas*)gROOT->FindObject("c"))->SaveAs("chapter4_figures/phase_direct_energy.png");
-plot_all_alpha_spectra("sequential_3alpha.root", "Sequential");
-((TCanvas*)gROOT->FindObject("c"))->SaveAs("chapter4_figures/phase_sequential_energy.png");
-plot_3alpha_correlations("direct_3alpha.root", "Direct");
-((TCanvas*)gROOT->FindObject("c"))->SaveAs("chapter4_figures/phase_direct_correlation.png");
-plot_3alpha_correlations("sequential_3alpha.root", "Sequential");
-((TCanvas*)gROOT->FindObject("c"))->SaveAs("chapter4_figures/phase_sequential_correlation.png");
+    gen_direct_3alpha();
+    gen_sequential_3alpha();
+
+    plot_all_alpha_spectra("direct_3alpha.root", "Direct");
+
+    plot_all_alpha_spectra("sequential_3alpha.root", "Sequential");
+
+    plot_3alpha_correlations("direct_3alpha.root", "Direct");
+
+    plot_3alpha_correlations("sequential_3alpha.root", "Sequential");
 }

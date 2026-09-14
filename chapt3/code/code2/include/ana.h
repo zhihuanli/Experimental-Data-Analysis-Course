@@ -19,8 +19,8 @@ struct DSSD//x-y side
 {
  int xid;
  int yid;
- double xe;//xe
- double ye;//xt
+ double xe; // X 面幅度
+ double ye; // Y 面幅度
 };
 
 class ana

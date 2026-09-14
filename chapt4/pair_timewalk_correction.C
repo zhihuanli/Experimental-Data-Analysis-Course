@@ -43,16 +43,12 @@ int has_seg_offset[NCLUSTER][NSEG];
 
 int ref_seg_cluster[NCLUSTER];
 
-
-// ------------------------------------------------------------
 // Make pair-combination time-walk histograms for one cluster
-// ------------------------------------------------------------
 std::vector<TH2F*> make_pair_timewalk_cluster(int clusterID = 6)
 {
   TH1::AddDirectory(kFALSE);
 
   std::vector<TH2F*> hlist;
-
   if (clusterID < 0 || clusterID >= NCLUSTER) {
     std::cout << "invalid clusterID" << std::endl;
     return hlist;
@@ -75,7 +71,6 @@ std::vector<TH2F*> make_pair_timewalk_cluster(int clusterID = 6)
   int gid[MAXHIT];
   double ge[MAXHIT];
   double gt[MAXHIT];
-
   if (tree->GetMaximum("ghit")>MAXHIT)
     throw std::runtime_error("Increase MAXHIT before reading branches");
 
@@ -83,7 +78,6 @@ std::vector<TH2F*> make_pair_timewalk_cluster(int clusterID = 6)
   tree->SetBranchAddress("gid", gid);
   tree->SetBranchAddress("ge", ge);
   tree->SetBranchAddress("gt", gt);
-
   for (int s = 0; s < NSEG; s++) {
     seg_high_count[clusterID][s] = 0;
   }
@@ -94,17 +88,14 @@ std::vector<TH2F*> make_pair_timewalk_cluster(int clusterID = 6)
 
       has_toff[clusterID][i][j] = 0;
       t_off[clusterID][i][j] = 0.0;
-
       if (h_off_pair[i][j]) {
         delete h_off_pair[i][j];
         h_off_pair[i][j] = 0;
       }
-
       if (f_off_pair[i][j]) {
         delete f_off_pair[i][j];
         f_off_pair[i][j] = 0;
       }
-
       if (i == j) continue;
 
       h_off_pair[i][j] =
@@ -123,25 +114,20 @@ std::vector<TH2F*> make_pair_timewalk_cluster(int clusterID = 6)
   for (Long64_t ientry = 0; ientry < nentries; ientry++) {
 
     tree->GetEntry(ientry);
-
     for (int a = 0; a < ghit; a++) {
 
       int cid_a = gid[a] / 7;
       int sid_a = gid[a] % 7;
-
       if (cid_a != clusterID) continue;
       if (sid_a < 0 || sid_a >= NSEG) continue;
       if (ge[a] < E_HIGH || ge[a] > E_MAX_OFFSET) continue;
 
       seg_high_count[clusterID][sid_a]++;
-
       for (int b = 0; b < ghit; b++) {
-
         if (a == b) continue;
 
         int cid_b = gid[b] / 7;
         int sid_b = gid[b] % 7;
-
         if (cid_b != clusterID) continue;
         if (sid_b < 0 || sid_b >= NSEG) continue;
         if (sid_b == sid_a) continue;
@@ -157,10 +143,8 @@ std::vector<TH2F*> make_pair_timewalk_cluster(int clusterID = 6)
   // fit pair offsets
   for (int i = 0; i < NSEG; i++) {
     for (int j = 0; j < NSEG; j++) {
-
       if (i == j) continue;
       if (!h_off_pair[i][j]) continue;
-
       if (h_off_pair[i][j]->GetEntries() < 50) {
         continue;
       }
@@ -179,7 +163,6 @@ std::vector<TH2F*> make_pair_timewalk_cluster(int clusterID = 6)
       f_off_pair[i][j]->SetParameter(2, 60.0);
 
       TFitResultPtr r = h_off_pair[i][j]->Fit(f_off_pair[i][j], "RQ0");
-
       if ((int)r == 0) {
         t_off[clusterID][i][j] = f_off_pair[i][j]->GetParameter(1);
       } else {
@@ -193,7 +176,6 @@ std::vector<TH2F*> make_pair_timewalk_cluster(int clusterID = 6)
 
   // reset time-walk histograms
   for (int s = 0; s < NSEG; s++) {
-
     if (h_tw_id[s]) {
       delete h_tw_id[s];
       h_tw_id[s] = 0;
@@ -214,28 +196,22 @@ std::vector<TH2F*> make_pair_timewalk_cluster(int clusterID = 6)
   for (Long64_t ientry = 0; ientry < nentries; ientry++) {
 
     tree->GetEntry(ientry);
-
     for (int a = 0; a < ghit; a++) {
 
       int cid_a = gid[a] / 7;
       int sid_a = gid[a] % 7;
-
       if (cid_a != clusterID) continue;
       if (sid_a < 0 || sid_a >= NSEG) continue;
       if (ge[a] < 30) continue;
-
       for (int b = 0; b < ghit; b++) {
-
         if (a == b) continue;
 
         int cid_b = gid[b] / 7;
         int sid_b = gid[b] % 7;
-
         if (cid_b != clusterID) continue;
         if (sid_b < 0 || sid_b >= NSEG) continue;
         if (sid_b == sid_a) continue;
         if (ge[b] < E_HIGH) continue;
-
         if (!has_toff[clusterID][sid_a][sid_b]) continue;
 
         double dt = gt[a] - gt[b];
@@ -250,7 +226,6 @@ std::vector<TH2F*> make_pair_timewalk_cluster(int clusterID = 6)
 
   std::cout << "cluster " << clusterID
             << " pair time-walk histograms filled." << std::endl;
-
   for (int s = 0; s < NSEG; s++) {
     std::cout << "segment " << s
               << " high-energy count = " << seg_high_count[clusterID][s]
@@ -261,10 +236,7 @@ std::vector<TH2F*> make_pair_timewalk_cluster(int clusterID = 6)
   return hlist;
 }
 
-
-// ------------------------------------------------------------
 // Draw 7 segment time-walk plots for current cluster
-// ------------------------------------------------------------
 void draw_pair_timewalk_cluster(int clusterID = 6)
 {
   TCanvas *c_old = (TCanvas*)gROOT->FindObject("c_pair_tw");
@@ -276,7 +248,6 @@ void draw_pair_timewalk_cluster(int clusterID = 6)
 
   c->Divide(4, 2);
   gStyle->SetOptStat(0);
-
   for (int s = 0; s < NSEG; s++) {
     c->cd(s + 1);
     if (h_tw_id[s]) h_tw_id[s]->Draw("colz");
@@ -285,10 +256,7 @@ void draw_pair_timewalk_cluster(int clusterID = 6)
   c->Draw();
 }
 
-
-// ------------------------------------------------------------
 // Draw pair offset histograms for current cluster
-// ------------------------------------------------------------
 void draw_pair_offset_cluster(int clusterID = 6)
 {
   TCanvas *c_old = (TCanvas*)gROOT->FindObject("c_pair_off");
@@ -300,13 +268,11 @@ void draw_pair_offset_cluster(int clusterID = 6)
 
   c->Divide(7, 7);
   gStyle->SetOptStat(0);
-
   for (int i = 0; i < NSEG; i++) {
     for (int j = 0; j < NSEG; j++) {
 
       int ipad = i * NSEG + j + 1;
       c->cd(ipad);
-
       if (i == j) {
         TLatex text;
         text.SetTextAlign(22);
@@ -314,12 +280,10 @@ void draw_pair_offset_cluster(int clusterID = 6)
         text.DrawLatexNDC(0.5, 0.5, Form("%d = %d", i, j));
         continue;
       }
-
       if (!h_off_pair[i][j]) continue;
 
       h_off_pair[i][j]->SetLineColor(kBlack);
-      h_off_pair[i][j]->Draw();
-
+      h_off_pair[i][j]->Draw("hist");
       if (f_off_pair[i][j]) {
         f_off_pair[i][j]->SetLineColor(kRed);
         f_off_pair[i][j]->Draw("same");
@@ -328,7 +292,6 @@ void draw_pair_offset_cluster(int clusterID = 6)
       TLatex label;
       label.SetTextSize(0.10);
       label.SetNDC();
-
       if (has_toff[clusterID][i][j]) {
         label.DrawLatex(0.18, 0.82,
                         Form("%d-%d: %.1f ns", i, j,
@@ -343,17 +306,12 @@ void draw_pair_offset_cluster(int clusterID = 6)
   c->Draw();
 }
 
-
-// ------------------------------------------------------------
 // Choose reference segment by highest high-energy count
-// ------------------------------------------------------------
 int ChooseReferenceSegmentByHighCount(int clusterID)
 {
   int bestSeg = -1;
   Long64_t bestCount = -1;
-
   for (int s = 0; s < NSEG; s++) {
-
     if (!has_fit[clusterID][s]) continue;
 
     Long64_t count = seg_high_count[clusterID][s];
@@ -362,7 +320,6 @@ int ChooseReferenceSegmentByHighCount(int clusterID)
               << ", reference candidate segment " << s
               << ": high-energy count = "
               << count << std::endl;
-
     if (count > bestCount) {
       bestCount = count;
       bestSeg = s;
@@ -372,17 +329,13 @@ int ChooseReferenceSegmentByHighCount(int clusterID)
   return bestSeg;
 }
 
-
-// ------------------------------------------------------------
 // Absorb segment offset into p0
-// ------------------------------------------------------------
 void absorb_segment_offset_to_p0(int clusterID)
 {
   if (clusterID < 0 || clusterID >= NCLUSTER) return;
 
   int refSeg = ChooseReferenceSegmentByHighCount(clusterID);
   ref_seg_cluster[clusterID] = refSeg;
-
   if (refSeg < 0) {
     std::cout << "cluster " << clusterID
               << ": no valid reference segment found." << std::endl;
@@ -413,7 +366,6 @@ void absorb_segment_offset_to_p0(int clusterID)
         break;
       }
     }
-
   for (int s = 0; s < NSEG; s++) {
     if (!has_fit[clusterID][s] || !f_tw[clusterID][s]) continue;
     double C = seg_offset[clusterID][s];
@@ -444,10 +396,7 @@ void absorb_segment_offset_to_p0(int clusterID)
   }
 }
 
-
-// ------------------------------------------------------------
 // Fit time-walk functions for current cluster
-// ------------------------------------------------------------
 void fit_pair_timewalk_cluster(int clusterID = 6, bool draw = true)
 {
   if (clusterID < 0 || clusterID >= NCLUSTER) {
@@ -462,7 +411,6 @@ void fit_pair_timewalk_cluster(int clusterID = 6, bool draw = true)
   double dtMax = 400.0;
 
   TCanvas *c = 0;
-
   if (draw) {
     TCanvas *c_old = (TCanvas*)gROOT->FindObject("c_fit_tw");
     if (c_old) delete c_old;
@@ -474,17 +422,14 @@ void fit_pair_timewalk_cluster(int clusterID = 6, bool draw = true)
     c->Divide(4, 2);
     c->SetLogy(0);
   }
-
   for (int s = 0; s < NSEG; s++) {
 
     has_fit[clusterID][s] = 0;
-
     if (!h_tw_id[s]) continue;
     if (h_tw_id[s]->GetEntries() < 100) continue;
 
     int xbin1 = h_tw_id[s]->GetXaxis()->FindBin(dtMin);
     int xbin2 = h_tw_id[s]->GetXaxis()->FindBin(dtMax);
-
     if (hp_tw_id[s]) {
       delete hp_tw_id[s];
       hp_tw_id[s] = 0;
@@ -494,7 +439,6 @@ void fit_pair_timewalk_cluster(int clusterID = 6, bool draw = true)
                                        xbin1, xbin2);
 
     hp_tw_id[s]->SetDirectory(0);
-
     if (f_tw[clusterID][s]) {
       delete f_tw[clusterID][s];
       f_tw[clusterID][s] = 0;
@@ -523,7 +467,6 @@ void fit_pair_timewalk_cluster(int clusterID = 6, bool draw = true)
               << ", p2=" << f_tw[clusterID][s]->GetParameter(2)
               << ", p3=" << f_tw[clusterID][s]->GetParameter(3)
               << std::endl;
-
     if (draw) {
       c->cd(s + 1);
       gPad->SetLogy(0);
@@ -547,14 +490,10 @@ void fit_pair_timewalk_cluster(int clusterID = 6, bool draw = true)
 
   // After fitting walk shape, absorb high-energy segment offset into p0.
   absorb_segment_offset_to_p0(clusterID);
-
   if (draw) c->Draw();
 }
 
-
-// ------------------------------------------------------------
 // Fit all clusters
-// ------------------------------------------------------------
 void fit_all_clusters_pair()
 {
   for (int c = 0; c < NCLUSTER; c++) {
@@ -569,11 +508,8 @@ void fit_all_clusters_pair()
   std::cout << "All cluster time-walk fits finished." << std::endl;
 }
 
-
-// ------------------------------------------------------------
 // Evaluate final correction.
 // p0 already includes high-energy offset.
-// ------------------------------------------------------------
 double GetTimeWalkCorrection(int clusterID, int segID, double E)
 {
   if (clusterID < 0 || clusterID >= NCLUSTER) return 0.0;
@@ -585,10 +521,7 @@ double GetTimeWalkCorrection(int clusterID, int segID, double E)
   return f_tw[clusterID][segID]->Eval(E);
 }
 
-
-// ------------------------------------------------------------
 // Generate corrected ROOT file
-// ------------------------------------------------------------
 void make_time_corrected_tree_pair(
     const char *inputFile = "eurica_event.root",
     const char *outputFile = "eurica_time_pair.root")
@@ -610,7 +543,6 @@ void make_time_corrected_tree_pair(
   int gid_in[MAXHIT];
   double ge_in[MAXHIT];
   double gt_in[MAXHIT];
-
   if (tin->GetMaximum("ghit")>MAXHIT)
     throw std::runtime_error("Increase MAXHIT before reading branches");
 
@@ -636,13 +568,11 @@ void make_time_corrected_tree_pair(
   tout->Branch("tw_ok", o_tw_ok, "tw_ok[ghit]/I");
 
   Long64_t nentries = tin->GetEntries();
-
   for (Long64_t ientry = 0; ientry < nentries; ientry++) {
 
     tin->GetEntry(ientry);
 
     o_ghit = ghit;
-
     for (int i = 0; i < ghit; i++) {
 
       int clusterID = gid_in[i] / 7;

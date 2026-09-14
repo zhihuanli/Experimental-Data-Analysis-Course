@@ -12,6 +12,9 @@ void reconstruct_two_particles(double tolerance=15) {
     TFile input("data/cal_16C.root");
     TTree* tin=input.Get<TTree>("tree");
     if (!tin) throw std::runtime_error("missing cal_16C tree");
+    // 在绑定固定数组之前检查容量，不能等 GetEntry 写入后再检查。
+    if (tin->GetMaximum("x2hit")>32 || tin->GetMaximum("y2hit")>32)
+        throw std::runtime_error("hit count exceeds array capacity 32");
     int nx,ny,x[32],y[32];
     double ex[32],ey[32];
     tin->SetBranchAddress("x2hit",&nx); tin->SetBranchAddress("y2hit",&ny);
@@ -33,7 +36,8 @@ void reconstruct_two_particles(double tolerance=15) {
     TH2D hUnique("hUnique","Unique accepted hypothesis;r_{group};r_{single}",120,-30,30,120,-30,30);
     Long64_t total23=0, topology=0, unique=0, ambiguous=0, none=0;
     Long64_t firstUnique=-1;
-    for(source_entry=0;source_entry<tin->GetEntries();++source_entry) {
+    const Long64_t nEntries=tin->GetEntries();
+    for(source_entry=0;source_entry<nEntries;++source_entry) {
         tin->GetEntry(source_entry);
         if(nx!=2 || ny!=3) continue;
         ++total23;

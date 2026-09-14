@@ -7886,7 +7886,7 @@ TTree *opt;</p>
 virtual ~ana() {};
 virtual void     Analysis();//分析函数，作用等价于原Loop函数
 virtual void     SetOutBranch();
-virtual void     ProcessDS(Double_t ee[32], vector&lt;dssd&gt; &amp;vec);</p>
+virtual void     ProcessDS(const Double_t ee[32], vector&lt;dssd&gt; &amp;vec);</p>
 <p>};</p>
 <h1>endif</h1></code></pre></div>
 <h4 id="ana.cpp"><code>ana.cpp</code></h4><p><code>ana.cpp</code> 中主要包括三个部分：</p>
@@ -7914,27 +7914,26 @@ void ana::SetOutBranch()
   opt-&gt;Branch("sy3e",&amp;sy3e,"sy3e/D");
 
 <p>}</p>
-<p>void ana::ProcessDS(Double_t ee[32], vector&lt;dssd&gt; &amp;vec)
+<p>void ana::ProcessDS(const Double_t ee[32], vector&lt;dssd&gt; &amp;vec)
 {
-vec.clear();
-dssd ds;
-for(int i=0;i&lt;32;i++) {
+vec.clear(); // 每个事件重新建立 hit 列表
+for(int i=0; i&lt;32; ++i) {
 if(ee[i]&lt;1) continue;
-ds.id=i;
-ds.e=ee[i];
-vec.push_back(ds);
+dssd hit;
+hit.id=i;
+hit.e=ee[i];
+vec.push_back(hit); // t 保持 NaN，输入没有时间信息
 }
 }
 void ana::Analysis()
 {
-SetOutBranch();
 if (fChain == 0) return;
+SetOutBranch();
 Long64_t nentries = fChain-&gt;GetEntriesFast();
-Long64_t nbytes = 0, nb = 0;
 for (Long64_t jentry=0; jentry&lt;nentries;jentry++) {
 Long64_t ientry = LoadTree(jentry);
 if (ientry &lt; 0) break;
-nb = fChain-&gt;GetEntry(jentry);   nbytes += nb;
+fChain-&gt;GetEntry(jentry);
 ProcessDS(d1x,x1v);
 ProcessDS(d1y,y1v);
 ProcessDS(d2x,x2v);
@@ -8019,7 +8018,9 @@ rm -f libhits.so dssd LinkDict.cc LinkDict_rdict.pcm</p></code></pre></div>
 <div class="highlight hl-c++"><pre><span></span><span class="n">gSystem</span><span class="o">-&gt;</span><span class="n">Load</span><span class="p">(</span><span class="s">"code/code1/libhits.so"</span><span class="p">);</span><span class="w"> </span><span class="c1">// 本节 make 同时生成读取字典</span>
 <span class="n">TCanvas</span><span class="w"> </span><span class="o">*</span><span class="n">c1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TCanvas</span><span class="p">;</span>
 <span class="n">TFile</span><span class="w"> </span><span class="o">*</span><span class="n">ff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TFile</span><span class="p">(</span><span class="s">"vec_16C.root"</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">ff</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">ff</span><span class="o">-&gt;</span><span class="n">IsZombie</span><span class="p">())</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">"无法打开输入 ROOT 文件"</span><span class="p">);</span>
 <span class="n">TTree</span><span class="w"> </span><span class="o">*</span><span class="n">tree</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">TTree</span><span class="o">*</span><span class="p">)</span><span class="n">ff</span><span class="o">-&gt;</span><span class="n">Get</span><span class="p">(</span><span class="s">"tree"</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">tree</span><span class="p">)</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">"输入文件中缺少 tree"</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -8059,16 +8060,16 @@ rm -f libhits.so dssd LinkDict.cc LinkDict_rdict.pcm</p></code></pre></div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<div id="root_plot_1789298168975" style="width: 700px; height: 500px; position: relative">
+<div id="root_plot_1789355509113" style="width: 700px; height: 500px; position: relative">
 </div>
 <script>
-   function process_root_plot_1789298168975() {
+   function process_root_plot_1789355509113() {
       function execCode(Core) {
          Core.settings.HandleKeys = false;
          
 Core.unzipJSON(21885,'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').then(json => {
    const obj = Core.parse(json);
-   Core.draw('root_plot_1789298168975', obj, '');
+   Core.draw('root_plot_1789355509113', obj, '');
 });
 
       }
@@ -8091,7 +8092,7 @@ Core.unzipJSON(21885,'WkwITh8AfVUAeAHlnPtzG0dygP8VFet+SKp4LOxisYsFKlXRwzo5kSWVJZ
          loadJsroot();
       }
    }
-   process_root_plot_1789298168975();
+   process_root_plot_1789355509113();
 </script>
 </div>
 </div>
@@ -8398,15 +8399,15 @@ Double_t t = std::numeric_limits&lt;double&gt;::quiet_NaN();
 {
 int xid;
 int yid;
-double xe;//xe
-double ye;//xt
+double xe; // X 面幅度
+double ye; // Y 面幅度
 };</p>
 <p>class ana
 {
 public:
 vector&lt;dssd&gt; *br_x1v, *br_x2v, *br_x3v;  //声明vector指针
 vector&lt;dssd&gt; *br_y1v, *br_y2v, *br_y3v;
-Double_t sx1e,sx2e,sx3e;//sum
+Double_t sx1e,sx2e,sx3e;//sum，与输入 tree 的 /D 一致
 Double_t sy1e,sy2e,sy3e;
 TTree *ipt;
 Long64_t source_entry = 0;
@@ -8424,12 +8425,12 @@ virtual void     BranchOutput();
 <div class="highlight"><pre><code class="language-cpp">void ana::SetBranchInput()
 {
   ipt-&gt;SetBranchAddress("source_entry", &amp;source_entry);
-  br_x1v = NULL; //给指针初始化, 这一步必需。
-  br_x2v = NULL;
-  br_x3v = NULL;
-  br_y1v = NULL;
-  br_y2v = NULL;
-  br_y3v = NULL;
+  br_x1v = nullptr; // ROOT 读入后使指针指向对应的 vector
+  br_x2v = nullptr;
+  br_x3v = nullptr;
+  br_y1v = nullptr;
+  br_y2v = nullptr;
+  br_y3v = nullptr;
   ipt-&gt;SetBranchAddress("x1v", &amp;br_x1v); //将变量指向对应Branch的地址
   ipt-&gt;SetBranchAddress("x2v", &amp;br_x2v);
   ipt-&gt;SetBranchAddress("x3v", &amp;br_x3v);
@@ -8470,24 +8471,21 @@ sort(br_y1v-&gt;begin(), br_y1v-&gt;end(), SortDS);</code></pre></div>
 <p>示意代码如下：</p>
 <div class="highlight"><pre><code class="language-cpp">void ana::GetDSSD(vector&lt;dssd&gt; *x, vector&lt;dssd&gt; *y, vector&lt;DSSD&gt; &amp;xy)
 {
-  size_t hit = std::min(x-&gt;size(), y-&gt;size());
-  xy.clear();
-  DSSD dxy;
-
-<p>for (size_t i = 0; i &lt; hit; i++) {
-double xe = (*x)[i].e;
-double ye = (*y)[i].e;
-int ix = (*x)[i].id;
-int iy = (*y)[i].id;</p>
-<pre><code>if (abs(xe - ye) &amp;lt; 50) {
-  dxy.xe  = xe;
-  dxy.ye  = ye;
-  dxy.xid = ix;
-  dxy.yid = iy;
-  xy.push_back(dxy);
-}</code></pre>
-<p>}
-}</p></code></pre></div>
+    xy.clear();
+    const size_t nPairs=std::min(x-&gt;size(),y-&gt;size());
+    for(size_t i=0; i&lt;nPairs; ++i) {
+        const dssd &amp;xhit=(*x)[i]; // 引用完整 hit，条号和幅度保持对应
+        const dssd &amp;yhit=(*y)[i];
+        if(std::abs(xhit.e-yhit.e)&lt;50) {
+            DSSD pair;
+            pair.xid=xhit.id;
+            pair.yid=yhit.id;
+            pair.xe=xhit.e;
+            pair.ye=yhit.e;
+            xy.push_back(pair);
+        }
+    }
+}</code></pre></div>
 <p>这里的能量匹配条件、配对策略以及排序方式都可以根据具体实验数据进行调整。</p>
 <h4 id="%E5%90%8E%E7%BB%AD%E5%88%86%E6%9E%90%E4%B8%BB%E5%BE%AA%E7%8E%AF">后续分析主循环</h4><p>在 <code>Analysis()</code> 中，完整流程通常包括：</p>
 <ul>
@@ -8500,9 +8498,9 @@ int iy = (*y)[i].id;</p>
 </ul>
 <div class="highlight"><pre><code class="language-cpp">void ana::Analysis()
 {
+  if (ipt == 0) return;
   SetBranchInput();
   BranchOutput();
-  if (ipt == 0) return;
   Long64_t nentries = ipt-&gt;GetEntriesFast();
   for (Long64_t jentry=0; jentry&lt;nentries;jentry++) {
     ipt-&gt;GetEntry(jentry);

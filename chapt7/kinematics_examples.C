@@ -1,190 +1,190 @@
-// Section 4.1: run from the directory containing the input ROOT files.
+// Generated from Relativistic_Kinematics.ipynb by tools/export_kinematics_macros.py.
+// Run from chapt7; figures are drawn by ROOT, not replaced with image files.
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <cmath>
 #include <algorithm>
 #include <stdexcept>
-#include "TFile.h"
-#include "TTree.h"
-#include "TParameter.h"
-#include "TGenPhaseSpace.h"
-#include "TLorentzVector.h"
-#include "TVector3.h"
-#include "TMath.h"
-#include "TRandom3.h"
-#include "TCanvas.h"
-#include "TH1D.h"
-#include "TH2D.h"
-#include "TH1F.h"
-#include "TH2F.h"
-#include "TLegend.h"
-#include "TLine.h"
-#include "TStyle.h"
+#include <TROOT.h>
+#include <TFile.h>
+#include <TTree.h>
+#include <TParameter.h>
+#include <TGenPhaseSpace.h>
+#include <TLorentzVector.h>
+#include <TVector3.h>
+#include <TMath.h>
+#include <TRandom3.h>
+#include <TCanvas.h>
+#include <TH1D.h>
+#include <TH2D.h>
+#include <TH1F.h>
+#include <TH2F.h>
+#include <TLegend.h>
+#include <TLine.h>
+#include <TStyle.h>
 
 
 
 void kinematics_examples()
 {
-gROOT->SetBatch(kTRUE);
-gStyle->SetOptStat(0);
-gSystem->mkdir("chapter4_figures", kTRUE);
-{
-TVector3 p(0.3, 0.4, 1.2); // GeV
+    {
+    TVector3 p(0.3, 0.4, 1.2); // GeV
 
-    std::cout << "px = " << p.X() << std::endl;
-    std::cout << "py = " << p.Y() << std::endl;
-    std::cout << "pz = " << p.Z() << std::endl;
+        std::cout << "px = " << p.X() << std::endl;
+        std::cout << "py = " << p.Y() << std::endl;
+        std::cout << "pz = " << p.Z() << std::endl;
 
-    std::cout << "|p| = " << p.Mag() << " GeV" << std::endl;
-    std::cout << "pT  = " << p.Perp() << " GeV" << std::endl;
+        std::cout << "|p| = " << p.Mag() << " GeV" << std::endl;
+        std::cout << "pT  = " << p.Perp() << " GeV" << std::endl;
 
-    std::cout << "theta = "
-              << p.Theta()*TMath::RadToDeg()
-              << " deg" << std::endl;
+        std::cout << "theta = "
+                  << p.Theta()*TMath::RadToDeg()
+                  << " deg" << std::endl;
 
-    std::cout << "phi = "
-              << p.Phi()*TMath::RadToDeg()
-              << " deg" << std::endl;
+        std::cout << "phi = "
+                  << p.Phi()*TMath::RadToDeg()
+                  << " deg" << std::endl;
 
-    TVector3 dir = p.Unit();
-    std::cout << "|dir| = " << dir.Mag()  << std::endl;
-}
-{
-TVector3 p1(0.2, 0.1, 1.0);
-    TVector3 p2(-0.1, 0.3, 0.8);
+        TVector3 dir = p.Unit();
+        std::cout << "|dir| = " << dir.Mag()  << std::endl;
+    }
 
-    double angle = p1.Angle(p2);
+    {
+    TVector3 p1(0.2, 0.1, 1.0);
+        TVector3 p2(-0.1, 0.3, 0.8);
 
-    std::cout << "opening angle = "
-              << angle*TMath::RadToDeg()
-              << " deg" << std::endl;
+        double angle = p1.Angle(p2);
 
-    std::cout << "p1 dot p2 = "
-              << p1.Dot(p2)
-              << std::endl;
-}
-{
-TLorentzVector ks;
-    ks.SetPxPyPzE(0.0, 0.0, 1.5142, 1.5939);
+        std::cout << "opening angle = "
+                  << angle*TMath::RadToDeg()
+                  << " deg" << std::endl;
 
-    std::cout << "E  = " << ks.E()  << " GeV" << std::endl;
-    std::cout << "pz = " << ks.Pz() << " GeV" << std::endl;
-    std::cout << "M  = " << ks.M()  << " GeV" << std::endl;
-    std::cout << "beta  = " << ks.Beta()  << std::endl;
-    std::cout << "gamma = " << ks.Gamma() << std::endl;
-}
-{
-const double mpi = 0.13957; // GeV
+        std::cout << "p1 dot p2 = "
+                  << p1.Dot(p2)
+                  << std::endl;
+    }
 
-    TLorentzVector pion;
-    pion.SetXYZM(0.10, -0.05, 0.40, mpi);
+    {
+    TLorentzVector ks;
+        ks.SetPxPyPzE(0.0, 0.0, 1.5142, 1.5939);
 
-    std::cout << "E = " << pion.E() << " GeV" << std::endl;
-    std::cout << "M = " << pion.M() << " GeV" << std::endl;
-}
-{
-const double mAlpha = 3727.38; // MeV
-    const double T = 5.0;          // MeV
+        std::cout << "E  = " << ks.E()  << " GeV" << std::endl;
+        std::cout << "pz = " << ks.Pz() << " GeV" << std::endl;
+        std::cout << "M  = " << ks.M()  << " GeV" << std::endl;
+        std::cout << "beta  = " << ks.Beta()  << std::endl;
+        std::cout << "gamma = " << ks.Gamma() << std::endl;
+    }
 
-    double theta = 40.0*TMath::DegToRad();
-    double phi   = 30.0*TMath::DegToRad();
+    {
+    const double mpi = 0.13957; // GeV
 
-    double E = T + mAlpha;
-    double p = std::sqrt(T*T + 2.0*mAlpha*T);
+        TLorentzVector pion;
+        pion.SetXYZM(0.10, -0.05, 0.40, mpi);
 
-    TVector3 pvec;
-    pvec.SetMagThetaPhi(p, theta, phi);
+        std::cout << "E = " << pion.E() << " GeV" << std::endl;
+        std::cout << "M = " << pion.M() << " GeV" << std::endl;
+    }
 
-    TLorentzVector alpha;
-    alpha.SetPxPyPzE(pvec.X(), pvec.Y(), pvec.Z(), E);
+    {
+    const double mAlpha = 3727.38; // MeV
+        const double T = 5.0;          // MeV
 
-    std::cout << "M = " << alpha.M() << " MeV" << std::endl;
-}
-{
-const double mpi = 0.13957; // GeV
+        double theta = 40.0*TMath::DegToRad();
+        double phi   = 30.0*TMath::DegToRad();
 
-    TLorentzVector piPlus;
-    TLorentzVector piMinus;
+        double E = T + mAlpha;
+        double p = std::sqrt(T*T + 2.0*mAlpha*T);
 
-    piPlus.SetXYZM(0.20, 0.10, 0.50, mpi);
-    piMinus.SetXYZM(-0.15, -0.05, 0.30, mpi);
+        TVector3 pvec;
+        pvec.SetMagThetaPhi(p, theta, phi);
 
-    TLorentzVector pair_pi = piPlus + piMinus;
+        TLorentzVector alpha;
+        alpha.SetPxPyPzE(pvec.X(), pvec.Y(), pvec.Z(), E);
 
-    std::cout << "M(pi+ pi-) = "
-              << pair_pi.M()
-              << " GeV" << std::endl;
-}
-{
-// Parent four-vector in the lab frame
-    const double M  = 1.0;   // GeV
-    const double pz = 2.0;   // GeV
+        std::cout << "M = " << alpha.M() << " MeV" << std::endl;
+    }
 
-    TLorentzVector parent_lab;
-    parent_lab.SetPxPyPzE(0.0, 0.0, pz, std::sqrt(M*M + pz*pz));
+    {
+    const double mpi = 0.13957; // GeV
 
-    // Velocity of the parent in the lab
-    TVector3 beta = parent_lab.BoostVector();
+        TLorentzVector piPlus;
+        TLorentzVector piMinus;
 
-    // Daughter four-vector in the parent rest frame
-    const double md = 0.2;   // GeV
-    const double px = 0.3;   // GeV
+        piPlus.SetXYZM(0.20, 0.10, 0.50, mpi);
+        piMinus.SetXYZM(-0.15, -0.05, 0.30, mpi);
 
-    TLorentzVector daughter_rest;
-    daughter_rest.SetPxPyPzE(px, 0.0, 0.0, std::sqrt(md*md + px*px));
+        TLorentzVector pair_pi = piPlus + piMinus;
 
-    // Boost from parent rest frame to lab frame
-    TLorentzVector daughter_lab = daughter_rest;
-    daughter_lab.Boost(beta);
+        std::cout << "M(pi+ pi-) = "
+                  << pair_pi.M()
+                  << " GeV" << std::endl;
+    }
 
-    // Boost back from lab frame to parent rest frame
-    TLorentzVector daughter_back = daughter_lab;
-    daughter_back.Boost(-beta);
+    {
+    // Parent four-vector in the lab frame
+        const double M  = 1.0;   // GeV
+        const double pz = 2.0;   // GeV
 
-    std::cout << "Daughter in parent rest frame:\n";
-    std::cout << "  E  = " << daughter_rest.E()  << "\n";
-    std::cout << "  px = " << daughter_rest.Px() << "\n";
-    std::cout << "  py = " << daughter_rest.Py() << "\n";
-    std::cout << "  pz = " << daughter_rest.Pz() << "\n";
-    std::cout << "  M  = " << daughter_rest.M()  << "\n\n";
+        TLorentzVector parent_lab;
+        parent_lab.SetPxPyPzE(0.0, 0.0, pz, std::sqrt(M*M + pz*pz));
 
-    std::cout << "Daughter in lab frame:\n";
-    std::cout << "  E  = " << daughter_lab.E()  << "\n";
-    std::cout << "  px = " << daughter_lab.Px() << "\n";
-    std::cout << "  py = " << daughter_lab.Py() << "\n";
-    std::cout << "  pz = " << daughter_lab.Pz() << "\n";
-    std::cout << "  M  = " << daughter_lab.M()  << "\n\n";
+        // Velocity of the parent in the lab
+        TVector3 beta = parent_lab.BoostVector();
 
-    std::cout << "Boosted back to parent rest frame:\n";
-    std::cout << "  E  = " << daughter_back.E()  << "\n";
-    std::cout << "  px = " << daughter_back.Px() << "\n";
-    std::cout << "  py = " << daughter_back.Py() << "\n";
-    std::cout << "  pz = " << daughter_back.Pz() << "\n";
-    std::cout << "  M  = " << daughter_back.M()  << "\n";
-}
-{
-// Parent four-vector in the lab frame
-    TLorentzVector parent_lab;
-    parent_lab.SetPxPyPzE(0.0, 0.0, 2.0, std::sqrt(5.0));
+        // Daughter four-vector in the parent rest frame
+        const double md = 0.2;   // GeV
+        const double px = 0.3;   // GeV
 
-    // Daughter four-vector measured in the lab frame
-    TLorentzVector daughter_lab;
-    daughter_lab.SetXYZM(0.3, 0.0, 0.8, 0.2);
+        TLorentzVector daughter_rest;
+        daughter_rest.SetPxPyPzE(px, 0.0, 0.0, std::sqrt(md*md + px*px));
 
-    // Velocity of the parent in the lab frame
-    TVector3 beta = parent_lab.BoostVector();
+        // Boost from parent rest frame to lab frame
+        TLorentzVector daughter_lab = daughter_rest;
+        daughter_lab.Boost(beta);
 
-    // Boost daughter from lab frame to parent rest frame
-    TLorentzVector daughter_rest = daughter_lab;
-    daughter_rest.Boost(-beta);
+        // Boost back from lab frame to parent rest frame
+        TLorentzVector daughter_back = daughter_lab;
+        daughter_back.Boost(-beta);
 
-    std::cout << "daughter mass = "
-              << daughter_rest.M()
-              << " GeV" << std::endl;
+        std::cout << "Daughter in parent rest frame:\n"
+                  << "  (E, px, py, pz) = (" << daughter_rest.E() << ", "
+                  << daughter_rest.Px() << ", " << daughter_rest.Py() << ", "
+                  << daughter_rest.Pz() << "); M = " << daughter_rest.M() << " GeV" << std::endl;
 
-    std::cout << "theta in parent rest frame = "
-              << daughter_rest.Theta()*TMath::RadToDeg()
-              << " deg" << std::endl;
-}
+        std::cout << "Daughter in lab frame:\n"
+                  << "  (E, px, py, pz) = (" << daughter_lab.E() << ", "
+                  << daughter_lab.Px() << ", " << daughter_lab.Py() << ", "
+                  << daughter_lab.Pz() << "); M = " << daughter_lab.M() << " GeV" << std::endl;
+
+        std::cout << "Boosted back to parent rest frame:\n"
+                  << "  (E, px, py, pz) = (" << daughter_back.E() << ", "
+                  << daughter_back.Px() << ", " << daughter_back.Py() << ", "
+                  << daughter_back.Pz() << "); M = " << daughter_back.M() << " GeV" << std::endl;
+    }
+
+    {
+    // Parent four-vector in the lab frame
+        TLorentzVector parent_lab;
+        parent_lab.SetPxPyPzE(0.0, 0.0, 2.0, std::sqrt(5.0));
+
+        // Daughter four-vector measured in the lab frame
+        TLorentzVector daughter_lab;
+        daughter_lab.SetXYZM(0.3, 0.0, 0.8, 0.2);
+
+        // Velocity of the parent in the lab frame
+        TVector3 beta = parent_lab.BoostVector();
+
+        // Boost daughter from lab frame to parent rest frame
+        TLorentzVector daughter_rest = daughter_lab;
+        daughter_rest.Boost(-beta);
+
+        std::cout << "daughter mass = "
+                  << daughter_rest.M()
+                  << " GeV" << std::endl;
+
+        std::cout << "theta in parent rest frame = "
+                  << daughter_rest.Theta()*TMath::RadToDeg()
+                  << " deg" << std::endl;
+    }
 }
